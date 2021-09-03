@@ -14,12 +14,30 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class main extends JavaPlugin implements Listener {
 
     /**
+     * A pointer to the plugin instance.
+     */
+    public static JavaPlugin plugin = null;
+
+    /**
+     * Is holographic displays enabled on the server?
+     */
+    public static boolean useHolographicDisplays = false;
+
+    /**
      * Called on enable. Just the normal things such as loading the config, registering listeners, initializing methods.
      */
     @Override
     public void onEnable() {
+        plugin = this;
+
         //Register damage listeners
         Bukkit.getPluginManager().registerEvents(new AdvancedDamageHandler(), this);
+
+        //Establish hooks
+        useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
+        if (!useHolographicDisplays) {
+            //todo console logging.
+        }
     }
 
     /**

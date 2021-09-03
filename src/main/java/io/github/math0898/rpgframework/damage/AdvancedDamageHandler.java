@@ -29,15 +29,4 @@ public class AdvancedDamageHandler implements Listener {
         //todo: do damage calculations here?
         Bukkit.getConsoleSender().sendMessage("Finished damage.");
     }
-
-    /**
-     * The lowest priority event handler for the AdvancedDamageEvent. Any handlers which end up after this are ignored.
-     *
-     * @param event The advanced damage event.
-     */
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onAdvancedDamage (AdvancedDamageEvent event) {
-        //todo implement
-        Bukkit.getConsoleSender().sendMessage("Finished Advanced Damage.");
-    }
 }
