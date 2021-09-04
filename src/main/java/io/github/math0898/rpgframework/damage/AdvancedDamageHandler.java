@@ -22,11 +22,9 @@ public class AdvancedDamageHandler implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onDamage (EntityDamageEvent event) {
-        Bukkit.getConsoleSender().sendMessage("Started damage.");
-        //todo real creation of a new AdvancedDamageEvent
         AdvancedDamageEvent advancedDamageEvent = new AdvancedDamageEvent(event.getEntity());
+        //todo real creation of a new AdvancedDamageEvent
         Bukkit.getPluginManager().callEvent(advancedDamageEvent);
-        //todo: do damage calculations here?
-        Bukkit.getConsoleSender().sendMessage("Finished damage.");
+        //todo: do damage calculations here
     }
 }

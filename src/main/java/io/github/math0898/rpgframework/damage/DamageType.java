@@ -6,6 +6,8 @@ package io.github.math0898.rpgframework.damage;
  * @author Sugaku
  */
 public enum DamageType {
+    UNSPECIFIED, // Damage from an unspecified source
+
     SLASH, PUNCTURE, IMPACT, // The three physical types
 
     FIRE, AIR, WATER, EARTH, ELECTRIC, NATURE, // Basic elements
