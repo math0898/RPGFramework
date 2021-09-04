@@ -67,6 +67,8 @@ public final class main extends JavaPlugin implements Listener {
             console("Holographic displays was not found.", ChatColor.YELLOW);
             console("This is non fatal error however you will not see damage numbers when you hit mobs.", ChatColor.YELLOW);
         }
+
+        console("Plugin enabled!", ChatColor.GREEN);
     }
 
     /**

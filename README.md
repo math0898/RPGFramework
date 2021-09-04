@@ -7,19 +7,19 @@ We've completely overhauled the vanilla Minecraft damage system in favor of one 
 and nuance. The new damage system contains 3 physical types along with 6 elemental magic types and 3 higher magic types. 
 The order damage is calculated in goes as follows:
 
->0) The damage values are established.
->1) Damage reduction provided by armor is applied.
->2) Resistance to damage types is applied.
+0. The damage values are established.
+1. Damage reduction provided by armor is applied.
+2. Resistance to damage types is applied.
 
 
 
 Let's use an attack of 60.0 Lighting Damage and 30.0 Slashing Damage as an example. For the sake of simplicity lets say 
 our victim has the following: 
 
-> 0.33 Magic Resistance <br>
-> 0.50 Physical Resistance <br>
-> A Slash Damage Vulnerability <br>
-> A Lighting Damage Resistance <br>
+>  0.33 Magic Resistance <br>
+>  0.50 Physical Resistance <br>
+>  A Slash Damage Vulnerability <br>
+>  A Lighting Damage Resistance <br>
 
 - __Step 0)__ has already been taken care of since we declared our damage values. <br>
 - __Step 2-A)__ We applied our damage reduction provided by armor. We start with the 30.0 slashing damage. After applying the 

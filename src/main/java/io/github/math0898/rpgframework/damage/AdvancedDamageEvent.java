@@ -1,6 +1,5 @@
 package io.github.math0898.rpgframework.damage;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -43,7 +42,7 @@ public class AdvancedDamageEvent extends EntityEvent implements Cancellable {
     /**
      * The entity damaged event. DO NOT MODIFY.
      */
-    private EntityDamageEvent basic = null;
+    private final EntityDamageEvent basic;
 
     /**
      * The canceled boolean. True if and only if the event has been cancelled otherwise false.
@@ -63,15 +62,10 @@ public class AdvancedDamageEvent extends EntityEvent implements Cancellable {
     public AdvancedDamageEvent (EntityDamageEvent basic) {
         super(basic.getEntity());
         this.basic = basic;
-    }
-
-    /**
-     * Degenerate constructor. Exists to make IDE's happy.
-     *
-     * @param what The entity in the event.
-     */
-    public AdvancedDamageEvent (Entity what) {
-        super(what);
+        for (DamageType t: DamageType.values()) {
+            damages.put(t, 0.00);
+            resistances.put(t, DamageResistance.NORMAL);
+        }
     }
 
     /**
