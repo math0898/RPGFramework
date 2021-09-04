@@ -24,7 +24,7 @@ public final class main extends JavaPlugin implements Listener {
     /**
      * Is holographic displays enabled on the server?
      */
-    public static boolean useHolographicDisplays = false;
+    public static boolean useHolographicDisplays = false; //todo use holographic displays!!
 
     /**
      * This method sends a message to the console and infers the level it should be sent at.

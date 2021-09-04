@@ -1,12 +1,18 @@
 package io.github.math0898.rpgframework.damage;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import io.github.math0898.rpgframework.main;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.Map;
+import java.util.Random;
 
 /**
  * This is the end all be all for the AdvancedDamageEvent and where the actual damage happens. It also has the side job
@@ -24,7 +30,7 @@ public class AdvancedDamageHandler implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onDamage (EntityDamageEvent event) {
-        event.setDamage(event.getDamage() * 5.0); //Scale damage for the Advanced Damage Calculations
+        event.setDamage(event.getDamage() * 5.00); //Scale damage for the Advanced Damage Calculations
         AdvancedDamageEvent advancedDamageEvent = new AdvancedDamageEvent(event);
 
         Map<DamageType, Double> damages = advancedDamageEvent.getDamages(); //Setting default damage distributions
@@ -43,7 +49,9 @@ public class AdvancedDamageHandler implements Listener {
 
         Bukkit.getPluginManager().callEvent(advancedDamageEvent); //Call the event
 
-        event.setDamage(damageCalculation(advancedDamageEvent));
+        double damage = damageCalculation(advancedDamageEvent);
+        event.setDamage(damage/5.00);
+        if (main.useHolographicDisplays) displayDamage(damage, event.getEntity().getLocation());
     }
 
     /**
@@ -69,5 +77,21 @@ public class AdvancedDamageHandler implements Listener {
             damage += dmg;
         }
         return damage;
+    }
+
+    /**
+     * Displays the damage dealt to the entity nearby so that players can see big numbers.
+     *
+     * @param damage The amount of damage being displayed.
+     * @param location The location of the entity that was hit.
+     */
+    public void displayDamage (Double damage, Location location) {
+        Random random = new Random();
+        Location locale = new Location(location.getWorld(), location.getX() + random.nextDouble() - 0.50,
+                location.getY() + 1.50,
+                location.getZ() + random.nextDouble() - 0.50);
+        Hologram hologram = HologramsAPI.createHologram(main.plugin, locale);
+        hologram.appendTextLine(ChatColor.RED + "☆" + ChatColor.YELLOW + String.format("%.1f", damage) + ChatColor.RED + "☆");
+        Bukkit.getScheduler().runTaskLater(main.plugin, hologram::delete, 5*10);
     }
 }
