@@ -81,7 +81,12 @@ public enum DamageType {
     /**
      * In the absence of everything the only thing that remains... pure void magic.
      */
-    VOID;
+    VOID,
+
+    /**
+     * Holy magic is well... holy in nature. Magic.
+     */
+    HOLY;
 
     /**
      * Checks if the damage type is magic or physical.
@@ -91,7 +96,7 @@ public enum DamageType {
      */
     public static String archetype (DamageType type) {
         return switch (type) {
-            case VOID, ENDER, ABYSS, ICE, NATURE, ELECTRIC, EARTH, WATER, AIR, FIRE -> "MAGIC";
+            case VOID, ENDER, ABYSS, ICE, NATURE, ELECTRIC, EARTH, WATER, AIR, FIRE, HOLY -> "MAGIC";
             case IMPACT, PUNCTURE, SLASH, UNSPECIFIED -> "PHYSICAL";
         };
     }

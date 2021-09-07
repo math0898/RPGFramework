@@ -116,7 +116,21 @@ public class AdvancedDamageEvent extends EntityEvent implements Cancellable {
      * @param resistances The new map of resistances.
      */
     public void setResistances (Map<DamageType, DamageResistance> resistances) {
-        this.resistances = resistances;
+        Map<DamageType, DamageResistance> merged = new EnumMap<>(DamageType.class);
+        for (DamageType type: DamageType.values()) {
+            DamageResistance current = this.resistances.get(type);
+            DamageResistance mod = resistances.get(type);
+            if (mod == null) {
+                merged.put(type, current);
+                continue;
+            }
+            if (current == DamageResistance.NORMAL) {
+                merged.put(type, mod);
+                continue;
+            }
+            merged.put(type, DamageResistance.mergeResistances(current, mod));
+        }
+        this.resistances = merged;
     }
 
     /**
