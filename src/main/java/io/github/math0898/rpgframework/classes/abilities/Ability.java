@@ -1,11 +1,14 @@
 package io.github.math0898.rpgframework.classes.abilities;
 
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+
 /**
  * The abstract class for an ability. Abilities are active or passive effects that occur on classes.
  *
  * @author Sugaku
  */
-public abstract class Ability {
+public abstract class Ability implements Listener {
 
     /**
      * The cooldown length.
@@ -48,5 +51,15 @@ public abstract class Ability {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Sends a message to the player detailing that the ability is still on cooldown as well as how long until it is off
+     * cooldown.
+     *
+     * @param player The player to send the remaining cooldown time to.
+     */
+    public void onCooldown (Player player) {
+        player.sendMessage("That ability is on cooldown for " + (getCooldown()/1000) +"s longer!");
     }
 }
