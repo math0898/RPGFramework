@@ -13,3 +13,6 @@ permissions:
       rpg.parties.*:
         children:
           rpg.parties.maxbypass:
+commands:
+  party:
+    description: Lets players join, leave, and manipulate parties.
