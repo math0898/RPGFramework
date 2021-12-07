@@ -6,3 +6,10 @@ authors: [ Sugaku ]
 description: The main framework plugin used for all of Math0898/Sugaku's RPG plugins.
 prefix: RPG Framework
 softdepend: [ HolographicDisplays ]
+permissions:
+  rpg.*:
+    default: false
+    children:
+      rpg.parties.*:
+        children:
+          rpg.parties.maxbypass:
