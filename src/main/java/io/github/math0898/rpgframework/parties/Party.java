@@ -31,6 +31,7 @@ public class Party {
      */
     public Party (Player l) {
         leader = l;
+        players.add(l);
     }
 
     /**

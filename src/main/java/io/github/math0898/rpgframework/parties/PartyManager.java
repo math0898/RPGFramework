@@ -12,6 +12,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.ArrayList;
 
+import static io.github.math0898.rpgframework.main.console;
 import static io.github.math0898.rpgframework.main.plugin;
 
 /**
