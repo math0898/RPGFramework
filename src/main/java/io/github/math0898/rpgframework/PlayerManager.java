@@ -96,8 +96,8 @@ public class PlayerManager implements Listener { // todo needs cleaning. Copied 
         return null;
     }
 
-    public static RpgPlayer getPlayer(String name) {
-        for (RpgPlayer p: players) if (Objects.requireNonNull(Bukkit.getPlayer(p.getUuid())).getName().equals(name)) return p;
+    public static RpgPlayer getPlayer (String name) {
+        for (RpgPlayer p: players) if (name.equals(p.getName())) return p;
         return null;
     }
 

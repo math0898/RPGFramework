@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -22,6 +23,7 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
      */
     public RpgPlayer(Player p) throws NullPointerException {
         this.uuid = p.getUniqueId();
+        this.name = p.getName();
         refresh(p);
     }
 
@@ -29,6 +31,8 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
      * Uuid of the player this construct points to.
      */
     private final UUID uuid;
+
+    private final String name;
 
     private Party party = null;
 
@@ -121,6 +125,22 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
         return getPlayerRarity(this.getBukkitPlayer());
     }
 
+    public static String getFormattedHealth (Player player) {
+        AttributeInstance instance = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        double max;
+        if (instance == null) max = 100.0;
+        else max = instance.getValue() * 5.0;
+        double current = player.getHealth();
+        ChatColor prefix = ChatColor.GREEN;
+        if (current / max < 0.75) prefix = ChatColor.YELLOW;
+        else if (current / max < 0.50) prefix = ChatColor.RED;
+        return prefix + "" + current;
+    }
+
+    public String getFormattedHealth () {
+        return getFormattedHealth(getBukkitPlayer());
+    }
+
     public Party getParty() {
         return party;
     }
@@ -137,7 +157,9 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
 
     public Player getBukkitPlayer() { return Bukkit.getPlayer(uuid); }
 
-    public String getName() { return getBukkitPlayer().getName(); }
+    public String getName() {
+        return name;
+    }
 
     public String getFormattedClass() {
         return ChatColor.GRAY + "None";

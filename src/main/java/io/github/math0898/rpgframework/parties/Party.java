@@ -1,9 +1,13 @@
 package io.github.math0898.rpgframework.parties;
 
+import io.github.math0898.rpgframework.PlayerManager;
+import io.github.math0898.rpgframework.RpgPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Describes a singular party that may, unless the leader is an admin, contain up to 6 players. This class has some
@@ -41,6 +45,26 @@ public class Party {
      */
     public ArrayList<Player> getPlayers () {
         return players;
+    }
+
+    /**
+     * Returns a collection of the RPG version of the player objects stored in this party.
+     *
+     * @return The Collection of RpgPlayers.
+     */
+    public Collection<RpgPlayer> getRpgPlayers () {
+        List<RpgPlayer> playerList = new ArrayList<>();
+        for (Player p : players) playerList.add(PlayerManager.getPlayer(p.getUniqueId()));
+        return playerList;
+    }
+
+    /**
+     * Accessor method for the party leader.
+     *
+     * @return The leader of the party.
+     */
+    public Player getLeader () {
+        return leader;
     }
 
     /**
@@ -92,5 +116,19 @@ public class Party {
      */
     public void applyEffect (PotionEffect effect) {
         players.forEach((p) -> p.addPotionEffect(effect));
+    }
+
+    /**
+     * Used to determine whether two parties are equal or not.
+     *
+     * @param o The object to compare with *this*.
+     * @return True if and only if the pass object and *this* are equal.
+     */
+    @Override
+    public boolean equals (Object o) {
+        if (o == null) return false;
+        else if (o instanceof Party rhs) {
+            return this.leader.equals(rhs.leader);
+        } else return false;
     }
 }

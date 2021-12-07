@@ -65,7 +65,7 @@ public final class main extends JavaPlugin implements Listener {
         PartyManager.init();
         PlayerManager.init();
         Bukkit.getPluginCommand("party").setExecutor(new PartyCommand());
-        Bukkit.getPluginCommand("party").setTabCompleter(new PartyCommand().autocomplete);
+        Bukkit.getPluginCommand("party").setTabCompleter(new PartyCommand.Autocomplete());
 
         //Establish hooks
         useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
