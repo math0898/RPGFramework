@@ -12,7 +12,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.ArrayList;
 
-import static io.github.math0898.rpgframework.main.console;
 import static io.github.math0898.rpgframework.main.plugin;
 
 /**
@@ -49,6 +48,15 @@ public class PartyManager implements Listener {
     }
 
     /**
+     * Removes a party from the current list of parties.
+     *
+     * @param p The party to remove from the list.
+     */
+    public static void removeParty (Party p) {
+        parties.remove(p);
+    }
+
+    /**
      * Finds the party that a player is currently in.
      *
      * @param player The player to locate the party of.
@@ -60,7 +68,7 @@ public class PartyManager implements Listener {
     }
 
     /**
-     * Toggles party chat for the given player. If they are not currently in a party this will fail.
+     * Toggles party chat for the given player. If they are not currently at a party this will fail.
      *
      * @param player The player to toggle party chat for.
      */

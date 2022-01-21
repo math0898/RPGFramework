@@ -26,7 +26,7 @@ public class Party {
     /**
      * This is a reference to the leader of the party. They should also be contained within {@link #players}.
      */
-    private Player leader; // todo add a way to change the party leader.
+    private Player leader;
 
     /**
      * Creates a new party with the given player as the leader.
@@ -88,6 +88,8 @@ public class Party {
      */
     public void removePlayer (Player p) {
         players.remove(p);
+        if (p.equals(getLeader())) promote(getPlayers().get(0));
+        if (getPlayers().size() == 0) PartyManager.removeParty(this);
     }
 
     /**
@@ -98,6 +100,15 @@ public class Party {
      */
     public boolean hasMember (Player player) {
         return players.contains(player);
+    }
+
+    /**
+     * Promotes the given player to party leader. Will take no action if the player is not currently part of the party.
+     *
+     * @param player The player to attempt to make party leader.
+     */
+    public void promote (Player player) {
+        leader = player;
     }
 
     /**

@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Objects;
 import java.util.logging.Level;
 
 /**
@@ -57,15 +58,15 @@ public final class main extends JavaPlugin implements Listener {
      * Called on enable. Just the normal things such as loading the config, registering listeners, initializing methods.
      */
     @Override
-    public void onEnable() {
+    public void onEnable () {
         plugin = this;
 
         //Register damage listeners
         Bukkit.getPluginManager().registerEvents(new AdvancedDamageHandler(), this);
         PartyManager.init();
         PlayerManager.init();
-        Bukkit.getPluginCommand("party").setExecutor(new PartyCommand());
-        Bukkit.getPluginCommand("party").setTabCompleter(new PartyCommand.Autocomplete());
+        Objects.requireNonNull(Bukkit.getPluginCommand("party")).setExecutor(new PartyCommand());
+        Objects.requireNonNull(Bukkit.getPluginCommand("party")).setTabCompleter(PartyCommand.autocomplete);
 
         //Establish hooks
         useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
@@ -81,7 +82,7 @@ public final class main extends JavaPlugin implements Listener {
      * Not much here either. If something needs to be here it will be.
      */
     @Override
-    public void onDisable() {
+    public void onDisable () {
         // Plugin shutdown logic
     }
 }

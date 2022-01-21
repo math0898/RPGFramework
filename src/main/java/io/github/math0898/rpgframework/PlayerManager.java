@@ -1,5 +1,6 @@
 package io.github.math0898.rpgframework;
 
+import io.github.math0898.rpgframework.parties.Party;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
@@ -11,6 +12,7 @@ import org.bukkit.event.entity.EntityExhaustionEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -35,7 +37,7 @@ public class PlayerManager implements Listener { // todo needs cleaning. Copied 
 
     /**
      * Prints the given string into console with the given coloring.
-     * @param message The message be the sent to console
+     * @param message The message be sent to console
      * @param color The color the message should be in
      */
     private static void console(String message, ChatColor color) {
@@ -115,15 +117,27 @@ public class PlayerManager implements Listener { // todo needs cleaning. Copied 
 
     /**
      * Removes a player from the array of players.
+     *
+     * @param player The player to remove from the PlayerManager.
      */
-    public static void removePlayer(UUID uuid) {
+    public static void removePlayer (@Nullable RpgPlayer player) {
+        if (player == null) return;
+        removePlayer(player.getUuid());
+    }
+
+    /**
+     * Removes a player from the array of players.
+     *
+     * @param uuid The uuid of the player to remove from the PlayerManager.
+     */
+    public static void removePlayer (@Nullable UUID uuid) {
         players.removeIf(d -> d.getUuid() == uuid);
     }
 
     /**
      * Scales the health of a player based on their max health.
      */
-    public static void scaleHealth(Player p) {
+    public static void scaleHealth (Player p) {
         double max = Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue();
         p.setHealthScale(max);
         p.setSaturatedRegenRate(((int) max) * 4);
@@ -219,6 +233,12 @@ public class PlayerManager implements Listener { // todo needs cleaning. Copied 
      */
     @EventHandler
     public void onLeave (PlayerQuitEvent event) {
-        removePlayer(event.getPlayer().getUniqueId());
+        RpgPlayer rpgPlayer = getPlayer(event.getPlayer().getUniqueId());
+        if (rpgPlayer != null) {
+            Party party = rpgPlayer.getParty();
+            if (party != null) party.removePlayer(rpgPlayer.getBukkitPlayer());
+            rpgPlayer.leaveParty();
+        }
+        removePlayer(rpgPlayer);
     }
 }

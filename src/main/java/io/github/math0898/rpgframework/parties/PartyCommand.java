@@ -9,6 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,10 +27,8 @@ public class PartyCommand implements CommandExecutor { // todo could use quite a
 
     /**
      * The tab completer which fills in the options for this command.
-     *
-     * @author Sugaku
      */
-    public static class Autocomplete implements TabCompleter {
+    public static TabCompleter autocomplete = new TabCompleter() {
 
         /**
          * Requests a list of possible completions for a command argument.
@@ -43,20 +42,27 @@ public class PartyCommand implements CommandExecutor { // todo could use quite a
          * @return A List of possible completions for the final argument, or null to default to the command executor
          */
         @Override
-        public List<String> onTabComplete (CommandSender sender, Command command, String alias, String[] args) {
+        public List<String> onTabComplete (@NotNull CommandSender sender, Command command, @NotNull String alias, String[] args) {
             if (command.getName().equalsIgnoreCase("party")) {
                 ArrayList<String> list = new ArrayList<>();
                 if (args.length == 1) {
-                    String[] Options = {"accept", "chat", "info", "invite", "kick", "leave", "list", "summon"};
+                    String[] Options = { "accept", "chat", "info", "invite", "kick", "leave", "list", "promote", "summon" };
                     if (!args[0].equals("")) { for (String o: Options) if (o.toLowerCase().startsWith(args[0].toLowerCase())) list.add(o); }
                     else list.addAll(Arrays.asList(Options));
-                    return list;
-                } else if (args[1].equalsIgnoreCase("invite") || args[1].equalsIgnoreCase("kick")) return null;
-                else return list;
+                } else if (args[1].equalsIgnoreCase("invite")) Bukkit.getOnlinePlayers().forEach((p) -> list.add(p.getName()));
+                else if (args[1].equalsIgnoreCase("kick") || args[1].equalsIgnoreCase("promote")) {
+                    if (sender instanceof Player player) {
+                        RpgPlayer rpgPlayer = PlayerManager.getPlayer(player.getUniqueId());
+                        assert rpgPlayer != null;
+                        Party party = rpgPlayer.getParty();
+                        if (party != null) party.getPlayers().forEach((p) -> list.add(p.getName()));
+                    }
+                }
+                return list;
             }
             return null;
         }
-    }
+    };
 
     /**
      * The prefix sent with every message.
@@ -96,7 +102,7 @@ public class PartyCommand implements CommandExecutor { // todo could use quite a
      * @param args Passed command arguments.
      * @return True if a valid command, otherwise false.
      */
-    public boolean onCommand (CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand (@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 0) {
             send(sender, "Sorry but something about that usage seemed off. Here is a list of options.");
             send(sender, "- accept: Accept an incoming invite.", false);
@@ -106,6 +112,7 @@ public class PartyCommand implements CommandExecutor { // todo could use quite a
             send(sender, "- kick <name>: Remove the given player from your party.", false);
             send(sender, "- leave: Leave the party you are currently in.", false);
             send(sender, "- list: Lists members of your party including invitations.", false);
+            send(sender, "- promote <name>: Designates a new party member as leader.", false);
             send(sender, "- summon: Summons party members to your location.", false);
         }
         else if (!(sender instanceof Player)) send(sender, "Please only run this command as a player.");
@@ -118,6 +125,7 @@ public class PartyCommand implements CommandExecutor { // todo could use quite a
             case "list" -> listSubcommand(sender);
             case "summon" -> summonSubcommand(sender);
             case "chat" -> PartyManager.togglePartyChat((Player) sender);
+            case "promote" -> promoteSubcommand(sender, args);
             default -> send(sender, ChatColor.RED + "Command not found.");
         }
         return true;
@@ -159,7 +167,6 @@ public class PartyCommand implements CommandExecutor { // todo could use quite a
         }
         send(sender, ChatColor.GRAY + "---- Party Status ----");
         for (Player p : party.getPlayers()) send(sender, ChatColor.GRAY + p.getName() + " -> " + rpgPlayer.getFormattedHealth());
-        send(sender, "Work in progress.");
     }
 
     /**
@@ -281,6 +288,30 @@ public class PartyCommand implements CommandExecutor { // todo could use quite a
                 }
                 else p.sendMessage(prefix + "You are summoning your party. They will be here in 3s");
             });
+        }
+    }
+
+    /**
+     * Attempts to promote a player passed through arguments as leader.
+     *
+     * @param sender The sender of the command.
+     * @param args The arguments given to the command.
+     */
+    private void promoteSubcommand (CommandSender sender, String[] args) {
+        RpgPlayer rpgPlayer = PlayerManager.getPlayer(sender.getName());
+        assert rpgPlayer != null;
+        Party party = rpgPlayer.getParty();
+        if (party == null) send(sender, ChatColor.RED + "You do not belong to a party and thus cannot promote anyone.");
+        else if (!party.getLeader().equals(sender)) send(sender, ChatColor.RED + "You are not the party leader and thus cannot designate a new leader.");
+        else if (args.length < 2) send(sender, ChatColor.RED + "You must select someone to promote.");
+        else {
+            Player p = Bukkit.getPlayer(args[1]);
+            if (p == null) send(sender, ChatColor.RED + "Player not found!");
+            else if (!party.hasMember(p)) send(sender, ChatColor.RED + "That player is not currently part of the party!");
+            else {
+                party.promote(p);
+                party.sendAll(prefix + ChatColor.GREEN + args[1] + " has been promoted to leader!");
+            }
         }
     }
 }
