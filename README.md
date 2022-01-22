@@ -1,7 +1,6 @@
 # RPGFramework
 The main framework plugin used for all of Math0898/Sugaku's RPG  plugins.
 
-
 ## Overhauled Damage System 
 We've completely overhauled the vanilla Minecraft damage system in favor of one which gives more room for upward growth 
 and nuance. The new damage system contains 3 physical types along with 6 elemental magic types and 3 higher magic types. 
@@ -35,3 +34,21 @@ This is then scaled down and applied to the character as 50.0 damage.
 
 
 Actual damage is more complicated as all the damage types may be present along with more resistance levels. 
+
+## Parties
+
+RPGFramework adds its own party system into the game of Minecraft. Parties are created when a player first decides to invite 
+another player using `/party invite <username>` and are deleted after the last player leaves or logs off. The maximum capacity
+of a party is 6 unless the leader has the `rpg.parties.maxbypass` permission. Party members have access to their own private 
+chat by using `/party chat`. Leaders have the ability to summon their party members using `/party summon`. 
+
+Planned features for parties include:
+- __Party wide buffing with classes.__
+- __Name color dependent on gear score.__
+- __Prefix dependent on primary class.__
+
+## Permissions
+
+- __rpg__
+  - __rpg.parties__
+    - __rpg.parties.maxbypass__ - _Allows party leaders with this permission to bypass the maximum party size of 6._

@@ -1,11 +1,14 @@
 package io.github.math0898.rpgframework;
 
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
+import io.github.math0898.rpgframework.parties.PartyCommand;
+import io.github.math0898.rpgframework.parties.PartyManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Objects;
 import java.util.logging.Level;
 
 /**
@@ -24,7 +27,7 @@ public final class main extends JavaPlugin implements Listener {
     /**
      * Is holographic displays enabled on the server?
      */
-    public static boolean useHolographicDisplays = false; //todo use holographic displays!!
+    public static boolean useHolographicDisplays = false;
 
     /**
      * This method sends a message to the console and infers the level it should be sent at.
@@ -55,11 +58,16 @@ public final class main extends JavaPlugin implements Listener {
      * Called on enable. Just the normal things such as loading the config, registering listeners, initializing methods.
      */
     @Override
-    public void onEnable() {
+    public void onEnable () {
+        long startTime = System.currentTimeMillis();
         plugin = this;
 
         //Register damage listeners
         Bukkit.getPluginManager().registerEvents(new AdvancedDamageHandler(), this);
+        PartyManager.init();
+        PlayerManager.init();
+        Objects.requireNonNull(Bukkit.getPluginCommand("party")).setExecutor(new PartyCommand());
+        Objects.requireNonNull(Bukkit.getPluginCommand("party")).setTabCompleter(PartyCommand.autocomplete);
 
         //Establish hooks
         useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
@@ -68,14 +76,14 @@ public final class main extends JavaPlugin implements Listener {
             console("This is non fatal error however you will not see damage numbers when you hit mobs.", ChatColor.YELLOW);
         }
 
-        console("Plugin enabled!", ChatColor.GREEN);
+        console("Plugin enabled! " + ChatColor.DARK_GRAY + "Took: " + (System.currentTimeMillis() - startTime) + "ms", ChatColor.GREEN);
     }
 
     /**
      * Not much here either. If something needs to be here it will be.
      */
     @Override
-    public void onDisable() {
+    public void onDisable () {
         // Plugin shutdown logic
     }
 }
