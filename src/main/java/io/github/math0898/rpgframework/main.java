@@ -59,6 +59,7 @@ public final class main extends JavaPlugin implements Listener {
      */
     @Override
     public void onEnable () {
+        long startTime = System.currentTimeMillis();
         plugin = this;
 
         //Register damage listeners
@@ -75,7 +76,7 @@ public final class main extends JavaPlugin implements Listener {
             console("This is non fatal error however you will not see damage numbers when you hit mobs.", ChatColor.YELLOW);
         }
 
-        console("Plugin enabled!", ChatColor.GREEN);
+        console("Plugin enabled! " + ChatColor.DARK_GRAY + "Took: " + (System.currentTimeMillis() - startTime) + "ms", ChatColor.GREEN);
     }
 
     /**

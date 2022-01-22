@@ -88,7 +88,7 @@ public class Party {
      */
     public void removePlayer (Player p) {
         players.remove(p);
-        if (p.equals(getLeader())) promote(getPlayers().get(0));
+        if (p.equals(getLeader()) && getPlayers().size() > 0) promote(getPlayers().get(0));
         if (getPlayers().size() == 0) PartyManager.removeParty(this);
     }
 

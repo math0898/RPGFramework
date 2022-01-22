@@ -190,6 +190,10 @@ public class PartyCommand implements CommandExecutor { // todo could use quite a
         ArrayList<RpgPlayer> invitedPlayers = new ArrayList<>();
         for (int i = 1; i < args.length; i++) invitedPlayers.add(PlayerManager.getPlayer(args[i]));
         for (RpgPlayer p: invitedPlayers)  {
+            if (p == null) {
+                send(rpgPlayer.getBukkitPlayer(), ChatColor.RED + "Could not find one or more players. Are they online?");
+                break;
+            }
             send(p.getBukkitPlayer(), "You have been invited to join " + rpgPlayer.getName() + "'s party.");
             send(rpgPlayer.getBukkitPlayer(), "You have invited " + p.getName() + " to the party.");
             p.setPendingParty(party);
