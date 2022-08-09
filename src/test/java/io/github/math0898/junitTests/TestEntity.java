@@ -9,6 +9,7 @@ import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Pose;
+import org.bukkit.entity.SpawnCategory;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.metadata.MetadataValue;
@@ -19,6 +20,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
@@ -866,6 +868,17 @@ public class TestEntity implements Entity {
      */
     @Override
     public Pose getPose() {
+        return null;
+    }
+
+    /**
+     * Get the category of spawn to which this entity belongs.
+     *
+     * @return the entity´s category spawn
+     */
+    @NotNull
+    @Override
+    public SpawnCategory getSpawnCategory() {
         return null;
     }
 

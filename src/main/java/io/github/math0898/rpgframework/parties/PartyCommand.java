@@ -93,7 +93,6 @@ public class PartyCommand implements CommandExecutor { // todo could use quite a
 
     /**
      * Executes the given command, returning its success.
-     *
      * If false is returned, then the "usage" plugin.yml entry for this command (if defined) will be sent to the player.
      *
      * @param sender Source of the command.

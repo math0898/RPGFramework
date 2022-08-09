@@ -70,7 +70,8 @@ public class RpgItem extends ItemStack {
         if (meta == null) return null;
         String name = json.getString("name");
         if (name != null) meta.setDisplayName(name);
-        meta.setLore(generateLore(json.getString("lore")));
+        meta.setLore(generateLore(json.getString("lore"))); // todo json.get will throw exception if not found... not null.
+        meta.setUnbreakable(json.getBoolean("unbreakable"));
         return meta;
     }
 
