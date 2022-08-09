@@ -35,7 +35,7 @@ public class GiveCommand implements CommandExecutor {
          */
         @Override
         public List<String> onTabComplete (@NotNull CommandSender sender, Command command, @NotNull String alias, String[] args) {
-            if (command.getName().equalsIgnoreCase("party")) {
+            if (command.getName().equalsIgnoreCase("rpg-give")) {
                 ArrayList<String> list = new ArrayList<>();
                 if (args.length == 1) {
                     List<String> options = itemManager.getItemNames();

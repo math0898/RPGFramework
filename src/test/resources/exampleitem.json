@@ -1,7 +1,7 @@
 {
-  "name": "This Item Has a Really Cool Name",
+  "name": "&7&lThis Item Has a Really Cool Name",
   "internal_name": "simpleCamlCaseName",
-  "lore": "Lore should be able to be really long and then automatically indented at the correct position based on a configuration option.",
+  "lore": "&7Lore should be able to be really long and then automatically indented at the correct position based on a configuration option.",
   "material": "DIAMOND_HELMET",
   "custom_model_data": "0",
   "unbreakable": "true",

@@ -1,6 +1,7 @@
 package io.github.math0898.rpgframework.items;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.json.JSONObject;
@@ -39,6 +40,7 @@ public class RpgItem extends ItemStack {
      * @param file The file to read when creating this item.
      */
     public RpgItem (File file) throws IOException { // todo MetadataValue <-- special effects, recipe?
+        super(Material.DIRT, 1);
         StringBuilder json = new StringBuilder();
         Scanner s = new Scanner(file);
         while (s.hasNextLine()) json.append(s.nextLine());
@@ -69,7 +71,7 @@ public class RpgItem extends ItemStack {
         if (meta == null) Bukkit.getItemFactory().getItemMeta(getType());
         if (meta == null) return null;
         String name = json.getString("name");
-        if (name != null) meta.setDisplayName(name);
+        if (name != null) meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         meta.setLore(generateLore(json.getString("lore"))); // todo json.get will throw exception if not found... not null.
         meta.setUnbreakable(json.getBoolean("unbreakable"));
         return meta;
@@ -84,6 +86,12 @@ public class RpgItem extends ItemStack {
     public List<String> generateLore (String sentence) {
         if (sentence == null) return null;
         String current = sentence;
+        String prefix = "";
+        for (int i = 0; i < current.length(); i += 2) {
+            if (current.charAt(i) == '&') prefix = current.substring(0, i + 2);
+            else break;
+        }
+        System.out.println(prefix);
         List<String> lore = new ArrayList<>();
         while (current.length() > LINE_CHARACTER_LIMIT) { // indent character amount
             int splice = LINE_CHARACTER_LIMIT - 1;
@@ -91,10 +99,10 @@ public class RpgItem extends ItemStack {
                 splice = i;
                 break;
             }
-            lore.add(current.substring(0, splice));
+            lore.add(ChatColor.translateAlternateColorCodes('&',prefix + current.substring(0, splice)));
             current = current.substring(splice);
         }
-        lore.add(current);
+        lore.add(ChatColor.translateAlternateColorCodes('&',prefix + current));
         return lore;
     }
 }
