@@ -3,8 +3,10 @@ package io.github.math0898.rpgframework.items;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,10 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class RpgItem extends ItemStack {
 
@@ -71,7 +70,7 @@ public class RpgItem extends ItemStack {
      * @param json The JSON object to parse and use to create the ItemMeta.
      * @return The generated ItemMeta.
      */
-    public ItemMeta generateMeta (JSONObject json) { // todo enchant, attribute, ItemFlag, customModelData, unbreakable system
+    public ItemMeta generateMeta (JSONObject json) { // todo ItemFlag, customModelData, unbreakable system
         ItemMeta meta = getItemMeta();
         if (meta == null) Bukkit.getItemFactory().getItemMeta(getType());
         if (meta == null) return null;
@@ -79,8 +78,32 @@ public class RpgItem extends ItemStack {
         if (name != null) meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         meta.setLore(generateLore(json));
         generateEnchants(json, meta);
+        generateAttributes(json, meta);
         meta.setUnbreakable(json.getBoolean("unbreakable"));
         return meta;
+    }
+
+    /**
+     * Adds the listed attributes to the given ItemMeta.
+     *
+     * @param json The JSON object to parse and use to determine attributes.
+     * @param meta The ItemMeta to attach the attributes to.
+     */
+    public void generateAttributes (JSONObject json, ItemMeta meta) {
+        JSONArray attributes;
+        for (EquipmentSlot e : EquipmentSlot.values()) meta.removeAttributeModifier(e);
+        try { attributes = json.getJSONArray("attributes");
+        } catch (JSONException exception) { return; }
+        for (int i = 0; i < attributes.length(); i++) {
+            JSONObject a = attributes.getJSONObject(i);
+            JSONObject mod = a.getJSONObject("modifier");
+            try { meta.addAttributeModifier(Attribute.valueOf(a.getString("attribute")),
+                    new AttributeModifier(UUID.nameUUIDFromBytes(mod.getString("name").getBytes()),
+                            mod.getString("name"), mod.getDouble("amount"),
+                            AttributeModifier.Operation.valueOf(mod.getString("operation")),
+                            EquipmentSlot.valueOf(mod.getString("slot"))));
+            } catch (JSONException ignored) { }
+        }
     }
 
     /**
@@ -129,7 +152,6 @@ public class RpgItem extends ItemStack {
             if (current.charAt(i) == '&') prefix = current.substring(0, i + 2);
             else break;
         }
-        System.out.println(prefix);
         List<String> lore = new ArrayList<>();
         while (current.length() > LINE_CHARACTER_LIMIT) { // indent character amount
             int splice = LINE_CHARACTER_LIMIT - 1;

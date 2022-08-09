@@ -24,7 +24,8 @@
       "modifier": {
         "name": "armoredBoyHelmet",
         "amount": "23.0",
-        "operation": "ADD_NUMBER"
+        "operation": "ADD_NUMBER",
+        "slot": "HEAD"
       }
     },
     {
@@ -32,7 +33,8 @@
       "modifier": {
         "name": "healthyBoyHelmet",
         "amount": "3.0",
-        "operation": "ADD_SCALAR"
+        "operation": "ADD_SCALAR",
+        "slot": "HEAD"
       }
     }
   ]
