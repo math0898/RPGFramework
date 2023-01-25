@@ -1,10 +1,13 @@
 package io.github.math0898.rpgframework.particles;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
 
 import java.util.Random;
+
+import static io.github.math0898.rpgframework.main.plugin;
 
 /**
  * The SubParticle is an individual particle that is spawned when a more advanced effect is played. This class notably
@@ -65,7 +68,7 @@ public class SubParticle {
      * @param loc The location to spawn this particle at.
      */
     public void spawnParticle (Location loc) {
-        World w = loc.getWorld();
+        final World w = loc.getWorld();
         if (w == null) return;
 
         Random rand = new Random();
@@ -77,11 +80,11 @@ public class SubParticle {
         final double Z_RAND_OFFSET = 1.0;
         final int TIME_RAND_OFFSET = 20;
 
-        double x = loc.getX() + (offsetX == null ? rand.nextDouble() * X_Y_RAND_OFFSET : offsetX);
-        double y = loc.getY() + (offsetY == null ? rand.nextDouble() * X_Y_RAND_OFFSET : offsetY);
-        double z = loc.getZ() + (offsetZ == null ? rand.nextDouble() * Z_RAND_OFFSET : offsetZ);
-        int dt = delay == null ? rand.nextInt(TIME_RAND_OFFSET + 1) : delay;
+        final double x = loc.getX() + (offsetX == null ? rand.nextDouble() * X_Y_RAND_OFFSET : offsetX);
+        final double y = loc.getY() + (offsetY == null ? rand.nextDouble() * X_Y_RAND_OFFSET : offsetY);
+        final double z = loc.getZ() + (offsetZ == null ? rand.nextDouble() * Z_RAND_OFFSET : offsetZ);
+        final int dt = delay == null ? rand.nextInt(TIME_RAND_OFFSET + 1) : delay;
 
-        w.spawnParticle(type, x, y, z, 1);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> w.spawnParticle(type, x, y, z, 1), dt);
     }
 }
