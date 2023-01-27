@@ -1,6 +1,7 @@
 package io.github.math0898.rpgframework;
 
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
+import io.github.math0898.rpgframework.particles.ParticleHandler;
 import io.github.math0898.rpgframework.parties.PartyCommand;
 import io.github.math0898.rpgframework.parties.PartyManager;
 import org.bukkit.Bukkit;
@@ -62,8 +63,10 @@ public final class main extends JavaPlugin implements Listener {
         long startTime = System.currentTimeMillis();
         plugin = this;
 
-        //Register damage listeners
+        //Register listeners
         Bukkit.getPluginManager().registerEvents(new AdvancedDamageHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new ParticleHandler(), this);
+
         PartyManager.init();
         PlayerManager.init();
         Objects.requireNonNull(Bukkit.getPluginCommand("party")).setExecutor(new PartyCommand());
