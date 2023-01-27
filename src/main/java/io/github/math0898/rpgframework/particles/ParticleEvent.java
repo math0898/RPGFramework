@@ -1,5 +1,7 @@
 package io.github.math0898.rpgframework.particles;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -26,11 +28,13 @@ public class ParticleEvent extends Event implements Cancellable {
     /**
      * The String name of the particle to spawn.
      */
+    @Setter @Getter
     private String particle;
 
     /**
      * The Location to spawn the particle at.
      */
+    @Setter @Getter
     private Location locale;
 
     /**
@@ -43,10 +47,6 @@ public class ParticleEvent extends Event implements Cancellable {
         this.particle = particle;
         this.locale = locale;
     }
-
-    /**
-     *
-     */
 
     /**
      * Gets the cancellation state of this event. A cancelled event will not
