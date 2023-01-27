@@ -40,7 +40,6 @@ public class AdvancedParticle {
      */
     public void spawnParticle (Location loc) {
         final Location locale = loc;
-        if (locale.getWorld() == null) return;
         particles.forEach((p) -> p.spawnParticle(locale));
     }
 }
