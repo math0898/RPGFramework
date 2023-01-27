@@ -1,11 +1,14 @@
 package io.github.math0898.rpgframework.particles;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static io.github.math0898.rpgframework.main.console;
 
 /**
  * The ParticleManager is used to help manage and wrangle all the different particle types that may be present at
@@ -33,7 +36,7 @@ public class ParticleManager {
         try {
             loadParticles();
         } catch (IOException exception) {
-
+            console("Failed to load particles: " + exception.getMessage(), ChatColor.RED);
         }
     }
 
@@ -56,7 +59,16 @@ public class ParticleManager {
         File[] candidates = dir.listFiles();
         if (candidates == null) return;
         for (File f : candidates) {
-
+            ParticleBuilder builder = new ParticleBuilder(f);
+            String name = f.getName().replace(".json", "");
+            AdvancedParticle particle;
+            try {
+                particle = builder.build();
+            } catch (IOException exception) {
+                console("Failed to load " + name + " particle: " + exception.getMessage(), ChatColor.RED);
+                continue;
+            }
+            if (particle != null) particles.put(name, particle);
         }
     }
 
