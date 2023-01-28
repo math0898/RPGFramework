@@ -1,6 +1,8 @@
 package io.github.math0898.rpgframework;
 
 import io.github.math0898.rpgframework.parties.Party;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -15,6 +17,24 @@ import java.util.UUID;
 import java.util.Objects;
 
 public class RpgPlayer { // todo Needs updating for the new framework. Copied from RPG 1.0.
+
+    /**
+     * This player's preferred on critical hit particle.
+     */
+    @Setter @Getter
+    private String onCriticalHitParticle;
+
+    /**
+     * This player's preferred on hit particle.
+     */
+    @Setter @Getter
+    private String onHitParticle;
+
+    /**
+     * This player's preferred on kill particle.
+     */
+    @Setter @Getter
+    private String onKillParticle;
 
     /**
      * Default constructor for an RpgPlayer construct just requiring an uuid.
