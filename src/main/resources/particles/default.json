@@ -1,0 +1,46 @@
+{
+  "sub": [
+    {
+      "dx": "0.01",
+      "dy": "0.5",
+      "dz": "0",
+      "type": "CRIT_MAGIC",
+      "delay": "0"
+    },
+    {
+      "dx": "0.01",
+      "dy": "0.5",
+      "dz": "0",
+      "type": "CRIT_MAGIC",
+      "delay": "1"
+    },
+    {
+      "dx": "0.01",
+      "dy": "0.5",
+      "dz": "0",
+      "type": "CRIT_MAGIC",
+      "delay": "2"
+    },
+    {
+      "dx": "0.01",
+      "dy": "0.5",
+      "dz": "0",
+      "type": "CRIT_MAGIC",
+      "delay": "3"
+    },
+    {
+      "dx": "0.01",
+      "dy": "0.5",
+      "dz": "0",
+      "type": "CRIT_MAGIC",
+      "delay": "4"
+    },
+    {
+      "dx": "0.01",
+      "dy": "0.5",
+      "dz": "0",
+      "type": "CRIT_MAGIC",
+      "delay": "5"
+    }
+  ]
+}
