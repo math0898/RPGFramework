@@ -1,6 +1,7 @@
 package io.github.math0898.rpgframework;
 
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
+import io.github.math0898.rpgframework.particles.CustomParticles;
 import io.github.math0898.rpgframework.particles.ParticleHandler;
 import io.github.math0898.rpgframework.parties.PartyCommand;
 import io.github.math0898.rpgframework.parties.PartyManager;
@@ -66,6 +67,7 @@ public final class main extends JavaPlugin implements Listener {
         //Register listeners
         Bukkit.getPluginManager().registerEvents(new AdvancedDamageHandler(), this);
         Bukkit.getPluginManager().registerEvents(new ParticleHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new CustomParticles(), this);
 
         PartyManager.init();
         PlayerManager.init();
