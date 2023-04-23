@@ -1,9 +1,6 @@
 package io.github.math0898.junitTests;
 
-import org.bukkit.EntityEffect;
-import org.bukkit.Location;
-import org.bukkit.Server;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.entity.Entity;
@@ -623,6 +620,24 @@ public class TestEntity implements Entity {
     @Override
     public EntityType getType() {
         return null;
+    }
+
+    @NotNull
+    @Override
+    public Sound getSwimSound () {
+        return Sound.ENTITY_FISH_SWIM;
+    }
+
+    @NotNull
+    @Override
+    public Sound getSwimSplashSound () {
+        return Sound.ENTITY_FISH_SWIM;
+    }
+
+    @NotNull
+    @Override
+    public Sound getSwimHighSpeedSplashSound () {
+        return Sound.ENTITY_FISH_SWIM;
     }
 
     /**
