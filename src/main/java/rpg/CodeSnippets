@@ -1,0 +1,34 @@
+
+This snippet is for when an item or system is only for beta access.
+
+        if (!p.hasPermission("rpg.beta")) return; //Currently testing
+        main.beta(p);
+
+                set {_assassin item} to a ghast tear named "&8[&6Assassin&8]"
+                set the 1st line of lore of {_assassin item} to "&7Strike your foes with a &3poisoned blade"
+                set the 2nd line of lore of {_assassin item} to "&7before fading into the shadows with your"
+                set the 3rd line of lore of {_assassin item} to "&7mastery of &3stealth&7. Even cowering behind"
+                set the 4th line of lore of {_assassin item} to "&7a shield cannot save your enemies."
+
+                set {_bard item} to a note block named "&8[&6Bard&8]"
+                set the 1st line of lore of {_bard item} to "&7The flexability of bards as fighters"
+                set the 2nd line of lore of {_bard item} to "&7cannot be understated as they can use"
+                set the 3rd line of lore of {_bard item} to "&7any equipment effectively whilst buffing"
+                set the 4th line of lore of {_bard item} to "&7themselves and their allies with &3hym&7."
+
+                set {_berserker item} to rotten flesh named "&8[&6Berserker&8]"
+                set the 1st line of lore of {_berserker item} to "&7Bersekers are fearsome foes that deal"
+                set the 2nd line of lore of {_berserker item} to "&7staggering damage with axes. Lost in the"
+                set the 3rd line of lore of {_berserker item} to "&7battle berserkers also take less damage then"
+                set the 4th line of lore of {_berserker item} to "&7other classes."
+
+                set {_paladin item} to golden shovel named "&8[&6Paladin&8]"
+                set the 1st line of lore of {_paladin item} to "&7Paladins are pure warriors who can when needed"
+                set the 2nd line of lore of {_paladin item} to "&3purify&7 themselves and their allies. Healing"
+                set the 3rd line of lore of {_paladin item} to "&7magic also comes fairly naturally to paladins"
+                set the 4th line of lore of {_paladin item} to "&7resulting in higher max health and &3regeneration&7."
+
+                set {_pyromancer item} to blaze powder named "&8[&6Pyromancer&8]"
+                set the 1st line of lore of {_pyromancer item} to "&7Burn your enemies with the power of the"
+                set the 2nd line of lore of {_pyromancer item} to "&7pheonix and call upon the &3renewal&7 powers"
+                set the 3rd line of lore of {_pyromancer item} to "&7to heal yourself and resurect from the grave."
