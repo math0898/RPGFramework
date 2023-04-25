@@ -1,4 +1,4 @@
-package sugaku.rpg.framework.menus;
+package io.github.math0898.rpgframework.systems;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,11 +17,11 @@ import sugaku.rpg.framework.items.ItemsManager;
 
 import java.util.*;
 
-import static sugaku.rpg.main.plugin;
+import static io.github.math0898.rpgframework.main.plugin;
 import static org.bukkit.enchantments.Enchantment.*;
 import static org.bukkit.Material.*;
 
-public class ForgeManager {
+public class Forge {
 
     private static final ItemStack forgeIndicator = ItemsManager.createItem(ANVIL, 1,
             ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Forge", new String[]{
@@ -45,7 +45,7 @@ public class ForgeManager {
     }
 
     public static void forgeMenu (Player p) {
-        Inventory i = plugin.getServer().createInventory(p.getPlayer(), 54, title);
+        Inventory i = Bukkit.getServer().createInventory(p.getPlayer(), 54, title);
         buildForgeMenu(i);
         p.openInventory(i);
     }
