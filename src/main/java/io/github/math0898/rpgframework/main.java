@@ -1,8 +1,11 @@
 package io.github.math0898.rpgframework;
 
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
+import io.github.math0898.rpgframework.items.GiveCommand;
+import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.rpgframework.parties.PartyCommand;
 import io.github.math0898.rpgframework.parties.PartyManager;
+import io.github.math0898.rpgframework.systems.GodEventListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
@@ -28,6 +31,11 @@ public final class main extends JavaPlugin implements Listener {
      * Is holographic displays enabled on the server?
      */
     public static boolean useHolographicDisplays = false;
+
+    /**
+     * The ItemManager being used with this RPGFramework instance.
+     */
+    public static ItemManager itemManager;
 
     /**
      * This method sends a message to the console and infers the level it should be sent at.
@@ -64,6 +72,7 @@ public final class main extends JavaPlugin implements Listener {
 
         //Register damage listeners
         Bukkit.getPluginManager().registerEvents(new AdvancedDamageHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new GodEventListener(), this); // todo remove me!
         PartyManager.init();
         PlayerManager.init();
         Objects.requireNonNull(Bukkit.getPluginCommand("party")).setExecutor(new PartyCommand());
@@ -75,6 +84,10 @@ public final class main extends JavaPlugin implements Listener {
             console("Holographic displays was not found.", ChatColor.YELLOW);
             console("This is non fatal error however you will not see damage numbers when you hit mobs.", ChatColor.YELLOW);
         }
+
+        itemManager = new ItemManager();
+        Objects.requireNonNull(Bukkit.getPluginCommand("rpg-give")).setExecutor(new GiveCommand());
+        Objects.requireNonNull(Bukkit.getPluginCommand("rpg-give")).setTabCompleter(GiveCommand.autocomplete);
 
         console("Plugin enabled! " + ChatColor.DARK_GRAY + "Took: " + (System.currentTimeMillis() - startTime) + "ms", ChatColor.GREEN);
     }

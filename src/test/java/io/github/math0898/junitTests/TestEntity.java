@@ -1,14 +1,12 @@
 package io.github.math0898.junitTests;
 
-import org.bukkit.EntityEffect;
-import org.bukkit.Location;
-import org.bukkit.Server;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Pose;
+import org.bukkit.entity.SpawnCategory;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.metadata.MetadataValue;
@@ -19,6 +17,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
@@ -623,6 +622,24 @@ public class TestEntity implements Entity {
         return null;
     }
 
+    @NotNull
+    @Override
+    public Sound getSwimSound () {
+        return Sound.ENTITY_FISH_SWIM;
+    }
+
+    @NotNull
+    @Override
+    public Sound getSwimSplashSound () {
+        return Sound.ENTITY_FISH_SWIM;
+    }
+
+    @NotNull
+    @Override
+    public Sound getSwimHighSpeedSplashSound () {
+        return Sound.ENTITY_FISH_SWIM;
+    }
+
     /**
      * Returns whether this entity is inside a vehicle.
      *
@@ -866,6 +883,17 @@ public class TestEntity implements Entity {
      */
     @Override
     public Pose getPose() {
+        return null;
+    }
+
+    /**
+     * Get the category of spawn to which this entity belongs.
+     *
+     * @return the entity´s category spawn
+     */
+    @NotNull
+    @Override
+    public SpawnCategory getSpawnCategory() {
         return null;
     }
 
