@@ -2,12 +2,16 @@ package io.github.math0898.rpgframework.enemies.bosses;
 
 import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.rpgframework.enemies.AI;
+import io.github.math0898.rpgframework.enemies.Ability;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Mob;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -68,8 +72,23 @@ public class Boss {
      */
     private final AI ai;
 
+    /**
+     * A map of equipment for this boss.
+     */
+    private final Map<String, Material> items;
+
+    /**
+     * The potential drops for this boss along with drop rates.
+     */
+    private final Map<String, Double> bossDrops;
+
+    /**
+     * Abilities which this boss has.
+     */
+    private final ArrayList<Ability> abilities; // todo: Constructor taking configuration section in constructor.
+
     /*
-     * TODO: equipment, AI, drops, abilities
+     * TODO: abilities
      */
 
     /**
@@ -89,6 +108,18 @@ public class Boss {
         messages = (Map<String, String>) config.getMapList("messages");
         if (config.contains("AI")) ai = null; // todo
         else ai = null;
+        items = new HashMap<>();
+        for (String s : new String[]{ "helmet", "chestplate", "leggings", "boots", "main-hand", "off-hand" }) {
+            String m = config.getString(s);
+            if (m == null) continue;
+            items.put(s, Material.getMaterial(m));
+        }
+        ConfigurationSection drops = config.getConfigurationSection("drops");
+        bossDrops = new HashMap<>();
+        if (drops != null)
+            for (String s : drops.getKeys(false))
+                bossDrops.put(s, drops.getDouble(s));
+
     }
 
     /**
