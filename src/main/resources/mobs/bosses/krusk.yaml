@@ -1,11 +1,12 @@
 krusk:
   name: "Krusk, Undead General"
   type: ZOMBIE
-  age: adult
+  adult: true
   rarity: UNCOMMON
   health: 250
   armor: 0
-  dmg: 10
+  damage: 10
+  spawn: krusk-spawn
   messages:
     on-potion-attacker: "§aKrusk's §7undead aura weakens your attacks."
     on-60-threshold: "§aKrusk §8> §7HEED MY CALL MEN!! LEND ME YOUR AID IN THIS FIGHT!"

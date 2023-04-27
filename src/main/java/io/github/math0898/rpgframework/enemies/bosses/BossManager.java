@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static io.github.math0898.rpgframework.main.console;
 import static io.github.math0898.rpgframework.main.plugin;
@@ -53,7 +54,7 @@ public class BossManager implements Listener {
                 YamlConfiguration yaml = new YamlConfiguration();
                 yaml.load(f);
                 for (String k : yaml.getKeys(false)) {
-                    bosses.put(k, new Boss(yaml.getConfigurationSection(k)));
+                    bosses.put(k, new Boss(Objects.requireNonNull(yaml.getConfigurationSection(k))));
                 }
             } catch (InvalidConfigurationException | IOException e) {
                 console(e.getMessage(), ChatColor.RED);
