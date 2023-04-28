@@ -2,6 +2,7 @@ package sugaku.rpg.framework;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.plugin.java.JavaPlugin;
 import sugaku.rpg.commands.*;
 import sugaku.rpg.main;
 
@@ -29,12 +30,12 @@ public class CommandManager {
     /**
      * Sets up commands for use. Called on enabled.
      */
-    public static void setup(main m){
+    public static void setup(JavaPlugin m){
         console("Setting up command executors.");
         Objects.requireNonNull(m.getCommand("irpg")).setExecutor(new Commandirpg("irpg"));
         Objects.requireNonNull(m.getCommand("reputation")).setExecutor(new CommandReputation("reputation"));
         Objects.requireNonNull(m.getCommand("summonrpg")).setExecutor(new CommandSummonBoss("summonrpg"));
-        Objects.requireNonNull(m.getCommand("party")).setExecutor(new CommandParty("party"));
+//        Objects.requireNonNull(m.getCommand("party")).setExecutor(new CommandParty("party"));
         Objects.requireNonNull(m.getCommand("classes")).setExecutor(new CommandClasses("classes"));
         console("Command executors setup.", ChatColor.GREEN);
 
@@ -42,7 +43,7 @@ public class CommandManager {
         Objects.requireNonNull(m.getCommand("irpg")).setTabCompleter(new Commandirpg("irpg").autocomplete);
         Objects.requireNonNull(m.getCommand("reputation")).setTabCompleter(new CommandReputation("reputation").autocomplete);
         Objects.requireNonNull(m.getCommand("summonrpg")).setTabCompleter(new CommandSummonBoss("summonrpg").autocomplete);
-        Objects.requireNonNull(m.getCommand("party")).setTabCompleter(new CommandParty("party").autocomplete);
+//        Objects.requireNonNull(m.getCommand("party")).setTabCompleter(new CommandParty("party").autocomplete);
         Objects.requireNonNull(m.getCommand("classes")).setTabCompleter(new CommandClasses("classes").autocomplete);
         console("Tab completion setup.", ChatColor.GREEN);
     }

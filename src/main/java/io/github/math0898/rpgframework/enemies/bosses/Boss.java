@@ -2,18 +2,23 @@ package io.github.math0898.rpgframework.enemies.bosses;
 
 import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.rpgframework.enemies.AI;
-import io.github.math0898.rpgframework.enemies.Ability;
+import io.github.math0898.rpgframework.enemies.abilities.Ability;
+import io.github.math0898.rpgframework.enemies.abilities.UndeadAura;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Ageable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Mob;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+
+import static io.github.math0898.rpgframework.main.plugin;
 
 /**
  * The Boss class which describes generic bosses and their abilities.
@@ -119,7 +124,8 @@ public class Boss {
         if (drops != null)
             for (String s : drops.getKeys(false))
                 bossDrops.put(s, drops.getDouble(s));
-
+        abilities = new ArrayList<>(); // todo actually implement.
+        Bukkit.getPluginManager().registerEvents(new UndeadAura(), plugin);
     }
 
     /**
@@ -132,5 +138,25 @@ public class Boss {
 
         e.setCustomNameVisible(true);
         e.setCustomName(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + Rarity.toColor(rarity) + name);
+        if (items.get("helmet") != null) Objects.requireNonNull(e.getEquipment()).setHelmet(new ItemStack(items.get("helmet"))); // TODO: Armor
+        if (items.get("chestplate") != null) Objects.requireNonNull(e.getEquipment()).setChestplate(new ItemStack(items.get("chestplate")));
+        if (items.get("leggings") != null) Objects.requireNonNull(e.getEquipment()).setLeggings(new ItemStack(items.get("leggings")));
+        if (items.get("boots") != null) Objects.requireNonNull(e.getEquipment()).setBoots(new ItemStack(items.get("boots")));
+        if (items.get("main-hand") != null) Objects.requireNonNull(e.getEquipment()).setItemInMainHand(sugaku.rpg.framework.items.ItemsManager.createItem(items.get("main-hand"), 1, "", new String[]{}, new AttributeModifier[]{ new AttributeModifier(new UUID(0l, 1l), "generic.dmg", damage, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND)})); // TODO: Refactor
+        if (items.get("off-hand") != null) Objects.requireNonNull(e.getEquipment()).setItemInOffHand(new ItemStack(items.get("off-hand")));
+
+        e.setHealth(health);
+
+        e.setLootTable(null);
+        if (e.getEquipment() != null) {
+            e.getEquipment().setHelmetDropChance(-1);
+            e.getEquipment().setChestplateDropChance(-1);
+            e.getEquipment().setLeggingsDropChance(-1);
+            e.getEquipment().setBootsDropChance(-1);
+            e.getEquipment().setItemInMainHandDropChance(-1);
+            e.getEquipment().setItemInOffHandDropChance(-1);
+        }
+        e.setCanPickupItems(false);
+        if (adult != null) ((Ageable) e).setAdult();
     }
 }

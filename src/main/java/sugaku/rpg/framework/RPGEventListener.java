@@ -21,7 +21,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import sugaku.rpg.framework.menus.ClassesManager;
-import sugaku.rpg.framework.menus.ForgeManager;
+//import sugaku.rpg.framework.menus.ForgeManager;
 import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.mobs.BossRituals;
 import sugaku.rpg.framework.mobs.MobManager;
@@ -33,7 +33,7 @@ import sugaku.rpg.mobs.teir1.krusk.KruskMinion;
 
 import java.util.Objects;
 
-import static sugaku.rpg.framework.menus.ForgeManager.forgeClose;
+//import static sugaku.rpg.framework.menus.ForgeManager.forgeClose;
 import static sugaku.rpg.framework.items.ItemsManager.updateArmor;
 import static sugaku.rpg.framework.items.ItemsManager.updateEffects;
 
@@ -52,7 +52,7 @@ public class RPGEventListener implements Listener {
 
         //If the player clicked on an armor slot we should update special effects
         if (e.getSlotType() == InventoryType.SlotType.ARMOR) Bukkit.getServer().getScheduler().runTask(main.plugin, () -> updateEffects(Bukkit.getPlayer(e.getWhoClicked().getName())));
-        else if (open.getTitle().equals(ForgeManager.title)) ForgeManager.forgeClicked(e);
+//        else if (open.getTitle().equals(ForgeManager.title)) ForgeManager.forgeClicked(e);
         else if (open.getTitle().startsWith(ClassesManager.title)) ClassesManager.classClicked(e);
     }
 
@@ -136,16 +136,16 @@ public class RPGEventListener implements Listener {
 
         Objects.requireNonNull(PlayerManager.getPlayer(event.getPlayer().getUniqueId())).onInteract(event);
 
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && Objects.requireNonNull(event.getClickedBlock()).getType() == Material.ANVIL) {
+//        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && Objects.requireNonNull(event.getClickedBlock()).getType() == Material.ANVIL) {
+//
+//            Block blockClicked = event.getClickedBlock();
+//            Player player = event.getPlayer();
 
-            Block blockClicked = event.getClickedBlock();
-            Player player = event.getPlayer();
-
-            if (blockClicked.getWorld().getBlockAt(blockClicked.getX(), blockClicked.getY() - 1, blockClicked.getZ()).getType() == Material.NETHERITE_BLOCK) {
-                event.setCancelled(true);
-                ForgeManager.forgeMenu(player);
-            }
-        }
+//            if (blockClicked.getWorld().getBlockAt(blockClicked.getX(), blockClicked.getY() - 1, blockClicked.getZ()).getType() == Material.NETHERITE_BLOCK) {
+//                event.setCancelled(true);
+//                ForgeManager.forgeMenu(player);
+//            }
+//        }
     }
 
     /**
@@ -179,7 +179,7 @@ public class RPGEventListener implements Listener {
      */
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        if (event.getPlayer().getOpenInventory().getTitle().equals(ForgeManager.title)) forgeClose(event);
+//        if (event.getPlayer().getOpenInventory().getTitle().equals(ForgeManager.title)) forgeClose(event);
     }
 
     /**

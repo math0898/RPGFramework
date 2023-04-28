@@ -1,17 +1,23 @@
 package io.github.math0898.rpgframework.enemies.bosses;
 
-import io.github.math0898.rpgframework.enemies.CustomMob;
-import io.github.math0898.rpgframework.enemies.LegacyRarity;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import sugaku.rpg.framework.items.Rarity;
+import sugaku.rpg.mobs.CustomMob;
+import sugaku.rpg.mobs.teir1.krusk.KruskMinion;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
@@ -19,6 +25,8 @@ import java.util.UUID;
 import static org.bukkit.Material.*;
 import static org.bukkit.attribute.AttributeModifier.Operation.ADD_NUMBER;
 import static org.bukkit.entity.EntityType.ZOMBIE;
+import static sugaku.rpg.framework.items.ItemsManager.*;
+import static sugaku.rpg.framework.mobs.MobManager.drop;
 
 public class Krusk extends CustomMob {
 
@@ -31,13 +39,13 @@ public class Krusk extends CustomMob {
     /**
      * A bare bones constructor not intended for spawning.
      */
-    public Krusk() { super(name, ZOMBIE, LegacyRarity.UNCOMMON, 250); }
+    public Krusk() { super(name, ZOMBIE, Rarity.UNCOMMON, 250); }
 
     /**
      * A constructor for Krusk the Boss.
      */
     public Krusk(Location l) {
-        super(name, ZOMBIE, LegacyRarity.UNCOMMON, 250);
+        super(name, ZOMBIE, Rarity.UNCOMMON, 250);
         init();
         setArmor(this.helm, this.chestplate, this.leggings, this.boots);
         setHand(getWeapon());

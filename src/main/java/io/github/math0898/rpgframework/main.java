@@ -89,6 +89,8 @@ public final class main extends JavaPlugin implements Listener {
         Objects.requireNonNull(Bukkit.getPluginCommand("rpg-give")).setExecutor(new GiveCommand());
         Objects.requireNonNull(Bukkit.getPluginCommand("rpg-give")).setTabCompleter(GiveCommand.autocomplete);
 
+        sugaku.rpg.main.onEnable();
+
         console("Plugin enabled! " + ChatColor.DARK_GRAY + "Took: " + (System.currentTimeMillis() - startTime) + "ms", ChatColor.GREEN);
     }
 
