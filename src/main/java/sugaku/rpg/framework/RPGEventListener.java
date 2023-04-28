@@ -108,7 +108,7 @@ public class RPGEventListener implements Listener {
         assert m.getCustomName() != null;
 
         try {
-            if (m.getCustomName().equals(new KruskBoss().getCustomName())) KruskBoss.handleDrops(e);
+            if (m.getCustomName().contains("Krusk, Undead General")) KruskBoss.handleDrops(e);
             else if (m.getCustomName().contains(", Underling of Krusk")) KruskMinion.handleDrops(e);
         } catch (NullPointerException exception) {
             //do NOTHING!
