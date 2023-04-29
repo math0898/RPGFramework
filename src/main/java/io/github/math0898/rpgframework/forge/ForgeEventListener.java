@@ -30,7 +30,7 @@ public class ForgeEventListener implements Listener {
         Inventory clicked = event.getClickedInventory();
         if (clicked == null) return;
 
-        ForgeMainMenu.forgeClicked(event);
+        ForgeManager.getInstance().onClick(event);
     }
 
     /**
@@ -52,7 +52,7 @@ public class ForgeEventListener implements Listener {
         if (base.getType() != Material.NETHERITE_BLOCK) return;
 
         event.setCancelled(true);
-        ForgeMainMenu.forgeMenu(event.getPlayer());
+        ForgeManager.getInstance().openMenu(event.getPlayer());
     }
 
 
@@ -63,7 +63,7 @@ public class ForgeEventListener implements Listener {
      */
     @EventHandler
     public void onInventoryClose (InventoryCloseEvent event) {
-        if (isForgeMenu(event)) ForgeMainMenu.forgeClose(event);
+        if (isForgeMenu(event)) ForgeManager.getInstance().onClose(event);
     }
 
     /**
@@ -73,6 +73,6 @@ public class ForgeEventListener implements Listener {
      * @return True if the given inventory event involves the forge.
      */
     public boolean isForgeMenu (InventoryEvent event) {
-        return event.getView().getTitle().equals(ForgeMainMenu.title);
+        return event.getView().getTitle().startsWith(ForgeMenu.FORGE_MENUS_PREFIX);
     }
 }

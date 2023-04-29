@@ -1,5 +1,6 @@
 package io.github.math0898.rpgframework.forge;
 
+import io.github.math0898.rpgframework.items.ItemUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -21,22 +22,30 @@ import static io.github.math0898.rpgframework.main.plugin;
 import static org.bukkit.enchantments.Enchantment.*;
 import static org.bukkit.Material.*;
 
-public class ForgeMainMenu {
+public class HoningMenu extends ForgeMenu {
 
-    private static final ItemStack forgeIndicator = ItemsManager.createItem(ANVIL, 1,
-            ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Forge", new String[]{
-                    ChatColor.GRAY + "Welcome to the forge!",
+    private final ItemStack forgeIndicator = ItemUtility.createItem(EXPERIENCE_BOTTLE, 1,
+            ChatColor.BLUE + "" + ChatColor.BOLD + "Honing", new String[]{
+                    ChatColor.GRAY + "Welcome to Honing!",
                     ChatColor.GRAY + "Place the items you would like to",
-                    ChatColor.GRAY + "combine in the two empty slots then",
-                    ChatColor.GRAY + "click the green glass pane to forge."});
+                    ChatColor.GRAY + "hone with the book to apply in the",
+                    ChatColor.GRAY + "two slots. Then click the green",
+                    ChatColor.GRAY + "glass pane to hone."}, false);
 
-    public static final String title = ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Forge";
+    public final String title = ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Forge";
 
-    private static int pendingCost = -1;
+    private int pendingCost = -1;
 
-    private static void buildForgeMenu (Inventory inv) {
-        ItemStack fill = ItemsManager.createItem(BLACK_STAINED_GLASS_PANE, 1, " ");
-        for (int i = 0; i < 54; i++) inv.setItem(i, fill);
+    /**
+     * Creates a Honing Menu.
+     */
+    public HoningMenu () {
+        super("Honing");
+    }
+
+    @Override
+    protected void buildForgeMenu (Inventory inv) {
+        super.buildForgeMenu(inv);
         inv.setItem(49, forgeIndicator);
         inv.setItem(11, new ItemStack(AIR));
         inv.setItem(15, new ItemStack(AIR));
@@ -44,27 +53,25 @@ public class ForgeMainMenu {
         Objects.requireNonNull(inv.getItem(31)).setType(RED_STAINED_GLASS_PANE);
     }
 
-    public static void forgeMenu (Player p) {
-        Inventory i = Bukkit.getServer().createInventory(p.getPlayer(), 54, title);
-        buildForgeMenu(i);
-        p.openInventory(i);
-    }
-
-    public static void forgeClose (InventoryCloseEvent e) {
+    @Override
+    public void onClose (InventoryCloseEvent e) {
         HumanEntity player = e.getPlayer();
         Inventory forge = e.getPlayer().getOpenInventory().getTopInventory();
         ItemStack indicator = forge.getItem(31);
         if (indicator == null) return;
         switch (indicator.getType()) {
-            case ORANGE_STAINED_GLASS_PANE -> player.getInventory().addItem(forge.getItem(22));
+            case ORANGE_STAINED_GLASS_PANE -> {
+                if (forge.getItem(22) != null) player.getInventory().addItem(forge.getItem(22));
+            }
             case RED_STAINED_GLASS_PANE, LIME_STAINED_GLASS_PANE -> {
                 if (forge.getItem(11) != null) player.getInventory().addItem(forge.getItem(11));
-                if (forge.getItem(15) != null)player.getInventory().addItem(forge.getItem(15));
+                if (forge.getItem(15) != null) player.getInventory().addItem(forge.getItem(15));
             }
         }
     }
 
-    public static void forgeClicked (InventoryClickEvent event) {
+    @Override
+    public void onClick (InventoryClickEvent event) {
         ArrayList<Integer> clickable = new ArrayList<>();
         clickable.add(11);
         clickable.add(15);
@@ -86,7 +93,7 @@ public class ForgeMainMenu {
         } else if (!(event.getSlot() == 22 && Objects.requireNonNull(Objects.requireNonNull(event.getClickedInventory()).getItem(31)).getType() ==  ORANGE_STAINED_GLASS_PANE)) event.setCancelled(true);
     }
 
-    private static void forgeUpdate (InventoryView view, Player player) {
+    private void forgeUpdate (InventoryView view, Player player) {
         Inventory forge = view.getTopInventory();
         ItemStack item1 = forge.getItem(11);
         ItemStack item2 = forge.getItem(15);
@@ -126,7 +133,7 @@ public class ForgeMainMenu {
         } else failure(forge, "Please add your items!");
     }
 
-    private static boolean legalEnchants (Set<Enchantment> checking, ItemStack item) {
+    private boolean legalEnchants (Set<Enchantment> checking, ItemStack item) {
         ArrayList<Enchantment> legal = new ArrayList<>();
         //Trident Enchants
         switch(item.getType()) {
@@ -171,7 +178,7 @@ public class ForgeMainMenu {
         return true;
     }
 
-    private static void failure (Inventory i, String m) {
+    private void failure (Inventory i, String m) {
         ItemStack item = new ItemStack( RED_STAINED_GLASS_PANE);
         ItemMeta meta = item.getItemMeta();
         assert meta != null;
@@ -186,7 +193,7 @@ public class ForgeMainMenu {
         i.setItem(22, item);
     }
 
-    private static int calculateCost (Collection<Integer> total) {
+    private int calculateCost (Collection<Integer> total) {
         int running = 0;
         for (Integer i: total) running += (i * 10);
         return running;
