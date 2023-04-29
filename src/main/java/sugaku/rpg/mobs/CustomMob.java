@@ -232,24 +232,31 @@ public abstract class CustomMob {
     public static void handleDrops(EntityDeathEvent event, BossDrop[] bossDrops, Rarity rarity) {
         handleDrops(event);
         event.setDroppedExp(25 * rarity.toInt(rarity));
-        double roll = new Random().nextDouble();
+        Random rand = new Random();
+        double roll = rand.nextDouble();
         double check = 0.0;
-        for (BossDrop i: bossDrops) {
-            if (roll < check + getRate(i.getRarity(), rarity)) { MobManager.drop(i.getItem(), event.getEntity().getLocation()); break; }
-            else check += getRate(i.getRarity(), rarity);
+        while (true) {
+            for (BossDrop i : bossDrops) {
+                if (roll < check + getRate(i.getRarity(), rarity)) {
+                    MobManager.drop(i.getItem(), event.getEntity().getLocation());
+                    return;
+                } else check += getRate(i.getRarity(), rarity);
+            }
+            roll = rand.nextDouble();
         }
     }
 
     private static double getRate(Rarity item, Rarity boss) {
         switch (boss) {
-            case UNCOMMON: switch (item) {
-                case COMMON: return 0.16;
-                case UNCOMMON: return 0.08;
-                case RARE: return 0.04;
-                case LEGENDARY: return 0.02;
-                case HEROIC: return 0.01;
-                case MYTHIC: return 0.005;
-            }
+            case UNCOMMON:
+                return switch (item) {
+                    case COMMON -> 0.16;
+                    case UNCOMMON -> 0.08;
+                    case RARE -> 0.04;
+                    case LEGENDARY -> 0.02;
+                    case HEROIC -> 0.01;
+                    case MYTHIC -> 0.005;
+                };
         }
         return 0.0;
     }
