@@ -6,7 +6,6 @@ import io.github.math0898.rpgframework.items.GiveCommand;
 import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.rpgframework.parties.PartyCommand;
 import io.github.math0898.rpgframework.parties.PartyManager;
-import io.github.math0898.rpgframework.forge.ForgeEventListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;

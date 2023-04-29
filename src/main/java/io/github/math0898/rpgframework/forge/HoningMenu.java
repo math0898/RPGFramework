@@ -1,6 +1,6 @@
 package io.github.math0898.rpgframework.forge;
 
-import io.github.math0898.rpgframework.items.ItemUtility;
+import io.github.math0898.rpgframework.items.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -24,13 +24,13 @@ import static org.bukkit.Material.*;
 
 public class HoningMenu extends ForgeMenu {
 
-    private final ItemStack forgeIndicator = ItemUtility.createItem(EXPERIENCE_BOTTLE, 1,
-            ChatColor.BLUE + "" + ChatColor.BOLD + "Honing", new String[]{
+    private final ItemStack forgeIndicator = new ItemBuilder(EXPERIENCE_BOTTLE, 1,
+            ChatColor.BLUE.toString() + ChatColor.BOLD + "Honing").setLore(new String[]{
                     ChatColor.GRAY + "Welcome to Honing!",
                     ChatColor.GRAY + "Place the items you would like to",
                     ChatColor.GRAY + "hone with the book to apply in the",
                     ChatColor.GRAY + "two slots. Then click the green",
-                    ChatColor.GRAY + "glass pane to hone."}, false);
+                    ChatColor.GRAY + "glass pane to hone."}).build();
 
     public final String title = ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Forge";
 

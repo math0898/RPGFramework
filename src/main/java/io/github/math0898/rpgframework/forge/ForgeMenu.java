@@ -1,6 +1,6 @@
 package io.github.math0898.rpgframework.forge;
 
-import io.github.math0898.rpgframework.items.ItemUtility;
+import io.github.math0898.rpgframework.items.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -8,7 +8,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import static org.bukkit.Material.*;
+
+import static org.bukkit.Material.BLACK_STAINED_GLASS_PANE;
 
 /**
  * The ForgeMenu is a general definition of menus used throughout the Forge system.
@@ -51,7 +52,7 @@ public abstract class ForgeMenu {
      * @param inv The inventory to place the built items into.
      */
     protected void buildForgeMenu (Inventory inv) {
-        ItemStack fill = ItemUtility.createItem(BLACK_STAINED_GLASS_PANE, 1, " ", false);
+        ItemStack fill = new ItemBuilder(BLACK_STAINED_GLASS_PANE, 1, " ").build();
         for (int i = 0; i < 54; i++) inv.setItem(i, fill);
     }
 
