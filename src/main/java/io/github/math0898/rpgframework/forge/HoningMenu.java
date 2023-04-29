@@ -9,6 +9,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
@@ -24,15 +25,13 @@ import static org.bukkit.Material.*;
 
 public class HoningMenu extends ForgeMenu {
 
-    private final ItemStack forgeIndicator = new ItemBuilder(EXPERIENCE_BOTTLE, 1,
+    private static final ItemStack HONING_INDICATOR = new ItemBuilder(EXPERIENCE_BOTTLE, 1,
             ChatColor.BLUE.toString() + ChatColor.BOLD + "Honing").setLore(new String[]{
                     ChatColor.GRAY + "Welcome to Honing!",
                     ChatColor.GRAY + "Place the items you would like to",
                     ChatColor.GRAY + "hone with the book to apply in the",
                     ChatColor.GRAY + "two slots. Then click the green",
                     ChatColor.GRAY + "glass pane to hone."}).build();
-
-    public final String title = ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Forge";
 
     private int pendingCost = -1;
 
@@ -46,7 +45,7 @@ public class HoningMenu extends ForgeMenu {
     @Override
     protected void buildForgeMenu (Inventory inv) {
         super.buildForgeMenu(inv);
-        inv.setItem(49, forgeIndicator);
+        inv.setItem(49, HONING_INDICATOR);
         inv.setItem(11, new ItemStack(AIR));
         inv.setItem(15, new ItemStack(AIR));
         Objects.requireNonNull(inv.getItem(22)).setType(ORANGE_STAINED_GLASS_PANE);
@@ -72,13 +71,14 @@ public class HoningMenu extends ForgeMenu {
 
     @Override
     public void onClick (InventoryClickEvent event) {
+        assert event.getClickedInventory() != null;
         ArrayList<Integer> clickable = new ArrayList<>();
         clickable.add(11);
         clickable.add(15);
         Player player = (Player) event.getWhoClicked();
-        if ((clickable.contains(event.getSlot()) || !Objects.requireNonNull(event.getClickedInventory()).contains(forgeIndicator))) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> forgeUpdate(event.getWhoClicked().getOpenInventory(), player), 1);
-        } else if (event.getSlot() == 31 && Objects.requireNonNull(event.getCurrentItem()).getType() ==  LIME_STAINED_GLASS_PANE) {
+        Bukkit.getScheduler().runTask(plugin, () -> forgeUpdate(event.getWhoClicked().getOpenInventory(), player));
+        if (clickable.contains(event.getSlot()) || event.getClickedInventory().getType() != InventoryType.CHEST) event.setCancelled(false);
+        else if (event.getSlot() == 31 && Objects.requireNonNull(event.getCurrentItem()).getType() ==  LIME_STAINED_GLASS_PANE) {
             player.setLevel(player.getLevel() - pendingCost);
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 0.8f, 0.5f);
             event.setCancelled(true);
@@ -87,7 +87,7 @@ public class HoningMenu extends ForgeMenu {
             ItemStack item = new ItemStack( ORANGE_STAINED_GLASS_PANE);
             ItemMeta meta = item.getItemMeta();
             assert meta != null;
-            meta.setDisplayName(ChatColor.BOLD + "" + ChatColor.GREEN + "Forged");
+            meta.setDisplayName(ChatColor.BOLD.toString() + ChatColor.GREEN + "Forged");
             item.setItemMeta(meta);
             event.getClickedInventory().setItem(31, item);
         } else if (!(event.getSlot() == 22 && Objects.requireNonNull(Objects.requireNonNull(event.getClickedInventory()).getItem(31)).getType() ==  ORANGE_STAINED_GLASS_PANE)) event.setCancelled(true);
@@ -110,7 +110,7 @@ public class HoningMenu extends ForgeMenu {
                     ItemStack item = new ItemStack( LIME_STAINED_GLASS_PANE);
                     ItemMeta meta = item.getItemMeta();
                     assert meta != null;
-                    meta.setDisplayName(ChatColor.BOLD + "" + ChatColor.GREEN + "Forge!");
+                    meta.setDisplayName(ChatColor.BOLD.toString() + ChatColor.GREEN + "Forge!");
                     ArrayList<String> lore = new ArrayList<>();
                     lore.add(ChatColor.GRAY + "This will cost: " + ChatColor.GREEN + cost + " levels" + ChatColor.GRAY + ".");
                     meta.setLore(lore);
@@ -133,46 +133,36 @@ public class HoningMenu extends ForgeMenu {
         } else failure(forge, "Please add your items!");
     }
 
+    /**
+     * Checks whether the given set of enchantments are legal to apply to the given item.
+     *
+     * @param checking The set of enchantments to check against legal enchantments.
+     * @param item The item that determines what enchantments are legal.
+     * @return True if all the given enchantments are legal for the given item. Otherwise, false.
+     */
     private boolean legalEnchants (Set<Enchantment> checking, ItemStack item) {
-        ArrayList<Enchantment> legal = new ArrayList<>();
-        //Trident Enchants
-        switch(item.getType()) {
-            case TRIDENT:
-                legal.add(RIPTIDE);
-                legal.add(CHANNELING);
-                legal.add(LOYALTY);
-            case IRON_SWORD: case WOODEN_SWORD: case STONE_SWORD: case GOLDEN_SWORD: case DIAMOND_SWORD: case NETHERITE_SWORD: case WOODEN_AXE: case STONE_AXE: case GOLDEN_AXE: case IRON_AXE:
-            case DIAMOND_AXE: case NETHERITE_AXE:
-                legal.add(IMPALING);
-                break;
-        }
-        //Sword Enchants
-        switch(item.getType()) {
-            case IRON_SWORD: case WOODEN_SWORD: case STONE_SWORD: case GOLDEN_SWORD: case DIAMOND_SWORD: case NETHERITE_SWORD:
-                legal.add( SWEEPING_EDGE);
-            case WOODEN_AXE: case STONE_AXE: case GOLDEN_AXE: case IRON_AXE: case DIAMOND_AXE: case NETHERITE_AXE: case TRIDENT:
-                legal.add(DAMAGE_ALL);
-                legal.add(DAMAGE_ARTHROPODS);
-                legal.add(FIRE_ASPECT);
-                legal.add(LOOT_BONUS_MOBS);
-                legal.add(KNOCKBACK);
-                legal.add(DAMAGE_UNDEAD);
-                legal.add(MENDING);
-                legal.add(DURABILITY);
-                legal.add(VANISHING_CURSE);
-                break;
-        }
-        //Armor enchants
-        switch(item.getType()) {
-            case LEATHER_BOOTS, LEATHER_LEGGINGS, LEATHER_CHESTPLATE, LEATHER_HELMET, IRON_BOOTS, IRON_LEGGINGS,
-                    IRON_CHESTPLATE, IRON_HELMET, CHAINMAIL_BOOTS, CHAINMAIL_LEGGINGS, CHAINMAIL_CHESTPLATE,
-                    CHAINMAIL_HELMET, GOLDEN_BOOTS, GOLDEN_LEGGINGS, GOLDEN_CHESTPLATE, GOLDEN_HELMET, DIAMOND_BOOTS,
-                    DIAMOND_LEGGINGS, DIAMOND_CHESTPLATE, DIAMOND_HELMET, NETHERITE_BOOTS, NETHERITE_LEGGINGS,
-                    NETHERITE_CHESTPLATE, NETHERITE_HELMET ->
-                    legal.addAll(Arrays.asList( PROTECTION_ENVIRONMENTAL, PROTECTION_FIRE, PROTECTION_PROJECTILE,
-                            PROTECTION_EXPLOSIONS, MENDING, VANISHING_CURSE, DURABILITY));
+        String type = item.getType().toString();
+        // Global Enchants
+        ArrayList<Enchantment> legal = new ArrayList<>(Arrays.asList(MENDING, DURABILITY));
 
-        }
+        // Tool Enchants
+        if (type.endsWith("_AXE") || type.endsWith("_HOE") || type.endsWith("_SHOVEL") || type.endsWith("_PICKAXE")) legal.add(DIG_SPEED);
+
+        //Trident Enchants
+        if (type.endsWith("TRIDENT")) legal.addAll(Arrays.asList(RIPTIDE, CHANNELING, LOYALTY));
+        if (type.endsWith("_SWORD") || type.endsWith("_AXE")) legal.add(IMPALING);
+
+        //Sword Enchants
+        if (type.endsWith("_SWORD")) legal.add(SWEEPING_EDGE);
+        if (type.endsWith("_SWORD") || type.endsWith("_AXE") || type.endsWith("TRIDENT"))
+            legal.addAll(Arrays.asList(DAMAGE_ALL, DAMAGE_ARTHROPODS, DAMAGE_UNDEAD, FIRE_ASPECT, LOOT_BONUS_MOBS, KNOCKBACK));
+            
+        //Armor enchants
+        if (type.endsWith("_BOOTS")) legal.addAll(Arrays.asList(PROTECTION_FALL, SOUL_SPEED, DEPTH_STRIDER));
+        if (type.endsWith("_LEGGINGS")) legal.add(SWIFT_SNEAK);
+        if (type.endsWith("_HELMET")) legal.addAll(Arrays.asList(WATER_WORKER, OXYGEN));
+        if (type.endsWith("_BOOTS") || type.endsWith("_LEGGINGS") || type.endsWith("_CHESTPLATE") || type.endsWith("_HELMET"))
+            legal.addAll(Arrays.asList(PROTECTION_ENVIRONMENTAL, PROTECTION_FIRE, PROTECTION_PROJECTILE, PROTECTION_EXPLOSIONS));
         if (legal.isEmpty()) return false;
         for (Enchantment c: checking) if (!legal.contains(c)) return false;
         return true;
@@ -182,7 +172,7 @@ public class HoningMenu extends ForgeMenu {
         ItemStack item = new ItemStack( RED_STAINED_GLASS_PANE);
         ItemMeta meta = item.getItemMeta();
         assert meta != null;
-        meta.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + m);
+        meta.setDisplayName(ChatColor.RED.toString() + ChatColor.BOLD + m);
         item.setItemMeta(meta);
         i.setItem(31, item);
         item = new ItemStack( ORANGE_STAINED_GLASS_PANE);

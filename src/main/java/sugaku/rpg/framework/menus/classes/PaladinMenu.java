@@ -1,11 +1,11 @@
 package sugaku.rpg.framework.menus.classes;
 
+import io.github.math0898.rpgframework.items.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import sugaku.rpg.framework.classes.Classes;
-import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.menus.Menu;
 import sugaku.rpg.framework.players.PlayerManager;
 
@@ -39,19 +39,19 @@ public class PaladinMenu extends ClassSubmenu implements Menu {
         int level = getClassLvl(Classes.PALADIN);
         int xp = getClassXp(Classes.PALADIN);
 
-        inv.setItem(10, ItemsManager.createItem(Material.GOLDEN_SHOVEL, Math.max(1, classPoints), ChatColor.DARK_GREEN + "Class points: " + classPoints, new String[]{
+        inv.setItem(10, new ItemBuilder(Material.GOLDEN_SHOVEL, Math.max(1, classPoints), ChatColor.DARK_GREEN + "Class points: " + classPoints).setLore(new String[]{
                 ChatColor.GRAY + "Spend class points to upgrade",
                 ChatColor.GRAY + "class abilities and passives.",
-                ChatColor.GRAY + "One point is given per level."}));
-        inv.setItem(12, ItemsManager.createItem(Material.GLISTERING_MELON_SLICE, 1, ChatColor.DARK_AQUA + "Mend", new String[]{
+                ChatColor.GRAY + "One point is given per level."}).build());
+        inv.setItem(12, new ItemBuilder(Material.GLISTERING_MELON_SLICE, 1, ChatColor.DARK_AQUA + "Mend").setLore(new String[]{
                 ChatColor.GRAY + "Mend your own and your ally's",
                 ChatColor.GRAY + "wounds with your mastery of",
                 ChatColor.GRAY + "healing magic.",
                 ChatColor.GRAY + "Current Stats: ",
                 ChatColor.GRAY + "- Strength: " + ChatColor.GREEN + 3, //TODO: add player upgrades
                 ChatColor.GRAY + "- Duration: " + ChatColor.GREEN + 15 + "s",
-                ChatColor.GRAY + "- Cooldown: " + ChatColor.GREEN + 30 + "s"}));
-        inv.setItem(14, ItemsManager.createItem(Material.GLOWSTONE_DUST, 1, ChatColor.DARK_AQUA + "Purify", new String[]{
+                ChatColor.GRAY + "- Cooldown: " + ChatColor.GREEN + 30 + "s"}).build());
+        inv.setItem(14, new ItemBuilder(Material.GLOWSTONE_DUST, 1, ChatColor.DARK_AQUA + "Purify").setLore(new String[]{
                 ChatColor.GRAY + "Purify your party from all",
                 ChatColor.GRAY + "ailments, heal a significant",
                 ChatColor.GRAY + "amount, and become damage",
@@ -59,28 +59,28 @@ public class PaladinMenu extends ClassSubmenu implements Menu {
                 ChatColor.GRAY + "Current Stats: ",
                 ChatColor.GRAY + "- Strength: " + ChatColor.GREEN + 5, //TODO: add player upgrades
                 ChatColor.GRAY + "- Duration: " + ChatColor.GREEN + 5 + "s",
-                ChatColor.GRAY + "- Cooldown: " + ChatColor.GREEN + 60 + "s"}));
-        inv.setItem(16, ItemsManager.createItem(Material.GOLDEN_CHESTPLATE, 1, ChatColor.LIGHT_PURPLE + "Holy Form", new String[]{
+                ChatColor.GRAY + "- Cooldown: " + ChatColor.GREEN + 60 + "s"}).build());
+        inv.setItem(16, new ItemBuilder(Material.GOLDEN_CHESTPLATE, 1, ChatColor.LIGHT_PURPLE + "Holy Form").setLore(new String[]{
                 ChatColor.GRAY + "Your mastery of healing magic has",
                 ChatColor.GRAY + "increased your overall vitality",
                 ChatColor.GRAY + "and therefore your maximum health.",
                 ChatColor.GRAY + "Current Stats: ",
                 ChatColor.GRAY + "- Health Bonus: " + ChatColor.GREEN + 10 + "hp"/*TODO: add player upgrades*/,
-                brackets(ChatColor.RED + "Disabled") + " -" + ChatColor.RED + " Odd functionality"}));
+                brackets(ChatColor.RED + "Disabled") + " -" + ChatColor.RED + " Odd functionality"}).build());
 
         if (Objects.requireNonNull(PlayerManager.getPlayer(p.getUniqueId())).getCombatClass() == Classes.PALADIN) {
-            inv.setItem(28, ItemsManager.createItem(Material.LAPIS_BLOCK, 1, ChatColor.BLUE + "Lvl: " + level, new String[]{
+            inv.setItem(28, new ItemBuilder(Material.LAPIS_BLOCK, 1, ChatColor.BLUE + "Lvl: " + level).setLore(new String[]{
                     ChatColor.GRAY + "Slay bosses and RPG mobs to",
                     ChatColor.GRAY + "gain xp for your active class.", "",
-                    ChatColor.GRAY + "Xp until next level: " + ChatColor.GREEN + ((level*300) - xp), /*TODO: check that this equation works*/}));
+                    ChatColor.GRAY + "Xp until next level: " + ChatColor.GREEN + ((level*300) - xp), /*TODO: check that this equation works*/}).build());
         } else {
-            inv.setItem(28, ItemsManager.createItem(Material.EMERALD_BLOCK, 1, ChatColor.GREEN + "" + ChatColor.BOLD + "Join the class", new String[]{
+            inv.setItem(28, new ItemBuilder(Material.EMERALD_BLOCK, 1, ChatColor.GREEN.toString() + ChatColor.BOLD + "Join the class").setLore(new String[]{
                     ChatColor.GRAY + "Click me to join the paladin",
                     ChatColor.GRAY + "class! You will leave your",
-                    ChatColor.GRAY + "current class."}));
+                    ChatColor.GRAY + "current class."}).build());
         }
 
-        inv.setItem(32, ItemsManager.createItem(Material.TOTEM_OF_UNDYING, 1, ChatColor.GOLD + "Protection of the Healer", new String[]{
+        inv.setItem(32, new ItemBuilder(Material.TOTEM_OF_UNDYING, 1, ChatColor.GOLD + "Protection of the Healer").setLore(new String[]{
                 ChatColor.GRAY + "To prevent death latent healing magic",
                 ChatColor.GRAY + "bursts forth from your body healing",
                 ChatColor.GRAY + "your entire party, increasing their",
@@ -90,6 +90,6 @@ public class PaladinMenu extends ClassSubmenu implements Menu {
                 ChatColor.GRAY + "- Duration: " + ChatColor.GREEN + 10 + "s", //TODO: add player upgrades
                 ChatColor.GRAY + "- Cooldown: " + ChatColor.GREEN + 300 + "s",
                 ChatColor.GRAY + "- Instant Heal: " + ChatColor.GREEN + 2,
-                ChatColor.GRAY + "- Buffs Strength: " + ChatColor.GREEN + 2}));
+                ChatColor.GRAY + "- Buffs Strength: " + ChatColor.GREEN + 2}).build());
     }
 }

@@ -4,6 +4,7 @@ import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.rpgframework.enemies.AI;
 import io.github.math0898.rpgframework.enemies.abilities.Ability;
 import io.github.math0898.rpgframework.enemies.abilities.UndeadAura;
+import io.github.math0898.rpgframework.items.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -138,12 +139,13 @@ public class Boss {
 
         e.setCustomNameVisible(true);
         e.setCustomName(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + Rarity.toColor(rarity) + name);
-        if (items.get("helmet") != null) Objects.requireNonNull(e.getEquipment()).setHelmet(new ItemStack(items.get("helmet"))); // TODO: Armor
-        if (items.get("chestplate") != null) Objects.requireNonNull(e.getEquipment()).setChestplate(new ItemStack(items.get("chestplate")));
-        if (items.get("leggings") != null) Objects.requireNonNull(e.getEquipment()).setLeggings(new ItemStack(items.get("leggings")));
-        if (items.get("boots") != null) Objects.requireNonNull(e.getEquipment()).setBoots(new ItemStack(items.get("boots")));
-        if (items.get("main-hand") != null) Objects.requireNonNull(e.getEquipment()).setItemInMainHand(sugaku.rpg.framework.items.ItemsManager.createItem(items.get("main-hand"), 1, "", new String[]{}, new AttributeModifier[]{ new AttributeModifier(new UUID(0l, 1l), "generic.dmg", damage, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND)})); // TODO: Refactor
-        if (items.get("off-hand") != null) Objects.requireNonNull(e.getEquipment()).setItemInOffHand(new ItemStack(items.get("off-hand")));
+        assert e.getEquipment() != null;
+        if (items.get("helmet") != null) e.getEquipment().setHelmet(new ItemStack(items.get("helmet"))); // TODO: Armor
+        if (items.get("chestplate") != null) e.getEquipment().setChestplate(new ItemStack(items.get("chestplate")));
+        if (items.get("leggings") != null) e.getEquipment().setLeggings(new ItemStack(items.get("leggings")));
+        if (items.get("boots") != null) e.getEquipment().setBoots(new ItemStack(items.get("boots")));
+        if (items.get("main-hand") != null) e.getEquipment().setItemInMainHand(new ItemBuilder(items.get("main-hand")).setModifiers(new AttributeModifier[]{ new AttributeModifier(new UUID(0l, 1l), "generic.dmg", damage, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND)}).build()); // TODO: Refactor
+        if (items.get("off-hand") != null) e.getEquipment().setItemInOffHand(new ItemStack(items.get("off-hand")));
 
         e.setHealth(health);
 
