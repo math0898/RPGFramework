@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import sugaku.rpg.framework.players.Party;
 import sugaku.rpg.framework.players.PlayerManager;
 import sugaku.rpg.framework.players.RpgPlayer;
-import sugaku.rpg.main;
 
 import java.util.ArrayList;
 import java.util.Arrays;

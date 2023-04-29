@@ -1,0 +1,43 @@
+krusk:
+  name: "Krusk, Undead General"
+  type: ZOMBIE
+  adult: true
+  rarity: UNCOMMON
+  health: 250
+  armor: 0
+  damage: 10
+  spawn: krusk-spawn
+  messages:
+    on-potion-attacker: "§aKrusk's §7undead aura weakens your attacks."
+    on-60-threshold: "§aKrusk §8> §7HEED MY CALL MEN!! LEND ME YOUR AID IN THIS FIGHT!"
+  equipment:
+    helmet: DIAMOND_HELMET
+    chestplate: IRON_CHESTPLATE
+    leggings: LEATHER_LEGGINGS
+    boots: DIAMOND_BOOTS
+    main-hand: IRON_AXE
+    off-hand: SHIELD
+  drops:
+    xp: 50
+    #1: ROTTEN_FLESH TODO We need a way to add vanilla drops to bosses.
+    krusk-axe: 0.08
+    krusk-boots: 0.08
+    krusk-leggings: 0.08
+    undead-chestplate: 0.08
+    krusk-helmet: 0.04
+    krusk-lore: 0.01
+  abilities:
+    undead-aura:
+      message: on-potion-attacker
+    # potion-attacker:
+    #   message: on-potion-attacker
+    #   trigger:
+
+    #   effect:
+
+
+    # 60-threshold:
+    #   message: on-60-threshold
+    #   trigger:
+    krusk-minions:
+      message: on-60-threshold

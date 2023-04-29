@@ -8,7 +8,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import sugaku.rpg.framework.CommandManager;
 import sugaku.rpg.framework.FileManager;
 import sugaku.rpg.framework.classes.implementations.Pyromancer;
-import sugaku.rpg.framework.menus.ForgeManager;
 import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.RPGEventListener;
 import sugaku.rpg.mobs.teir1.eiryeras.EiryerasBoss;
@@ -17,12 +16,12 @@ import sugaku.rpg.mobs.teir1.feyrith.FeyrithBoss;
 /**
  * The main class which describes the RPG plugin.
  */
-public final class main extends JavaPlugin {
+public final class main {
 
     /**
      * A pointer to the plugin during runtime. Used for scheduling and a few other things.
      */
-    public static Plugin plugin;
+    public static JavaPlugin plugin;
 
     /**
      * Prints the given string into console with gray coloring and the [RPG] prefix.
@@ -47,8 +46,8 @@ public final class main extends JavaPlugin {
      * onEnable() is called when the server initializes the RPG plugin. I've further broken it down into a few steps
      * which each have the appropriate managers called.
      */
-    @Override
-    public void onEnable() {
+    public static void onEnable() {
+        plugin = io.github.math0898.rpgframework.main.plugin;
         //Loading
         console("Loading Sugaku's RPG Plugin...");
 
@@ -56,17 +55,17 @@ public final class main extends JavaPlugin {
         FileManager.setup();
 
         //Commands
-        CommandManager.setup(this);
+        CommandManager.setup(plugin);
 
         //Registering events TODO: Move this somewhere?
-        Bukkit.getPluginManager().registerEvents(new RPGEventListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EiryerasBoss(), this);
-        Bukkit.getPluginManager().registerEvents(new Pyromancer(), this);
-        Bukkit.getPluginManager().registerEvents(new FeyrithBoss(), this);
+        Bukkit.getPluginManager().registerEvents(new RPGEventListener(), plugin);
+        Bukkit.getPluginManager().registerEvents(new EiryerasBoss(), plugin);
+        Bukkit.getPluginManager().registerEvents(new Pyromancer(), plugin);
+        Bukkit.getPluginManager().registerEvents(new FeyrithBoss(), plugin);
 
         //Other TODO: Add console to Item Manager
         ItemsManager.init();
-        plugin = this;
+
 
         //Loaded
         console("RPG loaded successfully!", ChatColor.GREEN);
@@ -76,7 +75,6 @@ public final class main extends JavaPlugin {
      * onDisable() is called when the server starts shutting down and tells the RPG plugin its time to clean up. As a
      * mostly runtime plugin there isn't a ton to do here other than save player data.
      */
-    @Override
     public void onDisable() {
         console("Tearing down...");
 

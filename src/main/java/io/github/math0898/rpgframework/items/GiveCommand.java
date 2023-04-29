@@ -60,7 +60,7 @@ public class GiveCommand implements CommandExecutor {
      * @return True if a valid command, otherwise false.
      */
     public boolean onCommand (@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (sender instanceof Player p) p.getInventory().addItem(itemManager.getItem(args[0]));
+//        if (sender instanceof Player p && sender.hasPermission("rpg.admin")) p.getInventory().addItem(itemManager.getItem(args[0]));
         return true;
     }
 }

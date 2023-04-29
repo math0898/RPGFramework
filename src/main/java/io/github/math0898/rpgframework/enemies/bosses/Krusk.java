@@ -1,9 +1,12 @@
-package sugaku.rpg.mobs.teir1.krusk;
+package io.github.math0898.rpgframework.enemies.bosses;
 
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Ageable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -12,16 +15,20 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import sugaku.rpg.framework.items.Rarity;
 import sugaku.rpg.mobs.CustomMob;
+import sugaku.rpg.mobs.teir1.krusk.KruskMinion;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
 
-import static org.bukkit.attribute.AttributeModifier.Operation.ADD_NUMBER;
 import static org.bukkit.Material.*;
-import static sugaku.rpg.framework.items.ItemsManager.*;
+import static org.bukkit.attribute.AttributeModifier.Operation.ADD_NUMBER;
 import static org.bukkit.entity.EntityType.ZOMBIE;
+import static sugaku.rpg.framework.items.ItemsManager.*;
 import static sugaku.rpg.framework.mobs.MobManager.drop;
 
-public class KruskBoss extends CustomMob {
+public class Krusk extends CustomMob {
 
     private final ItemStack helm = new ItemStack(DIAMOND_HELMET, 1);
     private final ItemStack chestplate = new ItemStack(IRON_CHESTPLATE, 1);
@@ -32,12 +39,12 @@ public class KruskBoss extends CustomMob {
     /**
      * A bare bones constructor not intended for spawning.
      */
-    public KruskBoss() { super(name, ZOMBIE, Rarity.UNCOMMON, 250); }
+    public Krusk() { super(name, ZOMBIE, Rarity.UNCOMMON, 250); }
 
     /**
      * A constructor for Krusk the Boss.
      */
-    public KruskBoss(Location l) {
+    public Krusk(Location l) {
         super(name, ZOMBIE, Rarity.UNCOMMON, 250);
         init();
         setArmor(this.helm, this.chestplate, this.leggings, this.boots);
@@ -113,7 +120,7 @@ public class KruskBoss extends CustomMob {
 
         Objects.requireNonNull(e.getLocation().getWorld()).dropItem(e.getLocation(), new ItemStack(ROTTEN_FLESH, (int) (r.nextDouble() * 5) + 1));
         double roll = r.nextDouble();
-             if (roll < 0.08) drop(KruskAxe, e.getLocation());
+        if (roll < 0.08) drop(KruskAxe, e.getLocation());
         else if (roll < 0.16) drop(KruskBoots, e.getLocation());
         else if (roll < 0.24) drop(KruskLeggings, e.getLocation());
         else if (roll < 0.32) drop(UndeadChestplate, e.getLocation());

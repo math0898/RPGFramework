@@ -1,6 +1,5 @@
 package sugaku.rpg.framework.menus.classes;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -9,7 +8,6 @@ import sugaku.rpg.framework.classes.Classes;
 import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.menus.Menu;
 import sugaku.rpg.framework.players.PlayerManager;
-import sugaku.rpg.main;
 
 import java.util.Objects;
 import static sugaku.rpg.framework.menus.ClassesManager.fill;
