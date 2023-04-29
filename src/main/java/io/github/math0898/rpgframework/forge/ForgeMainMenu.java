@@ -1,4 +1,4 @@
-package io.github.math0898.rpgframework.systems;
+package io.github.math0898.rpgframework.forge;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -21,7 +21,7 @@ import static io.github.math0898.rpgframework.main.plugin;
 import static org.bukkit.enchantments.Enchantment.*;
 import static org.bukkit.Material.*;
 
-public class Forge {
+public class ForgeMainMenu {
 
     private static final ItemStack forgeIndicator = ItemsManager.createItem(ANVIL, 1,
             ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Forge", new String[]{
@@ -58,8 +58,8 @@ public class Forge {
         switch (indicator.getType()) {
             case ORANGE_STAINED_GLASS_PANE -> player.getInventory().addItem(forge.getItem(22));
             case RED_STAINED_GLASS_PANE, LIME_STAINED_GLASS_PANE -> {
-                player.getInventory().addItem(forge.getItem(11));
-                player.getInventory().addItem(forge.getItem(15));
+                if (forge.getItem(11) != null) player.getInventory().addItem(forge.getItem(11));
+                if (forge.getItem(15) != null)player.getInventory().addItem(forge.getItem(15));
             }
         }
     }
