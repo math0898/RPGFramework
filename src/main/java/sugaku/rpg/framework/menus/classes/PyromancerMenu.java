@@ -16,14 +16,24 @@ import static sugaku.rpg.framework.menus.ClassesManager.classMenu;
 
 public class PyromancerMenu extends ClassSubmenu implements Menu {
 
+    /**
+     * Creates a new class submenu with the given pyromancer name and enum value.
+     */
+    public PyromancerMenu () {
+        super("pyromancer", Classes.PYROMANCER);
+    }
+
     @Override
     public void onClick(int clicked, Player player) {
-        switch(clicked) {
-            case 49: classMenu(player, "main"); break;
+        switch (clicked) {
+            case 49 -> classMenu(player, "main");
 //            case 12: classMenu(player, "Haste");
 //            case 14: classMenu(player, "Rage");
 //            case 16: classMenu(player, "Brute Strength");
-            case 28: Objects.requireNonNull(PlayerManager.getPlayer(player.getUniqueId())).joinClass(Classes.PYROMANCER); classMenu(player, "Pyromancer"); break;
+            case 28 -> {
+                Objects.requireNonNull(PlayerManager.getPlayer(player.getUniqueId())).joinClass(Classes.PYROMANCER);
+                classMenu(player, "Pyromancer");
+            }
 //            case 32: classMenu(player, "Indomitable Spirit");
         }
     }
@@ -35,8 +45,6 @@ public class PyromancerMenu extends ClassSubmenu implements Menu {
         inv.setItem(49, goBack);
 
         int classPoints = getClassPoints(Classes.PYROMANCER);
-        int level = getClassLvl(Classes.PYROMANCER);
-        int xp = getClassXp(Classes.PYROMANCER);
 
         inv.setItem(10, new ItemBuilder(Material.BLAZE_POWDER, Math.max(1, classPoints), ChatColor.DARK_GREEN + "Class points: " + classPoints).setLore(new String[]{
                 ChatColor.GRAY + "Spend class points to upgrade",
@@ -63,17 +71,8 @@ public class PyromancerMenu extends ClassSubmenu implements Menu {
                 ChatColor.GRAY + "flame you've developed a strong",
                 ChatColor.GRAY + "resistance to it."}).build());
 
-        if (Objects.requireNonNull(PlayerManager.getPlayer(p.getUniqueId())).getCombatClass() == Classes.PYROMANCER) {
-            inv.setItem(28, new ItemBuilder(Material.LAPIS_BLOCK, 1, ChatColor.BLUE + "Lvl: " + level).setLore(new String[]{
-                    ChatColor.GRAY + "Slay bosses and RPG mobs to",
-                    ChatColor.GRAY + "gain xp for your active class.", "",
-                    ChatColor.GRAY + "Xp until next level: " + ChatColor.GREEN + ((level*300) - xp), /*TODO: check that this equation works*/}).build());
-        } else {
-            inv.setItem(28, new ItemBuilder(Material.EMERALD_BLOCK, 1, ChatColor.GREEN.toString() + ChatColor.BOLD + "Join the class").setLore(new String[]{
-                    ChatColor.GRAY + "Click me to join the pyromancer",
-                    ChatColor.GRAY + "class! You will leave your",
-                    ChatColor.GRAY + "current class."}).build());
-        }
+        if (Objects.requireNonNull(PlayerManager.getPlayer(p.getUniqueId())).getCombatClass() == Classes.PYROMANCER) inv.setItem(28, classLvl);
+        else inv.setItem(28, joinClass);
 
         inv.setItem(32, new ItemBuilder(Material.TOTEM_OF_UNDYING, 1, ChatColor.GOLD + "Phoenix Renewal").setLore(new String[]{
                 ChatColor.GRAY + "Call upon the power of the phoenix",

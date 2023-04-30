@@ -17,14 +17,24 @@ import static sugaku.rpg.main.brackets;
 
 public class PaladinMenu extends ClassSubmenu implements Menu {
 
+    /**
+     * Creates a new class submenu with the given paladin name and enum value.
+     */
+    public PaladinMenu () {
+        super("paladin", Classes.PALADIN);
+    }
+
     @Override
     public void onClick(int clicked, Player player) {
-        switch(clicked) {
-            case 49: classMenu(player, "main"); break;
+        switch (clicked) {
+            case 49 -> classMenu(player, "main");
 //            case 12: classMenu(player, "Mend");
 //            case 14: classMenu(player, "Purify");
 //            case 16: classMenu(player, "Holy Form");
-            case 28: Objects.requireNonNull(PlayerManager.getPlayer(player.getUniqueId())).joinClass(Classes.PALADIN); classMenu(player, "Paladin"); break;
+            case 28 -> {
+                Objects.requireNonNull(PlayerManager.getPlayer(player.getUniqueId())).joinClass(Classes.PALADIN);
+                classMenu(player, "Paladin");
+            }
 //            case 32: classMenu(player, "Protection");
         }
     }
@@ -36,8 +46,6 @@ public class PaladinMenu extends ClassSubmenu implements Menu {
         inv.setItem(49, goBack);
 
         int classPoints = getClassPoints(Classes.PALADIN);
-        int level = getClassLvl(Classes.PALADIN);
-        int xp = getClassXp(Classes.PALADIN);
 
         inv.setItem(10, new ItemBuilder(Material.GOLDEN_SHOVEL, Math.max(1, classPoints), ChatColor.DARK_GREEN + "Class points: " + classPoints).setLore(new String[]{
                 ChatColor.GRAY + "Spend class points to upgrade",
@@ -68,17 +76,8 @@ public class PaladinMenu extends ClassSubmenu implements Menu {
                 ChatColor.GRAY + "- Health Bonus: " + ChatColor.GREEN + 10 + "hp"/*TODO: add player upgrades*/,
                 brackets(ChatColor.RED + "Disabled") + " -" + ChatColor.RED + " Odd functionality"}).build());
 
-        if (Objects.requireNonNull(PlayerManager.getPlayer(p.getUniqueId())).getCombatClass() == Classes.PALADIN) {
-            inv.setItem(28, new ItemBuilder(Material.LAPIS_BLOCK, 1, ChatColor.BLUE + "Lvl: " + level).setLore(new String[]{
-                    ChatColor.GRAY + "Slay bosses and RPG mobs to",
-                    ChatColor.GRAY + "gain xp for your active class.", "",
-                    ChatColor.GRAY + "Xp until next level: " + ChatColor.GREEN + ((level*300) - xp), /*TODO: check that this equation works*/}).build());
-        } else {
-            inv.setItem(28, new ItemBuilder(Material.EMERALD_BLOCK, 1, ChatColor.GREEN.toString() + ChatColor.BOLD + "Join the class").setLore(new String[]{
-                    ChatColor.GRAY + "Click me to join the paladin",
-                    ChatColor.GRAY + "class! You will leave your",
-                    ChatColor.GRAY + "current class."}).build());
-        }
+        if (Objects.requireNonNull(PlayerManager.getPlayer(p.getUniqueId())).getCombatClass() == Classes.PALADIN) inv.setItem(28, classLvl);
+        else inv.setItem(28, joinClass);
 
         inv.setItem(32, new ItemBuilder(Material.TOTEM_OF_UNDYING, 1, ChatColor.GOLD + "Protection of the Healer").setLore(new String[]{
                 ChatColor.GRAY + "To prevent death latent healing magic",

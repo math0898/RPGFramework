@@ -16,7 +16,12 @@ import static sugaku.rpg.framework.menus.ClassesManager.classMenu;
 
 public class AssassinMenu extends ClassSubmenu implements Menu {
 
-    public AssassinMenu(){}
+    /**
+     * Creates a new class submenu with the given assassin name and enum value.
+     */
+    public AssassinMenu () {
+        super("assassin", Classes.ASSASSIN);
+    }
 
     @Override
     public void onClick(int clicked, Player player) {
@@ -41,8 +46,6 @@ public class AssassinMenu extends ClassSubmenu implements Menu {
         inv.setItem(49, goBack);
 
         int classPoints = getClassPoints(Classes.ASSASSIN);
-        int level = getClassLvl(Classes.ASSASSIN);
-        int xp = getClassXp(Classes.ASSASSIN);
 
         inv.setItem(10, new ItemBuilder(Material.GHAST_TEAR, Math.max(1, classPoints), ChatColor.DARK_GREEN + "Class points: " + classPoints).setLore(new String[]{
                 ChatColor.GRAY + "Spend class points to upgrade",
@@ -70,17 +73,9 @@ public class AssassinMenu extends ClassSubmenu implements Menu {
                 ChatColor.GRAY + "- Evasion: " + ChatColor.GREEN + 10 + "%", //TODO: add player upgrades
                 ChatColor.GRAY + "- Swiftness: " + ChatColor.GREEN + 1}).build());
 
-        if (Objects.requireNonNull(PlayerManager.getPlayer(p.getUniqueId())).getCombatClass() == Classes.ASSASSIN) {
-            inv.setItem(28, new ItemBuilder(Material.LAPIS_BLOCK, 1, ChatColor.BLUE + "Lvl: " + level).setLore(new String[]{
-                    ChatColor.GRAY + "Slay bosses and RPG mobs to",
-                    ChatColor.GRAY + "gain xp for your active class.", "",
-                    ChatColor.GRAY + "Xp until next level: " + ChatColor.GREEN + ((level*300) - xp), /*TODO: check that this equation works*/}).build());
-        } else {
-            inv.setItem(28, new ItemBuilder(Material.EMERALD_BLOCK, 1, ChatColor.GREEN.toString() + ChatColor.BOLD + "Join the class").setLore(new String[]{
-                    ChatColor.GRAY + "Click me to join the assassin",
-                    ChatColor.GRAY + "class! You will leave your",
-                    ChatColor.GRAY + "current class."}).build());
-        }
+        if (Objects.requireNonNull(PlayerManager.getPlayer(p.getUniqueId())).getCombatClass() == Classes.ASSASSIN) inv.setItem(28, classLvl);
+        else inv.setItem(28, joinClass);
+
         inv.setItem(31, new ItemBuilder(Material.TOTEM_OF_UNDYING, 1, ChatColor.GOLD + "Heroic Dodge").setLore(new String[]{
                 ChatColor.GRAY + "Pulling off an incredible feat",
                 ChatColor.GRAY + "to evade death, you are given",

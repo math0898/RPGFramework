@@ -16,6 +16,13 @@ import static sugaku.rpg.framework.menus.ClassesManager.classMenu;
 
 public class BerserkerMenu extends ClassSubmenu implements Menu {
 
+    /**
+     * Creates a new class submenu with the berserker name.
+     */
+    public BerserkerMenu () {
+        super("berserker", Classes.BERSERKER);
+    }
+
     @Override
     public void onClick(int clicked, Player player) {
         switch (clicked) {
@@ -40,8 +47,6 @@ public class BerserkerMenu extends ClassSubmenu implements Menu {
         inv.setItem(49, goBack);
 
         int classPoints = getClassPoints(Classes.BERSERKER);
-        int level = getClassLvl(Classes.BERSERKER);
-        int xp = getClassXp(Classes.BERSERKER);
 
         inv.setItem(10, new ItemBuilder(Material.ROTTEN_FLESH, Math.max(1, classPoints), ChatColor.DARK_GREEN + "Class points: " + classPoints).setLore(new String[]{
                 ChatColor.GRAY + "Spend class points to upgrade",
@@ -69,17 +74,9 @@ public class BerserkerMenu extends ClassSubmenu implements Menu {
                 ChatColor.GRAY + "Current Stats: ",
                 ChatColor.GRAY + "- Damage Bonus: " + ChatColor.GREEN + 2 + "hp"/*TODO: add player upgrades*/}).build());
 
-        if (Objects.requireNonNull(PlayerManager.getPlayer(p.getUniqueId())).getCombatClass() == Classes.BERSERKER) {
-            inv.setItem(28, new ItemBuilder(Material.LAPIS_BLOCK, 1, ChatColor.BLUE + "Lvl: " + level).setLore(new String[]{
-                    ChatColor.GRAY + "Slay bosses and RPG mobs to",
-                    ChatColor.GRAY + "gain xp for your active class.", "",
-                    ChatColor.GRAY + "Xp until next level: " + ChatColor.GREEN + ((level*300) - xp), /*TODO: check that this equation works*/}).build());
-        } else {
-            inv.setItem(28, new ItemBuilder(Material.EMERALD_BLOCK, 1, ChatColor.GREEN.toString() + ChatColor.BOLD + "Join the class").setLore(new String[]{
-                    ChatColor.GRAY + "Click me to join the berserker",
-                    ChatColor.GRAY + "class! You will leave your",
-                    ChatColor.GRAY + "current class."}).build());
-        }
+        if (Objects.requireNonNull(PlayerManager.getPlayer(p.getUniqueId())).getCombatClass() == Classes.BERSERKER) inv.setItem(28, classLvl);
+        else inv.setItem(28, joinClass);
+
 
         inv.setItem(31, new ItemBuilder(Material.TOTEM_OF_UNDYING, 1, ChatColor.GOLD + "Indomitable Spirit").setLore(new String[]{
                 ChatColor.GRAY + "As a berserker near death experiences",

@@ -17,14 +17,24 @@ import static sugaku.rpg.framework.menus.ClassesManager.classMenu;
 
 public class BardMenu extends ClassSubmenu implements Menu {
 
+    /**
+     * Creates a new class submenu with the given bard name and enum value.
+     */
+    public BardMenu () {
+        super("bard", Classes.BARD);
+    }
+
     @Override
     public void onClick(int clicked, Player player) {
-        switch(clicked) {
-            case 49: classMenu(player, "main"); break;
+        switch (clicked) {
+            case 49 -> classMenu(player, "main");
 //            case 12: classMenu(player, "Swiftness");
 //            case 14: classMenu(player, "Regeneration");
 //            case 16: classMenu(player, "Strength");
-            case 28: Objects.requireNonNull(PlayerManager.getPlayer(player.getUniqueId())).joinClass(Classes.BARD); classMenu(player, "Bard"); break;
+            case 28 -> {
+                Objects.requireNonNull(PlayerManager.getPlayer(player.getUniqueId())).joinClass(Classes.BARD);
+                classMenu(player, "Bard");
+            }
 //            case 31: classMenu(player, "A Life of Music");
 //            case 33: classMenu(player, "Hym");
         }
@@ -37,8 +47,6 @@ public class BardMenu extends ClassSubmenu implements Menu {
         inv.setItem(49, goBack);
 
         int classPoints = getClassPoints(Classes.BARD);
-        int level = getClassLvl(Classes.BARD);
-        int xp = getClassXp(Classes.BARD);
 
         inv.setItem(10, new ItemBuilder(Material.NOTE_BLOCK, Math.max(1, classPoints), ChatColor.DARK_GREEN + "Class points: " + classPoints).setLore(new String[]{
                 ChatColor.GRAY + "Spend class points to upgrade",
@@ -64,17 +72,8 @@ public class BardMenu extends ClassSubmenu implements Menu {
                 ChatColor.GRAY + "- Strength: " + ChatColor.GREEN + 1, //TODO: add player upgrades
                 ChatColor.GRAY + "- Buff Duration: " + ChatColor.GREEN + 45 + "s"}).build());
 
-        if (Objects.requireNonNull(PlayerManager.getPlayer(p.getUniqueId())).getCombatClass() == Classes.BARD) {
-            inv.setItem(28, new ItemBuilder(Material.LAPIS_BLOCK, 1, ChatColor.BLUE + "Lvl: " + level).setLore(new String[]{
-                    ChatColor.GRAY + "Slay bosses and RPG mobs to",
-                    ChatColor.GRAY + "gain xp for your active class.", "",
-                    ChatColor.GRAY + "Xp until next level: " + ChatColor.GREEN + ((level*300) - xp), /*TODO: check that this equation works*/}).build());
-        } else {
-            inv.setItem(28, new ItemBuilder(Material.EMERALD_BLOCK, 1, ChatColor.GREEN.toString() + ChatColor.BOLD + "Join the class").setLore(new String[]{
-                    ChatColor.GRAY + "Click me to join the bard",
-                    ChatColor.GRAY + "class! You will leave your",
-                    ChatColor.GRAY + "current class."}).build());
-        }
+        if (Objects.requireNonNull(PlayerManager.getPlayer(p.getUniqueId())).getCombatClass() == Classes.BARD) inv.setItem(28, classLvl);
+        else inv.setItem(28, joinClass);
 
         inv.setItem(31, new ItemBuilder(Material.TOTEM_OF_UNDYING, 1, ChatColor.GOLD + "A Life of Music").setLore(new String[]{
                 ChatColor.GRAY + "Through your travels you've practiced",
