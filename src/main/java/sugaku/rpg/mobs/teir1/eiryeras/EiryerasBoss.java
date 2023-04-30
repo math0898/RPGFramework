@@ -126,7 +126,7 @@ public class EiryerasBoss extends CustomMob implements Listener {
                     ChatColor.GRAY + "transfer more energy into",
                     ChatColor.GRAY + "each shot.",
                     ChatColor.BLUE + "Arrow Damage: + 4"
-            }).build(), Rarity.RARE),
+            }).setUnbreakable(true).build(), Rarity.RARE),
 
             //Uncommon Eiryeras' Boots
             new BossDrop(new ItemBuilder(Material.LEATHER_BOOTS, ChatColor.GREEN + "Worn Galoshes").setLore(new String[]{
@@ -141,7 +141,7 @@ public class EiryerasBoss extends CustomMob implements Listener {
                     ItemsManager.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 1.0, EquipmentSlot.FEET),
                     ItemsManager.attributeModifier(Attribute.GENERIC_MAX_HEALTH, 2.0, EquipmentSlot.FEET), // + 1
                     ItemsManager.attributeModifier(Attribute.GENERIC_ARMOR, 0.5, EquipmentSlot.FEET) // + 0.25
-            }).build(), Rarity.UNCOMMON),
+            }).setUnbreakable(true).build(), Rarity.UNCOMMON),
 
             //Uncommon Eiryeras' Leggings
             new BossDrop(new ItemBuilder(Material.LEATHER_LEGGINGS, ChatColor.GREEN + "Hide Leggings").setLore(new String[]{
@@ -156,7 +156,7 @@ public class EiryerasBoss extends CustomMob implements Listener {
                     ItemsManager.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 1.0, EquipmentSlot.LEGS),
                     ItemsManager.attributeModifier(Attribute.GENERIC_MAX_HEALTH, 3.0, EquipmentSlot.LEGS), // + 1
                     ItemsManager.attributeModifier(Attribute.GENERIC_ARMOR, 0.75, EquipmentSlot.LEGS) // + 0.25
-            }).build(), Rarity.UNCOMMON),
+            }).setUnbreakable(true).build(), Rarity.UNCOMMON),
 
             //Uncommon Eiryeras' Chestplate
             new BossDrop(new ItemBuilder(Material.LEATHER_CHESTPLATE, ChatColor.GREEN + "Hunter's Cloak").setLore(new String[]{
@@ -171,7 +171,7 @@ public class EiryerasBoss extends CustomMob implements Listener {
                     ItemsManager.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 1.0, EquipmentSlot.CHEST),
                     ItemsManager.attributeModifier(Attribute.GENERIC_MAX_HEALTH, 4.0, EquipmentSlot.CHEST), // + 1
                     ItemsManager.attributeModifier(Attribute.GENERIC_ARMOR, 1, EquipmentSlot.CHEST) // + 0.25
-            }).build(), Rarity.UNCOMMON),
+            }).setUnbreakable(true).build(), Rarity.UNCOMMON),
 
             //Uncommon Eiryeras' Helmet
             new BossDrop(new ItemBuilder(Material.LEATHER_HELMET, ChatColor.GREEN + "Hunter's Hood").setLore(new String[]{
@@ -184,7 +184,7 @@ public class EiryerasBoss extends CustomMob implements Listener {
                     ItemsManager.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 1.0, EquipmentSlot.HEAD),
                     ItemsManager.attributeModifier(Attribute.GENERIC_MAX_HEALTH, 2.0, EquipmentSlot.HEAD), // + 1
                     ItemsManager.attributeModifier(Attribute.GENERIC_ARMOR, 0.5, EquipmentSlot.HEAD) // + 0.25
-            }).build(), Rarity.UNCOMMON),
+            }).setUnbreakable(true).build(), Rarity.UNCOMMON),
 
             //Rare Eiryeras' Knife
             new BossDrop(new ItemBuilder(Material.IRON_SWORD,1, ChatColor.BLUE + "Ceremonial Knife").setLore(new String[]{
@@ -194,7 +194,7 @@ public class EiryerasBoss extends CustomMob implements Listener {
                     ChatColor.GRAY + "gathering natural resources to",
                     ChatColor.GRAY + "show thanks and to humbly ask",
                     ChatColor.GRAY + "for its rejuvenation."
-            }).setModifiers(new AttributeModifier[]{ItemsManager.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 10.0, EquipmentSlot.HAND)/* + 2.0*/}).build(), Rarity.RARE),
+            }).setModifiers(new AttributeModifier[]{ItemsManager.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 10.0, EquipmentSlot.HAND)/* + 2.0*/}).setUnbreakable(true).build(), Rarity.RARE),
 
             //Legendary Eiryeras' Lore
             new BossDrop(new ItemBuilder(Material.IRON_SWORD,1, ChatColor.GOLD + "Eiryeras Lore").setLore(new String[]{
@@ -207,7 +207,7 @@ public class EiryerasBoss extends CustomMob implements Listener {
                     ChatColor.GRAY + "proclaim that the company of",
                     ChatColor.GRAY + "animals is far superior to that",
                     ChatColor.GRAY + "of man."
-            }).build(), Rarity.LEGENDARY)
+            }).setUnbreakable(true).build(), Rarity.LEGENDARY)
     };
 
     /**
@@ -290,6 +290,10 @@ public class EiryerasBoss extends CustomMob implements Listener {
                     break;
                 }
             }
+            if (event.getEntity().getNearbyEntities(4, 4, 4).size() > 0) {
+                switchToSword(event.getEntity());
+                Bukkit.getScheduler().runTaskLater(main.plugin, () -> switchToBow(event.getEntity()), 60);
+            }
         }
     }
 
@@ -371,7 +375,7 @@ public class EiryerasBoss extends CustomMob implements Listener {
      * @param e The entity, presumably an instance of Eiryeras, which the logic is being determined for.
      * @return The arrow to be fired.
      */
-    private Arrows determineShot(LivingEntity e) {
+    private Arrows determineShot (LivingEntity e) {
 
         int roll = new Random().nextInt();
 
@@ -379,8 +383,7 @@ public class EiryerasBoss extends CustomMob implements Listener {
         else if (roll % 11 == 0) return Arrows.SLOWNESS;
         else if (roll % 10 == 0) return Arrows.KNOCKBACK;
 
-        if (e.getNearbyEntities(10.0, 10.0, 10.0).size() > 1) return Arrows.KNOCKBACK;
-        else if (new Random().nextInt() % 2 == 0) return Arrows.POISON;
+        if (new Random().nextInt() % 2 == 0) return Arrows.POISON;
         else return Arrows.SLOWNESS;
     }
 }
