@@ -1,11 +1,11 @@
 package io.github.math0898.rpgframework;
 
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
+import io.github.math0898.rpgframework.forge.ForgeManager;
 import io.github.math0898.rpgframework.items.GiveCommand;
 import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.rpgframework.parties.PartyCommand;
 import io.github.math0898.rpgframework.parties.PartyManager;
-import io.github.math0898.rpgframework.systems.GodEventListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
@@ -72,9 +72,9 @@ public final class main extends JavaPlugin implements Listener {
 
         //Register damage listeners
         Bukkit.getPluginManager().registerEvents(new AdvancedDamageHandler(), this);
-        Bukkit.getPluginManager().registerEvents(new GodEventListener(), this); // todo remove me!
         PartyManager.init();
         PlayerManager.init();
+        ForgeManager.getInstance();
         Objects.requireNonNull(Bukkit.getPluginCommand("party")).setExecutor(new PartyCommand());
         Objects.requireNonNull(Bukkit.getPluginCommand("party")).setTabCompleter(PartyCommand.autocomplete);
 

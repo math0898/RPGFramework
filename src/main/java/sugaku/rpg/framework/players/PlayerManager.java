@@ -168,7 +168,7 @@ public class PlayerManager {
             if (attacker instanceof Player) deathMessage = getPlayerRarity(player) + player.getName() + ChatColor.GRAY + deathFlavor[Math.abs(new Random().nextInt() % deathFlavor.length)] + attacker.getName();
             else if (!attacker.isCustomNameVisible()) {
                 deathMessage = getPlayerRarity(player) + player.getName() + ChatColor.GRAY + deathFlavor[Math.abs(new Random().nextInt() % deathFlavor.length)] + "a " + attacker.getName();
-                RpgPlayer.dropAll(player);
+//                RpgPlayer.dropAll(player);
                 player.setExp(player.getExp()/2);
                 player.setLevel(player.getLevel()/2);
             } else {
