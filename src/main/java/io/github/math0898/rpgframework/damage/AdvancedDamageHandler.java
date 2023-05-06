@@ -28,7 +28,7 @@ public class AdvancedDamageHandler implements Listener {
      *
      * @param event The damage event.
      */
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onDamage (EntityDamageEvent event) {
         event.setDamage(event.getDamage() * 5.00); //Scale damage for the Advanced Damage Calculations
         AdvancedDamageEvent advancedDamageEvent = new AdvancedDamageEvent(event);

@@ -218,9 +218,9 @@ public final class ItemsManager {
         assert meta != null;
 
         meta.setUnbreakable(true);
-        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(new UUID(4, 1), "generic.health", 16, ADD_NUMBER, EquipmentSlot.FEET));
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(new UUID(4,2), "generic.armor", 1.25, ADD_NUMBER, EquipmentSlot.FEET));
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(new UUID(4,3), "generic.armorToughness", 2.25, ADD_NUMBER, EquipmentSlot.FEET));
+        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(new UUID(4, 1), "generic.health", 16, ADD_NUMBER, EquipmentSlot.HEAD));
+        meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(new UUID(4,2), "generic.armor", 1.25, ADD_NUMBER, EquipmentSlot.HEAD));
+        meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(new UUID(4,3), "generic.armorToughness", 2.25, ADD_NUMBER, EquipmentSlot.HEAD));
 
         meta.setDisplayName(ChatColor.BLUE + "Krusk's Trusty Helmet");
         ArrayList<String> lore = new ArrayList<>();
