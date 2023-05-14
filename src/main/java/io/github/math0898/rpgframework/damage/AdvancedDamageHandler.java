@@ -23,12 +23,22 @@ import java.util.Random;
 public class AdvancedDamageHandler implements Listener {
 
     /**
+     * Called at the very end of DamageEvents to display the damage dealt.
+     *
+     * @param event The event to display.
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onDamageDisplay (EntityDamageEvent event) {
+        if (main.useHolographicDisplays) displayDamage(event.getDamage() * 5.00, event.getEntity().getLocation());
+    }
+
+    /**
      * Where the conversion from DamageEvent to AdvancedDamageEvent occurs. Any handlers after this point will be
      * ignored since the values are already grabbed.
      *
      * @param event The damage event.
      */
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onDamage (EntityDamageEvent event) {
         event.setDamage(event.getDamage() * 5.00); //Scale damage for the Advanced Damage Calculations
         AdvancedDamageEvent advancedDamageEvent = new AdvancedDamageEvent(event);
@@ -51,7 +61,6 @@ public class AdvancedDamageHandler implements Listener {
 
         double damage = damageCalculation(advancedDamageEvent);
         event.setDamage(damage/5.00);
-        if (main.useHolographicDisplays) displayDamage(damage, event.getEntity().getLocation());
     }
 
     /**

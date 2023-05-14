@@ -1,21 +1,16 @@
-package sugaku.rpg.framework;
+package io.github.math0898.rpgframework;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import sugaku.rpg.factions.Faction;
-import sugaku.rpg.factions.FactionData;
-import sugaku.rpg.framework.classes.Classes;
 import sugaku.rpg.framework.players.PlayerManager;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Scanner;
 import java.util.UUID;
 
 public class FileManager {
@@ -71,8 +66,7 @@ public class FileManager {
         try {
             file.delete();
             if(file.createNewFile()) {
-                FactionData[] norm = {new FactionData(0, Faction.ABYSS), new FactionData(0, Faction.ELEMENTAL)};
-                PlayerManager.addUserData(new UserData(norm, p.getUniqueId()));
+                PlayerManager.addUserData(new UserData(p.getUniqueId()));
                 save(p);
                 console("Created new file for " + p.getName() + "!", ChatColor.GREEN);
             }
@@ -83,7 +77,7 @@ public class FileManager {
      * Unloads the data on the given player.
      * @param p The player who's data should be unloaded.
      */
-    public static void unload(Player p) {
+    public static void unload (Player p) {
         console("Unloading data on " + p.getName());
 
         save(p);
@@ -97,21 +91,18 @@ public class FileManager {
      * Reads the associated file for the given player. If no file is found it calls init(Player) to create one.
      * @param p The player's file which should be read.
      */
-    public static void load(Player p) {
+    public static void load (Player p) {
         console("Loading player data for " + p.getName() + ".");
 
         File file = new File("./plugins/RPG/PlayerData/" + p.getUniqueId());
+        UserData data = new UserData(p.getUniqueId());
         try {
-            Scanner scanner = new Scanner(file);
-
-            switch (scanner.nextLine()) {
-                case "1.0": reader1_0(p, scanner);
-                case "1.1": reader1_1(p, scanner);
-                case "1.2": reader1_2(p, scanner);
-            }
-
-            scanner.close();
-
+            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+            ConfigurationSection collections = config.getConfigurationSection("collections");
+            if (collections != null)
+                for (String s : collections.getKeys(false))
+                    data.addCollection(s, new ItemCollection(collections.getConfigurationSection(s))); // TODO: should this be part of UserData?
+            PlayerManager.addUserData(data);
             console("Loaded player data for " + p.getName() + ".", ChatColor.GREEN);
         } catch (Exception e) {
             console("File not found for " + p.getName() + ".", ChatColor.YELLOW);
@@ -119,67 +110,6 @@ public class FileManager {
         }
     }
 
-    /**
-     * Translates the data in the scanner into a UserData object for Player p.
-     * @param p The player who we're making the UserData for
-     * @param s The scanner which holds the data dump
-     */
-    private static void reader1_0 (Player p, Scanner s) {
-        ArrayList<FactionData> data = new ArrayList<>();
-
-        while(s.hasNextLine()) {
-            String faction = s.nextLine();
-            int rep = s.nextInt();
-            s.nextLine();
-            if (faction.equals("Abyss")) data.add(new FactionData(rep, Faction.ABYSS));
-            else if (faction.equals("Elemental")) data.add(new FactionData(rep, Faction.ELEMENTAL));
-        }
-
-        PlayerManager.addUserData(new UserData(data.toArray(new FactionData[0]), p.getUniqueId()));
-    }
-
-    /**
-     * Translates the data in the scanner into a UserData object for Player p.
-     * @param p The player who we're making the UserData for.
-     * @param s The scanner which holds the data dump.
-     */
-    private static void reader1_1 (Player p, Scanner s) {
-        ArrayList<FactionData> data = new ArrayList<>();
-
-        s.nextLine();
-        data.add(new FactionData(Integer.parseInt(s.nextLine()), Faction.ABYSS));
-        s.nextLine();
-        data.add(new FactionData(Integer.parseInt(s.nextLine()), Faction.ELEMENTAL));
-        Objects.requireNonNull(PlayerManager.getPlayer(p.getUniqueId())).joinClass(Classes.fromString(s.nextLine()));
-
-        PlayerManager.addUserData(new UserData(data.toArray(new FactionData[0]), p.getUniqueId()));
-    }
-
-    /**
-     * Translate the data in the scanner into a UserData object for Player p. Also loads data like class levels.
-     *
-     * @param p The player who we're making the UserData for.
-     * @param s The scanner which holds the data dump.
-     */
-    private static void reader1_2 (Player p, Scanner s) {
-        ArrayList<FactionData> data = new ArrayList<>();
-
-        s.nextLine();
-        data.add(new FactionData(Integer.parseInt(s.nextLine()), Faction.ABYSS));
-        s.nextLine();
-        data.add(new FactionData(Integer.parseInt(s.nextLine()), Faction.ELEMENTAL));
-        Objects.requireNonNull(PlayerManager.getPlayer(p.getUniqueId())).joinClass(Classes.fromString(s.nextLine()));
-
-        int[] a = new int[]{Integer.parseInt(s.nextLine()),
-                Integer.parseInt(s.nextLine()),
-                Integer.parseInt(s.nextLine()),
-                Integer.parseInt(s.nextLine()),
-                Integer.parseInt(s.nextLine()),
-                Integer.parseInt(s.nextLine()),
-                Integer.parseInt(s.nextLine())};
-
-        PlayerManager.addUserData(new UserData(data.toArray(new FactionData[0]), p.getUniqueId(), a));
-    }
     /**
      * Saves the player's data into their file.
      * @param p The player who's data we're saving.
@@ -203,22 +133,11 @@ public class FileManager {
         console("Saving data for " + name + ".");
 
         try {
-            FileWriter writer = new FileWriter("./plugins/RPG/PlayerData/" + uuid);
-            UserData save = null;
-            for (UserData d: PlayerManager.getUserData()) if (d.getUuid() == uuid) { save = d; break; }
-            if (save == null) { console("Unable to find " + name + "'s data among loaded data.", ChatColor.RED); return; }
-
-            writer.write("1.1\n");
-            writer.write("Abyss\n");
-            writer.write(save.getAbyssData().getReputation() + "\n");
-            writer.write("Elemental\n");
-            writer.write(save.getElementalData().getReputation() + "\n");
-            writer.write(Objects.requireNonNull(PlayerManager.getPlayer(uuid)).getCombatClassString() + "\n");
-
-//            int[] a = Objects.requireNonNull(PlayerManager.getUserData(uuid)).getXp();
-//            for (int i = 0; i < a.length; i++) writer.write(a[i]);
-            writer.close();
-
+            UserData data = PlayerManager.getUserData(uuid);
+            if (data == null) throw new IOException("Player does not have data!");
+            YamlConfiguration config = new YamlConfiguration();
+            data.toConfigurationSection(config);
+            config.save("./plugins/RPG/PlayerData/" + uuid);
             console("Saved data for " + name + "!", ChatColor.GREEN);
 
         } catch (IOException e) {

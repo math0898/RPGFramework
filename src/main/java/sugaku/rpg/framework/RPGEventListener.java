@@ -1,5 +1,6 @@
 package sugaku.rpg.framework;
 
+import io.github.math0898.rpgframework.FileManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

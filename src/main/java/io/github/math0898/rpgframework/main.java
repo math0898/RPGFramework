@@ -1,5 +1,7 @@
 package io.github.math0898.rpgframework;
 
+import io.github.math0898.rpgframework.collections.CollectionListener;
+import io.github.math0898.rpgframework.collections.CollectionManager;
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
 import io.github.math0898.rpgframework.forge.ForgeManager;
 import io.github.math0898.rpgframework.items.GiveCommand;
@@ -72,6 +74,7 @@ public final class main extends JavaPlugin implements Listener {
 
         //Register damage listeners
         Bukkit.getPluginManager().registerEvents(new AdvancedDamageHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new CollectionListener(), this);
         PartyManager.init();
         PlayerManager.init();
         ForgeManager.getInstance();
@@ -89,6 +92,7 @@ public final class main extends JavaPlugin implements Listener {
         Objects.requireNonNull(Bukkit.getPluginCommand("rpg-give")).setExecutor(new GiveCommand());
         Objects.requireNonNull(Bukkit.getPluginCommand("rpg-give")).setTabCompleter(GiveCommand.autocomplete);
 
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> CollectionManager.getInstance().run());
         sugaku.rpg.main.onEnable();
 
         console("Plugin enabled! " + ChatColor.DARK_GRAY + "Took: " + (System.currentTimeMillis() - startTime) + "ms", ChatColor.GREEN);

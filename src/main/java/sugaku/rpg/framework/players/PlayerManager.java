@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExhaustionEvent;
 import org.bukkit.potion.PotionEffect;
-import sugaku.rpg.framework.UserData;
+import io.github.math0898.rpgframework.UserData;
 import sugaku.rpg.main;
 
 import java.util.*;
