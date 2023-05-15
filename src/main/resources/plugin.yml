@@ -26,3 +26,5 @@ commands:
     permission: rpg.admin
   classes:
     permission: rpg.classes
+  collections:
+    permission: rpg.collections

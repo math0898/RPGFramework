@@ -1,11 +1,14 @@
 package io.github.math0898.rpgframework;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import sugaku.rpg.factions.Faction;
 import sugaku.rpg.factions.FactionData;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class UserData {
@@ -14,6 +17,11 @@ public class UserData {
      * The UUID of the player who's data is loaded.
      */
     private final UUID uuid;
+
+    /**
+     * The username of the player whom this data belongs to.
+     */
+    private final String username;
 
     /**
      * A map of the collections that this player has. Some may be null.
@@ -27,6 +35,9 @@ public class UserData {
      */
     public UserData (UUID uuid) {
         this.uuid = uuid;
+        Player p = Bukkit.getPlayer(uuid);
+        if (p != null) username = p.getName();
+        else username = "Unknown";
     }
 
     /**
@@ -50,11 +61,21 @@ public class UserData {
     }
 
     /**
+     * Accessor method for the list of collections that are present in this UserData.
+     *
+     * @return The String set of collections that exist.
+     */
+    public Set<String> registeredCollections () {
+        return collections.keySet();
+    }
+
+    /**
      * Assigns the important values of this UserData to the given ConfigurationSection.
      *
      * @param sec The configuration section to assign the important values to.
      */
     public void toConfigurationSection (ConfigurationSection sec) {
+        sec.set("username", username);
         if (!collections.isEmpty()) {
             ConfigurationSection col = sec.createSection("collections");
             for (String c : collections.keySet())

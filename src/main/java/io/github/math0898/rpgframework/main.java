@@ -2,6 +2,7 @@ package io.github.math0898.rpgframework;
 
 import io.github.math0898.rpgframework.collections.CollectionListener;
 import io.github.math0898.rpgframework.collections.CollectionManager;
+import io.github.math0898.rpgframework.collections.CollectionsCommand;
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
 import io.github.math0898.rpgframework.forge.ForgeManager;
 import io.github.math0898.rpgframework.items.GiveCommand;
@@ -80,6 +81,8 @@ public final class main extends JavaPlugin implements Listener {
         ForgeManager.getInstance();
         Objects.requireNonNull(Bukkit.getPluginCommand("party")).setExecutor(new PartyCommand());
         Objects.requireNonNull(Bukkit.getPluginCommand("party")).setTabCompleter(PartyCommand.autocomplete);
+        Objects.requireNonNull(Bukkit.getPluginCommand("collections")).setExecutor(new CollectionsCommand());
+        Objects.requireNonNull(Bukkit.getPluginCommand("collections")).setTabCompleter(new CollectionsCommand());
 
         //Establish hooks
         useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
