@@ -1,7 +1,7 @@
 name: RPGFramework
 version: 2.1.1
 main: io.github.math0898.rpgframework.RPGFramework
-api-version: 1.19
+api-version: 1.20
 authors: [ Sugaku ]
 description: The main framework plugin used for all of Math0898/Sugaku's RPG plugins.
 prefix: RPG Framework
@@ -15,6 +15,7 @@ permissions:
 commands:
   party:
     description: Lets players join, leave, and manipulate parties.
+    permission: rpg.parties
   rpg-give:
     permission: rpg.admin
     description: Gives custom rpg items to players.
@@ -29,3 +30,6 @@ commands:
   tutorial:
     description: "Helps explain the unique server mechanics to new players."
     permission: rpg.tutorial
+  updates:
+    description: "A command to help notify players of changes that have occurred to the server."
+    permission: rpg.updates
