@@ -8,10 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * The Update command helps to notify and allows players to view recent updates.
@@ -27,7 +24,7 @@ public class Updates extends BetterCommand {
      * @param title The title that the update went by.
      * @param msg   The message associated with this update.
      */
-    public record Update (String title, String date, List<String> msg) { }
+    private record Update (String title, String date, List<String> msg) { }
 
     /**
      * The update sections that players may be interested.
@@ -87,6 +84,9 @@ public class Updates extends BetterCommand {
      */
     @Override
     public List<String> simplifiedTab (CommandSender sender, String[] args) {
-        return null;
+        if (args.length >= 2) return new ArrayList<>();
+        List<String> options = new ArrayList<>(updates.keySet());
+        options = everythingStartsWith(options, args[args.length - 1]);
+        return options;
     }
 }
