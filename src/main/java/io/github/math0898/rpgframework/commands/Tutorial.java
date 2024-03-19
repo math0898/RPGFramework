@@ -77,7 +77,7 @@ public class Tutorial extends BetterCommand {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7This server runs with some extra &2rpg &7mechanics."));
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7For example, you can join a class with '&9/classes&7'."));
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7The game has also been rebalanced to reduce &9armor &7and &dregeneration."));
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7To compensate senders are granted additional &chealth &7and &apower &7through &9classes&7."));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7To compensate players are granted additional &chealth &7and &apower &7through &9classes&7."));
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7There are currently 2 bosses, &aEiryeras &7and &aKrusk&7."));
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7For more information type &r/tutorial index&7."));
             sender.sendMessage(ChatColor.BOLD + " ====== Main Page ====== ");

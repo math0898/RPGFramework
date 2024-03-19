@@ -47,11 +47,54 @@ Classes:
     - "- Each class has unique powers, abilities, and equipment requirements."
     - "- You will also gain an archetype, either &9Caster&7 or &9Fighter&7, which provides more generic bonuses."
   subsections:
-#    - "Assassin"
-#    - "Pyromancer"
-#    - "Paladin"
-#    - "Bard"
-#    - "Berserker"
+    - "Assassin"
+    - "Pyromancer"
+    - "Paladin"
+    - "Bard"
+    - "Berserker"
+
+Assassin:
+  root: false
+  title: "Assassin"
+  message:
+    - "- The assassin is a mobile, high damage class that deals bonus damage upon strikes, dodges attacks, and poisons their enemies."
+    - "- Wear &4full leather &7and use a &4ghast tear &7 to access your class passives and abilities."
+  subsections:
+
+Pyromancer:
+  root: false
+  title: "Pyromancer"
+  message:
+    - "- The pyromancer is an offensive caster that shoots fireballs and ignites their enemies."
+    - "- Gear for the pyromancer is quite flexible, any armor can be worn."
+    - "- Use a &4blaze powder &7and &4blaze rod &7to cast your abilities."
+  subsections:
+
+Paladin:
+  root: false
+  title: "Paladin"
+  message:
+    - "- Paladins are the pen ultimate healer class with strong regeneration and health boosting abilities."
+    - "- &4Golden armor &7helps to conduct mana and must be used to cast the paladin's spells."
+    - "- A &4golden shovel &7must be held as well."
+
+Bard:
+  root: false
+  title: "Bard"
+  message:
+    - "- The bard is an aura caster that buffs their allies."
+    - "- Gear for the bard is incredibly flexible, any armor can be worn."
+    - "- Use a &4noteblock &7to cast your abilities."
+  subsections:
+
+Berserker:
+  root: false
+  title: "Berserker"
+  message:
+    - "- The berserker is a brute force fighter that crushes their enemies under an &4axe&7."
+    - "- Wear &leather leggings &7and a &4leather chestplate &7to access your powers."
+    - "- &4Rotten flesh is used to cast your abilities."
+  subsections:
 
 Crafting:
   root: true

@@ -155,12 +155,14 @@ public class PlayerManager implements Listener { // todo needs cleaning. Copied 
     /**
      * Heals the player to full
      */
-    public static void healPlayer(Player p) { p.setHealth(Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue()); }
+    public static void healPlayer (Player p) {
+        p.setHealth(Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue());
+    }
 
     /**
      * Prevents the loss of hunger due to regeneration.
      */
-    public static void hunger(EntityExhaustionEvent event) {
+    public static void hunger (EntityExhaustionEvent event) {
         event.setCancelled(true);
     }
 
