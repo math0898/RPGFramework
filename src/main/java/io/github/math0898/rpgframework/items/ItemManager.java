@@ -1,22 +1,16 @@
 package io.github.math0898.rpgframework.items;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import static io.github.math0898.rpgframework.main.console;
-import static io.github.math0898.rpgframework.main.plugin;
-import static org.bukkit.attribute.AttributeModifier.Operation.ADD_NUMBER;
+import static io.github.math0898.rpgframework.RPGFramework.console;
+import static io.github.math0898.rpgframework.RPGFramework.plugin;
 
 /**
  * The ItemManager is used to crate RPG related items on load.

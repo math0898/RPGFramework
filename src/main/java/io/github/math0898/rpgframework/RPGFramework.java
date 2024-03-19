@@ -21,12 +21,12 @@ import java.util.logging.Level;
  *
  * @author Sugaku
  */
-public final class main extends JavaPlugin implements Listener {
+public final class RPGFramework extends JavaPlugin implements Listener {
 
     /**
      * A pointer to the plugin instance.
      */
-    public static main plugin = null;
+    public static RPGFramework plugin = null;
 
     /**
      * Is holographic displays enabled on the server?
@@ -68,7 +68,7 @@ public final class main extends JavaPlugin implements Listener {
      *
      * @return The active Plugin instance.
      */
-    public static main getInstance () {
+    public static RPGFramework getInstance () {
         return plugin;
     }
 

@@ -3,20 +3,17 @@ package io.github.math0898.rpgframework;
 import io.github.math0898.rpgframework.parties.Party;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExhaustionEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-import static io.github.math0898.rpgframework.main.plugin;
+import static io.github.math0898.rpgframework.RPGFramework.plugin;
 
 public class PlayerManager implements Listener { // todo needs cleaning. Copied from RPG 1.0.
 

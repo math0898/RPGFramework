@@ -12,7 +12,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.ArrayList;
 
-import static io.github.math0898.rpgframework.main.plugin;
+import static io.github.math0898.rpgframework.RPGFramework.plugin;
 
 /**
  * The party manager handles things relating to parties in general. This includes things like party chat.

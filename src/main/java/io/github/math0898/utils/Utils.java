@@ -1,6 +1,6 @@
 package io.github.math0898.utils;
 
-import io.github.math0898.rpgframework.main;
+import io.github.math0898.rpgframework.RPGFramework;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -16,6 +16,6 @@ public class Utils {
      * @return The active plugin.
      */
     public static JavaPlugin getPlugin () {
-        return main.getInstance();
+        return RPGFramework.getInstance();
     }
 }

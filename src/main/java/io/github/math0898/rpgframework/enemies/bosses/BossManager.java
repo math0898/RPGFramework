@@ -4,7 +4,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,8 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static io.github.math0898.rpgframework.main.console;
-import static io.github.math0898.rpgframework.main.plugin;
+import static io.github.math0898.rpgframework.RPGFramework.console;
+import static io.github.math0898.rpgframework.RPGFramework.plugin;
 
 /**
  * The BossManager handles bosses. That is reading them from files, special events, boss drops, and summoning.

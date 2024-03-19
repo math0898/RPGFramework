@@ -1,9 +1,9 @@
 package sugaku.rpg;
 
+import io.github.math0898.rpgframework.RPGFramework;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import sugaku.rpg.framework.CommandManager;
 import sugaku.rpg.framework.FileManager;
@@ -47,7 +47,7 @@ public final class main {
      * which each have the appropriate managers called.
      */
     public static void onEnable() {
-        plugin = io.github.math0898.rpgframework.main.plugin;
+        plugin = RPGFramework.plugin;
         //Loading
         console("Loading Sugaku's RPG Plugin...");
 

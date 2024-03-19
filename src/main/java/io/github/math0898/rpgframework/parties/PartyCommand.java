@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static io.github.math0898.rpgframework.main.plugin;
+import static io.github.math0898.rpgframework.RPGFramework.plugin;
 
 /**
  * The Party Command is used for interacting and manipulating parties.

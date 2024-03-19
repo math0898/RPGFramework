@@ -1,6 +1,6 @@
 name: RPGFramework
 version: 2.1.1
-main: io.github.math0898.rpgframework.main
+main: io.github.math0898.rpgframework.RPGFramework
 api-version: 1.19
 authors: [ Sugaku ]
 description: The main framework plugin used for all of Math0898/Sugaku's RPG plugins.

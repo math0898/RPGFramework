@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-import static io.github.math0898.rpgframework.main.plugin;
+import static io.github.math0898.rpgframework.RPGFramework.plugin;
 
 /**
  * The Boss class which describes generic bosses and their abilities.

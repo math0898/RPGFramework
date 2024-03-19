@@ -2,7 +2,7 @@ package io.github.math0898.rpgframework.damage;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import io.github.math0898.rpgframework.main;
+import io.github.math0898.rpgframework.RPGFramework;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -51,7 +51,7 @@ public class AdvancedDamageHandler implements Listener {
 
         double damage = damageCalculation(advancedDamageEvent);
         event.setDamage(damage/5.00);
-        if (main.useHolographicDisplays) displayDamage(damage, event.getEntity().getLocation());
+        if (RPGFramework.useHolographicDisplays) displayDamage(damage, event.getEntity().getLocation());
     }
 
     /**
@@ -90,8 +90,8 @@ public class AdvancedDamageHandler implements Listener {
         Location locale = new Location(location.getWorld(), location.getX() + random.nextDouble() - 0.50,
                 location.getY() + 1.50,
                 location.getZ() + random.nextDouble() - 0.50);
-        Hologram hologram = HologramsAPI.createHologram(main.plugin, locale);
+        Hologram hologram = HologramsAPI.createHologram(RPGFramework.plugin, locale);
         hologram.appendTextLine(ChatColor.RED + "☆" + ChatColor.YELLOW + String.format("%.1f", damage) + ChatColor.RED + "☆");
-        Bukkit.getScheduler().runTaskLater(main.plugin, hologram::delete, 5*10);
+        Bukkit.getScheduler().runTaskLater(RPGFramework.plugin, hologram::delete, 5*10);
     }
 }

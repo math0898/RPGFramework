@@ -17,7 +17,7 @@ import sugaku.rpg.framework.items.ItemsManager;
 
 import java.util.*;
 
-import static io.github.math0898.rpgframework.main.plugin;
+import static io.github.math0898.rpgframework.RPGFramework.plugin;
 import static org.bukkit.enchantments.Enchantment.*;
 import static org.bukkit.Material.*;
 
