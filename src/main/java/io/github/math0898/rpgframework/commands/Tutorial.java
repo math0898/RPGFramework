@@ -46,7 +46,7 @@ public class Tutorial extends BetterCommand {
         super("tutorial");
         YamlConfiguration data = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(RPGFramework.getInstance().getResource("tutorials.yml"))));
         for (String key : data.getKeys(false))
-            sections.put(key.toLowerCase(), new Section(data.getString(key + ".title"), data.getBoolean("root"), data.getStringList(key + ".subsections"), data.getStringList(key + ".message")));
+            sections.put(key.toLowerCase(), new Section(data.getString(key + ".title"), data.getBoolean(key + ".root"), data.getStringList(key + ".subsections"), data.getStringList(key + ".message")));
         sections.forEach((str, s) -> {
             if (s.root())
                 roots.add(str);
@@ -73,14 +73,14 @@ public class Tutorial extends BetterCommand {
     @Override
     public boolean onNonPlayerCommand (CommandSender sender, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.WHITE + " ====== Tutorial ====== ");
+            sender.sendMessage(ChatColor.BOLD + " ====== Tutorial ====== ");
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7This server runs with some extra &2rpg &7mechanics."));
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7For example, you can join a class with '&9/classes&7'."));
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7The game has also been rebalanced to reduce &9armor and &dregeneration."));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7The game has also been rebalanced to reduce &9armor &7and &dregeneration."));
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7To compensate senders are granted additional &chealth &7and &apower &7through &9classes&7."));
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7There are currently 2 bosses, &aEiryeras &7and &aKrusk&7."));
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7For more information type &r/tutorial index&7."));
-            sender.sendMessage(ChatColor.WHITE + " ====== Main Page ====== ");
+            sender.sendMessage(ChatColor.BOLD + " ====== Main Page ====== ");
             return true;
         }
         Section section = sections.get(args[args.length - 1].toLowerCase());
@@ -88,10 +88,10 @@ public class Tutorial extends BetterCommand {
             sender.sendMessage(ChatColor.RED + "We could not find that section.");
             return true;
         }
-        sender.sendMessage(ChatColor.BOLD + " ====== " + section.title() + " ====== ");
+        sender.sendMessage(ChatColor.BOLD + " ====== Tutorial ====== ");
         for (String s : section.msg())
             sender.sendMessage(ChatColor.GRAY + ChatColor.translateAlternateColorCodes('&', s));
-        sender.sendMessage(ChatColor.BOLD + " ====== ====== ====== ====== ");
+        sender.sendMessage(ChatColor.BOLD + " ====== " + section.title() + " ====== ");
         return true;
     }
 
@@ -105,7 +105,7 @@ public class Tutorial extends BetterCommand {
     public List<String> simplifiedTab (CommandSender sender, String[] args) {
         if (args.length <= 1)
             return everythingStartsWith(roots, args[0]);
-        Section previous = sections.get(args[args.length - 1]);
+        Section previous = sections.get(args[args.length - 2]);
         if (previous == null)
             return new ArrayList<>();
         if (previous.subsections() != null)
