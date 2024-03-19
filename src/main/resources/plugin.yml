@@ -1,5 +1,5 @@
 name: RPGFramework
-version: '${project.version}'
+version: 2.1.1
 main: io.github.math0898.rpgframework.main
 api-version: 1.19
 authors: [ Sugaku ]
@@ -16,6 +16,7 @@ commands:
   party:
     description: Lets players join, leave, and manipulate parties.
   rpg-give:
+    permission: rpg.admin
     description: Gives custom rpg items to players.
   irpg:
     permission: rpg.admin
@@ -25,3 +26,6 @@ commands:
     permission: rpg.admin
   classes:
     permission: rpg.classes
+  tutorial:
+    description: "Helps explain the unique server mechanics to new players."
+    permission: rpg.tutorial

@@ -1,5 +1,6 @@
 package io.github.math0898.rpgframework;
 
+import io.github.math0898.rpgframework.commands.Tutorial;
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
 import io.github.math0898.rpgframework.items.GiveCommand;
 import io.github.math0898.rpgframework.items.ItemManager;
@@ -25,7 +26,7 @@ public final class main extends JavaPlugin implements Listener {
     /**
      * A pointer to the plugin instance.
      */
-    public static JavaPlugin plugin = null;
+    public static main plugin = null;
 
     /**
      * Is holographic displays enabled on the server?
@@ -63,6 +64,15 @@ public final class main extends JavaPlugin implements Listener {
     }
 
     /**
+     * An accessor method to the active Plugin instance.
+     *
+     * @return The active Plugin instance.
+     */
+    public static main getInstance () {
+        return plugin;
+    }
+
+    /**
      * Called on enable. Just the normal things such as loading the config, registering listeners, initializing methods.
      */
     @Override
@@ -75,6 +85,7 @@ public final class main extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new GodEventListener(), this); // todo remove me!
         PartyManager.init();
         PlayerManager.init();
+        new Tutorial();
         Objects.requireNonNull(Bukkit.getPluginCommand("party")).setExecutor(new PartyCommand());
         Objects.requireNonNull(Bukkit.getPluginCommand("party")).setTabCompleter(PartyCommand.autocomplete);
 
