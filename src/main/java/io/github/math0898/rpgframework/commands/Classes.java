@@ -4,7 +4,6 @@ import io.github.math0898.utils.commands.BetterCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import sugaku.rpg.commands.CommandRPG;
 import sugaku.rpg.framework.menus.ClassesManager;
 
 import java.util.ArrayList;
