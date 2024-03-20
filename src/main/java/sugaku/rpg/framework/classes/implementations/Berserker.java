@@ -21,7 +21,7 @@ public class Berserker extends AbstractClass implements Class{
     public Berserker(RpgPlayer p) {
         super(p);
         setCooldowns(new Cooldown[]{new Cooldown(30), new Cooldown(60), new Cooldown(180)});
-        PlayerManager.scaleRegen(p.getBukkitPlayer(), 1.20);
+        PlayerManager.scaleRegen(p.getBukkitPlayer(), 0.8);
     }
 
     @Override

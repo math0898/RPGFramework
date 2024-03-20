@@ -117,8 +117,8 @@ public class PlayerManager {
     public static void scaleHealth(Player p) {
         double max = Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue();
         p.setHealthScale(max);
-        p.setSaturatedRegenRate(((int) max) * 4);
-        p.setUnsaturatedRegenRate(((int) max) * 4);
+        p.setSaturatedRegenRate(20 * 4); // Number of ticks to gain 1 hp
+        p.setUnsaturatedRegenRate(20 * 4);
     }
 
     /**
@@ -126,10 +126,9 @@ public class PlayerManager {
      * @param p The player who's regen is being scaled.
      * @param mod The multiplicative modifier to health regen.
      */
-    public static void scaleRegen(Player p, double mod) {
-        double max = Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue();
-        p.setSaturatedRegenRate((int)((max) * 4 * mod));
-        p.setUnsaturatedRegenRate((int)((max) * 4 * mod));
+    public static void scaleRegen (Player p, double mod) {
+        p.setSaturatedRegenRate((int) (20 * 4 * mod)); // Number of ticks to gain 1 hp.
+        p.setUnsaturatedRegenRate((int) (20 * 4 * mod));
     }
 
     /**

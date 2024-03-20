@@ -19,6 +19,16 @@ import java.util.Objects;
 public class RpgPlayer {
 
     /**
+     * The time in millis that this player was last fighting.
+     */
+    private long fighting = 0L;
+
+    /**
+     *
+     */
+    private static final long TIME_UNTIL_OUT_OF_COMBAT = 10000;
+
+    /**
      * Default constructor for an RpgPlayer construct just requiring a uuid.
      * @param p The player this construct points to.
      */
@@ -194,15 +204,58 @@ public class RpgPlayer {
 
     public boolean revive() { return classObject.onDeath(); }
 
-    public void damaged(EntityDamageByEntityEvent event) { classObject.damaged(event); }
+    /**
+     * Used to verify whether a player is in combat.
+     *
+     * @return Whether the player has been attacked in the last bit of time.
+     */
+    public boolean inCombat () {
+        return System.currentTimeMillis() - fighting < TIME_UNTIL_OUT_OF_COMBAT;
+    }
 
-    public void attacker(EntityDamageByEntityEvent event) { classObject.attack(event); }
+    /**
+     * Called whenever this player gets attacked by another entity.
+     *
+     * @param event The EntityDamageByEntityEvent to consider.
+     */
+    public void damaged (EntityDamageByEntityEvent event) {
+        fighting = System.currentTimeMillis();
+        enteringCombat();
+        classObject.damaged(event);
+    }
+
+    /**
+     * Called whenever this player attacks another entity.
+     *
+     * @param event The EntityDamageByEntityEvent to consider.
+     */
+    public void attacker (EntityDamageByEntityEvent event) {
+        fighting = System.currentTimeMillis();
+        enteringCombat();
+        classObject.attack(event);
+    }
 
     public void passive() {
         try {
             classObject.passive();
             Bukkit.getScheduler().runTaskLater(main.plugin, this::passive, 20*20);
+            if (!inCombat())
+                leaveCombat();
         } catch (Exception ignored) { }
+    }
+
+    /**
+     * Called whenever a player is attacked while in combat.
+     */
+    public void enteringCombat () {
+        PlayerManager.scaleRegen(getBukkitPlayer(), 1.0);
+    }
+
+    /**
+     * Called periodically when a player is not in combat.
+     */
+    public void leaveCombat () {
+        PlayerManager.scaleRegen(getBukkitPlayer(), 0.25);
     }
 
     //TODO: Implement the damage bonus of the bow
