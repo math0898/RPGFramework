@@ -1,27 +1,24 @@
 package io.github.math0898.rpgframework.commands;
 
 import io.github.math0898.utils.commands.BetterCommand;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import sugaku.rpg.commands.CommandRPG;
-import sugaku.rpg.framework.menus.ClassesManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Creates the Classes command. The Classes command is an alias for /rpg classes. It is used for join classes.
+ * The /rpg command serves as a root alias for a number of other commands such as classes, tutorial, and updates.
  *
  * @author Sugaku
  */
-public class Classes extends BetterCommand {
+public class RPGCommand extends BetterCommand { // todo: Implement.
 
     /**
      * Creates a new BetterCommand with the given name.
      */
-    public Classes () {
-        super("classes", ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] ");
+    public RPGCommand () {
+        super("rpg");
     }
 
     /**
@@ -32,7 +29,6 @@ public class Classes extends BetterCommand {
      */
     @Override
     public boolean onPlayerCommand (Player player, String[] args) {
-        ClassesManager.classMenu(player);
         return true;
     }
 
@@ -44,7 +40,6 @@ public class Classes extends BetterCommand {
      */
     @Override
     public boolean onNonPlayerCommand (CommandSender sender, String[] args) {
-        send(sender, ChatColor.RED + "This command can only be ran as a player.");
         return true;
     }
 

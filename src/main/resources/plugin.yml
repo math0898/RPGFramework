@@ -23,15 +23,18 @@ commands:
     permission: rpg.admin
   reputation:
     permission: rpg.admin
+  rpg:
+    description: "A root alias for a number of commands."
+    permission: "rpg.player"
   summonrpg:
     description: "Summons RPG mobs into the world. Used by admins and for testing."
-    permission: rpg.admin
+    permission: "rpg.admin"
   classes:
     description: "Opens a GUI to players to allow them to easily leave and join classes."
-    permission: rpg.classes
+    permission: "rpg.classes"
   tutorial:
     description: "Helps explain the unique server mechanics to new players."
-    permission: rpg.tutorial
+    permission: "rpg.tutorial"
   updates:
     description: "A command to help notify players of changes that have occurred to the server."
-    permission: rpg.updates
+    permission: "rpg.updates"
