@@ -1,4 +1,4 @@
-eiryeras-spawn:
+spawn:
   ==: org.bukkit.inventory.ItemStack
   v: 3700
   type: BEEF
@@ -236,7 +236,7 @@ ceremonial-knife:
           uuid: 00000000-0000-0005-0000-000000000004
           operation: 0
     Unbreakable: true
-eiryeras-lore:
+lore:
   ==: org.bukkit.inventory.ItemStack
   v: 3700
   type: IRON_SWORD

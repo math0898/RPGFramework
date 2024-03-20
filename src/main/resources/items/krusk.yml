@@ -1,4 +1,4 @@
-krusk-spawn: # TODO: This item does not allow krusk to be summoned. It is missing unbreakable flag. This is the better version.
+spawn: # TODO: This item does not allow krusk to be summoned. It is missing unbreakable flag. This is the better version.
   ==: org.bukkit.inventory.ItemStack
   type: WHEAT
   amount: 1
@@ -12,7 +12,7 @@ krusk-spawn: # TODO: This item does not allow krusk to be summoned. It is missin
       - §7Attacking bosses whilst they are in
       - §7water will cause you to get struck
       - §7by lighting.
-krusk-lore:
+lore:
   ==: org.bukkit.inventory.ItemStack
   type: WHEAT
   amount: 1

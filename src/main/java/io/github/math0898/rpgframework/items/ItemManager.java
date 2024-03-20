@@ -27,7 +27,7 @@ public class ItemManager {
     /**
      * Creates a new ItemManager.
      */ // todo: Refactor to singleton design pattern.
-    public ItemManager () { // todo: CamelCase with namespace (filename).
+    public ItemManager () {
         File itemsDir = new File("./plugins/RPGFramework/items/");
         if (!itemsDir.exists()) {
             if (!itemsDir.mkdirs()) {
@@ -49,7 +49,7 @@ public class ItemManager {
                 for (String k : yaml.getKeys(false)) {
                     ItemStack i = yaml.getItemStack(k);
                     if (i != null) {
-                        rpgItems.put(k, i);
+                        rpgItems.put(toCamelSpaceNamespace(f.getName(), k), i);
                         console("Registered item by name: " + k, ChatColor.GRAY);
                     } else console("Failed to parse: " + k + " in: " + f.getPath(), ChatColor.RED);
                 }
@@ -58,6 +58,26 @@ public class ItemManager {
                 console("Failed to parse item located at: " + f.getPath(), ChatColor.RED);
             }
         }
+    }
+
+    /**
+     * A utility method to convert a given file name and item name into a camel space namespace string.
+     *
+     * @param key      The key in the result.
+     * @param fileName The namespace in the beginning.
+     * @return The resulting namespace key.
+     */
+    private String toCamelSpaceNamespace (String fileName, String key) {
+        String toReturn = fileName.replace(".yml", "").replace(".yaml", "") + ":";
+        char[] tmp = key.toCharArray();
+        tmp[0] = Character.toUpperCase(tmp[0]);
+        for (int i = 1; i < tmp.length; i++)
+            if (tmp[i] == '-') {
+                if (i < tmp.length - 1)
+                    tmp[i + 1] = Character.toUpperCase(tmp[i + 1]);
+                i++;
+            }
+        return toReturn + new String(tmp).replace("-", "");
     }
 
     /**

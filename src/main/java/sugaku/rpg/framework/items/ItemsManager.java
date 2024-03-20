@@ -29,7 +29,7 @@ public final class ItemsManager {
     /**
      * The rare Dark Helmet custom item.
      */
-    public static ItemStack DarkHelm = itemManager.getItem("helmet-of-darkness");
+    public static ItemStack DarkHelm = itemManager.getItem("other:HelmetOfDarkness");
 
     /**
      * The rare spawn item for Eiryeras.
@@ -39,22 +39,22 @@ public final class ItemsManager {
     /**
      * The uncommon axe of Krusk custom item.
      */
-    public static ItemStack KruskAxe = itemManager.getItem("krusk-axe");
+    public static ItemStack KruskAxe = itemManager.getItem("krusk:KruskAxe");
 
     /**
      * The uncommon boots of Krusk custom item.
      */
-    public static ItemStack KruskBoots = itemManager.getItem("krusk-boots");
+    public static ItemStack KruskBoots = itemManager.getItem("krusk:KruskBoots");
 
     /**
      * The rare Krusk helmet.
      */
-    public static ItemStack KruskHelmet =itemManager.getItem("krusk-helmet");
+    public static ItemStack KruskHelmet =itemManager.getItem("krusk:KruskHelmet");
 
     /**
      * The uncommon leggings of Krusk custom item.
      */
-    public static ItemStack KruskLeggings = itemManager.getItem("krusk-leggings");
+    public static ItemStack KruskLeggings = itemManager.getItem("krusk:KruskLeggings");
 
     /**
      * The rare spawn item for Krusk.
@@ -79,12 +79,12 @@ public final class ItemsManager {
     /**
      * The uncommon undead chestplate custom item.
      */
-    public static ItemStack UndeadChestplate = itemManager.getItem("undead-chestplate");
+    public static ItemStack UndeadChestplate = itemManager.getItem("krusk:UndeadChestplate");
 
     /**
      * The rare lore of Krusk.
      */
-    public static ItemStack KruskLore = itemManager.getItem("krusk-lore");
+    public static ItemStack KruskLore = itemManager.getItem("krusk:Lore");
 
     /**
      * An arraylist of all the custom items in the game.

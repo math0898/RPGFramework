@@ -1,4 +1,4 @@
-feyrith-spawn:
+spawn:
   ==: org.bukkit.inventory.ItemStack
   type: GOLD_INGOT
   amount: 1
