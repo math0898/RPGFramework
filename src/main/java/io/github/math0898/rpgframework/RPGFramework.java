@@ -1,6 +1,7 @@
 package io.github.math0898.rpgframework;
 
 import io.github.math0898.rpgframework.commands.Classes;
+import io.github.math0898.rpgframework.commands.SummonRPG;
 import io.github.math0898.rpgframework.commands.Tutorial;
 import io.github.math0898.rpgframework.commands.Updates;
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
@@ -88,8 +89,9 @@ public final class RPGFramework extends JavaPlugin implements Listener {
         PartyManager.init();
         PlayerManager.init();
         new Tutorial();
-        new Updates();
+        new Updates(); // todo: We may want to group these into a method or move them somewhere else entirely.
         new Classes();
+        new SummonRPG();
         Objects.requireNonNull(Bukkit.getPluginCommand("party")).setExecutor(new PartyCommand());
         Objects.requireNonNull(Bukkit.getPluginCommand("party")).setTabCompleter(PartyCommand.autocomplete);
 

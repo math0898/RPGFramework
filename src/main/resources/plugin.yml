@@ -24,6 +24,7 @@ commands:
   reputation:
     permission: rpg.admin
   summonrpg:
+    description: "Summons RPG mobs into the world. Used by admins and for testing."
     permission: rpg.admin
   classes:
     description: "Opens a GUI to players to allow them to easily leave and join classes."
