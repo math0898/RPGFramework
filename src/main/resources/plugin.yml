@@ -17,10 +17,8 @@ commands:
     description: Lets players join, leave, and manipulate parties.
     permission: rpg.parties
   rpg-give:
-    permission: rpg.admin
-    description: Gives custom rpg items to players.
-  irpg:
-    permission: rpg.admin
+    description: "Gives custom rpg items to players."
+    permission: "rpg.admin"
   reputation:
     permission: rpg.admin
   rpg:

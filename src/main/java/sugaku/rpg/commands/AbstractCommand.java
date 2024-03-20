@@ -2,17 +2,13 @@ package sugaku.rpg.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.defaults.PluginsCommand;
 
-public abstract class AbstractCommand extends PluginsCommand {
+public class AbstractCommand {
 
     /**
      * The prefix sent with every message.
      */
     private static final String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY;
-
-    public AbstractCommand(String name) { super(name); }
-
 
     public static void send(CommandSender user, String message) { send(user, message, true); }
 

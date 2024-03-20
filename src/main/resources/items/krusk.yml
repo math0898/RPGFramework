@@ -1,4 +1,4 @@
-krusk-spawn:
+krusk-spawn: # TODO: This item does not allow krusk to be summoned. It is missing unbreakable flag. This is the better version.
   ==: org.bukkit.inventory.ItemStack
   type: WHEAT
   amount: 1
@@ -189,32 +189,3 @@ undead-chestplate:
           slot: CHEST
           uuid: 00000000-0000-0003-0000-000000000001
           operation: 0
-template-item:
-  ==: org.bukkit.inventory.ItemStack
-  type: IRON_AXE
-  amount: 1
-  meta:
-    ==: ItemMeta
-    Unbreakable: true
-    meta-type: UNSPECIFIC
-    display-name: §aKrusk's Axe
-    lore:
-      - §7During life §aKrusk §7was a human general.
-      - §7He was not particularly good at what
-      - §7he did but now he gives adventurers
-      - §7a hard time anyways.
-    attribute-modifiers:
-      GENERIC_ATTACK_DAMAGE:
-      - ==: org.bukkit.attribute.AttributeModifier
-        amount: 12.0
-        name: generic.damage
-        slot: HAND
-        uuid: 00000000-0000-0005-0000-000000000004
-        operation: 0
-      GENERIC_ATTACK_SPEED:
-      - ==: org.bukkit.attribute.AttributeModifier
-        amount: -3.0
-        name: generic.attackSpeed
-        slot: HAND
-        uuid: 00000000-0000-0005-0000-000000000005
-        operation: 0

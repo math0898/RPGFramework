@@ -1,0 +1,43 @@
+helmet-of-darkness:
+  ==: org.bukkit.inventory.ItemStack
+  v: 3700
+  type: LEATHER_HELMET
+  meta:
+    ==: ItemMeta
+    meta-type: COLORABLE_ARMOR
+    display-name: '{"text":"","extra":[{"text":"Helmet of Darkness","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"blue","bold":false}]}'
+    lore:
+      - '{"text":"","extra":[{"text":"The helmet of darkness allows one to","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
+      - '{"text":"","extra":[{"text":"see into","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false},{"text":"The
+      Abyss","obfuscated":true,"italic":false,"color":"black"},{"text":", granting
+      them some","obfuscated":false,"italic":false,"color":"gray"}]}'
+      - '{"text":"","extra":[{"text":"resistances and strength at a cost.","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
+    attribute-modifiers:
+      GENERIC_ARMOR:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 0.75
+          name: generic.armor
+          slot: HEAD
+          uuid: 00000000-0000-0004-0000-000000000002
+          operation: 0
+      GENERIC_MAX_HEALTH:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 8.0
+          name: generic.health
+          slot: HEAD
+          uuid: 00000000-0000-0004-0000-000000000001
+          operation: 0
+      GENERIC_ATTACK_DAMAGE:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 2.0
+          name: generic.attack.damage
+          slot: HEAD
+          uuid: 00000000-0000-0004-0000-000000000005
+          operation: 0
+    Unbreakable: true
+    color:
+      ==: Color
+      ALPHA: 255
+      RED: 0
+      BLUE: 0
+      GREEN: 0

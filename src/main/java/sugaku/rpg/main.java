@@ -5,7 +5,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import sugaku.rpg.framework.CommandManager;
 import sugaku.rpg.framework.FileManager;
 import sugaku.rpg.framework.classes.implementations.Pyromancer;
 import sugaku.rpg.framework.items.ItemsManager;
@@ -53,9 +52,6 @@ public final class main {
 
         //Files
         FileManager.setup();
-
-        //Commands
-        CommandManager.setup(plugin);
 
         //Registering events TODO: Move this somewhere?
         Bukkit.getPluginManager().registerEvents(new RPGEventListener(), plugin);

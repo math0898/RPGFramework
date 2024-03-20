@@ -150,8 +150,28 @@ public abstract class BetterCommand implements CommandExecutor, TabCompleter { /
      * @param message    The message to send.
      * @param sendPrefix Whether a prefix should be sent with this message or not.
      */
-    public void send(CommandSender user, String message, boolean sendPrefix) {
+    protected void send(CommandSender user, String message, boolean sendPrefix) {
         if (sendPrefix) user.sendMessage(prefix + message);
         else user.sendMessage(ChatColor.GRAY + message);
+    }
+
+    /**
+     * Parses an Integer in the given array at the given position. Will default to returning 1 if there is no value.
+     *
+     * @param index  The array index of the param to grab.
+     * @param args   The argument array.
+     * @param sender The person we should notify if there was an error parsing.
+     * @return The integer at that array position or 1 if not present or error.
+     */
+    protected int getIntegerParam (int index, String[] args, CommandSender sender) {
+        int toReturn = 1;
+        if (args.length == index + 1) {
+            try {
+                toReturn = Integer.parseInt(args[index]);
+            } catch (Exception e) {
+                send(sender, ChatColor.RED + "Is " + args[index] + " a number? Defaulting to 1.");
+            }
+        }
+        return toReturn;
     }
 }

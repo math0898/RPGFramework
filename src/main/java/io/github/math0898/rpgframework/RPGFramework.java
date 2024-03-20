@@ -5,7 +5,7 @@ import io.github.math0898.rpgframework.commands.SummonRPG;
 import io.github.math0898.rpgframework.commands.Tutorial;
 import io.github.math0898.rpgframework.commands.Updates;
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
-import io.github.math0898.rpgframework.items.GiveCommand;
+import io.github.math0898.rpgframework.commands.GiveCommand;
 import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.rpgframework.parties.PartyCommand;
 import io.github.math0898.rpgframework.parties.PartyManager;
@@ -88,10 +88,7 @@ public final class RPGFramework extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new GodEventListener(), this); // todo remove me!
         PartyManager.init();
         PlayerManager.init();
-        new Tutorial();
-        new Updates(); // todo: We may want to group these into a method or move them somewhere else entirely.
-        new Classes();
-        new SummonRPG();
+        registerCommands();
         Objects.requireNonNull(Bukkit.getPluginCommand("party")).setExecutor(new PartyCommand());
         Objects.requireNonNull(Bukkit.getPluginCommand("party")).setTabCompleter(PartyCommand.autocomplete);
 
@@ -103,8 +100,6 @@ public final class RPGFramework extends JavaPlugin implements Listener {
         }
 
         itemManager = new ItemManager();
-        Objects.requireNonNull(Bukkit.getPluginCommand("rpg-give")).setExecutor(new GiveCommand());
-        Objects.requireNonNull(Bukkit.getPluginCommand("rpg-give")).setTabCompleter(GiveCommand.autocomplete);
 
         sugaku.rpg.main.onEnable();
 
@@ -117,5 +112,18 @@ public final class RPGFramework extends JavaPlugin implements Listener {
     @Override
     public void onDisable () {
         // Plugin shutdown logic
+    }
+
+    /**
+     * Registers all the commands in a simple group.
+     */
+    private void registerCommands () {
+        console("Registering commands.", ChatColor.GRAY);
+        new Tutorial();
+        new Updates();
+        new Classes();
+        new SummonRPG();
+        new GiveCommand();
+        console("Commands registered.", ChatColor.GREEN);
     }
 }

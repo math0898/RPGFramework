@@ -40,14 +40,7 @@ public class SummonRPG extends BetterCommand {
             return true;
         }
 
-        int loop = 1;
-        if (args.length == 2) {
-            try {
-                loop = Integer.parseInt(args[1]);
-            } catch (Exception e) {
-                send(player, ChatColor.RED + "Could not find the number you would like to spawn. Assuming 1.");
-            }
-        }
+        int loop = getIntegerParam(1, args, player);
 
         // todo: This pattern is very trouble some as the number of enemies increases.
         if (args[0].equalsIgnoreCase("Eiryeras")) {

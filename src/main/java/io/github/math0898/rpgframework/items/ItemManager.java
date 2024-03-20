@@ -26,15 +26,16 @@ public class ItemManager {
 
     /**
      * Creates a new ItemManager.
-     */
-    public ItemManager () {
+     */ // todo: Refactor to singleton design pattern.
+    public ItemManager () { // todo: CamelCase with namespace (filename).
         File itemsDir = new File("./plugins/RPGFramework/items/");
         if (!itemsDir.exists()) {
             if (!itemsDir.mkdirs()) {
                 console("Failed to create item directories.", ChatColor.YELLOW);
                 return;
             }
-            plugin.saveResource("items/krusk.yml", false); // todo: refactor to reduce scope when adding multiple bosses and sets.
+            for (String itemResources : new String[]{ "items/krusk.yml", "items/other.yml", "items/eiryeras.yml", "items/feyrith.yml"})
+                plugin.saveResource(itemResources, false); // todo: refactor to reduce scope when adding multiple bosses and sets.
         }
         File[] files = itemsDir.listFiles();
         if (files == null) {
@@ -76,5 +77,15 @@ public class ItemManager {
      */
     public ItemStack getItem (String name) {
         return rpgItems.get(name);
+    }
+
+    /**
+     * Checks whether an item by the given name exists.
+     *
+     * @param name The name of the item to check for.
+     * @return True if the item exists.
+     */
+    public boolean hasItem (String name) {
+        return rpgItems.containsKey(name);
     }
 }

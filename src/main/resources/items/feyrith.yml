@@ -1,0 +1,14 @@
+feyrith-spawn:
+  ==: org.bukkit.inventory.ItemStack
+  type: GOLD_INGOT
+  amount: 1
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: §6Feyrith Boss Spawn
+    lore:
+      - §7Drop this item anywhere to spawn
+      - §9Feyrith, Apprentice Mage §7on the spot.
+      - §7Attacking bosses whilst they are in
+      - §7water will cause you to get struck
+      - §7by lighting.

@@ -16,6 +16,7 @@ import sugaku.rpg.mobs.teir1.eiryeras.EiryerasBoss;
 
 import java.util.*;
 
+import static io.github.math0898.rpgframework.RPGFramework.itemManager;
 import static org.bukkit.attribute.AttributeModifier.Operation.*;
 
 public final class ItemsManager {
@@ -28,7 +29,7 @@ public final class ItemsManager {
     /**
      * The rare Dark Helmet custom item.
      */
-    public static ItemStack DarkHelm = new ItemStack(Material.LEATHER_HELMET,1);
+    public static ItemStack DarkHelm = itemManager.getItem("helmet-of-darkness");
 
     /**
      * The rare spawn item for Eiryeras.
@@ -38,22 +39,22 @@ public final class ItemsManager {
     /**
      * The uncommon axe of Krusk custom item.
      */
-    public static ItemStack KruskAxe = new ItemStack(Material.IRON_AXE, 1);
+    public static ItemStack KruskAxe = itemManager.getItem("krusk-axe");
 
     /**
      * The uncommon boots of Krusk custom item.
      */
-    public static ItemStack KruskBoots = new ItemStack(Material.DIAMOND_BOOTS, 1);
+    public static ItemStack KruskBoots = itemManager.getItem("krusk-boots");
 
     /**
      * The rare Krusk helmet.
      */
-    public static ItemStack KruskHelmet = new ItemStack(Material.DIAMOND_HELMET, 1);
+    public static ItemStack KruskHelmet =itemManager.getItem("krusk-helmet");
 
     /**
      * The uncommon leggings of Krusk custom item.
      */
-    public static ItemStack KruskLeggings = new ItemStack(Material.LEATHER_LEGGINGS, 1);
+    public static ItemStack KruskLeggings = itemManager.getItem("krusk-leggings");
 
     /**
      * The rare spawn item for Krusk.
@@ -78,17 +79,12 @@ public final class ItemsManager {
     /**
      * The uncommon undead chestplate custom item.
      */
-    public static ItemStack UndeadChestplate = new ItemStack(Material.IRON_CHESTPLATE, 1);
+    public static ItemStack UndeadChestplate = itemManager.getItem("undead-chestplate");
 
     /**
      * The rare lore of Krusk.
      */
-    public static ItemStack KruskLore = createItem(Material.WHEAT, 1, ChatColor.GOLD + "Krusk's Lore", new String[]{
-            ChatColor.GREEN + "Krusk " + ChatColor.GRAY + "was a general for a small",
-            ChatColor.GRAY + "time noble named " + ChatColor.LIGHT_PURPLE + "Kairon" + ChatColor.GRAY + ". For",
-            ChatColor.GRAY + "this noble, " + ChatColor.GREEN + "Krusk " + ChatColor.GRAY + "was given the",
-            ChatColor.GRAY + "fairly easy task of defending",
-            ChatColor.GRAY + "farmers from stray beasts."});
+    public static ItemStack KruskLore = itemManager.getItem("krusk-lore");
 
     /**
      * An arraylist of all the custom items in the game.
@@ -99,13 +95,7 @@ public final class ItemsManager {
      * Initializes all the custom items so they are good to go for spawning.
      */
     public static void init() {
-        createDarkHelm();
-        createKruskAxe();
-        createKruskBoots();
-        createKruskHelmet();
-        createKruskLeggings();
         createEiryerasSpawn();
-        createUndeadChestplate();
 
         items.add(DarkHelm);
         items.add(EiryerasSpawn);
@@ -130,30 +120,6 @@ public final class ItemsManager {
     public static ArrayList<ItemStack> getItems() { return items; }
 
     /**
-     * Creates the meta behind what makes a Dark Helmet a Dark Helmet.
-     */
-    private static void createDarkHelm() {
-
-        LeatherArmorMeta meta = (LeatherArmorMeta) DarkHelm.getItemMeta();
-        assert meta != null;
-
-        meta.setUnbreakable(true);
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(new UUID(4, 2), "generic.armor", 0.75, ADD_NUMBER, EquipmentSlot.HEAD));
-        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(new UUID(4,1), "generic.health", 8, ADD_NUMBER, EquipmentSlot.HEAD));
-        meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(new UUID(4,5), "generic.attack.damage", 2, ADD_NUMBER, EquipmentSlot.HEAD));
-
-        meta.setDisplayName(ChatColor.BLUE + "Helmet of Darkness");
-        meta.setColor(Color.BLACK);
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + "The helmet of darkness allows one to");
-        lore.add(ChatColor.GRAY + "see into" + ChatColor.BLACK + ChatColor.MAGIC + "The Abyss" + ChatColor.GRAY + ", granting them some");
-        lore.add(ChatColor.GRAY + "resistances and strength at a cost.");
-        meta.setLore(lore);
-
-        DarkHelm.setItemMeta(meta);
-    }
-
-    /**
      * Creates the meta behind what makes an Eiryeras Boss spawn a spawn.
      */
     private static void createEiryerasSpawn() {
@@ -173,130 +139,13 @@ public final class ItemsManager {
     }
 
     /**
-     * Creates the meta behind what makes a Krusk axe a Krusk axe.
-     */
-    private static void createKruskAxe() {
-
-        ItemMeta meta = KruskAxe.getItemMeta();
-        assert meta != null;
-
-        meta.setUnbreakable(true);
-        meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(new UUID(5, 4), "generic.damage", 12, ADD_NUMBER, EquipmentSlot.HAND));
-        meta.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, new AttributeModifier(new UUID(5,5), "generic.attackSpeed", -3, ADD_NUMBER, EquipmentSlot.HAND));
-
-        meta.setDisplayName(ChatColor.GREEN + "Krusk's Axe");
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + "During life " + ChatColor.GREEN + "Krusk" + ChatColor.GRAY + " was a human general.");
-        lore.add(ChatColor.GRAY + "He was not particularly good at what");
-        lore.add(ChatColor.GRAY + "he did but now he gives adventurers");
-        lore.add(ChatColor.GRAY + "a hard time anyways.");
-        meta.setLore(lore);
-
-        KruskAxe.setItemMeta(meta);
-    }
-
-    /**
-     * Creates the meta behind what makes a Krusk Boot a Krusk Boot.
-     */
-    public static void createKruskBoots() {
-        ItemMeta meta = KruskBoots.getItemMeta();
-        assert meta != null;
-
-        meta.setUnbreakable(true);
-        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(new UUID(1, 1), "generic.health", 12, ADD_NUMBER, EquipmentSlot.FEET));
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(new UUID(1,2), "generic.armor", 1, ADD_NUMBER, EquipmentSlot.FEET));
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(new UUID(1,3), "generic.armorToughness", 2, ADD_NUMBER, EquipmentSlot.FEET));
-
-        meta.setDisplayName(ChatColor.GREEN + "Krusk's Boots");
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + "These boots were given to " + ChatColor.GREEN + "Krusk");
-        lore.add(ChatColor.GRAY + "by " + ChatColor.LIGHT_PURPLE + "Krusk's Mom " + ChatColor.GRAY + "to celebrate his");
-        lore.add(ChatColor.GRAY + "promotion to general. Wear them");
-        lore.add(ChatColor.GRAY + "well.");
-        meta.setLore(lore);
-
-        KruskBoots.setItemMeta(meta);
-    }
-
-    /**
-     * Creates the meta behind what makes Krusk's trusty helmet so trusty.
-     */
-    public static void createKruskHelmet() {
-        ItemMeta meta = KruskHelmet.getItemMeta();
-        assert meta != null;
-
-        meta.setUnbreakable(true);
-        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(new UUID(4, 1), "generic.health", 16, ADD_NUMBER, EquipmentSlot.FEET));
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(new UUID(4,2), "generic.armor", 1.25, ADD_NUMBER, EquipmentSlot.FEET));
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(new UUID(4,3), "generic.armorToughness", 2.25, ADD_NUMBER, EquipmentSlot.FEET));
-
-        meta.setDisplayName(ChatColor.BLUE + "Krusk's Trusty Helmet");
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + "This is " + ChatColor.GREEN + "Krusk's " + ChatColor.GRAY + "helmet from life. It");
-        lore.add(ChatColor.GRAY + "was his good luck charm. If only he");
-        lore.add(ChatColor.GRAY + "was wearing it that fateful day...");
-        lore.add(ChatColor.GRAY + "maybe... " + ChatColor.GREEN + "Krusk "+ ChatColor.GRAY + "would've lived long");
-        lore.add(ChatColor.GRAY + "enough to save enough pevsar to");
-        lore.add(ChatColor.GRAY + "buy his own house.");
-        meta.setLore(lore);
-
-        KruskHelmet.setItemMeta(meta);
-    }
-
-    /**
-     * Creates the meta behind what makes Krusk Leggings, Krusk Leggings.
-     */
-    public static void createKruskLeggings() {
-        ItemMeta meta = KruskLeggings.getItemMeta();
-        assert meta != null;
-
-        meta.setUnbreakable(true);
-        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(new UUID(2, 1), "generic.health", 5, ADD_NUMBER, EquipmentSlot.LEGS));
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(new UUID(2,2), "generic.armor", 0.75, ADD_NUMBER, EquipmentSlot.LEGS));
-
-        meta.setDisplayName(ChatColor.GREEN + "Krusk's Leggings");
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GREEN + "Krusk " + ChatColor.GRAY + "has always been very keen");
-        lore.add(ChatColor.GRAY + "on staying flexible. Leather pants");
-        lore.add(ChatColor.GRAY + "suited this goal nicely allowing him");
-        lore.add(ChatColor.GRAY + "to practice stretches on the job.");
-        meta.setLore(lore);
-
-        KruskLeggings.setItemMeta(meta);
-    }
-
-    /**
-     * Creates the meta behind what makes Krusk Chestplate, Krusk Chestplate.
-     */
-    public static void createUndeadChestplate() {
-        ItemMeta meta = UndeadChestplate.getItemMeta();
-        assert meta != null;
-
-        meta.setUnbreakable(true);
-        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(new UUID(3, 1), "generic.health", 10, ADD_NUMBER, EquipmentSlot.CHEST));
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(new UUID(3,2), "generic.armor", 1.75, ADD_NUMBER, EquipmentSlot.CHEST));
-
-        meta.setDisplayName(ChatColor.GREEN + "Undead Chestplate");
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + "This chestplate, forged from iron,");
-        lore.add(ChatColor.GRAY + "will defend the user against most");
-        lore.add(ChatColor.GRAY + "attacks they may face.");
-        lore.add(ChatColor.GRAY + "");
-        lore.add(ChatColor.GRAY + "" + ChatColor.ITALIC + "Issue Date: ");
-        lore.add(ChatColor.WHITE + "                I5 - Pretits - Ve");
-        meta.setLore(lore);
-
-        UndeadChestplate.setItemMeta(meta);
-    }
-
-    /**
      * Frequent effects of custom items.
      */
     public static void updateEffects(Player p) {
 
         if (p == null) return;
 
-        if (Objects.equals(p.getInventory().getHelmet(), DarkHelm)) {
+        if (Objects.equals(p.getInventory().getHelmet(), itemManager.getItem("helmet-of-darkness"))) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 62000, 255, false, true));
             p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 62000, 255, false, true));
         } else {
