@@ -2,6 +2,7 @@ package io.github.math0898.utils.commands;
 
 import io.github.math0898.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
@@ -22,12 +23,29 @@ public abstract class BetterCommand implements CommandExecutor, TabCompleter { /
     protected String commandName;
 
     /**
+     * A prefix that should be sent with messages from this command.
+     */
+    protected String prefix = "";
+
+    /**
      * Creates a new BetterCommand with the given name.
      *
      * @param name The name of the command as written in plugin.yml.
      */
     public BetterCommand (String name) {
         commandName = name;
+        register();
+    }
+
+    /**
+     * Creates a new BetterCommand with the given name and prefix.
+     *
+     * @param name   The name of the command as written in plugin.yml.
+     * @param prefix A prefix that should be sent when sending a message from this command.
+     */
+    public BetterCommand (String name, String prefix) {
+        commandName = name;
+        this.prefix = prefix;
         register();
     }
 
@@ -113,5 +131,27 @@ public abstract class BetterCommand implements CommandExecutor, TabCompleter { /
             return simplifiedTab(sender, args);
         else
             return null;
+    }
+
+    /**
+     * Sends the provided message to the provided user including a prefix.
+     *
+     * @param user    The user to send the message to.
+     * @param message The message to send.
+     */
+    protected void send (CommandSender user, String message) {
+        send(user, message, true);
+    }
+
+    /**
+     * Sends the provided message to the provided user, potentially including a prefix.
+     *
+     * @param user       The user to send the message to.
+     * @param message    The message to send.
+     * @param sendPrefix Whether a prefix should be sent with this message or not.
+     */
+    public void send(CommandSender user, String message, boolean sendPrefix) {
+        if (sendPrefix) user.sendMessage(prefix + message);
+        else user.sendMessage(ChatColor.GRAY + message);
     }
 }

@@ -7,3 +7,9 @@ creation:
     - "- Existing &dForge &7system carried over to allow unsafe enchantments."
     - "- Continued existing classes, and archetypes."
     - "- Created &r/tutorial &7and &r/updates &7to aid players."
+
+ongoing:
+  title: "Ongoing Updates"
+  date: "Current"
+  message:
+    - "- "

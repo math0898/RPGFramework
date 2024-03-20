@@ -7,9 +7,8 @@ import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import sugaku.rpg.framework.classes.Classes;
 
 import java.util.UUID;
 import java.util.Objects;
@@ -38,9 +37,9 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
 
     private Party pendingParty = null;
 
-//    private Classes combatClass = Classes.NONE;
-//
-//    private Class classObject = new None(this);
+    private Classes combatClass = Classes.NONE;
+
+//    private Class classObject = new None(Bukkit.getPlayer(uuid));
 
     /**
      * Returns the uuid of the player this construct points to.
@@ -162,22 +161,21 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
     }
 
     public String getFormattedClass() {
-        return ChatColor.GRAY + "None";
-//        switch(combatClass) {
-//            case GLADIATOR: return Classes.classColor(combatClass) + "Gladiator";
-//            case BERSERKER: return Classes.classColor(combatClass) + "Berserker";
-//            case NONE: return Classes.classColor(combatClass) + "None";
-//            case MARKSMEN: return Classes.classColor(combatClass) + "Marksmen";
-//            case ASSASSIN: return Classes.classColor(combatClass) + "Assassin";
-//            case PALADIN: return Classes.classColor(combatClass) + "Paladin";
-//            case BARD: return Classes.classColor(combatClass) + "Bard";
-//            case PYROMANCER: return Classes.classColor(combatClass) + "Pyromancer";
-//        }
-//        return null;
+//        return ChatColor.GRAY + "None";
+        return switch (combatClass) {
+            case GLADIATOR -> Classes.classColor(combatClass) + "Gladiator";
+            case BERSERKER -> Classes.classColor(combatClass) + "Berserker";
+            case NONE -> Classes.classColor(combatClass) + "None";
+            case MARKSMEN -> Classes.classColor(combatClass) + "Marksmen";
+            case ASSASSIN -> Classes.classColor(combatClass) + "Assassin";
+            case PALADIN -> Classes.classColor(combatClass) + "Paladin";
+            case BARD -> Classes.classColor(combatClass) + "Bard";
+            case PYROMANCER -> Classes.classColor(combatClass) + "Pyromancer";
+        };
     }
 
 //    public Classes getCombatClass() { return combatClass; }
-
+//
 //    public String getCombatClassString() {
 //        switch(combatClass) {
 //            case ASSASSIN: return "Assassin";
@@ -191,7 +189,7 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
 //        }
 //        return null;
 //    }
-
+//
 //    public void joinClass(Classes c) {
 //        this.combatClass = c;
 //        switch (c) {
@@ -203,7 +201,7 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
 //            case NONE: default: classObject = new None(this); break;
 //        }
 //    }
-
+//
 //    public String getArchetype() {
 //        switch (combatClass) {
 //            case ASSASSIN: case GLADIATOR: case MARKSMEN: case BERSERKER: return "Fighter";
@@ -211,7 +209,7 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
 //            default: return "Caster";
 //        }
 //    }
-
+//
 //    public void onInteract(PlayerInteractEvent event) { classObject.onInteract(event); }
 //
 //    public boolean revive() { return classObject.onDeath(); }
