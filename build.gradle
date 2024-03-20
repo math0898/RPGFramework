@@ -55,3 +55,26 @@ processResources {
     }
 }
 
+task testLocal() {
+    onlyIf = { true }
+    dependsOn ":build"
+    mustRunAfter ":build"
+    doLast {
+        exec {
+            ignoreExitValue = true
+            commandLine "./test_local.sh"
+        }
+    }
+}
+
+task publishServer() {
+    onlyIf = { true }
+    dependsOn ":build"
+    mustRunAfter ":build"
+    doLast {
+        exec {
+            ignoreExitValue = true
+            commandLine "./test_local.sh"
+        }
+    }
+}
