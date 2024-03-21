@@ -84,7 +84,7 @@ public class RPGEventListener implements Listener {
     /**
      * When a mob gets damaged.
      */
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void entityDamaged(EntityDamageByEntityEvent e) {
 
         if (e.getDamager() instanceof Player && !e.isCancelled()) Objects.requireNonNull(PlayerManager.getPlayer(e.getDamager().getUniqueId())).attacker(e);
@@ -243,7 +243,7 @@ public class RPGEventListener implements Listener {
     /**
      * Called whenever a player suffers environmental damage.
      */
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityEnvironmentalDamage (EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             if (ignored.contains(event.getCause())) return;
