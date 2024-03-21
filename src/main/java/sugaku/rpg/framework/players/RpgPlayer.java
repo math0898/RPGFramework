@@ -1,7 +1,5 @@
 package sugaku.rpg.framework.players;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -216,7 +214,7 @@ public class RpgPlayer {
 
     public void onInteract(PlayerInteractEvent event) { classObject.onInteract(event); }
 
-    public boolean revive() { return classObject.onDeath(); }
+    public boolean revive() { return !classObject.onDeath(); }
 
     /**
      * Used to verify whether a player is in combat.
@@ -250,6 +248,7 @@ public class RpgPlayer {
         fighting = System.currentTimeMillis();
         enteringCombat();
         classObject.attack(event);
+        lastHitBy = event.getEntity();
     }
 
     public void passive() {

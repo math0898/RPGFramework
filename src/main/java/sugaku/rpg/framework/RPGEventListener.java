@@ -247,6 +247,7 @@ public class RPGEventListener implements Listener {
     public void onEntityEnvironmentalDamage (EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             if (ignored.contains(event.getCause())) return;
+            if (event instanceof EntityDamageByEntityEvent) return;
             PlayerManager.environmentalDamage(event);
         }
     }

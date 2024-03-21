@@ -113,9 +113,9 @@ public class Pyromancer extends AbstractClass implements Class, Listener {
             getPlayer().getBukkitPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 15*20, 3));
 
             getCooldowns()[4].restart();
-            return true;
+            return false;
         } else onCooldown(4);
-        return false;
+        return true;
     }
 
     /**

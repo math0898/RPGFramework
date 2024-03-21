@@ -88,10 +88,10 @@ public class Berserker extends AbstractClass implements Class{
             getPlayer().getBukkitPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5*20, 2));
             getCooldowns()[2].restart();
 
-            return true;
+            return false;
         }
         else onCooldown(2);
-        return false;
+        return true;
     }
 
     private boolean isAxe(EntityEquipment equipment) {

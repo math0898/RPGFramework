@@ -67,9 +67,9 @@ public class Bard extends AbstractClass implements Class {
 
             getCooldowns()[1].restart();
 
-            return true;
+            return false;
         } else onCooldown(1);
-        return false;
+        return true;
     }
 
     private void bardLeftClick() {

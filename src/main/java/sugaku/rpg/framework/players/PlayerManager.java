@@ -150,19 +150,17 @@ public class PlayerManager {
     public static void environmentalDamage (EntityDamageEvent event) {
         Player player = (Player) event.getEntity();
         if (player.getHealth() <= event.getDamage()) {
-            if (player.getInventory().getItemInMainHand().getType() == Material.TOTEM_OF_UNDYING || player.getInventory().getItemInOffHand().getType() == Material.TOTEM_OF_UNDYING) {
-                RpgPlayer rpg = getPlayer(player.getUniqueId()); // todo: Revive
-                if (rpg == null) return;
+            if (player.getInventory().getItemInMainHand().getType() == Material.TOTEM_OF_UNDYING || player.getInventory().getItemInOffHand().getType() == Material.TOTEM_OF_UNDYING) return;
+            RpgPlayer rpg = getPlayer(player.getUniqueId());
+            if (rpg == null) return;
+            if (rpg.inCombat()) {
+                rpg.damaged(event);
+                if (rpg.revive()) return;
                 event.setCancelled(true);
-                if (rpg.inCombat()) {
-                    rpg.damaged(event);
-                    if (event.isCancelled()) return;
-                    if (rpg.revive()) return;
-                    honorableDeath(rpg);
-                } else {
-                    event.setCancelled(true);
-                    dishonorableDeath(rpg, event.getCause());
-                }
+                honorableDeath(rpg);
+            } else {
+                event.setCancelled(true);
+                dishonorableDeath(rpg, event.getCause());
             }
         }
     }
@@ -176,13 +174,12 @@ public class PlayerManager {
         RpgPlayer rpg = PlayerManager.getPlayer(player.getUniqueId());
         if (rpg == null) return;
         rpg.damaged(event);
-        if (event.isCancelled()) return;
 
         if (player.getHealth() <= event.getDamage() ) {
             if (player.getInventory().getItemInMainHand().getType() == Material.TOTEM_OF_UNDYING || player.getInventory().getItemInOffHand().getType() == Material.TOTEM_OF_UNDYING) return;
             if (rpg.revive()) return;
-            event.setCancelled(true);
             honorableDeath(rpg);
+            event.setCancelled(true);
         }
     }
 

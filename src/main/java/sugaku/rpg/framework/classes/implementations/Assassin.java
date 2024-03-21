@@ -105,9 +105,9 @@ public class Assassin extends AbstractClass implements Class {
 
             getCooldowns()[2].restart();
 
-            return true;
+            return false;
         } else onCooldown(2);
-        return false;
+        return true;
     }
 
     private boolean checkLeather(EntityEquipment equipment) {

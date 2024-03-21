@@ -24,5 +24,5 @@ public class None extends AbstractClass implements Class {
     public void onInteract(PlayerInteractEvent event) { }
 
     @Override
-    public boolean onDeath() { return false; }
+    public boolean onDeath() { return true; }
 }
