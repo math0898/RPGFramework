@@ -8,7 +8,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import sugaku.rpg.framework.players.RpgPlayer;
-import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.mobs.CustomMob;
 
 import java.util.ArrayList;
@@ -64,5 +63,13 @@ public class MobManager {
         double drops = r.nextDouble();
         int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
         if (drops < 2.0/((Math.abs(gearScore - 100)) + 2)) drop(RPGFramework.itemManager.getItem("eiryeras:Spawn"), event.getEntity().getLocation());
+    }
+
+    public static void witherSkeletonDrops (EntityDeathEvent event) {
+        if (event.getEntity().getKiller() == null) return;
+        Random r = new Random();
+        double drops = r.nextDouble();
+        int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
+        if (drops < 2.0/((Math.abs(gearScore - 150)) + 2)) drop(RPGFramework.itemManager.getItem("feyrith:Spawn"), event.getEntity().getLocation());
     }
 }

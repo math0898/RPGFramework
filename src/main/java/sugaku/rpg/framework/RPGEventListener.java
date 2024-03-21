@@ -3,14 +3,12 @@ package sugaku.rpg.framework;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
@@ -21,7 +19,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import sugaku.rpg.framework.menus.ClassesManager;
-//import sugaku.rpg.framework.menus.ForgeManager;
 import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.mobs.BossRituals;
 import sugaku.rpg.framework.mobs.MobManager;
@@ -104,6 +101,7 @@ public class RPGEventListener implements Listener {
 
         if (m.getType() == EntityType.ZOMBIE) MobManager.zombieDrops(e);
         else if (m.getType() == EntityType.SKELETON) MobManager.skeletonDrops(e);
+        else if (m.getType() == EntityType.WITHER_SKELETON) MobManager.witherSkeletonDrops(e);
 
         assert m.getCustomName() != null;
 
