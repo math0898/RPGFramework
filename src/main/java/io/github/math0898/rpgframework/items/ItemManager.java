@@ -40,9 +40,9 @@ public class ItemManager {
                 console("Failed to create item directories.", ChatColor.YELLOW);
                 return;
             }
-            for (String itemResources : new String[]{ "items/krusk.yml", "items/other.yml", "items/eiryeras.yml", "items/feyrith.yml"})
-                plugin.saveResource(itemResources, false); // todo: refactor to reduce scope when adding multiple bosses and sets.
         }
+        for (String itemResources : new String[]{ "items/krusk.yml", "items/other.yml", "items/eiryeras.yml", "items/feyrith.yml"})
+            plugin.saveResource(itemResources, true); // todo: refactor to reduce scope when adding multiple bosses and sets.
         File[] files = itemsDir.listFiles();
         if (files == null) {
             console("Cannot find any item files.", ChatColor.YELLOW);

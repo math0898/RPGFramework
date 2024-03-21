@@ -12,3 +12,43 @@ spawn:
       - §7Attacking bosses whilst they are in
       - §7water will cause you to get struck
       - §7by lighting.
+
+fire-gemstone:
+  ==: org.bukkit.inventory.ItemStack
+  type: DIAMOND
+  amount: 1
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: §aFire Gemstone
+    custom-model-data: 1
+    lore:
+      - §7A gemstone that radiates
+      - §7uncomfortable warmth. The
+      - §bmana §7within flows out and
+      - §7into your body. Perhaps this
+      - §7was what allowed a such an
+      - §7inexperienced mage as §9Feyrith
+      - §7to manipulate §4fire.
+      - ""
+      - "§7Offhand:"
+      - §9+5 Magic Power
+      - §9+5 Attack Damage
+      - §9+0.25 Attack Speed
+    ItemFlags:
+      - HIDE_ATTRIBUTES
+    attribute-modifiers:
+      GENERIC_ATTACK_DAMAGE:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 5.0
+          name: generic.damage
+          slot: OFF_HAND
+          uuid: 00000000-0000-0006-0000-000000000004
+          operation: 0
+      GENERIC_ATTACK_SPEED:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 0.25
+          name: generic.attackSpeed
+          slot: OFF_HAND
+          uuid: 00000000-0000-0006-0000-000000000005
+          operation: 0

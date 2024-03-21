@@ -2,6 +2,7 @@ package sugaku.rpg.framework.players;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
@@ -274,8 +275,10 @@ public class RpgPlayer {
      * Called periodically when a player is not in combat.
      */
     public void leaveCombat () {
-        if (!appliedOutCombat)
+        if (!appliedOutCombat) {
             getBukkitPlayer().sendMessage(ChatColor.GREEN + "Left Combat");
+            getBukkitPlayer().playSound(getBukkitPlayer(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1.0f, 1.0f);
+        }
         appliedOutCombat = true;
         PlayerManager.scaleRegen(getBukkitPlayer(), 0.25);
     }
