@@ -5,6 +5,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExhaustionEvent;
 import org.bukkit.potion.PotionEffect;
 import sugaku.rpg.framework.UserData;
@@ -144,51 +145,100 @@ public class PlayerManager {
     }
 
     /**
+     * Runs the player manager when damaged by the environment.
+     */
+    public static void environmentalDamage (EntityDamageEvent event) {
+        Player player = (Player) event.getEntity();
+        if (player.getHealth() <= event.getDamage()) {
+            if (player.getInventory().getItemInMainHand().getType() == Material.TOTEM_OF_UNDYING || player.getInventory().getItemInOffHand().getType() == Material.TOTEM_OF_UNDYING) {
+                RpgPlayer rpg = getPlayer(player.getUniqueId()); // todo: Revive
+                if (rpg == null) return;
+                event.setCancelled(true);
+                if (rpg.inCombat()) {
+                    rpg.damaged(event);
+                    if (event.isCancelled()) return;
+                    if (rpg.revive()) return;
+                    honorableDeath(rpg);
+                } else {
+                    event.setCancelled(true);
+                    dishonorableDeath(rpg, event.getCause());
+                }
+            }
+        }
+    }
+
+    /**
      * Runs the player manager when damaged.
      */
-    public static void onDamage(EntityDamageByEntityEvent event) {
+    public static void onDamage (EntityDamageByEntityEvent event) {
 
         Player player = (Player) event.getEntity(); //Check RPGEventListener
-        Entity attacker = event.getDamager();
-
-        Objects.requireNonNull(PlayerManager.getPlayer(player.getUniqueId())).damaged(event);
+        RpgPlayer rpg = PlayerManager.getPlayer(player.getUniqueId());
+        if (rpg == null) return;
+        rpg.damaged(event);
         if (event.isCancelled()) return;
 
         if (player.getHealth() <= event.getDamage() ) {
-
             if (player.getInventory().getItemInMainHand().getType() == Material.TOTEM_OF_UNDYING || player.getInventory().getItemInOffHand().getType() == Material.TOTEM_OF_UNDYING) return;
-
-            String deathMessage;
-
+            if (rpg.revive()) return;
             event.setCancelled(true);
-
-            if (Objects.requireNonNull(PlayerManager.getPlayer(player.getUniqueId())).revive()) return;
-
-            if (attacker instanceof Player) deathMessage = getPlayerRarity(player) + player.getName() + ChatColor.GRAY + deathFlavor[Math.abs(new Random().nextInt() % deathFlavor.length)] + attacker.getName();
-            else if (!attacker.isCustomNameVisible()) {
-                deathMessage = getPlayerRarity(player) + player.getName() + ChatColor.GRAY + deathFlavor[Math.abs(new Random().nextInt() % deathFlavor.length)] + "a " + attacker.getName();
-                RpgPlayer.dropAll(player);
-                player.setExp(player.getExp()/2);
-                player.setLevel(player.getLevel()/2);
-            } else {
-                deathMessage = getPlayerRarity(player) + player.getName() + ChatColor.GRAY + deathFlavor[Math.abs(new Random().nextInt() % deathFlavor.length)] + attacker.getCustomName();
-                player.sendMessage(attacker.getCustomName() + ChatColor.GRAY + " has left the fight upon your death");
-                attacker.remove();
-            }
-
-            Location spawn = player.getBedSpawnLocation();
-            if (spawn == null) Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mv tp " + player.getName() + " world");
-            else player.teleport(spawn);
-
-            healPlayer(player);
-            player.setFireTicks(0);
-
-            for (PotionEffect p: player.getActivePotionEffects()) player.removePotionEffect(p.getType());
-
-            for (Player p: Bukkit.getOnlinePlayers()) p.sendMessage(deathMessage);
-            console(deathMessage);
-
-            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.8f, 2f);
+            honorableDeath(rpg);
         }
+    }
+
+    /**
+     * Called whenever a player dies honorably.
+     *
+     * @param rpg The RpgPlayer to consider.
+     */
+    public static void honorableDeath (RpgPlayer rpg) {
+        Entity killer = rpg.getLastHitBy();
+        Player player = rpg.getBukkitPlayer();
+        String deathMessage;
+        if (killer instanceof Player)
+            deathMessage = getPlayerRarity(player) + player.getName() + ChatColor.GRAY + deathFlavor[Math.abs(new Random().nextInt() % deathFlavor.length)] + getPlayerRarity((Player) killer) + killer.getName();
+        else if (killer.isCustomNameVisible()) {
+            deathMessage = getPlayerRarity(player) + player.getName() + ChatColor.GRAY + deathFlavor[Math.abs(new Random().nextInt() % deathFlavor.length)] + killer.getCustomName();
+            player.sendMessage(killer.getCustomName() + ChatColor.GRAY + " has left the fight upon your death");
+            killer.remove();
+        } else
+            deathMessage = getPlayerRarity(player) + player.getName() + ChatColor.GRAY + deathFlavor[Math.abs(new Random().nextInt() % deathFlavor.length)] + killer.getName();
+        allDeaths(rpg, deathMessage);
+    }
+
+    /**
+     * Called whenever a player dies to the elements.
+     *
+     * @param rpg The RpgPlayer to consider.
+     */
+    public static void dishonorableDeath (RpgPlayer rpg, EntityDamageEvent.DamageCause cause) {
+        Player player = rpg.getBukkitPlayer();
+        String deathMessage = getPlayerRarity(player) + player.getName() + ChatColor.GRAY + " died to " + cause.toString().toLowerCase();
+        RpgPlayer.dropAll(player);
+        player.setExp(player.getExp()/2);
+        player.setLevel(player.getLevel()/2);
+        allDeaths(rpg, deathMessage);
+    }
+
+    /**
+     * Called whenever a player dies to teleport them to spawn and send the death message.
+     *
+     * @param rpg The RpgPlayer to return to their spawn.
+     * @param msg The death message to send into console.
+     */
+    public static void allDeaths (RpgPlayer rpg, String msg) {
+        Player player = rpg.getBukkitPlayer();
+        Location spawn = player.getBedSpawnLocation();
+        if (spawn == null) player.teleport(Bukkit.getWorld("world").getSpawnLocation());
+        else player.teleport(spawn);
+
+        healPlayer(player);
+        player.setFireTicks(0);
+        for (PotionEffect p: player.getActivePotionEffects()) player.removePotionEffect(p.getType());
+
+        for (Player p: Bukkit.getOnlinePlayers()) p.sendMessage(msg);
+        console(msg);
+
+        player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.8f, 2f);
     }
 }

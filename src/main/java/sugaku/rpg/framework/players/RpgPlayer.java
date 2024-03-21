@@ -1,11 +1,15 @@
 package sugaku.rpg.framework.players;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import sugaku.rpg.framework.classes.Class;
@@ -24,9 +28,19 @@ public class RpgPlayer {
     private long fighting = 0L;
 
     /**
-     *
+     * The amount of time in millis it takes to be considered out of combat.
      */
     private static final long TIME_UNTIL_OUT_OF_COMBAT = 10000;
+
+    /**
+     * Whether we have applied effects for leaving combat yet or not.
+     */
+    private boolean appliedOutCombat = false;
+
+    /**
+     * The Entity that last successfully hit this player.
+     */
+    private Entity lastHitBy = null;
 
     /**
      * Default constructor for an RpgPlayer construct just requiring a uuid.
@@ -218,10 +232,13 @@ public class RpgPlayer {
      *
      * @param event The EntityDamageByEntityEvent to consider.
      */
-    public void damaged (EntityDamageByEntityEvent event) {
-        fighting = System.currentTimeMillis();
-        enteringCombat();
+    public void damaged (EntityDamageEvent event) {
         classObject.damaged(event);
+        if (event instanceof EntityDamageByEntityEvent damageByEntityEvent) {
+            fighting = System.currentTimeMillis();
+            enteringCombat();
+            lastHitBy = damageByEntityEvent.getDamager();
+        }
     }
 
     /**
@@ -239,7 +256,7 @@ public class RpgPlayer {
         try {
             classObject.passive();
             Bukkit.getScheduler().runTaskLater(main.plugin, this::passive, 20*20);
-            if (!inCombat())
+            if (!inCombat() && !appliedOutCombat)
                 leaveCombat();
         } catch (Exception ignored) { }
     }
@@ -248,14 +265,29 @@ public class RpgPlayer {
      * Called whenever a player is attacked while in combat.
      */
     public void enteringCombat () {
+        if (appliedOutCombat)
+            getBukkitPlayer().sendMessage(ChatColor.RED + "Entering Combat");
         PlayerManager.scaleRegen(getBukkitPlayer(), 1.0);
+        appliedOutCombat = false;
     }
 
     /**
      * Called periodically when a player is not in combat.
      */
     public void leaveCombat () {
+        if (!appliedOutCombat)
+            getBukkitPlayer().sendMessage(ChatColor.GREEN + "Left Combat");
+        appliedOutCombat = true;
         PlayerManager.scaleRegen(getBukkitPlayer(), 0.25);
+    }
+
+    /**
+     * An accessor method to get the last Entity that attacked this Player.
+     *
+     * @return The entity that last attacked the Player.
+     */
+    public Entity getLastHitBy () {
+        return lastHitBy;
     }
 
     //TODO: Implement the damage bonus of the bow

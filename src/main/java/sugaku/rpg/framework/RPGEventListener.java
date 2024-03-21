@@ -28,9 +28,11 @@ import sugaku.rpg.main;
 import sugaku.rpg.mobs.teir1.krusk.KruskBoss;
 import sugaku.rpg.mobs.teir1.krusk.KruskMinion;
 
+import java.util.List;
 import java.util.Objects;
 
 //import static sugaku.rpg.framework.menus.ForgeManager.forgeClose;
+import static org.bukkit.event.entity.EntityDamageEvent.DamageCause.*;
 import static sugaku.rpg.framework.items.ItemsManager.updateArmor;
 
 public class RPGEventListener implements Listener {
@@ -82,12 +84,12 @@ public class RPGEventListener implements Listener {
     /**
      * When a mob gets damaged.
      */
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOW)
     public void entityDamaged(EntityDamageByEntityEvent e) {
 
-        if (e.getDamager() instanceof Player) Objects.requireNonNull(PlayerManager.getPlayer(e.getDamager().getUniqueId())).attacker(e);
+        if (e.getDamager() instanceof Player && !e.isCancelled()) Objects.requireNonNull(PlayerManager.getPlayer(e.getDamager().getUniqueId())).attacker(e);
 
-        if (e.getEntity() instanceof Player) PlayerManager.onDamage(e);
+        if (e.getEntity() instanceof Player && !e.isCancelled()) PlayerManager.onDamage(e);
         else if (MobManager.needsChecks()) MobManager.run(e);
     }
 
@@ -233,6 +235,19 @@ public class RPGEventListener implements Listener {
         if (event.getEntity().isCustomNameVisible()) {
             event.getEntity().remove();
             event.setCancelled(true);
+        }
+    }
+
+    static List<EntityDamageEvent.DamageCause> ignored = List.of(PROJECTILE, ENTITY_ATTACK, ENTITY_EXPLOSION, ENTITY_SWEEP_ATTACK, THORNS);
+
+    /**
+     * Called whenever a player suffers environmental damage.
+     */
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onEntityEnvironmentalDamage (EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player) {
+            if (ignored.contains(event.getCause())) return;
+            PlayerManager.environmentalDamage(event);
         }
     }
 }
