@@ -1,5 +1,6 @@
 package sugaku.rpg.framework.mobs;
 
+import io.github.math0898.rpgframework.RPGFramework;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -54,7 +55,7 @@ public class MobManager {
         Random r = new Random();
         double drops = r.nextDouble();
         int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
-        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2)) drop(ItemsManager.KruskSpawn, event.getEntity().getLocation());
+        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2)) drop(RPGFramework.itemManager.getItem("krusk:Spawn"), event.getEntity().getLocation());
     }
 
     public static void skeletonDrops (EntityDeathEvent event) {
@@ -62,6 +63,6 @@ public class MobManager {
         Random r = new Random();
         double drops = r.nextDouble();
         int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
-        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2)) drop(ItemsManager.EiryerasSpawn, event.getEntity().getLocation());
+        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2)) drop(RPGFramework.itemManager.getItem("eiryeras:Spawn"), event.getEntity().getLocation());
     }
 }

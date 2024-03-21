@@ -27,7 +27,7 @@ public class Berserker extends AbstractClass implements Class{
     @Override
     public void damaged(EntityDamageEvent event) {
         event.setDamage(event.getDamage() - 2.0);
-        if (event.getDamage() >= ((Player) event.getEntity()).getHealth() && getCooldowns()[2].getRemaining() >= 170) event.setCancelled(true);
+        if (event.getDamage() >= ((Player) event.getEntity()).getHealth() && getCooldowns()[2].getRemaining() >= 175) event.setCancelled(true);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class Berserker extends AbstractClass implements Class{
         if (equipment != null && isAxe(equipment)) event.setDamage(event.getDamage() + 2.0);
         else send("You aren't receiving your axe dmg bonus.");
 
-        if (getCooldowns()[2].getRemaining() >= 170) attacker.setHealth(Math.min(attacker.getHealth() + (event.getDamage() * 0.1), attacker.getMaxHealth()));
+        if (getCooldowns()[2].getRemaining() >= 175) attacker.setHealth(Math.min(attacker.getHealth() + (event.getDamage() * 2.0), attacker.getMaxHealth()));
     }
 
     @Override
@@ -85,7 +85,7 @@ public class Berserker extends AbstractClass implements Class{
 
             send(ChatColor.GREEN + "You've used " + ChatColor.GOLD + "Indomitable Spirit" + ChatColor.GREEN + "!");
             getPlayer().getBukkitPlayer().playSound(getPlayer().getBukkitPlayer().getLocation(), Sound.ITEM_TOTEM_USE, 0.8f, 1.0f);
-            getPlayer().getBukkitPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 10*20, 1));
+            getPlayer().getBukkitPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5*20, 2));
             getCooldowns()[2].restart();
 
             return true;

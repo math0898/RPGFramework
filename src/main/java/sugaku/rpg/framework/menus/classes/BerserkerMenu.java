@@ -85,10 +85,10 @@ public class BerserkerMenu extends ClassSubmenu implements Menu {
                 ChatColor.GRAY + "Berserkers also gain some life steal",
                 ChatColor.GRAY + "while in this state.",
                 ChatColor.GRAY + "Current Stats: ",
-                ChatColor.GRAY + "- Duration: " + ChatColor.GREEN + 10 + "s", //TODO: add player upgrades
+                ChatColor.GRAY + "- Duration: " + ChatColor.GREEN + 5 + "s", //TODO: add player upgrades
                 ChatColor.GRAY + "- Cooldown: " + ChatColor.GREEN + 180 + "s",
-                ChatColor.GRAY + "- Strength: " + ChatColor.GREEN + 2,
-                ChatColor.GRAY + "- Lifesteal: " + ChatColor.GREEN + 10 + "%"}));
+                ChatColor.GRAY + "- Strength: " + ChatColor.GREEN + 4,
+                ChatColor.GRAY + "- Lifesteal: " + ChatColor.GREEN + 200 + "%"}));
         inv.setItem(33, ItemsManager.createItem(Material.LEATHER_CHESTPLATE, 1, ChatColor.LIGHT_PURPLE + "Towering Form", new String[]{
                 ChatColor.GRAY + "As a berserker smalls hits are",
                 ChatColor.GRAY + "meaningless to your overall well",

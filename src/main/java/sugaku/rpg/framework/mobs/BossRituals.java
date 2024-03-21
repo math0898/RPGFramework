@@ -1,10 +1,12 @@
 package sugaku.rpg.framework.mobs;
 
+import io.github.math0898.rpgframework.RPGFramework;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.main;
@@ -35,22 +37,22 @@ public class BossRituals {
 
         Item drop = event.getItemDrop();
         Player player = event.getPlayer();
-
-        if (drop.getItemStack().equals(ItemsManager.KruskSpawn)) {
+        ItemStack stack = drop.getItemStack();
+        if (stack.equals(ItemsManager.KruskSpawn) || stack.equals(RPGFramework.itemManager.getItem("krusk:Spawn"))) {
             drop.setPickupDelay(60);
             send(player, "You are summoning " + ChatColor.GREEN + "Krusk" + ChatColor.GRAY + ", one of the Undead Generals.");
             Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> ritual(drop, player.getName(), Bosses.KRUSK), 40);
-        } else if (drop.getItemStack().equals(ItemsManager.EiryerasSpawn)) {
+        } else if (stack.equals(ItemsManager.EiryerasSpawn) || stack.equals(RPGFramework.itemManager.getItem("eiryeras:Spawn"))) {
             drop.setPickupDelay(60);
             send(player, "You are summoning " + ChatColor.GREEN + "Eiryeras" + ChatColor.GRAY + ", honored hunter of the Agloytan area.");
             Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> ritual(drop, player.getName(), Bosses.EIRYERAS), 40);
-        } else if (drop.getItemStack().equals(ItemsManager.FeyrithSpawn)) {
+        } else if (drop.getItemStack().equals(ItemsManager.FeyrithSpawn) || stack.equals(RPGFramework.itemManager.getItem("feyrith:Spawn"))) {
 
             //TODO: BETA
             if (!player.hasPermission("rpg.beta")) {
-                send(player, ChatColor.GRAY + "Sorry but Feyrith will remain in beta access until 07/24/21.");
-                send(player, ChatColor.GRAY + "At which point the boss will be available for everyone.");
-                send(player, ChatColor.GRAY + "If you'd like to get beta access you can visit our web-store: https://darkstarmc.tebex.io/");
+                send(player, ChatColor.GRAY + "Sorry but Feyrith is in beta.");
+                send(player, ChatColor.GRAY + "The boss will be available at a future point.");
+//                send(player, ChatColor.GRAY + "If you'd like to get beta access you can visit our web-store: https://darkstarmc.tebex.io/");
                 return;
             }
 
