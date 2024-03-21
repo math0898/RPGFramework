@@ -3,6 +3,7 @@ package sugaku.rpg.framework.classes.implementations;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -20,6 +21,8 @@ import static sugaku.rpg.main.brackets;
 public class Bard extends AbstractClass implements Class {
 
     private BardBuffs currentBuff = BardBuffs.REGENERATION;
+
+    enum BardBuffs{ REGENERATION, SWIFTNESS, STRENGTH }
 
     public Bard(RpgPlayer player) {
         super(player);
@@ -56,14 +59,15 @@ public class Bard extends AbstractClass implements Class {
     public boolean onDeath() {
         if(getCooldowns()[1].isComplete()) {
             send(ChatColor.GREEN + "You've used " + ChatColor.GOLD + "A Life of Music" + ChatColor.GREEN + "!");
+            RpgPlayer rpg = getPlayer();
+            Player player = rpg.getBukkitPlayer();
+            player.playSound(player, Sound.ITEM_TOTEM_USE, 0.8f, 1.0f);
 
-            getPlayer().getBukkitPlayer().playSound(getPlayer().getBukkitPlayer().getLocation(), Sound.ITEM_TOTEM_USE, 0.8f, 1.0f);
+            rpg.heal(10.0); //Instant heal
 
-            getPlayer().getBukkitPlayer().setHealth(Math.max(getPlayer().getBukkitPlayer().getHealth() + 10.0, getPlayer().getBukkitPlayer().getMaxHealth())); //Instant heal
-
-            getPlayer().getBukkitPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 10*20, 1));
-            getPlayer().getBukkitPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 10*20, 1));
-            getPlayer().getBukkitPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 10*20, 1));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 10*20, 1));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 10*20, 1));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 10*20, 1));
 
             getCooldowns()[1].restart();
 
@@ -104,5 +108,3 @@ public class Bard extends AbstractClass implements Class {
         return PotionEffectType.ABSORPTION;
     }
 }
-
-enum BardBuffs{ REGENERATION, SWIFTNESS, STRENGTH }

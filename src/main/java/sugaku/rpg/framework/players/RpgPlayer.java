@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -290,6 +291,33 @@ public class RpgPlayer {
      */
     public Entity getLastHitBy () {
         return lastHitBy;
+    }
+
+    /**
+     * A Utility method to obtain the max health of this RpgPlayer.
+     *
+     * @return The maximum health of this player.
+     */
+    public double getMaxHealth () {
+        AttributeInstance instance = getBukkitPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        if (instance == null) return 20.0;
+        return instance.getValue();
+    }
+
+    /**
+     * Heals the player by the given amount.
+     *
+     * @param amount The amount to heal the player by.
+     */
+    public void heal (double amount) {
+        getBukkitPlayer().setHealth(Math.min(getBukkitPlayer().getHealth() + amount, getMaxHealth()));
+    }
+
+    /**
+     * Heals the player to max.
+     */
+    public void heal () {
+        getBukkitPlayer().setHealth(getMaxHealth());
     }
 
     //TODO: Implement the damage bonus of the bow

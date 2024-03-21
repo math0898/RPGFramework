@@ -133,9 +133,15 @@ public class PlayerManager {
     }
 
     /**
-     * Heals the player to full
+     * Heals the player to full.
+     * {@link RpgPlayer#heal()}
      */
-    public static void healPlayer(Player p) { p.setHealth(Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue()); }
+    @Deprecated
+    public static void healPlayer (Player p) {
+        RpgPlayer rpg = getPlayer(p.getUniqueId());
+        if (rpg == null) return;
+        rpg.heal();
+    }
 
     /**
      * Prevents the loss of hunger due to regeneration.
@@ -155,8 +161,8 @@ public class PlayerManager {
             if (rpg == null) return;
             if (rpg.inCombat()) {
                 rpg.damaged(event);
-                if (rpg.revive()) return;
                 event.setCancelled(true);
+                if (rpg.revive()) return;
                 honorableDeath(rpg);
             } else {
                 event.setCancelled(true);
@@ -177,9 +183,9 @@ public class PlayerManager {
 
         if (player.getHealth() <= event.getDamage() ) {
             if (player.getInventory().getItemInMainHand().getType() == Material.TOTEM_OF_UNDYING || player.getInventory().getItemInOffHand().getType() == Material.TOTEM_OF_UNDYING) return;
+            event.setCancelled(true);
             if (rpg.revive()) return;
             honorableDeath(rpg);
-            event.setCancelled(true);
         }
     }
 
