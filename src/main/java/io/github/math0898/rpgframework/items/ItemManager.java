@@ -1,16 +1,22 @@
 package io.github.math0898.rpgframework.items;
 
+import io.github.math0898.rpgframework.RPGFramework;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import static io.github.math0898.rpgframework.RPGFramework.console;
-import static io.github.math0898.rpgframework.RPGFramework.plugin;
+import static io.github.math0898.rpgframework.RPGFramework.*;
 
 /**
  * The ItemManager is used to crate RPG related items on load.
@@ -58,6 +64,7 @@ public class ItemManager {
                 console("Failed to parse item located at: " + f.getPath(), ChatColor.RED);
             }
         }
+        Bukkit.getScheduler().runTaskAsynchronously(getInstance(), this::passives);
     }
 
     /**
@@ -107,5 +114,28 @@ public class ItemManager {
      */
     public boolean hasItem (String name) {
         return rpgItems.containsKey(name);
+    }
+
+    /**
+     * Passive check. Periodically ran to check if players are using armor that gives them special effects.
+     * todo: Refactor to be async and per player.
+     */
+    public void passives () {
+        if (!RPGFramework.getInstance().isEnabled()) return;
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            EntityEquipment equipment = p.getEquipment();
+            if (equipment == null) continue;
+            ItemStack helm = p.getEquipment().getHelmet();
+            if (helm == null) continue;
+            if (helm.getType().equals(Material.LEATHER_HELMET)) {
+                if (helm.equals(getItem("other:HelmetOfDarkness"))) {
+                    Bukkit.getScheduler().runTask(RPGFramework.getInstance(), () -> {
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 21 * 20, 255, true, false));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 21 * 20, 255, true, false));
+                    });
+                }
+            }
+        }
+        Bukkit.getScheduler().runTaskLaterAsynchronously(RPGFramework.getInstance(), this::passives, 20 * 20);
     }
 }

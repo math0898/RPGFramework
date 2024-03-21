@@ -5,13 +5,10 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import sugaku.rpg.mobs.teir1.eiryeras.EiryerasBoss;
 
 import java.util.*;
@@ -136,22 +133,6 @@ public final class ItemsManager {
 
         meta.setLore(lore);
         EiryerasSpawn.setItemMeta(meta);
-    }
-
-    /**
-     * Frequent effects of custom items.
-     */
-    public static void updateEffects(Player p) {
-
-        if (p == null) return;
-
-        if (Objects.equals(p.getInventory().getHelmet(), itemManager.getItem("helmet-of-darkness"))) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 62000, 255, false, true));
-            p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 62000, 255, false, true));
-        } else {
-            p.removePotionEffect(PotionEffectType.BLINDNESS);
-            p.removePotionEffect(PotionEffectType.NIGHT_VISION);
-        }
     }
 
     /**

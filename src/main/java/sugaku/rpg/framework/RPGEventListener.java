@@ -32,7 +32,6 @@ import java.util.Objects;
 
 //import static sugaku.rpg.framework.menus.ForgeManager.forgeClose;
 import static sugaku.rpg.framework.items.ItemsManager.updateArmor;
-import static sugaku.rpg.framework.items.ItemsManager.updateEffects;
 
 public class RPGEventListener implements Listener {
 
@@ -48,9 +47,9 @@ public class RPGEventListener implements Listener {
         if (clicked == null) return;
 
         //If the player clicked on an armor slot we should update special effects
-        if (e.getSlotType() == InventoryType.SlotType.ARMOR) Bukkit.getServer().getScheduler().runTask(main.plugin, () -> updateEffects(Bukkit.getPlayer(e.getWhoClicked().getName())));
+//        if (e.getSlotType() == InventoryType.SlotType.ARMOR) Bukkit.getServer().getScheduler().runTask(main.plugin, () -> updateEffects(Bukkit.getPlayer(e.getWhoClicked().getName())));
 //        else if (open.getTitle().equals(ForgeManager.title)) ForgeManager.forgeClicked(e);
-        else if (open.getTitle().startsWith(ClassesManager.title)) ClassesManager.classClicked(e);
+        /*else*/ if (open.getTitle().startsWith(ClassesManager.title)) ClassesManager.classClicked(e);
     }
 
     /**
