@@ -19,11 +19,6 @@ import static org.bukkit.attribute.AttributeModifier.Operation.*;
 public final class ItemsManager {
 
     /**
-     * An arraylist which contains all the boss spawn items.
-     */
-    private static final ArrayList<ItemStack> bossSpawns = new ArrayList<>();
-
-    /**
      * The rare Dark Helmet custom item.
      */
     public static ItemStack DarkHelm = itemManager.getItem("other:HelmetOfDarkness");
@@ -55,7 +50,7 @@ public final class ItemsManager {
 
     /**
      * The rare spawn item for Krusk.
-     */
+     */ // todo: Kept for legacy items.
     public static ItemStack KruskSpawn = createItem(Material.WHEAT, 1, ChatColor.BLUE + "Krusk Boss Spawn", new String[]{
             ChatColor.GRAY + "Drop this item anywhere to spawn",
             ChatColor.GREEN + "Krusk, Undead General" + ChatColor.GRAY + " on the spot.",
@@ -65,7 +60,7 @@ public final class ItemsManager {
 
     /**
      * The legendary spawn item for Feyrith.
-     */
+     */ // todo: Kept for legacy items.
     public static ItemStack FeyrithSpawn = createItem(Material.GOLD_INGOT, 1, ChatColor.GOLD + "Feyrith Boss Spawn", new String[]{
             ChatColor.GRAY + "Drop this item anywhere to spawn",
             ChatColor.BLUE + "Feyrith, Apprentice Mage" + ChatColor.GRAY + " on the spot.",
@@ -105,10 +100,6 @@ public final class ItemsManager {
         items.add(UndeadChestplate);
         items.add(KruskLore);
         items.addAll(EiryerasBoss.getBossItems());
-
-        bossSpawns.add(FeyrithSpawn);
-        bossSpawns.add(KruskSpawn);
-        bossSpawns.add(EiryerasSpawn);
     }
 
     /**
@@ -132,7 +123,7 @@ public final class ItemsManager {
         lore.add(ChatColor.GRAY + "struck by lighting.");
 
         meta.setLore(lore);
-        EiryerasSpawn.setItemMeta(meta);
+        EiryerasSpawn.setItemMeta(meta); // todo: Kept for legacy items.
     }
 
     /**
@@ -318,11 +309,6 @@ public final class ItemsManager {
     }
 
     /**
-     * Returns the arraylist of items that are considered boss spawns.
-     */
-    public static ArrayList<ItemStack> getBossSpawns() { return bossSpawns; }
-
-    /**
      * Applies the given strings to the lore of the given meta.
      * @param m The meta which will have the lore.
      * @param lines The lines of lore.
@@ -397,27 +383,6 @@ public final class ItemsManager {
         LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
         assert meta != null;
         meta.setColor(Color.fromRGB(r, g, b));
-        item.setItemMeta(meta);
-        return item;
-    }
-
-    /**
-     * Creates a leather armor item with the given dyes. This also handles the adding attributes to the leather armor.
-     *
-     * @param m The material for the item.
-     * @param n The name of the item.
-     * @param lines The lines of lore.
-     * @param r The red of the dye.
-     * @param g The green of the dye.
-     * @param b The blue of the dye.
-     * @param attributes The attributes to be added to the item.
-     */
-    public static ItemStack createLeatherArmor(Material m, String n, String[] lines, int r, int g, int b, AttributeModifier[] attributes) {
-        ItemStack item = createLeatherArmor(m, n, lines, r, g, b);
-        if (item == null) return null;
-        ItemMeta meta = item.getItemMeta();
-        assert meta != null;
-        for (AttributeModifier a: attributes) meta.addAttributeModifier(Attribute.valueOf(a.getName()), a);
         item.setItemMeta(meta);
         return item;
     }

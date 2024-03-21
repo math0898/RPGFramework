@@ -1,5 +1,6 @@
 package sugaku.rpg.mobs.teir1.eiryeras;
 
+import io.github.math0898.rpgframework.RPGFramework;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -117,96 +118,25 @@ public class EiryerasBoss extends CustomMob implements Listener {
      */
     private static final BossDrop[] bossDrops = new BossDrop[]{
             //Rare Eiryeras' Bow
-            new BossDrop(ItemsManager.createItem(Material.BOW, 1, ChatColor.BLUE + "Hand Crafted Bow", new String[]{
-                    ChatColor.GRAY + "A bow crafted by a very",
-                    ChatColor.GRAY + "experienced artisan from",
-                    ChatColor.BLUE + "Strathenberg" + ChatColor.GRAY + ". The unique",
-                    ChatColor.GRAY + "Shape of the limbs help",
-                    ChatColor.GRAY + "transfer more energy into",
-                    ChatColor.GRAY + "each shot.",
-                    ChatColor.BLUE + "Arrow Damage: + 4"
-            }), Rarity.RARE),
+            new BossDrop(RPGFramework.itemManager.getItem("eiryeras:HandCraftedBow"), Rarity.RARE),
 
             //Uncommon Eiryeras' Boots
-            new BossDrop(ItemsManager.createLeatherArmor(Material.LEATHER_BOOTS, ChatColor.GREEN + "Worn Galoshes", new String[]{
-                    ChatColor.GRAY + "While traveling it is very",
-                    ChatColor.GRAY + "important to keep your feet",
-                    ChatColor.GRAY + "dry. Failing to do so can",
-                    ChatColor.GRAY + "result in fungal infections",
-                    ChatColor.GRAY + "blisters, and warts. Do",
-                    ChatColor.GRAY + "yourself a favor and get a",
-                    ChatColor.GRAY + "good pair of footwear."
-            }, 60, 115, 31, new AttributeModifier[]{
-                    ItemsManager.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 1.0, EquipmentSlot.FEET),
-                    ItemsManager.attributeModifier(Attribute.GENERIC_MAX_HEALTH, 2.0, EquipmentSlot.FEET), // + 1
-                    ItemsManager.attributeModifier(Attribute.GENERIC_ARMOR, 0.5, EquipmentSlot.FEET) // + 0.25
-            }), Rarity.UNCOMMON),
+            new BossDrop(RPGFramework.itemManager.getItem("eiryeras:WornGaloshes"), Rarity.UNCOMMON),
 
             //Uncommon Eiryeras' Leggings
-            new BossDrop(ItemsManager.createLeatherArmor(Material.LEATHER_LEGGINGS, ChatColor.GREEN + "Hide Leggings", new String[]{
-                    ChatColor.GRAY + "Woods which do not reside in",
-                    ChatColor.GRAY + "floodplains often cultivate",
-                    ChatColor.GRAY + "a large amount of undergrowth",
-                    ChatColor.GRAY + "which can be thorny and",
-                    ChatColor.GRAY + "difficult to move through.",
-                    ChatColor.GRAY + "A good pair of protective",
-                    ChatColor.GRAY + "pants is a good idea."
-            }, 93, 161, 124, new AttributeModifier[]{
-                    ItemsManager.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 1.0, EquipmentSlot.LEGS),
-                    ItemsManager.attributeModifier(Attribute.GENERIC_MAX_HEALTH, 3.0, EquipmentSlot.LEGS), // + 1
-                    ItemsManager.attributeModifier(Attribute.GENERIC_ARMOR, 0.75, EquipmentSlot.LEGS) // + 0.25
-            }), Rarity.UNCOMMON),
+            new BossDrop(RPGFramework.itemManager.getItem("eiryeras:HideLeggings"), Rarity.UNCOMMON),
 
             //Uncommon Eiryeras' Chestplate
-            new BossDrop(ItemsManager.createLeatherArmor(Material.LEATHER_CHESTPLATE, ChatColor.GREEN + "Hunter's Cloak", new String[]{
-                    ChatColor.GRAY + "Similar to hoods, cloaks help",
-                    ChatColor.GRAY + "greatly to reduce environmental",
-                    ChatColor.GRAY + "hazards as well as recolor the",
-                    ChatColor.GRAY + "wearer to match their terrain.",
-                    ChatColor.GRAY + "This particular cloak is",
-                    ChatColor.GRAY + "specifically colored for the",
-                    ChatColor.GRAY + "forests of Agloytan."
-            }, 113, 172, 11, new AttributeModifier[]{
-                    ItemsManager.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 1.0, EquipmentSlot.CHEST),
-                    ItemsManager.attributeModifier(Attribute.GENERIC_MAX_HEALTH, 4.0, EquipmentSlot.CHEST), // + 1
-                    ItemsManager.attributeModifier(Attribute.GENERIC_ARMOR, 1, EquipmentSlot.CHEST) // + 0.25
-            }), Rarity.UNCOMMON),
+            new BossDrop(RPGFramework.itemManager.getItem("eiryeras:HuntersCloak"), Rarity.UNCOMMON),
 
             //Uncommon Eiryeras' Helmet
-            new BossDrop(ItemsManager.createLeatherArmor(Material.LEATHER_HELMET, ChatColor.GREEN + "Hunter's Hood", new String[]{
-                    ChatColor.GRAY + "Hoods serve to help to conceal",
-                    ChatColor.GRAY + "humanoid features among the",
-                    ChatColor.GRAY + "trees as well as protect the",
-                    ChatColor.GRAY + "wearer against most",
-                    ChatColor.GRAY + "environmental hazards."
-            }, 60, 115, 31, new AttributeModifier[]{
-                    ItemsManager.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 1.0, EquipmentSlot.HEAD),
-                    ItemsManager.attributeModifier(Attribute.GENERIC_MAX_HEALTH, 2.0, EquipmentSlot.HEAD), // + 1
-                    ItemsManager.attributeModifier(Attribute.GENERIC_ARMOR, 0.5, EquipmentSlot.HEAD) // + 0.25
-            }), Rarity.UNCOMMON),
+            new BossDrop(RPGFramework.itemManager.getItem("eiryeras:HuntersHood"), Rarity.UNCOMMON),
 
             //Rare Eiryeras' Knife
-            new BossDrop(ItemsManager.createItem(Material.IRON_SWORD,1, ChatColor.BLUE + "Ceremonial Knife", new String[]{
-                    ChatColor.GRAY + "This is a ceremonial knife used",
-                    ChatColor.GRAY + "by followers of" + ChatColor.RED +" Inos" + ChatColor.GRAY + "," + ChatColor.RED + " God of",
-                    ChatColor.RED + "Spring" + ChatColor.GRAY + ". The blade is used when",
-                    ChatColor.GRAY + "gathering natural resources to",
-                    ChatColor.GRAY + "show thanks and to humbly ask",
-                    ChatColor.GRAY + "for its rejuvenation."
-            }, new AttributeModifier[]{ItemsManager.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 10.0, EquipmentSlot.HAND)/* + 2.0*/}), Rarity.RARE),
+            new BossDrop(RPGFramework.itemManager.getItem("eiryeras:CeremonialKnife"), Rarity.RARE),
 
             //Legendary Eiryeras' Lore
-            new BossDrop(ItemsManager.createItem(Material.IRON_SWORD,1, ChatColor.GOLD + "Eiryeras Lore", new String[]{
-                    ChatColor.GREEN + "Eiryeras" + ChatColor.GRAY +  " from a young age has",
-                    ChatColor.GRAY + "always been very chaotic. Rather",
-                    ChatColor.GRAY + "than study" + ChatColor.GREEN + " Eiryeras" + ChatColor.GRAY + " would much",
-                    ChatColor.GRAY + "rather spend their time amongst",
-                    ChatColor.GRAY + "the bugs and birds of the forest.",
-                    ChatColor.GREEN + "Eiryeras" + ChatColor.GRAY +  " in old age would often",
-                    ChatColor.GRAY + "proclaim that the company of",
-                    ChatColor.GRAY + "animals is far superior to that",
-                    ChatColor.GRAY + "of man."
-            }), Rarity.LEGENDARY)
+            new BossDrop(RPGFramework.itemManager.getItem("eiryeras:Lore"), Rarity.LEGENDARY)
     };
 
     /**
