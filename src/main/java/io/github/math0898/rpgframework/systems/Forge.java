@@ -55,13 +55,20 @@ public class Forge {
         Inventory forge = e.getPlayer().getOpenInventory().getTopInventory();
         ItemStack indicator = forge.getItem(31);
         if (indicator == null) return;
+        List<ItemStack> toReturn = new ArrayList<>();
         switch (indicator.getType()) {
-            case ORANGE_STAINED_GLASS_PANE -> player.getInventory().addItem(forge.getItem(22));
-            case RED_STAINED_GLASS_PANE, LIME_STAINED_GLASS_PANE -> {
-                player.getInventory().addItem(forge.getItem(11));
-                player.getInventory().addItem(forge.getItem(15));
-            }
+            case ORANGE_STAINED_GLASS_PANE:
+                toReturn.add(forge.getItem(22));
+            case RED_STAINED_GLASS_PANE, LIME_STAINED_GLASS_PANE:
+                toReturn.add(forge.getItem(11));
+                toReturn.add(forge.getItem(15));
         }
+        for (ItemStack i : toReturn)
+            if (i != null) {
+                Map<Integer, ItemStack> failed = player.getInventory().addItem(i);
+                if (!failed.isEmpty())
+                    failed.forEach((n, item) -> player.getWorld().dropItem(player.getLocation(), item));
+            }
     }
 
     public static void forgeClicked (InventoryClickEvent event) {
