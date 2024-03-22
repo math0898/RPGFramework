@@ -56,7 +56,11 @@ public class AssassinClass extends AbstractClass {
      */
     public AssassinClass (RpgPlayer p) {
         super(p);
-        setCooldowns(new Cooldown[]{new Cooldown(30), new Cooldown(60), new Cooldown(300)});
+        Cooldown[] cds = new Cooldown[3];
+        cds[Abilities.HEROIC_DODGE.ordinal()] = new Cooldown(300);
+        cds[Abilities.POISONED_BLADE.ordinal()] = new Cooldown(60);
+        cds[Abilities.INVISIBILITY.ordinal()] = new Cooldown(30);
+        setCooldowns(cds);
         setClassItems(Material.GHAST_TEAR);
     }
 
