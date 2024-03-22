@@ -1,12 +1,16 @@
 package io.github.math0898.rpgframework.classes;
 
 import io.github.math0898.rpgframework.damage.AdvancedDamageEvent;
+import org.bukkit.Material;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import io.github.math0898.rpgframework.Cooldown;
 import io.github.math0898.rpgframework.RpgPlayer;
 import org.bukkit.inventory.EquipmentSlot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The AbstractClass implements the basics of what makes up a class, and some protected utility methods, to make
@@ -25,6 +29,11 @@ public abstract class AbstractClass implements Class, sugaku.rpg.framework.class
      * An array of cooldowns.
      */
     private Cooldown[] cooldowns; // todo: Each implementing class could use a self-defined enum with ability names to index.
+
+    /**
+     * A list of items that are considered class items.
+     */
+    private final List<Material> classItems = new ArrayList<>();
 
     /**
      * Creates a new AbstractClass object which is specific to the given player.
@@ -70,7 +79,7 @@ public abstract class AbstractClass implements Class, sugaku.rpg.framework.class
      */
     protected boolean offCooldown (int i) {
         if (player == null) return true; // Not sure how we got here.
-        if (getCooldowns()[i].getRemaining() <= 0)
+        if (cooldowns[i].isComplete())
             return true;
         send("That ability is on cooldown for another " +  getCooldowns()[i].getRemaining() + "s.");
         return false;
@@ -86,12 +95,36 @@ public abstract class AbstractClass implements Class, sugaku.rpg.framework.class
         player.sendMessage(message);
     }
 
+    /**
+     * Sets the class items for this class so that {@link #isClassItem(Material)} can be used.
+     *
+     * @param mats The materials to add as class items.
+     */
+    protected void setClassItems (Material... mats) {
+        if (mats != null)
+            for (Material m : mats)
+                if (m != null)
+                    classItems.add(m);
+    }
+
+    /**
+     * Checks whether the given item is a class item or not.
+     *
+     * @param mat The material to check whether it is a class item.
+     * @return The index of the class item in the ClassItems array. -1 If it is not a class item.
+     */
+    protected int isClassItem (Material mat) {
+        return classItems.indexOf(mat);
+    }
+
     @Override
+    @Deprecated
     public void damaged (EntityDamageEvent event) {
         damaged(new AdvancedDamageEvent(event));
     }
 
     @Override
+    @Deprecated
     public void attack (EntityDamageByEntityEvent event) {
         attack(new AdvancedDamageEvent(event));
     }
@@ -117,15 +150,17 @@ public abstract class AbstractClass implements Class, sugaku.rpg.framework.class
     /**
      * Called when the class user has 'died'.
      *
-     * @return Whether an effect nullifies the death or not.
+     * @return Whether a death should be respected or not.
      */
     @Override
     public boolean onDeath () {
-        return false;
+        return true;
     }
 
     /**
      * Checks whether this player is wearing the armor type for their class or not.
+     *
+     * @return True if the player is wearing an entire suit of the right armor.
      */
     @Override
     public boolean correctArmor () {
@@ -139,6 +174,7 @@ public abstract class AbstractClass implements Class, sugaku.rpg.framework.class
      * Checks a specific slot to see if this player is wearing their class armor or not.
      *
      * @param slot The slot to check to see if it is the correct armor type.
+     * @return True if the player is wearing the correct armor for that slot.
      */
     @Override
     public boolean correctArmor (EquipmentSlot slot) {
@@ -152,7 +188,7 @@ public abstract class AbstractClass implements Class, sugaku.rpg.framework.class
      */
     @Override
     public void damaged (AdvancedDamageEvent event) {
-        System.out.println("New On Damaged Called!");
+
     }
 
     /**
@@ -162,6 +198,6 @@ public abstract class AbstractClass implements Class, sugaku.rpg.framework.class
      */
     @Override
     public void attack (AdvancedDamageEvent event) {
-        System.out.println("New On Damaged Called!");
+
     }
 }

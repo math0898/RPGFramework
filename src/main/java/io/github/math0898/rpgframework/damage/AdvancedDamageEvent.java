@@ -77,7 +77,6 @@ public class AdvancedDamageEvent extends EntityEvent implements Cancellable {
             case VOID -> damages.replace(DamageType.VOID, basic.getDamage());
             default -> damages.replace(DamageType.UNSPECIFIED, basic.getDamage());
         }
-        System.out.println(toString());
     }
 
     /**
@@ -108,6 +107,17 @@ public class AdvancedDamageEvent extends EntityEvent implements Cancellable {
      */
     public void setDamages (Map<DamageType, Double> damages) {
         this.damages = damages;
+    }
+
+    /**
+     * Adds damage the provided damage to the given {@link DamageType}.
+     *
+     * @param dmg  The amount of damage to add.
+     * @param type The type of damage to add it as.
+     */
+    public void addDamage (double dmg, DamageType type) {
+        double current = damages.get(type);
+        damages.put(type, current + dmg);
     }
 
     /**

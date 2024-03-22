@@ -8,6 +8,8 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import sugaku.rpg.framework.classes.Classes;
 
 import java.util.UUID;
@@ -248,6 +250,30 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
     public void sendMessage (String message, boolean prefix) {
         if (prefix) getBukkitPlayer().sendMessage(MESSAGE_PREFIX + message);
         else getBukkitPlayer().sendMessage(message);
+    }
+
+    /**
+     * Adds the given potion effect to this player.
+     *
+     * @param type The type of effect to add.
+     * @param dur  The duration to add this effect.
+     * @param lvl  The level to apply this effect at. (Not amplifier!)
+     */
+    public void addPotionEffect (PotionEffectType type, int dur, int lvl) {
+        addPotionEffect(type, dur, lvl, false, false);
+    }
+
+    /**
+     * Adds the given potion effect to this player.
+     *
+     * @param type    The type of effect to add.
+     * @param dur     The duration to add this effect.
+     * @param lvl     The level to apply this effect at. (Not amplifier!)
+     * @param ambient Whether the particles are ambient or not.
+     * @param hide    Should the particles be hidden.
+     */
+    public void addPotionEffect (PotionEffectType type, int dur, int lvl, boolean ambient, boolean hide) {
+        getBukkitPlayer().addPotionEffect(new PotionEffect(type, dur, lvl - 1, ambient, hide));
     }
 
     //TODO: Implement the damage bonus of the bow

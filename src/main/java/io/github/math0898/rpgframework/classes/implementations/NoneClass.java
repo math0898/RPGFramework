@@ -27,6 +27,6 @@ public class NoneClass extends AbstractClass {
      */
     @Deprecated
     public NoneClass (sugaku.rpg.framework.players.RpgPlayer p) {
-        super(PlayerManager.getPlayer(p.getUuid()));
+        this(PlayerManager.getPlayer(p.getUuid()));
     }
 }
