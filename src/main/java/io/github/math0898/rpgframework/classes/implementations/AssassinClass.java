@@ -75,7 +75,6 @@ public class AssassinClass extends AbstractClass {
      */
     @Override
     public void damaged (AdvancedDamageEvent event) {
-        System.out.println("New On Damaged Called!");
         if (getCooldowns()[Abilities.HEROIC_DODGE.ordinal()].getRemaining() >= 290) event.setCancelled(true);
         else if (getCooldowns()[Abilities.INVISIBILITY.ordinal()].getRemaining() >= 20) event.setCancelled(true);
         double roll = new Random().nextDouble();
@@ -89,14 +88,12 @@ public class AssassinClass extends AbstractClass {
      */
     @Override
     public void attack (AdvancedDamageEvent event) {
-        System.out.println("New On Damaged Called!");
         if (event.getEntity() instanceof LivingEntity entity) {
             if (entity instanceof Player) event.addDamage(5.0, DamageType.SLASH);
             else event.addDamage(10.0, DamageType.SLASH);
             if (getCooldowns()[Abilities.POISONED_BLADE.ordinal()].getRemaining() >= 50)
                 for (PotionEffectType type : new PotionEffectType[]{PotionEffectType.BLINDNESS, PotionEffectType.POISON, PotionEffectType.SLOW})
                     entity.addPotionEffect(new PotionEffect(type, 10 * 20, 0));
-
         }
     }
 
@@ -139,9 +136,9 @@ public class AssassinClass extends AbstractClass {
             getPlayer().getBukkitPlayer().playSound(getPlayer().getBukkitPlayer().getLocation(), Sound.ITEM_TOTEM_USE, 0.8f, 1.0f);
             getPlayer().addPotionEffect(PotionEffectType.SPEED, 10*20, 2);
             getCooldowns()[Abilities.HEROIC_DODGE.ordinal()].restart();
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
