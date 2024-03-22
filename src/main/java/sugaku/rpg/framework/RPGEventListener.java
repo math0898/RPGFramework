@@ -1,5 +1,6 @@
 package sugaku.rpg.framework;
 
+import io.github.math0898.rpgframework.DataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -61,8 +62,8 @@ public class RPGEventListener implements Listener {
     public void onPlayerLogin(PlayerLoginEvent e) {
         try {
             //We need to load their data,
-            PlayerManager.addPlayer(new RpgPlayer(e.getPlayer()));
-            FileManager.load(e.getPlayer());
+            RpgPlayer rpgPlayer = new RpgPlayer(e.getPlayer());
+            PlayerManager.addPlayer(rpgPlayer);
             PlayerManager.scaleHealth(e.getPlayer());
             Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> PlayerManager.healPlayer(e.getPlayer()), 5);
         } catch (Exception exception) {
@@ -77,7 +78,6 @@ public class RPGEventListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
         //We need to save their data
-        FileManager.unload(e.getPlayer());
         PlayerManager.removePlayer(e.getPlayer().getUniqueId());
     }
 

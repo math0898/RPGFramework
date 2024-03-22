@@ -88,6 +88,7 @@ public final class RPGFramework extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new GodEventListener(), this); // todo remove me!
         PartyManager.init();
         PlayerManager.init();
+        DataManager.getInstance();
         registerCommands();
         Objects.requireNonNull(Bukkit.getPluginCommand("party")).setExecutor(new PartyCommand());
         Objects.requireNonNull(Bukkit.getPluginCommand("party")).setTabCompleter(PartyCommand.autocomplete);

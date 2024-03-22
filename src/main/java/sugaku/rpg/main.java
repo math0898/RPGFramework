@@ -5,7 +5,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import sugaku.rpg.framework.FileManager;
 import sugaku.rpg.framework.classes.implementations.Pyromancer;
 import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.RPGEventListener;
@@ -50,9 +49,6 @@ public final class main {
         //Loading
         console("Loading Sugaku's RPG Plugin...");
 
-        //Files
-        FileManager.setup();
-
         //Registering events TODO: Move this somewhere?
         Bukkit.getPluginManager().registerEvents(new RPGEventListener(), plugin);
         Bukkit.getPluginManager().registerEvents(new EiryerasBoss(), plugin);
@@ -61,7 +57,6 @@ public final class main {
 
         //Other TODO: Add console to Item Manager
         ItemsManager.init();
-
 
         //Loaded
         console("RPG loaded successfully!", ChatColor.GREEN);
@@ -73,9 +68,6 @@ public final class main {
      */
     public void onDisable() {
         console("Tearing down...");
-
-        //Files
-        FileManager.saveAll();
 
         console("Tear down successful!", ChatColor.GREEN);
     }

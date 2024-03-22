@@ -5,6 +5,7 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExhaustionEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -222,7 +223,9 @@ public class PlayerManager implements Listener { // todo needs cleaning. Copied 
      */
     @EventHandler
     public void onJoin (PlayerJoinEvent event) {
-        players.add(new RpgPlayer(event.getPlayer()));
+        RpgPlayer player = new RpgPlayer(event.getPlayer());
+        players.add(player);
+        DataManager.getInstance().load(player);
     }
 
     /**
@@ -233,6 +236,7 @@ public class PlayerManager implements Listener { // todo needs cleaning. Copied 
     @EventHandler
     public void onLeave (PlayerQuitEvent event) {
         RpgPlayer rpgPlayer = getPlayer(event.getPlayer().getUniqueId());
+        DataManager.getInstance().save(rpgPlayer);
         if (rpgPlayer != null) {
             Party party = rpgPlayer.getParty();
             if (party != null) party.removePlayer(rpgPlayer.getBukkitPlayer());

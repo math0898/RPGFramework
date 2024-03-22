@@ -20,15 +20,16 @@ public enum Classes {
         return ChatColor.WHITE;
     }
 
-    public static Classes fromString(String c) {
-        switch(c) {
-            case "Assassin": return Classes.ASSASSIN;
-            case "Bard": return Classes.BARD;
-            case "Berserker": return Classes.BERSERKER;
-            case "Paladin": return Classes.PALADIN;
-            case "Pyromancer": return Classes.PYROMANCER;
-            default: return Classes.NONE;
-        }
+    public static Classes fromString (String c) {
+        String str = c.toLowerCase();
+        return switch (str) {
+            case "assassin" -> Classes.ASSASSIN;
+            case "bard" -> Classes.BARD;
+            case "berserker" -> Classes.BERSERKER;
+            case "paladin" -> Classes.PALADIN;
+            case "pyromancer" -> Classes.PYROMANCER;
+            default -> Classes.NONE;
+        };
     }
 
     /**
