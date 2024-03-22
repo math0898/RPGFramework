@@ -33,7 +33,7 @@ fire-gemstone:
       - ""
       - "§7Off Hand:"
       - §9+5 Magic Power
-      - §9+5 Attack Damage
+      - §9+25 Attack Damage
       - §9+0.25 Attack Speed
     ItemFlags:
       - HIDE_ATTRIBUTES
@@ -52,3 +52,28 @@ fire-gemstone:
           slot: OFF_HAND
           uuid: 00000000-0000-0006-0000-000000000005
           operation: 0
+
+sylvathian-thorn-weaver: # todo: Maybe make look enchanted
+  ==: org.bukkit.inventory.ItemStack
+  type: EMERALD
+  amount: 1
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: §9Sylvathian Thornweaver
+    custom-model-data: 1
+    lore:
+      - §7A simplistic artifact imbued
+      - §7with the magics of a young
+      - §6Sylvathian §7to ensnare the
+      - §7unsuspecting. After some
+      - §7tweaks it now makes for an
+      - §7effective defensive aura.
+      - ""
+      - "§9Aura of Thorns §7(Active): "
+      - "§7Summons thorns surrounding"
+      - "§7the player to damage foes."
+      - "§9Cooldown: 60s"
+      - "§9Duration: 10s"
+      - "§9Damage: 10/s"
+      - "§9Range: 4 blocks"

@@ -1,6 +1,7 @@
 package io.github.math0898.rpgframework.items;
 
 import io.github.math0898.rpgframework.RPGFramework;
+import io.github.math0898.rpgframework.items.implementations.SylvathianThornWeaver;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -65,6 +66,7 @@ public class ItemManager {
             }
         }
         Bukkit.getScheduler().runTaskAsynchronously(getInstance(), this::passives);
+        Bukkit.getPluginManager().registerEvents(new SylvathianThornWeaver(), getInstance());
     }
 
     /**
