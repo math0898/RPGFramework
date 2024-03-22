@@ -22,7 +22,7 @@ import static io.github.math0898.rpgframework.RPGFramework.plugin;
  * The Party Command is used for interacting and manipulating parties.
  *
  * @author Sugaku
- */
+ */ // todo: Should be refactored.
 public class PartyCommand implements CommandExecutor { // todo could use quite a bit of optimization still.
 
     /**

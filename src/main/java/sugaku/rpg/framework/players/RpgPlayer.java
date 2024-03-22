@@ -149,18 +149,7 @@ public class RpgPlayer {
         return getPlayerRarity(this.getBukkitPlayer());
     }
 
-    public Party getParty() { return party; }
-
-    public void joinParty(Party p) {
-        p.addPlayer(this);
-        party = p;
-    }
-
-    public void leaveParty() { party = null; }
-
-    public Party getPendingParty() { return pendingParty; }
-
-    public void setPendingParty(Party p) { pendingParty = p; }
+    public Party getParty() { return null; }
 
     public Player getBukkitPlayer() { return Bukkit.getPlayer(uuid); }
 
