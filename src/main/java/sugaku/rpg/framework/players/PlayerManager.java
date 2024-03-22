@@ -119,7 +119,7 @@ public class PlayerManager {
 
     /**
      * Runs the player manager when damaged by the environment.
-     */
+     */ // todo: This should probably be considered at the end of Advanced Damage.
     public static void environmentalDamage (EntityDamageEvent event) {
         Player player = (Player) event.getEntity();
         if (player.getHealth() <= event.getDamage()) {
@@ -128,6 +128,8 @@ public class PlayerManager {
             if (rpg == null) return;
             if (rpg.inCombat()) {
                 rpg.damaged(event);
+                if (event.isCancelled()) return;
+                if (player.getHealth() > event.getDamage()) return;
                 event.setCancelled(true);
                 if (rpg.revive()) return;
                 honorableDeath(rpg);
@@ -140,13 +142,15 @@ public class PlayerManager {
 
     /**
      * Runs the player manager when damaged.
-     */
+     */ // todo: This should probably be considered at the end of Advanced Damage.
     public static void onDamage (EntityDamageByEntityEvent event) {
 
         Player player = (Player) event.getEntity(); //Check RPGEventListener
         RpgPlayer rpg = PlayerManager.getPlayer(player.getUniqueId());
         if (rpg == null) return;
         rpg.damaged(event);
+        if (event.isCancelled()) return;
+        if (player.getHealth() > event.getDamage()) return;
 
         if (player.getHealth() <= event.getDamage() ) {
             if (player.getInventory().getItemInMainHand().getType() == Material.TOTEM_OF_UNDYING || player.getInventory().getItemInOffHand().getType() == Material.TOTEM_OF_UNDYING) return;

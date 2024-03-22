@@ -77,6 +77,7 @@ public class AdvancedDamageEvent extends EntityEvent implements Cancellable {
             case VOID -> damages.replace(DamageType.VOID, basic.getDamage());
             default -> damages.replace(DamageType.UNSPECIFIED, basic.getDamage());
         }
+        basic.setDamage(basic.getDamage() / 5.00);
     }
 
     /**
@@ -117,7 +118,26 @@ public class AdvancedDamageEvent extends EntityEvent implements Cancellable {
      */
     public void addDamage (double dmg, DamageType type) {
         double current = damages.get(type);
-        damages.put(type, current + dmg);
+        damages.replace(type, current + dmg);
+    }
+
+    /**
+     * A method to calculate the primary damage type of this attack. Used to determine if offensive magical or physical
+     * bonuses should apply.
+     *
+     * @return The primary damage of this AdvancedDamageEvent.
+     */
+    public DamageType getPrimaryDamage () {
+        DamageType highest = DamageType.UNSPECIFIED;
+        double dmg = damages.get(highest);
+        for (DamageType t : DamageType.values()) {
+            double testNumber = damages.get(t);
+            if (testNumber > dmg) {
+                dmg = testNumber;
+                highest = t;
+            }
+        }
+        return highest;
     }
 
     /**

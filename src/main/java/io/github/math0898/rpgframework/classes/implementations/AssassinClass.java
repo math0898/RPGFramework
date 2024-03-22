@@ -94,13 +94,14 @@ public class AssassinClass extends AbstractClass {
      */
     @Override
     public void attack (AdvancedDamageEvent event) {
-        if (event.getEntity() instanceof LivingEntity entity) {
-            if (entity instanceof Player) event.addDamage(5.0, DamageType.SLASH);
-            else event.addDamage(10.0, DamageType.SLASH);
-            if (getCooldowns()[Abilities.POISONED_BLADE.ordinal()].getRemaining() >= 50)
-                for (PotionEffectType type : new PotionEffectType[]{PotionEffectType.BLINDNESS, PotionEffectType.POISON, PotionEffectType.SLOW})
-                    entity.addPotionEffect(new PotionEffect(type, 10 * 20, 0));
-        }
+        if (event.getEntity() instanceof LivingEntity entity)
+            if (event.getPrimaryDamage().isPhysical()) {
+                if (entity instanceof Player) event.addDamage(5.0, DamageType.SLASH);
+                else event.addDamage(10.0, DamageType.SLASH);
+                if (getCooldowns()[Abilities.POISONED_BLADE.ordinal()].getRemaining() >= 50)
+                    for (PotionEffectType type : new PotionEffectType[]{PotionEffectType.BLINDNESS, PotionEffectType.POISON, PotionEffectType.SLOW})
+                        entity.addPotionEffect(new PotionEffect(type, 10 * 20, 0));
+            }
     }
 
     /**

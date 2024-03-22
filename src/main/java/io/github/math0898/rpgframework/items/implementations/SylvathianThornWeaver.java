@@ -1,6 +1,5 @@
 package io.github.math0898.rpgframework.items.implementations;
 
-import io.github.math0898.rpgframework.items.ItemManager;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -78,7 +77,7 @@ public class SylvathianThornWeaver implements Listener {
             Player p = Bukkit.getPlayer(uuid);
             List<Entity> entity = p.getNearbyEntities(4.0, 4.0, 4.0);
             entity.forEach((e) -> {
-                if (!e.equals(p) && e instanceof LivingEntity le) {
+                if (!e.equals(p) && e instanceof LivingEntity le) { // todo: Will need to do something like this for advanced damage.
                     le.damage(2.0, p);
                     if (le.getNoDamageTicks() == 0) le.setNoDamageTicks(0);
                 }

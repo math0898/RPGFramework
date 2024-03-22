@@ -122,7 +122,7 @@ public abstract class AbstractClass implements Class, sugaku.rpg.framework.class
     @Deprecated
     public void damaged (EntityDamageEvent event) {
         AdvancedDamageEvent advancedDamageEvent = new AdvancedDamageEvent(event);
-        damaged(new AdvancedDamageEvent(event));
+        damaged(advancedDamageEvent);
         if (advancedDamageEvent.isCancelled()) event.setCancelled(true);
         event.setDamage(AdvancedDamageHandler.damageCalculation(advancedDamageEvent) / 5.0);
     }
@@ -131,9 +131,9 @@ public abstract class AbstractClass implements Class, sugaku.rpg.framework.class
     @Deprecated
     public void attack (EntityDamageByEntityEvent event) {
         AdvancedDamageEvent advancedDamageEvent = new AdvancedDamageEvent(event);
-        attack(new AdvancedDamageEvent(event));
+        attack(advancedDamageEvent);
         if (advancedDamageEvent.isCancelled()) event.setCancelled(true);
-        event.setDamage(AdvancedDamageHandler.damageCalculation(advancedDamageEvent)  / 5.0);
+        event.setDamage(AdvancedDamageHandler.damageCalculation(advancedDamageEvent) / 5.0);
     }
 
     /**

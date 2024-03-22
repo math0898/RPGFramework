@@ -100,4 +100,16 @@ public enum DamageType {
             case IMPACT, PUNCTURE, SLASH, UNSPECIFIED -> "PHYSICAL";
         };
     }
+
+    /**
+     * Returns true if this is a type of physical attack.
+     *
+     * @return True if this is a physical attack.
+     */
+    public boolean isPhysical () {
+        return switch (this) {
+            case IMPACT, PUNCTURE, SLASH, UNSPECIFIED -> true;
+            default -> false;
+        };
+    }
 }
