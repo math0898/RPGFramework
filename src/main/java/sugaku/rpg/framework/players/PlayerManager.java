@@ -8,7 +8,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExhaustionEvent;
 import org.bukkit.potion.PotionEffect;
-import sugaku.rpg.framework.UserData;
 import sugaku.rpg.main;
 
 import java.util.*;
@@ -35,41 +34,9 @@ public class PlayerManager {
     }
 
     /**
-     * An arraylist holding all the the userdata that has been currently loaded
-     */
-    private static final ArrayList<UserData> userData = new ArrayList<>();
-
-    /**
      * An array of death flavor messages.
      */
     private static final String[] deathFlavor = {" was slain by ", " met an honorable death by ", " was bested by ", " lost in a fight against ", ", in an epic duel lost to ", " met their fate by the hands of "};
-
-    /**
-     * Returns the arraylist of userdata.
-     * @return The arraylist containing user data.
-     */
-    public static ArrayList<UserData> getUserData(){ return userData; }
-
-    /**
-     * Returns the individual UserData that belongs to the given uuid.
-     *
-     * @param uuid The uuid of the play we're trying to access.
-     * @return The UserData object that belongs to that player.
-     */
-    public static UserData getUserData(UUID uuid) {
-        for (UserData d: userData) if (d.getUuid() == uuid)  return d;
-        return null;
-    }
-
-    /**
-     * Adds a user's data to the arraylist.
-     */
-    public static void addUserData(UserData element) { userData.add(element); }
-
-    /**
-     * Removes the user's data from the arraylist
-     */
-    public static void removeUserData(UUID uuid) { userData.removeIf(d -> d.getUuid() == uuid); }
 
     /**
      * An arraylist holding all the rpg-players currently on the server.
