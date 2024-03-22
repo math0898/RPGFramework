@@ -12,7 +12,6 @@ import java.util.Map;
  * This method is used to overhaul damage in vanilla minecraft. It is called as an event at the lowest priority of
  * any EntityDamage event that has not yet been canceled. After all handlers have handled this event the damage of the
  * EntityDamage event is adjusted.
- *
  * For the sake of this event health is scaled x 5.0 so the base max health of a player along with most mobs is 100.00.
  *
  * @author Sugaku
@@ -78,6 +77,7 @@ public class AdvancedDamageEvent extends EntityEvent implements Cancellable {
             case VOID -> damages.replace(DamageType.VOID, basic.getDamage());
             default -> damages.replace(DamageType.UNSPECIFIED, basic.getDamage());
         }
+        System.out.println(toString());
     }
 
     /**
@@ -221,5 +221,18 @@ public class AdvancedDamageEvent extends EntityEvent implements Cancellable {
     @SuppressWarnings("All")
     public static HandlerList getHandlerList () {
         return HANDLERS;
+    }
+
+    /**
+     * Displays this AdvancedDamageEvent in a human-readable format.
+     *
+     * @return The AdvancedDamageEvent in a human-readable format.
+     */
+    @Override
+    public String toString() {
+        StringBuilder toReturn = new StringBuilder("Advanced Damage Event (" + cancelled + "): <phy: " + physicalResistance + ", mag: " + magicResistance + ">");
+        for (DamageType type : resistances.keySet())
+            toReturn.append("\n").append(type).append(" > ").append(damages.get(type)).append(" (").append(resistances.get(type)).append(")");
+        return toReturn.toString();
     }
 }

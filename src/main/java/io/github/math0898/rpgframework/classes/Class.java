@@ -3,6 +3,7 @@ package io.github.math0898.rpgframework.classes;
 import io.github.math0898.rpgframework.damage.DamageModifier;
 import org.bukkit.event.player.PlayerInteractEvent;
 import io.github.math0898.rpgframework.RpgPlayer;
+import org.bukkit.inventory.EquipmentSlot;
 
 /**
  * The Class interfaces all the required components of a class.
@@ -34,4 +35,16 @@ public interface Class extends DamageModifier {
      * @return Whether an effect nullifies the death or not.
      */
     boolean onDeath ();
+
+    /**
+     * Checks whether this player is wearing the armor type for their class or not.
+     */
+    boolean correctArmor ();
+
+    /**
+     * Checks a specific slot to see if this player is wearing their class armor or not.
+     *
+     * @param slot The slot to check to see if it is the correct armor type.
+     */
+    boolean correctArmor (EquipmentSlot slot);
 }

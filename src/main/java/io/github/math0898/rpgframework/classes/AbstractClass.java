@@ -6,6 +6,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import io.github.math0898.rpgframework.Cooldown;
 import io.github.math0898.rpgframework.RpgPlayer;
+import org.bukkit.inventory.EquipmentSlot;
 
 /**
  * The AbstractClass implements the basics of what makes up a class, and some protected utility methods, to make
@@ -124,13 +125,34 @@ public abstract class AbstractClass implements Class, sugaku.rpg.framework.class
     }
 
     /**
+     * Checks whether this player is wearing the armor type for their class or not.
+     */
+    @Override
+    public boolean correctArmor () {
+        return correctArmor(EquipmentSlot.HEAD)
+                && correctArmor(EquipmentSlot.CHEST)
+                && correctArmor(EquipmentSlot.LEGS)
+                && correctArmor(EquipmentSlot.FEET);
+    }
+
+    /**
+     * Checks a specific slot to see if this player is wearing their class armor or not.
+     *
+     * @param slot The slot to check to see if it is the correct armor type.
+     */
+    @Override
+    public boolean correctArmor (EquipmentSlot slot) {
+        return true;
+    }
+
+    /**
      * Called whenever this DamageModifier is relevant on a defensive front.
      *
      * @param event The AdvancedDamageEvent to consider.
      */
     @Override
     public void damaged (AdvancedDamageEvent event) {
-
+        System.out.println("New On Damaged Called!");
     }
 
     /**
@@ -140,6 +162,6 @@ public abstract class AbstractClass implements Class, sugaku.rpg.framework.class
      */
     @Override
     public void attack (AdvancedDamageEvent event) {
-
+        System.out.println("New On Damaged Called!");
     }
 }
