@@ -16,6 +16,11 @@ import java.util.Objects;
 public class RpgPlayer { // todo Needs updating for the new framework. Copied from RPG 1.0.
 
     /**
+     * A static prefix to send to all players.
+     */
+    private static final String MESSAGE_PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY;
+
+    /**
      * Default constructor for an RpgPlayer construct just requiring an uuid.
      *
      * @param p The player this construct points to.
@@ -224,6 +229,26 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
 //            Bukkit.getScheduler().runTaskLater(main.plugin, this::passive, 20*20);
 //        } catch (Exception ignored) { }
 //    }
+
+    /**
+     * Sends the given message to this player.
+     *
+     * @param message The message to send to this player.
+     */
+    public void sendMessage (String message) {
+        sendMessage(message, true);
+    }
+
+    /**
+     * Sends the given message to this player.
+     *
+     * @param message The message to send to this player.
+     * @param prefix  Whether to include the RPG prefix or not.
+     */
+    public void sendMessage (String message, boolean prefix) {
+        if (prefix) getBukkitPlayer().sendMessage(MESSAGE_PREFIX + message);
+        else getBukkitPlayer().sendMessage(message);
+    }
 
     //TODO: Implement the damage bonus of the bow
 }

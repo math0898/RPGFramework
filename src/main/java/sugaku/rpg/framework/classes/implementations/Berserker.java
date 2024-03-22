@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import sugaku.rpg.framework.Cooldown;
+import io.github.math0898.rpgframework.Cooldown;
 import sugaku.rpg.framework.classes.AbstractClass;
 import sugaku.rpg.framework.players.PlayerManager;
 import sugaku.rpg.framework.players.RpgPlayer;

@@ -1,6 +1,6 @@
 package sugaku.rpg.framework.classes;
 
-import sugaku.rpg.framework.Cooldown;
+import io.github.math0898.rpgframework.Cooldown;
 import sugaku.rpg.framework.players.RpgPlayer;
 import sugaku.rpg.commands.AbstractCommand;
 
@@ -12,20 +12,20 @@ public class AbstractClass {
 
     public AbstractClass(RpgPlayer p) { player = p; }
 
-    public AbstractClass() { player = null; }
+    protected AbstractClass() { player = null; }
 
-    public RpgPlayer getPlayer() { return player; }
+    protected RpgPlayer getPlayer() { return player; }
 
-    public void setCooldowns(Cooldown[] cooldowns) { this.cooldowns = cooldowns; }
+    protected void setCooldowns(Cooldown[] cooldowns) { this.cooldowns = cooldowns; }
 
-    public Cooldown[] getCooldowns() { return cooldowns; }
+    protected Cooldown[] getCooldowns() { return cooldowns; }
 
-    public void onCooldown(int i) {
+    protected void onCooldown(int i) {
         if (player == null) return;
         AbstractCommand.send(player.getBukkitPlayer(), "That ability is on cooldown for another " +  getCooldowns()[i].getRemaining() + "s.");
     }
 
-    public void send(String message) {
+    protected void send(String message) {
         if (player == null) return;
         AbstractCommand.send(player.getBukkitPlayer(), message);
     }

@@ -1,6 +1,6 @@
-package sugaku.rpg.framework;
+package io.github.math0898.rpgframework;
 
-public class Cooldown {
+public class Cooldown { // todo: Javadoc.
 
     private final float duration;
 

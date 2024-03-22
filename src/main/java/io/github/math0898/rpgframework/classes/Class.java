@@ -31,7 +31,7 @@ public interface Class extends DamageModifier {
     /**
      * Called when the class user has 'died'.
      *
-     * @return Whether the death should be respected or not.
+     * @return Whether an effect nullifies the death or not.
      */
     boolean onDeath ();
 }
