@@ -1,5 +1,6 @@
 package sugaku.rpg.framework.players;
 
+import io.github.math0898.rpgframework.classes.implementations.NoneClass;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -62,7 +63,7 @@ public class RpgPlayer {
 
     private Classes combatClass = Classes.NONE;
 
-    private Class classObject = new None(this);
+    private Class classObject = new NoneClass(this);
 
     /**
      * Returns the uuid of the player this construct points to.
@@ -202,7 +203,7 @@ public class RpgPlayer {
             case BERSERKER: classObject = new Berserker(this); break;
             case PALADIN: classObject = new Paladin(this); break;
             case PYROMANCER: classObject = new Pyromancer(this); break;
-            case NONE: default: classObject = new None(this); break;
+            case NONE: default: classObject = new NoneClass(this); break;
         }
     }
 

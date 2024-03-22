@@ -5,6 +5,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import sugaku.rpg.framework.players.RpgPlayer;
 
+@Deprecated
 public interface Class {
 
     RpgPlayer player = null;

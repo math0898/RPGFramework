@@ -1,6 +1,8 @@
 package io.github.math0898.rpgframework.classes;
 
 import io.github.math0898.rpgframework.damage.AdvancedDamageEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import io.github.math0898.rpgframework.Cooldown;
 import io.github.math0898.rpgframework.RpgPlayer;
@@ -11,7 +13,7 @@ import io.github.math0898.rpgframework.RpgPlayer;
  *
  * @author Sugaku
  */
-public class AbstractClass implements Class {
+public abstract class AbstractClass implements Class, sugaku.rpg.framework.classes.Class {
 
     /**
      * The RpgPlayer that this AbstractClass is referencing.
@@ -81,6 +83,16 @@ public class AbstractClass implements Class {
     protected void send (String message) {
         if (player == null) return;
         player.sendMessage(message);
+    }
+
+    @Override
+    public void damaged (EntityDamageEvent event) {
+        damaged(new AdvancedDamageEvent(event));
+    }
+
+    @Override
+    public void attack (EntityDamageByEntityEvent event) {
+        attack(new AdvancedDamageEvent(event));
     }
 
     /**

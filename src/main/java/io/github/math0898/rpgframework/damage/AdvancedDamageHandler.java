@@ -30,23 +30,7 @@ public class AdvancedDamageHandler implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onDamage (EntityDamageEvent event) {
-        event.setDamage(event.getDamage() * 5.00); //Scale damage for the Advanced Damage Calculations
         AdvancedDamageEvent advancedDamageEvent = new AdvancedDamageEvent(event);
-
-        Map<DamageType, Double> damages = advancedDamageEvent.getDamages(); //Setting default damage distributions
-        switch (event.getCause()) {
-            case LIGHTNING -> damages.replace(DamageType.ELECTRIC, event.getDamage());
-            case FIRE, LAVA, FIRE_TICK, HOT_FLOOR -> damages.replace(DamageType.FIRE, event.getDamage());
-            case FALL, CONTACT, FALLING_BLOCK, FLY_INTO_WALL, ENTITY_EXPLOSION, BLOCK_EXPLOSION
-                    -> damages.replace(DamageType.IMPACT, event.getDamage());
-            case FREEZE -> damages.replace(DamageType.ICE, event.getDamage());
-            case PROJECTILE -> damages.replace(DamageType.PUNCTURE, event.getDamage());
-            case THORNS -> damages.replace(DamageType.NATURE, event.getDamage());
-            case VOID -> damages.replace(DamageType.VOID, event.getDamage());
-            default -> damages.replace(DamageType.UNSPECIFIED, event.getDamage());
-        }
-        advancedDamageEvent.setDamages(damages);
-
         Bukkit.getPluginManager().callEvent(advancedDamageEvent); //Call the event
 
         double damage = damageCalculation(advancedDamageEvent);

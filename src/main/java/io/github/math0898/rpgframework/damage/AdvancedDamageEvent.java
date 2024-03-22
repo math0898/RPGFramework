@@ -66,6 +66,18 @@ public class AdvancedDamageEvent extends EntityEvent implements Cancellable {
             damages.put(t, 0.00);
             resistances.put(t, DamageResistance.NORMAL);
         }
+        basic.setDamage(basic.getDamage() * 5.00); //Scale damage for the Advanced Damage Calculations
+        switch (basic.getCause()) {
+            case LIGHTNING -> damages.replace(DamageType.ELECTRIC, basic.getDamage());
+            case FIRE, LAVA, FIRE_TICK, HOT_FLOOR -> damages.replace(DamageType.FIRE, basic.getDamage());
+            case FALL, CONTACT, FALLING_BLOCK, FLY_INTO_WALL, ENTITY_EXPLOSION, BLOCK_EXPLOSION
+                    -> damages.replace(DamageType.IMPACT, basic.getDamage());
+            case FREEZE -> damages.replace(DamageType.ICE, basic.getDamage());
+            case PROJECTILE -> damages.replace(DamageType.PUNCTURE, basic.getDamage());
+            case THORNS -> damages.replace(DamageType.NATURE, basic.getDamage());
+            case VOID -> damages.replace(DamageType.VOID, basic.getDamage());
+            default -> damages.replace(DamageType.UNSPECIFIED, basic.getDamage());
+        }
     }
 
     /**
