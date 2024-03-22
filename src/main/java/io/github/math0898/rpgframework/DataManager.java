@@ -102,10 +102,9 @@ public class DataManager {
                 YamlConfiguration yaml = new YamlConfiguration();
                 yaml.load(file);
                 String version = yaml.getString("version");
-                console("File version: " + version);
                 String classString = yaml.getString("class", "NONE");
-                console("Class String: " + classString);
-                console("Class Object: " + Classes.fromString(classString));
+                console("File version: " + version);
+                console("Class: " + classString);
                 // todo: This should use the new RpgPlayer objects.
                 sugaku.rpg.framework.players.PlayerManager.getPlayer(player.getUuid()).joinClass(Classes.fromString(classString));
                 console("Loaded.", ChatColor.GREEN);
@@ -144,9 +143,12 @@ public class DataManager {
         if (player == null) return;
         console("Saving data for " + player.getName() + ".");
         YamlConfiguration toSave = new YamlConfiguration();
+        console("Version: 2.0");
         toSave.set("version", "2.0");
         // todo: Use new RpgPlayer object.
-        toSave.set("class", sugaku.rpg.framework.players.PlayerManager.getPlayer(player.getUuid()).getCombatClass().toString());
+        String classString = sugaku.rpg.framework.players.PlayerManager.getPlayer(player.getUuid()).getCombatClass().toString();
+        console("Class: " + classString);
+        toSave.set("class", classString);
         try {
             File file = new File("./plugins/RPG/PlayerData/" + player.getUuid());
             if (file.exists()) file.delete();

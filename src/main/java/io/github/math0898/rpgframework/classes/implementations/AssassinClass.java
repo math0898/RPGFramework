@@ -12,6 +12,8 @@ import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -139,6 +141,23 @@ public class AssassinClass extends AbstractClass {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Checks a specific slot to see if this player is wearing their class armor or not.
+     *
+     * @param slot The slot to check to see if it is the correct armor type.
+     * @return True if the player is wearing the correct armor for that slot.
+     */
+    @Override
+    public boolean correctArmor (EquipmentSlot slot) {
+        EntityEquipment equipment = getPlayer().getBukkitPlayer().getEquipment();
+        if (equipment == null) return false;
+        Material type = equipment.getItem(slot).getType();
+        return type.equals(Material.LEATHER_HELMET) ||
+                type.equals(Material.LEATHER_CHESTPLATE) ||
+                type.equals(Material.LEATHER_LEGGINGS) ||
+                type.equals(Material.LEATHER_BOOTS);
     }
 
     /**
