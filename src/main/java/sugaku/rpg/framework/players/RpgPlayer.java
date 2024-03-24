@@ -19,6 +19,7 @@ import sugaku.rpg.framework.classes.Class;
 import sugaku.rpg.framework.classes.Classes;
 import sugaku.rpg.framework.classes.implementations.*;
 import sugaku.rpg.main;
+import io.github.math0898.rpgframework.parties.Party;
 
 import java.util.UUID;
 import java.util.Objects;
