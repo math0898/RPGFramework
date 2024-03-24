@@ -10,7 +10,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
@@ -132,29 +131,14 @@ public class BardClass extends AbstractClass {
     }
 
     /**
-     * Called whenever the player attached to this class object interacts with the world.
+     * Called whenever a player right-clicks while holding a class item. To reach this method, the player must be
+     * holding a class item. No promises are made if they're wearing armor or not.
      *
-     * @param event The player interact event.
+     * @param event The PlayerInteractEvent that lead to this method being called.
+     * @param type  The type of material that was used in this cast.
      */
     @Override
-    public void onInteract (PlayerInteractEvent event) {
-        if (!event.hasItem()) return;
-        ItemStack item = event.getItem();
-        if (item == null) return;
-        if (isClassItem(item.getType()) != -1) { // Bards only have a single class item.
-            switch (event.getAction()) {
-                case RIGHT_CLICK_BLOCK, RIGHT_CLICK_AIR -> rightClick(event);
-                case LEFT_CLICK_AIR, LEFT_CLICK_BLOCK -> leftClick();
-            }
-        }
-    }
-
-    /**
-     * A utility method to complete RightClick events for bard.
-     *
-     * @param event The player interact event where they right-clicked.
-     */
-    private void rightClick (PlayerInteractEvent event) {
+    public void onRightClickCast (PlayerInteractEvent event, Material type) {
         Player player = event.getPlayer();
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (!player.isSneaking()) {
@@ -171,9 +155,14 @@ public class BardClass extends AbstractClass {
     }
 
     /**
-     * A utility method to complete RightClick events for bard.
+     * Called whenever a player left-clicks while holding a class item. To reach this method, the player must be holding
+     * a class item. No promises are made if they're wearing armor or not.
+     *
+     * @param event The PlayerInteractEvent that lead to this method being called.
+     * @param type  The type of material that was used in this cast.
      */
-    private void leftClick () {
+    @Override
+    public void onLeftClickCast (PlayerInteractEvent event, Material type) {
         if (offCooldown(Abilities.HYM.ordinal())) {
             send(ChatColor.GREEN + "You've used hym!");
             RpgPlayer player = getPlayer();

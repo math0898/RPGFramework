@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -114,22 +113,35 @@ public class AssassinClass extends AbstractClass {
     }
 
     /**
-     * Called whenever the player attached to this class object interacts with the world.
+     * Called whenever a player left-clicks while holding a class item. To reach this method, the player must be holding
+     * a class item. No promises are made if they're wearing armor or not.
      *
-     * @param event The player interact event.
+     * @param event The PlayerInteractEvent that lead to this method being called.
+     * @param type  The type of material that was used in this cast.
      */
     @Override
-    public void onInteract (PlayerInteractEvent event) {
-        if (!event.hasItem()) return;
-        ItemStack item = event.getItem();
-        if (item == null) return;
-        if (isClassItem(item.getType()) != -1) { // Assassins only have a single class item.
-            if (correctArmor())
-                switch (event.getAction()) {
-                    case RIGHT_CLICK_BLOCK, RIGHT_CLICK_AIR -> invisibility();
-                    case LEFT_CLICK_AIR, LEFT_CLICK_BLOCK -> poisonedBlade();
-                }
-            else send("Use full leather armor to use assassin abilities.");
+    public void onLeftClickCast (PlayerInteractEvent event, Material type) {
+        if (!correctArmor()) send("Use full leather armor to use assassin abilities.");
+        else if (offCooldown(Abilities.POISONED_BLADE.ordinal())) {
+            send(ChatColor.GREEN + "You've used poisoned blade!");
+            getCooldowns()[Abilities.POISONED_BLADE.ordinal()].restart();
+        }
+    }
+
+    /**
+     * Called whenever a player right-clicks while holding a class item. To reach this method, the player must be
+     * holding a class item. No promises are made if they're wearing armor or not.
+     *
+     * @param event The PlayerInteractEvent that lead to this method being called.
+     * @param type  The type of material that was used in this cast.
+     */
+    @Override
+    public void onRightClickCast (PlayerInteractEvent event, Material type) {
+        if (!correctArmor()) send("Use full leather armor to use assassin abilities.");
+        else if (offCooldown(Abilities.INVISIBILITY.ordinal())) {
+            send(ChatColor.GREEN + "You've used invisibility!");
+            getPlayer().addPotionEffect(PotionEffectType.INVISIBILITY, 10*20, 1);
+            getCooldowns()[Abilities.INVISIBILITY.ordinal()].restart();
         }
     }
 
@@ -168,26 +180,5 @@ public class AssassinClass extends AbstractClass {
             case FEET -> type == Material.LEATHER_BOOTS;
             default -> true;
         };
-    }
-
-    /**
-     * Activates the Invisibility ability. We can assume the player is wearing the correct gear.
-     */
-    private void invisibility () {
-        if (offCooldown(Abilities.INVISIBILITY.ordinal())) {
-            send(ChatColor.GREEN + "You've used invisibility!");
-            getPlayer().addPotionEffect(PotionEffectType.INVISIBILITY, 10*20, 1);
-            getCooldowns()[Abilities.INVISIBILITY.ordinal()].restart();
-        }
-    }
-
-    /**
-     * Activates the Poisoned Blade ability. We can assume the player is wearing the correct gear.
-     */
-    private void poisonedBlade () {
-        if (offCooldown(Abilities.POISONED_BLADE.ordinal())) {
-            send(ChatColor.GREEN + "You've used poisoned blade!");
-            getCooldowns()[Abilities.POISONED_BLADE.ordinal()].restart();
-        }
     }
 }

@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import io.github.math0898.rpgframework.Cooldown;
 import io.github.math0898.rpgframework.RpgPlayer;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,6 +152,36 @@ public abstract class AbstractClass implements Class, sugaku.rpg.framework.class
      */
     @Override
     public void onInteract (PlayerInteractEvent event) {
+        if (!event.hasItem()) return;
+        ItemStack item = event.getItem();
+        if (item == null) return;
+        Material type = item.getType();
+        if (isClassItem(type) != -1)
+            switch (event.getAction()) {
+                case RIGHT_CLICK_BLOCK, RIGHT_CLICK_AIR -> onRightClickCast(event, type);
+                case LEFT_CLICK_AIR, LEFT_CLICK_BLOCK -> onLeftClickCast(event, type);
+            }
+    }
+
+    /**
+     * Called whenever a player left-clicks while holding a class item. To reach this method, the player must be holding
+     * a class item. No promises are made if they're wearing armor or not.
+     *
+     * @param event The PlayerInteractEvent that lead to this method being called.
+     * @param type  The type of material that was used in this cast.
+     */
+    public void onLeftClickCast (PlayerInteractEvent event, Material type) {
+
+    }
+
+    /**
+     * Called whenever a player right-clicks while holding a class item. To reach this method, the player must be
+     * holding a class item. No promises are made if they're wearing armor or not.
+     *
+     * @param event The PlayerInteractEvent that lead to this method being called.
+     * @param type  The type of material that was used in this cast.
+     */
+    public void onRightClickCast (PlayerInteractEvent event, Material type) {
 
     }
 

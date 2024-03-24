@@ -16,6 +16,7 @@ import sugaku.rpg.framework.players.PlayerManager;
 import sugaku.rpg.framework.players.RpgPlayer;
 import sugaku.rpg.framework.classes.Class;
 
+@Deprecated
 public class Berserker extends AbstractClass implements Class{
 
     public Berserker(RpgPlayer p) {

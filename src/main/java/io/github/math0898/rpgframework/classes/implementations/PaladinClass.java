@@ -13,7 +13,6 @@ import org.bukkit.Sound;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class PaladinClass extends AbstractClass {
         /**
          * A powerful resurrection effect that heals the paladin a tremendous amount.
          */
-        PROTECTION_OF_THE_HEALER;
+        PROTECTION_OF_THE_HEALER
     }
 
     /**
@@ -75,30 +74,37 @@ public class PaladinClass extends AbstractClass {
     }
 
     /**
-     * Called whenever the player attached to this class object interacts with the world.
+     * Called whenever a player left-clicks while holding a class item. To reach this method, the player must be holding
+     * a class item. No promises are made if they're wearing armor or not.
      *
-     * @param event The player interact event.
+     * @param event The PlayerInteractEvent that lead to this method being called.
+     * @param type  The type of material that was used in this cast.
      */
-    @Override
-    public void onInteract (PlayerInteractEvent event) {
-        if (!event.hasItem()) return;
-        ItemStack item = event.getItem();
-        if (item == null) return;
-        if (isClassItem(item.getType()) != -1) { // Paladins only have a single class item.
-            if (correctArmor())
-                switch (event.getAction()) {
-                    case RIGHT_CLICK_BLOCK, RIGHT_CLICK_AIR -> purify();
-                    case LEFT_CLICK_AIR, LEFT_CLICK_BLOCK -> mend();
-                }
-            else send("Use full golden armor to use paladin spells.");
+    public void onLeftClickCast (PlayerInteractEvent event, Material type) {
+        if (!correctArmor()) send("Use full golden armor to use paladin spells.");
+        else if (offCooldown(Abilities.MEND.ordinal())) {
+            send(ChatColor.GREEN + "You've used mend!");
+            RpgPlayer player = getPlayer();
+            List<RpgPlayer> toApply = player.friendlyCasterTargets();
+            String username = player.getPlayerRarity() + player.getName();
+            for (RpgPlayer rpg: toApply) {
+                rpg.addPotionEffect(REGENERATION, 15 * 20, 3);
+                rpg.sendMessage(username + ChatColor.GREEN + " has used mend!");
+            }
+            getCooldowns()[Abilities.MEND.ordinal()].restart();
         }
     }
 
     /**
-     * Makes this player cast purify. Can assume gear checks all pass.
+     * Called whenever a player right-clicks while holding a class item. To reach this method, the player must be
+     * holding a class item. No promises are made if they're wearing armor or not.
+     *
+     * @param event The PlayerInteractEvent that lead to this method being called.
+     * @param type  The type of material that was used in this cast.
      */
-    private void purify () {
-        if (offCooldown(Abilities.PURIFY.ordinal())) {
+    public void onRightClickCast (PlayerInteractEvent event, Material type) {
+        if (!correctArmor()) send("Use full golden armor to use paladin spells.");
+        else if (offCooldown(Abilities.PURIFY.ordinal())) {
             send(ChatColor.GREEN + "You've used purify!");
             RpgPlayer player = getPlayer();
             List<RpgPlayer> toApply = player.friendlyCasterTargets();
@@ -111,23 +117,6 @@ public class PaladinClass extends AbstractClass {
                 rpg.sendMessage(username + ChatColor.GREEN + " has used purify!");
             }
             getCooldowns()[Abilities.PURIFY.ordinal()].restart();
-        }
-    }
-
-    /**
-     * Makes this player cast mend. Can assume gear checks all pass.
-     */
-    private void mend () {
-        if (offCooldown(Abilities.MEND.ordinal())) {
-            send(ChatColor.GREEN + "You've used mend!");
-            RpgPlayer player = getPlayer();
-            List<RpgPlayer> toApply = player.friendlyCasterTargets();
-            String username = player.getPlayerRarity() + player.getName();
-            for (RpgPlayer rpg: toApply) {
-                rpg.addPotionEffect(REGENERATION, 15 * 20, 3);
-                rpg.sendMessage(username + ChatColor.GREEN + " has used mend!");
-            }
-            getCooldowns()[Abilities.MEND.ordinal()].restart();
         }
     }
 
