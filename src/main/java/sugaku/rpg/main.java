@@ -5,7 +5,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import sugaku.rpg.framework.classes.implementations.Pyromancer;
 import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.RPGEventListener;
 import sugaku.rpg.mobs.teir1.eiryeras.EiryerasBoss;
@@ -52,7 +51,6 @@ public final class main {
         //Registering events TODO: Move this somewhere?
         Bukkit.getPluginManager().registerEvents(new RPGEventListener(), plugin);
         Bukkit.getPluginManager().registerEvents(new EiryerasBoss(), plugin);
-        Bukkit.getPluginManager().registerEvents(new Pyromancer(), plugin);
         Bukkit.getPluginManager().registerEvents(new FeyrithBoss(), plugin);
 
         //Other TODO: Add console to Item Manager

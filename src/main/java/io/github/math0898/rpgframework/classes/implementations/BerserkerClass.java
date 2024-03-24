@@ -22,7 +22,7 @@ import org.bukkit.potion.PotionEffectType;
  *
  * @author Sugaku
  */
-public class BerserkerClass extends AbstractClass {
+public class BerserkerClass extends AbstractClass { // todo: Re-add regeneration bonus.
 
     /**
      * An enum which represents the Berserker's abilities.
@@ -177,6 +177,7 @@ public class BerserkerClass extends AbstractClass {
     public void attack (AdvancedDamageEvent event) {
         if (event.getEntity() instanceof LivingEntity)
             if (event.getPrimaryDamage().isPhysical())
-                event.addDamage(10.0, DamageType.SLASH);
+                if (correctWeapon())
+                    event.addDamage(10.0, DamageType.SLASH);
     }
 }

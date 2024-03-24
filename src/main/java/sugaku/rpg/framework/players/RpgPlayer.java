@@ -188,7 +188,7 @@ public class RpgPlayer {
             case ASSASSIN -> classObject = new AssassinClass(this);
             case BERSERKER -> classObject = new BerserkerClass(this);
             case PALADIN -> classObject = new PaladinClass(this);
-            case PYROMANCER -> classObject = new Pyromancer(this);
+            case PYROMANCER -> classObject = new PyromancerClass(this);
             case NONE -> classObject = new NoneClass(this);
         }
     }
