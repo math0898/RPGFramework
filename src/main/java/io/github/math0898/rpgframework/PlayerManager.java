@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityExhaustionEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.Nullable;
+import sugaku.rpg.main;
 
 import java.util.*;
 
@@ -154,13 +155,6 @@ public class PlayerManager implements Listener { // todo needs cleaning. Copied 
     }
 
     /**
-     * Heals the player to full
-     */
-    public static void healPlayer (Player p) {
-        p.setHealth(Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue());
-    }
-
-    /**
      * Prevents the loss of hunger due to regeneration.
      */
     public static void hunger (EntityExhaustionEvent event) {
@@ -221,10 +215,11 @@ public class PlayerManager implements Listener { // todo needs cleaning. Copied 
      *
      * @param event The player join event.
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onJoin (PlayerJoinEvent event) {
         RpgPlayer player = new RpgPlayer(event.getPlayer());
         players.add(player);
+        Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> player.heal(), 5);
         DataManager.getInstance().load(player);
     }
 

@@ -54,14 +54,15 @@ public class RPGEventListener implements Listener {
     /**
      * When the player joins the server.
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerLogin(PlayerLoginEvent e) {
         try {
             //We need to load their data,
             RpgPlayer rpgPlayer = new RpgPlayer(e.getPlayer());
             PlayerManager.addPlayer(rpgPlayer);
             PlayerManager.scaleHealth(e.getPlayer());
-            Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> PlayerManager.healPlayer(e.getPlayer()), 5);
+            // io.github.math0898.rpgframework.PlayerManager.onJoin()
+//            Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> rpgPlayer.heal(), 5);
         } catch (Exception exception) {
             main.console("Failed to load data!", ChatColor.RED);
             main.console(exception.getMessage(), ChatColor.RED);

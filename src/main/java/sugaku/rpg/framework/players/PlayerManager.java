@@ -100,17 +100,6 @@ public class PlayerManager {
     }
 
     /**
-     * Heals the player to full.
-     * {@link RpgPlayer#heal()}
-     */
-    @Deprecated
-    public static void healPlayer (Player p) {
-        RpgPlayer rpg = getPlayer(p.getUniqueId());
-        if (rpg == null) return;
-        rpg.heal();
-    }
-
-    /**
      * Prevents the loss of hunger due to regeneration.
      */
     public static void hunger(EntityExhaustionEvent event) {
@@ -206,7 +195,7 @@ public class PlayerManager {
         if (spawn == null) player.teleport(Bukkit.getWorld("world").getSpawnLocation());
         else player.teleport(spawn);
 
-        healPlayer(player);
+        rpg.heal();
         player.setFireTicks(0);
         for (PotionEffect p: player.getActivePotionEffects()) player.removePotionEffect(p.getType());
 
