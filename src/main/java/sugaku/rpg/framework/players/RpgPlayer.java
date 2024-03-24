@@ -1,6 +1,7 @@
 package sugaku.rpg.framework.players;
 
 import io.github.math0898.rpgframework.classes.implementations.*;
+import io.github.math0898.rpgframework.classes.Class;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -13,9 +14,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import sugaku.rpg.framework.classes.Class;
 import sugaku.rpg.framework.classes.Classes;
-import sugaku.rpg.framework.classes.implementations.*;
 import sugaku.rpg.main;
 import io.github.math0898.rpgframework.parties.Party;
 

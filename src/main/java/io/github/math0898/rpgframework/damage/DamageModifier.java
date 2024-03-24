@@ -1,5 +1,8 @@
 package io.github.math0898.rpgframework.damage;
 
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+
 /**
  * DamageModifiers are used to cause special effects whenever an advanced damage event occurs.
  *
@@ -20,4 +23,10 @@ public interface DamageModifier {
      * @param event The AdvancedDamageEvent to consider.
      */
     void attack (AdvancedDamageEvent event);
+
+    @Deprecated
+    void damaged (EntityDamageEvent event);
+
+    @Deprecated
+    void attack (EntityDamageByEntityEvent event);
 }

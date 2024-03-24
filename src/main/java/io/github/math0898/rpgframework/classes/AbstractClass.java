@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author Sugaku
  */
-public abstract class AbstractClass implements Class, sugaku.rpg.framework.classes.Class {
+public abstract class AbstractClass implements Class {
 
     /**
      * The RpgPlayer that this AbstractClass is referencing.
@@ -119,7 +119,6 @@ public abstract class AbstractClass implements Class, sugaku.rpg.framework.class
         return classItems.indexOf(mat);
     }
 
-    @Override
     @Deprecated
     public void damaged (EntityDamageEvent event) {
         AdvancedDamageEvent advancedDamageEvent = new AdvancedDamageEvent(event);
@@ -128,7 +127,6 @@ public abstract class AbstractClass implements Class, sugaku.rpg.framework.class
         event.setDamage(AdvancedDamageHandler.damageCalculation(advancedDamageEvent) / 5.0);
     }
 
-    @Override
     @Deprecated
     public void attack (EntityDamageByEntityEvent event) {
         AdvancedDamageEvent advancedDamageEvent = new AdvancedDamageEvent(event);

@@ -8,6 +8,7 @@ import io.github.math0898.rpgframework.classes.AbstractClass;
 import io.github.math0898.rpgframework.damage.AdvancedDamageEvent;
 import io.github.math0898.rpgframework.damage.DamageResistance;
 import io.github.math0898.rpgframework.damage.DamageType;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -112,9 +113,8 @@ public class PyromancerClass extends AbstractClass { // todo: Add metadata to fi
                             player.launchProjectile(LargeFireball.class);
                         }
                     };
-                    runnable.run();
-                    runnable.runTaskLater(RPGFramework.getInstance(), 5);
-                    runnable.runTaskLater(RPGFramework.getInstance(), 10);
+                    runnable.runTaskTimer(RPGFramework.getInstance(), 0, 5);
+                    Bukkit.getScheduler().runTaskLater(RPGFramework.getInstance(), runnable::cancel, 11);
                     getCooldowns()[Abilities.LARGE_FIREBALL_BARRAGE.ordinal()].restart();
                 }
             }
@@ -148,9 +148,8 @@ public class PyromancerClass extends AbstractClass { // todo: Add metadata to fi
                             player.launchProjectile(SmallFireball.class);
                         }
                     };
-                    runnable.run();
-                    runnable.runTaskLater(RPGFramework.getInstance(), 5);
-                    runnable.runTaskLater(RPGFramework.getInstance(), 10);
+                    runnable.runTaskTimer(RPGFramework.getInstance(), 0, 5);
+                    Bukkit.getScheduler().runTaskLater(RPGFramework.getInstance(), runnable::cancel, 11);
                     getCooldowns()[Abilities.SMALL_FIREBALL_BARRAGE.ordinal()].restart();
                 }
             }
