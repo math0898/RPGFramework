@@ -84,7 +84,7 @@ public class PaladinClass extends AbstractClass {
         if (!event.hasItem()) return;
         ItemStack item = event.getItem();
         if (item == null) return;
-        if (isClassItem(item.getType()) != -1) { // Assassins only have a single class item.
+        if (isClassItem(item.getType()) != -1) { // Paladins only have a single class item.
             if (correctArmor())
                 switch (event.getAction()) {
                     case RIGHT_CLICK_BLOCK, RIGHT_CLICK_AIR -> purify();

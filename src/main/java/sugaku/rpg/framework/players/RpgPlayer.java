@@ -1,6 +1,7 @@
 package sugaku.rpg.framework.players;
 
 import io.github.math0898.rpgframework.classes.implementations.AssassinClass;
+import io.github.math0898.rpgframework.classes.implementations.BardClass;
 import io.github.math0898.rpgframework.classes.implementations.NoneClass;
 import io.github.math0898.rpgframework.classes.implementations.PaladinClass;
 import org.bukkit.Bukkit;
@@ -59,10 +60,6 @@ public class RpgPlayer {
      * Uuid of the player this construct points to.
      */
     private final UUID uuid;
-
-    private Party party = null;
-
-    private Party pendingParty = null;
 
     private Classes combatClass = Classes.NONE;
 
@@ -190,7 +187,7 @@ public class RpgPlayer {
     public void joinClass(Classes c) {
         this.combatClass = c;
         switch (c) {
-            case BARD: classObject = new Bard(this); break;
+            case BARD: classObject = new BardClass(this); break;
             case ASSASSIN: classObject = new AssassinClass(this); break;
             case BERSERKER: classObject = new Berserker(this); break;
             case PALADIN: classObject = new PaladinClass(this); break;

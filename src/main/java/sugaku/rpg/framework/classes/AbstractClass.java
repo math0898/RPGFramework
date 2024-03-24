@@ -4,6 +4,7 @@ import io.github.math0898.rpgframework.Cooldown;
 import sugaku.rpg.framework.players.RpgPlayer;
 import sugaku.rpg.commands.AbstractCommand;
 
+@Deprecated
 public class AbstractClass {
 
     private final RpgPlayer player;
