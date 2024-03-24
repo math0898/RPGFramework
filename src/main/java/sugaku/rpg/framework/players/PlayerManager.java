@@ -30,7 +30,7 @@ public class PlayerManager {
      * @param color The color the message should be in
      */
     private static void console(String message, ChatColor color) {
-        Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] [" + ChatColor.LIGHT_PURPLE + "PlayMgr" + ChatColor.DARK_GRAY + "] " + color + message);
+        Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] [" + ChatColor.LIGHT_PURPLE + "Legacy PlayMgr" + ChatColor.DARK_GRAY + "] " + color + message);
     }
 
     /**

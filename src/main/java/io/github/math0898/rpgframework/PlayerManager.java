@@ -215,12 +215,14 @@ public class PlayerManager implements Listener { // todo needs cleaning. Copied 
      *
      * @param event The player join event.
      */
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onJoin (PlayerJoinEvent event) {
+        console("Adding player to player list.");
         RpgPlayer player = new RpgPlayer(event.getPlayer());
         players.add(player);
         Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> player.heal(), 5);
         DataManager.getInstance().load(player);
+        console("Player added to player list.", ChatColor.GREEN);
     }
 
     /**

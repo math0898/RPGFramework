@@ -55,7 +55,7 @@ public class RPGEventListener implements Listener {
      * When the player joins the server.
      */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void onPlayerLogin(PlayerLoginEvent e) {
+    public void onPlayerLogin (PlayerJoinEvent e) {
         try {
             //We need to load their data,
             RpgPlayer rpgPlayer = new RpgPlayer(e.getPlayer());
