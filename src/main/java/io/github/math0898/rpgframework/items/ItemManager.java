@@ -54,11 +54,12 @@ public class ItemManager {
                 YamlConfiguration yaml = new YamlConfiguration();
                 yaml.load(f);
                 for (String k : yaml.getKeys(false)) {
-                    ItemStack i = yaml.getItemStack(k);
+                    ItemStack i = (ItemStack) yaml.get(k);
+                    String goodName = toCamelSpaceNamespace(f.getName(), k);
                     if (i != null) {
-                        rpgItems.put(toCamelSpaceNamespace(f.getName(), k), i);
-                        console("Registered item by name: " + k, ChatColor.GRAY);
-                    } else console("Failed to parse: " + k + " in: " + f.getPath(), ChatColor.RED);
+                        rpgItems.put(goodName, i);
+                        console("Registered item by name: " + goodName, ChatColor.GRAY);
+                    } else console("Failed to parse: " + goodName + " in: " + f.getPath(), ChatColor.RED);
                 }
             } catch (InvalidConfigurationException | IOException e) {
                 console(e.getMessage(), ChatColor.RED);

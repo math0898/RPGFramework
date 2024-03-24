@@ -1,6 +1,5 @@
 package sugaku.rpg.framework;
 
-import io.github.math0898.rpgframework.DataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -12,11 +11,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.*;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import sugaku.rpg.framework.menus.ClassesManager;
@@ -250,5 +246,16 @@ public class RPGEventListener implements Listener {
             if (event instanceof EntityDamageByEntityEvent) return;
             PlayerManager.environmentalDamage(event);
         }
+    }
+
+    /**
+     * A listener that is called whenever an Item takes durability loss.
+     *
+     * @param event The Item durability loss event.
+     */
+    @EventHandler
+    public void onDurabilityLoss (PlayerItemDamageEvent event) {
+        if (isArmor(event.getItem().getType()))
+            event.setCancelled(true);
     }
 }

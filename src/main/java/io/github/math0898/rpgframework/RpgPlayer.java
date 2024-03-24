@@ -12,6 +12,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import sugaku.rpg.framework.classes.Classes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.Objects;
 
@@ -274,6 +276,58 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
      */
     public void addPotionEffect (PotionEffectType type, int dur, int lvl, boolean ambient, boolean hide) {
         getBukkitPlayer().addPotionEffect(new PotionEffect(type, dur, lvl - 1, ambient, hide));
+    }
+
+    /**
+     * A Utility method to obtain the max health of this RpgPlayer.
+     *
+     * @return The maximum health of this player.
+     */
+    public double getMaxHealth () {
+        AttributeInstance instance = getBukkitPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        if (instance == null) return 20.0;
+        return instance.getValue();
+    }
+
+    /**
+     * Heals the player by the given amount.
+     *
+     * @param amount The amount to heal the player by.
+     */
+    public void heal (double amount) {
+        getBukkitPlayer().setHealth(Math.min(getBukkitPlayer().getHealth() + amount, getMaxHealth()));
+    }
+
+    /**
+     * Heals the player to max.
+     */
+    public void heal () {
+        getBukkitPlayer().setHealth(getMaxHealth());
+    }
+
+    /**
+     * Removes the given potion effects from this RpgPlayer.
+     *
+     * @param effects The effects to remove from this RpgPlayer.
+     */
+    public void cleanseEffects (PotionEffectType... effects) {
+        if (effects == null) return;
+        Player player = getBukkitPlayer();
+        for (PotionEffectType type : effects)
+            player.removePotionEffect(type);
+    }
+
+    /**
+     * A helpful utility method to wrangle all the friendly caster targets. i.e. {@link this} and if present, all party
+     * members.
+     *
+     * @return A list of friendly casting targets.
+     */
+    public List<RpgPlayer> friendlyCasterTargets () {
+        List<RpgPlayer> toReturn = new ArrayList<>();
+        if (party != null) toReturn.addAll(party.getRpgPlayers());
+        else toReturn.add(this);
+        return toReturn;
     }
 
     //TODO: Implement the damage bonus of the bow

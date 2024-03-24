@@ -123,12 +123,14 @@ public class AssassinClass extends AbstractClass {
         if (!event.hasItem()) return;
         ItemStack item = event.getItem();
         if (item == null) return;
-        if (isClassItem(item.getType()) != -1)  // Assassins only have a single class item.
+        if (isClassItem(item.getType()) != -1) { // Assassins only have a single class item.
             if (correctArmor())
                 switch (event.getAction()) {
                     case RIGHT_CLICK_BLOCK, RIGHT_CLICK_AIR -> invisibility();
                     case LEFT_CLICK_AIR, LEFT_CLICK_BLOCK -> poisonedBlade();
                 }
+            else send("Use full leather armor to use assassin abilities.");
+        }
     }
 
     /**
@@ -159,10 +161,13 @@ public class AssassinClass extends AbstractClass {
         EntityEquipment equipment = getPlayer().getBukkitPlayer().getEquipment();
         if (equipment == null) return false;
         Material type = equipment.getItem(slot).getType();
-        return type.equals(Material.LEATHER_HELMET) ||
-                type.equals(Material.LEATHER_CHESTPLATE) ||
-                type.equals(Material.LEATHER_LEGGINGS) ||
-                type.equals(Material.LEATHER_BOOTS);
+        return switch (slot) {
+            case HEAD -> type == Material.LEATHER_HELMET;
+            case CHEST -> type == Material.LEATHER_CHESTPLATE;
+            case LEGS -> type == Material.LEATHER_LEGGINGS;
+            case FEET -> type == Material.LEATHER_BOOTS;
+            default -> true;
+        };
     }
 
     /**

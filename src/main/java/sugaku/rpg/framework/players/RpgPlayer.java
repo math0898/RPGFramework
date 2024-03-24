@@ -2,6 +2,7 @@ package sugaku.rpg.framework.players;
 
 import io.github.math0898.rpgframework.classes.implementations.AssassinClass;
 import io.github.math0898.rpgframework.classes.implementations.NoneClass;
+import io.github.math0898.rpgframework.classes.implementations.PaladinClass;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -191,7 +192,7 @@ public class RpgPlayer {
             case BARD: classObject = new Bard(this); break;
             case ASSASSIN: classObject = new AssassinClass(this); break;
             case BERSERKER: classObject = new Berserker(this); break;
-            case PALADIN: classObject = new Paladin(this); break;
+            case PALADIN: classObject = new PaladinClass(this); break;
             case PYROMANCER: classObject = new Pyromancer(this); break;
             case NONE: default: classObject = new NoneClass(this); break;
         }

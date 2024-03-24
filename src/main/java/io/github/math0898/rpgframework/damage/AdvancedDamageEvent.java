@@ -176,6 +176,18 @@ public class AdvancedDamageEvent extends EntityEvent implements Cancellable {
     }
 
     /**
+     * Sets the damage resistance for the given type. The current resistance level information currently stored in the
+     * event will be overridden. Read the current values using {@link #getResistances()}. It might be worth checking out
+     * {@link DamageType} along with {@link DamageResistance}.
+     *
+     * @param type       The type of damage to modify the resistence of.
+     * @param resistance The level of resistance to assign.
+     */
+    public void setResistance (DamageType type, DamageResistance resistance) {
+        resistances.replace(type, resistance);
+    }
+
+    /**
      * Gets the currently stored magic resistance.
      *
      * @return The current magic resistance of the victim in this event.
