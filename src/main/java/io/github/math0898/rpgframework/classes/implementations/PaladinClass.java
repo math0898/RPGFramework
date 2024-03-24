@@ -90,7 +90,7 @@ public class PaladinClass extends AbstractClass {
                     case RIGHT_CLICK_BLOCK, RIGHT_CLICK_AIR -> purify();
                     case LEFT_CLICK_AIR, LEFT_CLICK_BLOCK -> mend();
                 }
-            else send("Use full leather golden armor to use paladin spells.");
+            else send("Use full golden armor to use paladin spells.");
         }
     }
 
@@ -194,6 +194,6 @@ public class PaladinClass extends AbstractClass {
      */
     @Override
     public void attack (AdvancedDamageEvent event) {
-        event.addDamage(-5.0, event.getPrimaryDamage());
+        event.addDamage(-2.5, event.getPrimaryDamage());
     }
 }

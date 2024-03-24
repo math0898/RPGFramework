@@ -181,7 +181,7 @@ public class BardClass extends AbstractClass {
             String username = player.getPlayerRarity() + player.getName();
             for (RpgPlayer rpg : players) {
                 rpg.addPotionEffect(currentBuff.getType(), 45 * 20, 1);
-                rpg.sendMessage(username + ChatColor.GREEN + " have used hym!");
+                rpg.sendMessage(username + ChatColor.GREEN + " has used hym!");
             }
             getCooldowns()[Abilities.HYM.ordinal()].restart();
         }
