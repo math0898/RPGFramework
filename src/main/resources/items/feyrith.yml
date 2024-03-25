@@ -32,7 +32,7 @@ fire-gemstone:
       - §7to manipulate §4fire.
       - ""
       - "§7Off Hand:"
-      - §9+5 Magic Power
+      - §9+25 Magic Power
       - §9+25 Attack Damage
       - §9+0.25 Attack Speed
     ItemFlags:
@@ -77,3 +77,46 @@ sylvathian-thorn-weaver: # todo: Maybe make look enchanted
       - "§9Duration: 10s"
       - "§9Damage: 10/s"
       - "§9Range: 4 blocks"
+
+wrath-of-feyrith:
+  ==: org.bukkit.inventory.ItemStack
+  type: STICK # todo: Make copper ingot
+  amount: 1
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: §9Wrath of Feyrith
+    custom-model-data: 1
+    lore:
+      - §7The one magic §9Feyrith
+      - §7was proficient in was lightning.
+      - §7A fragment of his electric
+      - §7wrath still lingers inside this
+      - §7gemstone.
+      - ""
+      - "§9Feyrith's Wrath §7(Active): "
+      - "§7Strikes nearby foes with"
+      - "§7lightning."
+      - "§9Cooldown: 60s"
+      - "§9Damage: 50"
+      - "§9Range: 8 blocks"
+
+mage-kaftan:
+  ==: org.bukkit.inventory.ItemStack
+  type: DIAMOND_CHESTPLATE
+
+royal-clogs:
+  ==: org.bukkit.inventory.ItemStack
+  type: DIAMOND_BOOTS
+
+visionary-coif:
+  ==: org.bukkit.inventory.ItemStack
+  type: DIAMOND_HELMET
+
+comfortable-breeches:
+  ==: org.bukkit.inventory.ItemStack
+  type: DIAMOND_LEGGINGS
+
+lore:
+  ==: org.bukkit.inventory.ItemStack
+  type: GOLD_INGOT

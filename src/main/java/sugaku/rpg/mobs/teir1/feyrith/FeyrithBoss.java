@@ -1,22 +1,23 @@
 package sugaku.rpg.mobs.teir1.feyrith;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import io.github.math0898.rpgframework.RPGFramework;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
+import sugaku.rpg.framework.items.BossDrop;
 import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.items.Rarity;
 import sugaku.rpg.main;
@@ -27,9 +28,14 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.function.Predicate;
 
+import static io.github.math0898.rpgframework.RPGFramework.getInstance;
+import static org.bukkit.Material.*;
+
 public class FeyrithBoss extends CustomMob implements Listener {
 
-    public FeyrithBoss() { super(name, EntityType.WITHER_SKELETON, Rarity.RARE, 350); }
+    public FeyrithBoss() {
+        super(name, EntityType.WITHER_SKELETON, Rarity.RARE, 350);
+    }
 
     /**
      * Describes the metadata behind Feyrith projectiles.
@@ -97,6 +103,14 @@ public class FeyrithBoss extends CustomMob implements Listener {
     private int phase = 1;
 
     /**
+     * An array of Feyrith item drops.
+     */
+    private static final BossDrop[] bossDrops = new BossDrop[]{
+            new BossDrop(RPGFramework.itemManager.getItem("feyrith:SylvathianThornWeaver"), Rarity.RARE),
+            new BossDrop(RPGFramework.itemManager.getItem("feyrith:FireGemstone"), Rarity.UNCOMMON)
+    };
+
+    /**
      * Creates and spawns a Feyrith boss at the given location.
      *
      * @param l The location to spawn the boss.
@@ -131,15 +145,10 @@ public class FeyrithBoss extends CustomMob implements Listener {
         });
 
         //Determine boss phase
-        if (entity.getHealth() < (maxHealth * 0.40) && phase == 2) phase = 3;
-        else if (entity.getHealth() < (maxHealth * 0.70) && phase == 1) phase = 2;
-
+        if (entity.getHealth() < (maxHealth * 0.30) && phase == 1) phase = 2;
         //Run specific phase AI
-        if (phase != 3) move(entity, nearby);
+       move(entity, nearby);
         switch(phase) {
-            case 3:
-                //TODO: Fireball rain
-                break;
             case 2:
                 double attack1 = Math.abs(new Random().nextDouble());
                 if (attack1 < 0.33) lightingAttack(nearby);
@@ -167,7 +176,35 @@ public class FeyrithBoss extends CustomMob implements Listener {
     }
 
     private void waveAttack() {
-        if (phase == 1) dyeArmor(25, 255, 64, 0.75, 1, 0.5); //TODO: Implement
+        if (phase == 1) dyeArmor(25, 255, 64, 0.75, 1, 0.5);
+        LivingEntity entity = getEntity();
+        BukkitTask task1 = Bukkit.getScheduler().runTaskTimer(getInstance(), () -> {
+            Location location = entity.getLocation();
+            location.getWorld().playSound(location, Sound.BLOCK_AZALEA_LEAVES_HIT, 2.0f, 1.0f);
+            location.getWorld().playSound(location, Sound.BLOCK_CHERRY_LEAVES_HIT, 2.0f, 1.0f);
+            location.getWorld().playSound(location, Sound.BLOCK_AZALEA_LEAVES_BREAK, 2.0f, 1.0f);
+            location.getWorld().playSound(location, Sound.BLOCK_GRASS_BREAK, 2.0f, 1.0f);
+            location.getWorld().playSound(location, Sound.BLOCK_GRASS_FALL, 2.0f, 1.0f);
+        }, 0, 7);
+        BukkitTask task2 = Bukkit.getScheduler().runTaskTimer(getInstance(), () -> {
+            Random rand = new Random();
+            for (int i = 0; i < 50; i++)
+                entity.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, entity.getLocation().add((rand.nextDouble() * 8.0) - 4.0, (rand.nextDouble() * 2.0) - 1.0, (rand.nextDouble() * 8.0) - 4.0), 2);
+        }, 0, 9);
+        BukkitTask task3 = Bukkit.getScheduler().runTaskTimer(getInstance(), () -> {
+            List<Entity> entities = entity.getNearbyEntities(4.0, 4.0, 4.0);
+            entities.forEach((e) -> {
+                if (!e.equals(getEntity()) && e instanceof LivingEntity le) { // todo: Will need to do something like this for advanced damage.
+                    le.damage(2.0, getEntity());
+                    if (le.getNoDamageTicks() == 0) le.setNoDamageTicks(0);
+                }
+            });
+        }, 0, 20);
+        Bukkit.getScheduler().runTaskLater(getInstance(), () -> {
+            task1.cancel();
+            task2.cancel();
+            task3.cancel();
+        }, 20 * 4);
     }
 
     private void fireballAttack(Entity entity, List<Entity> nearby) {
@@ -258,6 +295,25 @@ public class FeyrithBoss extends CustomMob implements Listener {
             if (event.getDamager().hasMetadata("feyrith")) {
                 event.getEntity().setFireTicks(20);
                 event.setDamage(baseDamage);
+            }
+        }
+    }
+
+    /**
+     * Handles the situation when an Eiryeras instance dies. Only kills caused by a player will result in drops.
+     *
+     * @param event The entity death event first filtered by custom name visible and then by mobs which contain
+     *              Eiryeras' name in their name.
+     */
+    @EventHandler
+    public static void onDeath(EntityDeathEvent event) {
+        if (event.getEntity().getCustomName() != null) {
+            if (event.getEntity().getCustomName().contains(name)) {
+                CustomMob.handleDrops(event, bossDrops, Rarity.RARE);
+                Random r = new Random();
+                LivingEntity e = event.getEntity();
+                Objects.requireNonNull(e.getLocation().getWorld()).dropItem(e.getLocation(), new ItemStack(BONE, (int) (r.nextDouble() * 5) + 1));
+                Objects.requireNonNull(e.getLocation().getWorld()).dropItem(e.getLocation(), new ItemStack(COAL, (int) (r.nextDouble() * 5) + 1));
             }
         }
     }

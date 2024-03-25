@@ -2,6 +2,7 @@ package io.github.math0898.rpgframework.items;
 
 import io.github.math0898.rpgframework.RPGFramework;
 import io.github.math0898.rpgframework.items.implementations.SylvathianThornWeaver;
+import io.github.math0898.rpgframework.items.implementations.WrathOfFeyrith;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -54,7 +55,10 @@ public class ItemManager {
                 YamlConfiguration yaml = new YamlConfiguration();
                 yaml.load(f);
                 for (String k : yaml.getKeys(false)) {
-                    ItemStack i = (ItemStack) yaml.get(k);
+                    ItemStack i = null;
+                    try {
+                        i = (ItemStack) yaml.get(k);
+                    } catch (Exception ignored) {}
                     String goodName = toCamelSpaceNamespace(f.getName(), k);
                     if (i != null) {
                         rpgItems.put(goodName, i);
@@ -68,6 +72,7 @@ public class ItemManager {
         }
         Bukkit.getScheduler().runTaskAsynchronously(getInstance(), this::passives);
         Bukkit.getPluginManager().registerEvents(new SylvathianThornWeaver(), getInstance());
+        Bukkit.getPluginManager().registerEvents(new WrathOfFeyrith(), getInstance());
     }
 
     /**

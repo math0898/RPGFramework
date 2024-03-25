@@ -257,6 +257,15 @@ public abstract class CustomMob {
                     case HEROIC -> 0.01;
                     case MYTHIC -> 0.005;
                 };
+            case RARE:
+                return switch (item) {
+                    case COMMON -> 0.16;
+                    case UNCOMMON -> 0.08;
+                    case RARE -> 0.04;
+                    case LEGENDARY -> 0.02;
+                    case HEROIC -> 0.01;
+                    case MYTHIC -> 0.005;
+                };
         }
         return 0.0;
     }

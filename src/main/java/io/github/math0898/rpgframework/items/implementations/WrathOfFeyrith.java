@@ -1,0 +1,75 @@
+package io.github.math0898.rpgframework.items.implementations;
+
+import io.github.math0898.rpgframework.PlayerManager;
+import io.github.math0898.rpgframework.RpgPlayer;
+import org.bukkit.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.*;
+
+import static io.github.math0898.rpgframework.RPGFramework.getInstance;
+import static io.github.math0898.rpgframework.RPGFramework.itemManager;
+
+/**
+ * When right-clicked the WrathOfFeyrith strikes all nearby enemies with lightning.
+ *
+ * @author Sugaku
+ */ // todo: Refactor to a single Interact event that then filters down to specific materials, then specific items.
+public class WrathOfFeyrith implements Listener {
+
+    /**
+     * The last time in Millis that players have used this item.
+     */
+    private final Map<UUID, Long> lastUsed = new HashMap<>();
+
+    /**
+     * Called whenever a player interacts with the world.
+     *
+     * @param event The player interact event.
+     */
+    @EventHandler
+    public void onInteract (PlayerInteractEvent event) {
+        if (!event.hasItem()) return;
+        if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)) return;
+        ItemStack item = event.getItem();
+        if (item == null) return;
+        if (!item.getType().equals(Material.EMERALD)) return;
+        if (item.equals(itemManager.getItem("feyrith:WrathOfFeyrith")))
+            itemUse(event.getPlayer());
+    }
+
+    /**
+     * Uses this item on this player.
+     *
+     * @param player The player to use the event.
+     */
+    public void itemUse (Player player) {
+        Long lng = lastUsed.get(player.getUniqueId());
+        if (lng != null)
+            if (System.currentTimeMillis() - lng < 60000) {
+                player.sendMessage(ChatColor.GRAY + "That is on cooldown for another: " + (60000 + lng - System.currentTimeMillis()) / 1000L + "s.");
+                return;
+            }
+        lastUsed.put(player.getUniqueId(), System.currentTimeMillis());
+        final UUID uuid = player.getUniqueId();
+        RpgPlayer rpg = PlayerManager.getPlayer(uuid);
+        List<Player> friendly = new ArrayList<>();
+        for (RpgPlayer r : rpg.friendlyCasterTargets())
+            friendly.add(r.getBukkitPlayer());
+        player.getNearbyEntities(8.0 ,8.0, 8.0).forEach((e) -> {
+            if (!(e instanceof LivingEntity)) return;
+            LivingEntity entity = (LivingEntity) e;
+            if (friendly.contains(e)) return;
+            entity.getWorld().strikeLightningEffect(entity.getLocation());
+            entity.damage(10.0, player);
+        });
+    }
+}
