@@ -14,9 +14,11 @@ bosses:
   message:
     - "- &aKrusk"
     - "- &aEiryeras"
+    - "- &9Feyrith"
   subsections:
     - "Krusk"
     - "Eiryeras"
+    - "Feyrith"
 
 Krusk:
   root: false
@@ -27,6 +29,16 @@ Krusk:
     - "You can obtain his summon item by killing zombies."
   subsections:
     # krusk-drops
+
+Feyrith:
+  root: false
+  title: "Feyrith"
+  message:
+    - "An apprentice mage of noble's court."
+    - "A teleporting boss."
+    - "You can obtain his summon item by killing wither skeletons."
+  subsections:
+  # feyrith-drops
 
 Eiryeras:
   root: false

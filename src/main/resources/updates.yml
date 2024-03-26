@@ -8,15 +8,24 @@ creation:
     - "- Continued existing classes, and archetypes."
     - "- Created &r/tutorial &7and &r/updates &7to aid players."
 
-ongoing:
-  title: "Ongoing Updates"
-  date: "Current"
+feyrith:
+  title: "Feyrith"
+  date: "March 26th, 2024"
   message:
     - "- Optimized, cleaned up, and made &2RPG &7more sustainable."
     - "- Increased &dregeneration &7out of combat."
     - "- &9Feyrith &7summons can now drop from wither skeletons."
+    - "- &7Added &9Feyrith&7."
     - "- &7Added &aFire Gemstone&7."
     - "- &7Added &9Sylvathian Thornweaver&7."
+    - "- &7Added &9Wrath of Feyrith&7."
     - "- &7Removed armor durability loss."
+    - "- &7Nerfed &aKrusk&7."
     - "- &7Major &6Paladin &7buffs."
     - "- &cFixed bugs&7."
+
+ongoing:
+  title: "Ongoing"
+  date: "Current"
+  message:
+    - ""
