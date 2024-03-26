@@ -41,7 +41,7 @@ public class WrathOfFeyrith implements Listener {
         if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)) return;
         ItemStack item = event.getItem();
         if (item == null) return;
-        if (!item.getType().equals(Material.EMERALD)) return;
+        if (!item.getType().equals(Material.PRISMARINE_SHARD)) return; // todo: Make Copper Ingot
         if (item.equals(itemManager.getItem("feyrith:WrathOfFeyrith")))
             itemUse(event.getPlayer());
     }
@@ -69,7 +69,7 @@ public class WrathOfFeyrith implements Listener {
             LivingEntity entity = (LivingEntity) e;
             if (friendly.contains(e)) return;
             entity.getWorld().strikeLightningEffect(entity.getLocation());
-            entity.damage(10.0, player);
+            entity.damage(100.0 / 5.0, player);
         });
     }
 }

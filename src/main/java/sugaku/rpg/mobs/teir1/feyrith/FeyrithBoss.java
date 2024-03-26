@@ -108,6 +108,7 @@ public class FeyrithBoss extends CustomMob implements Listener {
     private static final BossDrop[] bossDrops = new BossDrop[]{
             new BossDrop(RPGFramework.itemManager.getItem("feyrith:SylvathianThornWeaver"), Rarity.RARE),
             new BossDrop(RPGFramework.itemManager.getItem("feyrith:FireGemstone"), Rarity.UNCOMMON)
+            // TODO: ADD MY DROPS!
     };
 
     /**

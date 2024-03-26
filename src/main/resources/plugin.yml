@@ -36,3 +36,6 @@ commands:
   updates:
     description: "A command to help notify players of changes that have occurred to the server."
     permission: "rpg.updates"
+  rpg-trigger:
+    description: "A command to help notify players of changes that have occurred to the server."
+    permission: "rpg.updates"

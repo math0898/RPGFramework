@@ -57,7 +57,7 @@ public class ItemManager {
                 for (String k : yaml.getKeys(false)) {
                     ItemStack i = null;
                     try {
-                        i = (ItemStack) yaml.get(k);
+                        i = yaml.getItemStack(k);
                     } catch (Exception ignored) {}
                     String goodName = toCamelSpaceNamespace(f.getName(), k);
                     if (i != null) {
