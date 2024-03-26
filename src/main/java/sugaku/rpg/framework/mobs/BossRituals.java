@@ -47,15 +47,6 @@ public class BossRituals {
             send(player, "You are summoning " + ChatColor.GREEN + "Eiryeras" + ChatColor.GRAY + ", honored hunter of the Agloytan area.");
             Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> ritual(drop, player.getName(), Bosses.EIRYERAS), 40);
         } else if (drop.getItemStack().equals(ItemsManager.FeyrithSpawn) || stack.equals(RPGFramework.itemManager.getItem("feyrith:Spawn"))) {
-
-            //TODO: BETA
-            if (!player.hasPermission("rpg.beta")) {
-                send(player, ChatColor.GRAY + "Sorry but Feyrith is in beta.");
-                send(player, ChatColor.GRAY + "The boss will be available at a future point.");
-//                send(player, ChatColor.GRAY + "If you'd like to get beta access you can visit our web-store: https://darkstarmc.tebex.io/");
-                return;
-            }
-
             drop.setPickupDelay(60);
             send(player, "You are summoning " + ChatColor.BLUE + "Feyrith" + ChatColor.GRAY + ", an apprentice mage of the castle.");
             Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> ritual(drop, player.getName(), Bosses.FEYRITH), 40);
@@ -76,9 +67,9 @@ public class BossRituals {
         drop.remove();
         Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> location.getWorld().playSound(location, "entity.wither.spawn", 0.8f, 1), 160);
         new BukkitRunnable() { @Override public void run() { if(location.getWorld().getBlockAt(location).getType() == Material.FIRE) location.getWorld().getBlockAt(location).setType(Material.AIR); } }.runTaskLater(main.plugin, 150);
-        Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> location.getWorld().strikeLightning(location), 140);
-        Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> location.getWorld().strikeLightning(location), 120);
-        Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> location.getWorld().strikeLightning(location), 100);
+        Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> location.getWorld().strikeLightningEffect(location), 140);
+        Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> location.getWorld().strikeLightningEffect(location), 120);
+        Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> location.getWorld().strikeLightningEffect(location), 100);
     }
 
     private static void SummoningParticles(Particle p, Location l, int delay) { for (int i = 1; i < delay; i++) Bukkit.getScheduler().runTaskLater(main.plugin, () -> Objects.requireNonNull(l.getWorld()).spawnParticle(p, l, 1), i); }

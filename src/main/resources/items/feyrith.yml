@@ -110,7 +110,7 @@ mage-kaftan:
     ==: ItemMeta
     Unbreakable: true
     meta-type: UNSPECIFIC
-    display-name: §aMage's Kaftan
+    display-name: §9Mage's Kaftan
     lore:
       - §7A simple piece of formal
       - §7wear that increases a

@@ -93,7 +93,7 @@ public class KruskBoss extends CustomMob {
 
         assert meta != null;
 
-        meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(new UUID(5, 4), "generic.damage", 10, ADD_NUMBER, EquipmentSlot.HAND));
+        meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(new UUID(5, 4), "generic.damage", 5.0, ADD_NUMBER, EquipmentSlot.HAND));
         item.setItemMeta(meta);
 
         return item;

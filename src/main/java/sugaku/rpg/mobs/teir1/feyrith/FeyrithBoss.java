@@ -94,7 +94,7 @@ public class FeyrithBoss extends CustomMob implements Listener {
     /**
      * The base damage of the boss.
      */
-    private static final double baseDamage = 5.0;
+    private static final double baseDamage = 50.0;
 
     /**
      * An integer which represents the phase of the boss fight the boss is on. Determined based on health, phase 1,
@@ -107,8 +107,13 @@ public class FeyrithBoss extends CustomMob implements Listener {
      */
     private static final BossDrop[] bossDrops = new BossDrop[]{
             new BossDrop(RPGFramework.itemManager.getItem("feyrith:SylvathianThornWeaver"), Rarity.RARE),
-            new BossDrop(RPGFramework.itemManager.getItem("feyrith:FireGemstone"), Rarity.UNCOMMON)
-            // TODO: ADD MY DROPS!
+            new BossDrop(RPGFramework.itemManager.getItem("feyrith:FireGemstone"), Rarity.UNCOMMON),
+            new BossDrop(RPGFramework.itemManager.getItem("feyrith:WrathOfFeyrith"), Rarity.RARE),
+            new BossDrop(RPGFramework.itemManager.getItem("feyrith:MageKaftan"), Rarity.RARE),
+            new BossDrop(RPGFramework.itemManager.getItem("feyrith:RoyalClogs"), Rarity.HEROIC),
+            new BossDrop(RPGFramework.itemManager.getItem("feyrith:VisionaryCoif"), Rarity.UNCOMMON),
+            new BossDrop(RPGFramework.itemManager.getItem("feyrith:ComfortableBreeches"), Rarity.RARE)
+
     };
 
     /**
@@ -172,6 +177,7 @@ public class FeyrithBoss extends CustomMob implements Listener {
             double x = e.getLocation().getX();
             double y = e.getLocation().getY();
             double z = e.getLocation().getZ();
+            // TODO: Make Lightning Effect
             Bukkit.getScheduler().runTaskLater(main.plugin, () -> e.getWorld().strikeLightning(new Location(e.getWorld(), x, y, z)), 2*20);
         }
     }
@@ -196,7 +202,7 @@ public class FeyrithBoss extends CustomMob implements Listener {
             List<Entity> entities = entity.getNearbyEntities(4.0, 4.0, 4.0);
             entities.forEach((e) -> {
                 if (!e.equals(getEntity()) && e instanceof LivingEntity le) { // todo: Will need to do something like this for advanced damage.
-                    le.damage(2.0, getEntity());
+                    le.damage(baseDamage / 5.0, getEntity());
                     if (le.getNoDamageTicks() == 0) le.setNoDamageTicks(0);
                 }
             });
@@ -281,7 +287,7 @@ public class FeyrithBoss extends CustomMob implements Listener {
             List<Entity> nearby = (List<Entity>) entity.getWorld().getNearbyEntities(new BoundingBox(location.getX() - 10, location.getY() - 5, location.getZ() - 10, location.getX() + 10, location.getY() + 5, location.getZ() + 10), new Predicate<Entity>() {
                 @Override
                 public boolean test(Entity entity) { return entity.getName().contains(name); }});
-            if (nearby.size() > 0) event.setDamage(baseDamage * 2.0);
+            if (!nearby.isEmpty()) event.setDamage(1.25 * baseDamage / 5.0);
         }
     }
 
@@ -295,7 +301,7 @@ public class FeyrithBoss extends CustomMob implements Listener {
         if (event.getEntity() instanceof Player && event.getDamager() instanceof Fireball) {
             if (event.getDamager().hasMetadata("feyrith")) {
                 event.getEntity().setFireTicks(20);
-                event.setDamage(baseDamage);
+                event.setDamage(baseDamage / 5.0);
             }
         }
     }
