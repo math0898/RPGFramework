@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import sugaku.rpg.framework.classes.Classes;
+import io.github.math0898.rpgframework.classes.Classes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -170,17 +170,7 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
     }
 
     public String getFormattedClass() {
-//        return ChatColor.GRAY + "None";
-        return switch (combatClass) {
-            case GLADIATOR -> Classes.classColor(combatClass) + "Gladiator";
-            case BERSERKER -> Classes.classColor(combatClass) + "Berserker";
-            case NONE -> Classes.classColor(combatClass) + "None";
-            case MARKSMEN -> Classes.classColor(combatClass) + "Marksmen";
-            case ASSASSIN -> Classes.classColor(combatClass) + "Assassin";
-            case PALADIN -> Classes.classColor(combatClass) + "Paladin";
-            case BARD -> Classes.classColor(combatClass) + "Bard";
-            case PYROMANCER -> Classes.classColor(combatClass) + "Pyromancer";
-        };
+        return combatClass.getFormattedName();
     }
 
 //    public Classes getCombatClass() { return combatClass; }

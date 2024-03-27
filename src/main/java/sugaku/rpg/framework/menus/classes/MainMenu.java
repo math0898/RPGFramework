@@ -121,7 +121,7 @@ public class MainMenu implements Menu {
             case BERSERKER: return berserkerIndicator;
             case PALADIN: return paladinIndicator;
             case PYROMANCER: return pyromancerIndicator;
-            case MARKSMEN: return marksmanIndicator;
+            /*case MARKSMEN: return marksmanIndicator;*/
         }
         return noneIndicator;
     }

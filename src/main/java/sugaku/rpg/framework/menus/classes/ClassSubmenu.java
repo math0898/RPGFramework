@@ -1,6 +1,6 @@
 package sugaku.rpg.framework.menus.classes;
 
-import sugaku.rpg.framework.classes.Classes;
+import io.github.math0898.rpgframework.classes.Classes;
 
 public abstract class ClassSubmenu {
 

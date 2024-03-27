@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import sugaku.rpg.framework.classes.Classes;
+import io.github.math0898.rpgframework.classes.Classes;
 import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.menus.Menu;
 import sugaku.rpg.framework.players.PlayerManager;

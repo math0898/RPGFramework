@@ -114,7 +114,7 @@ public class KruskBoss extends CustomMob {
         Objects.requireNonNull(e.getLocation().getWorld()).dropItem(e.getLocation(), new ItemStack(ROTTEN_FLESH, (int) (r.nextDouble() * 5) + 1));
         double roll = r.nextDouble();
         while (roll >= 0.37) roll = r.nextDouble(); // TODO: Actually implement.
-             if (roll < 0.08) drop(KruskAxe, e.getLocation());
+        if (roll < 0.08) drop(KruskAxe, e.getLocation());
         else if (roll < 0.16) drop(KruskBoots, e.getLocation());
         else if (roll < 0.24) drop(KruskLeggings, e.getLocation());
         else if (roll < 0.32) drop(UndeadChestplate, e.getLocation());

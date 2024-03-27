@@ -14,7 +14,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import sugaku.rpg.framework.classes.Classes;
+import io.github.math0898.rpgframework.classes.Classes;
 import sugaku.rpg.main;
 import io.github.math0898.rpgframework.parties.Party;
 
@@ -150,34 +150,12 @@ public class RpgPlayer {
 
     public String getName() { return getBukkitPlayer().getName(); }
 
-    public String getFormattedClass() {
-        switch(combatClass) {
-            case GLADIATOR: return Classes.classColor(combatClass) + "Gladiator";
-            case BERSERKER: return Classes.classColor(combatClass) + "Berserker";
-            case NONE: return Classes.classColor(combatClass) + "None";
-            case MARKSMEN: return Classes.classColor(combatClass) + "Marksmen";
-            case ASSASSIN: return Classes.classColor(combatClass) + "Assassin";
-            case PALADIN: return Classes.classColor(combatClass) + "Paladin";
-            case BARD: return Classes.classColor(combatClass) + "Bard";
-            case PYROMANCER: return Classes.classColor(combatClass) + "Pyromancer";
-        }
-        return null;
-    }
-
     public Classes getCombatClass() { return combatClass; }
 
-    public String getCombatClassString() {
-        switch(combatClass) {
-            case ASSASSIN: return "Assassin";
-            case BARD: return "Bard";
-            case BERSERKER: return "Berserker";
-            case NONE: return "None";
-            case MARKSMEN: return "Marksmen";
-            case GLADIATOR: return "Gladiator";
-            case PALADIN: return "Paladin";
-            case PYROMANCER: return "Pyromancer";
-        }
-        return null;
+    public String getCombatClassString() { // todo: This might need to be changed.
+        char[] str = combatClass.toString().toLowerCase().toCharArray();
+        str[0] = Character.toUpperCase(str[0]);
+        return new String(str);
     }
 
     public void joinClass(Classes c) {
@@ -193,11 +171,11 @@ public class RpgPlayer {
     }
 
     public String getArchetype() {
-        switch (combatClass) {
-            case ASSASSIN: case GLADIATOR: case MARKSMEN: case BERSERKER: return "Fighter";
-            case NONE: return "None";
-            default: return "Caster";
-        }
+        return switch (combatClass) {
+            case ASSASSIN, /*GLADIATOR, MARKSMEN,*/ BERSERKER -> "Fighter";
+            case NONE -> "None";
+            default -> "Caster";
+        };
     }
 
     public void onInteract(PlayerInteractEvent event) { classObject.onInteract(event); }

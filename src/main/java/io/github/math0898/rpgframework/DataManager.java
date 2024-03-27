@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import sugaku.rpg.framework.classes.Classes;
+import io.github.math0898.rpgframework.classes.Classes;
 
 import java.io.File;
 import java.io.IOException;
