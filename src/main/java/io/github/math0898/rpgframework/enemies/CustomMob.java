@@ -105,7 +105,7 @@ public abstract class CustomMob {
      * @param l The location the mob should be spawned at.
      */
     @SuppressWarnings("deprecation")
-    public void spawn(Location l) {
+    public void spawn (Location l) {
         Mob e = (Mob) Objects.requireNonNull(l.getWorld()).spawnEntity(l, mobType);
 
         e.setCustomNameVisible(true);
