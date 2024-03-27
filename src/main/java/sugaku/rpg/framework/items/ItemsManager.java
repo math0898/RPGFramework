@@ -211,65 +211,57 @@ public final class ItemsManager {
      * Returns the int value of the piece of armor. This is a helper method.
      */
     private static int calArmor(Material m) {
-
-        switch(m) {
-            case LEATHER_BOOTS: case LEATHER_HELMET: case GOLDEN_BOOTS: case CHAINMAIL_BOOTS: return 1;
-            case LEATHER_LEGGINGS: case IRON_BOOTS: case GOLDEN_HELMET: case CHAINMAIL_HELMET: case IRON_HELMET: return 2;
-            case LEATHER_CHESTPLATE: case GOLDEN_LEGGINGS: case DIAMOND_HELMET: case DIAMOND_BOOTS: case NETHERITE_BOOTS: case NETHERITE_HELMET: return 3;
-            case CHAINMAIL_LEGGINGS: return 4;
-            case GOLDEN_CHESTPLATE: case CHAINMAIL_CHESTPLATE: case IRON_LEGGINGS: return 5;
-            case IRON_CHESTPLATE: case DIAMOND_LEGGINGS: case NETHERITE_LEGGINGS: return 6;
-            case DIAMOND_CHESTPLATE: case NETHERITE_CHESTPLATE: return 8;
-        }
-
-        return -1;
+        return switch (m) {
+            case LEATHER_BOOTS, LEATHER_HELMET, GOLDEN_BOOTS, CHAINMAIL_BOOTS -> 1;
+            case LEATHER_LEGGINGS, IRON_BOOTS, GOLDEN_HELMET, CHAINMAIL_HELMET, IRON_HELMET -> 2;
+            case LEATHER_CHESTPLATE, GOLDEN_LEGGINGS, DIAMOND_HELMET, DIAMOND_BOOTS, NETHERITE_BOOTS, NETHERITE_HELMET -> 3;
+            case CHAINMAIL_LEGGINGS -> 4;
+            case GOLDEN_CHESTPLATE, CHAINMAIL_CHESTPLATE, IRON_LEGGINGS -> 5;
+            case IRON_CHESTPLATE, DIAMOND_LEGGINGS, NETHERITE_LEGGINGS -> 6;
+            case DIAMOND_CHESTPLATE, NETHERITE_CHESTPLATE -> 8;
+            default -> -1;
+        };
     }
 
     /**
      * Calculates the int health value of the piece of armor. This is a helper method.
      */
     private static int calHealth(Material m) {
-
-        switch(m) {
-            case LEATHER_HELMET: case LEATHER_BOOTS: case LEATHER_LEGGINGS: return 1;
-            case LEATHER_CHESTPLATE: return 2;
-            case GOLDEN_BOOTS: case GOLDEN_LEGGINGS: case GOLDEN_CHESTPLATE: case GOLDEN_HELMET: case CHAINMAIL_HELMET: case CHAINMAIL_BOOTS: return 3;
-            case CHAINMAIL_LEGGINGS: case CHAINMAIL_CHESTPLATE: return 4;
-            case IRON_HELMET: case IRON_BOOTS: return 5;
-            case IRON_LEGGINGS: return 6;
-            case IRON_CHESTPLATE: return 7;
-            case NETHERITE_BOOTS: case DIAMOND_BOOTS: return 8;
-            case NETHERITE_HELMET: case DIAMOND_HELMET: return 10;
-            case NETHERITE_LEGGINGS: case DIAMOND_LEGGINGS: return 12;
-            case NETHERITE_CHESTPLATE: case DIAMOND_CHESTPLATE: return 30;
-        }
-
-        return -1;
+        return switch (m) {
+            case LEATHER_HELMET, LEATHER_BOOTS, LEATHER_LEGGINGS -> 1;
+            case LEATHER_CHESTPLATE -> 2;
+            case GOLDEN_BOOTS, GOLDEN_LEGGINGS, GOLDEN_CHESTPLATE, GOLDEN_HELMET, CHAINMAIL_HELMET, CHAINMAIL_BOOTS -> 3;
+            case CHAINMAIL_LEGGINGS, CHAINMAIL_CHESTPLATE -> 4;
+            case IRON_HELMET, IRON_BOOTS -> 5;
+            case IRON_LEGGINGS -> 6;
+            case IRON_CHESTPLATE -> 7;
+            case NETHERITE_BOOTS, DIAMOND_BOOTS -> 8;
+            case NETHERITE_HELMET, DIAMOND_HELMET -> 10;
+            case NETHERITE_LEGGINGS, DIAMOND_LEGGINGS -> 12;
+            case NETHERITE_CHESTPLATE, DIAMOND_CHESTPLATE -> 30;
+            default -> -1;
+        };
     }
 
     /**
      * Calculates the int armor toughness value of the piece of armor. This is a helper method.
      */
     private static int calToughness(Material m) {
-
-        switch(m) {
-            case DIAMOND_BOOTS: case DIAMOND_LEGGINGS: case DIAMOND_CHESTPLATE: case DIAMOND_HELMET: return 2;
-            case NETHERITE_BOOTS: case NETHERITE_LEGGINGS: case NETHERITE_CHESTPLATE: case NETHERITE_HELMET: return 3;
-        }
-
-        return 0;
+        return switch (m) {
+            case DIAMOND_BOOTS, DIAMOND_LEGGINGS, DIAMOND_CHESTPLATE, DIAMOND_HELMET -> 2;
+            case NETHERITE_BOOTS, NETHERITE_LEGGINGS, NETHERITE_CHESTPLATE, NETHERITE_HELMET -> 3;
+            default -> 0;
+        };
     }
 
     /**
      * Calculates the double knockback resistance value of a piece of armor. This is a helper method.
      */
     private static double calKnockback(Material m) {
-
-        switch(m) {
-            case NETHERITE_BOOTS: case NETHERITE_LEGGINGS: case NETHERITE_CHESTPLATE: case NETHERITE_HELMET: return 0.1;
-        }
-
-        return 0;
+        return switch (m) {
+            case NETHERITE_BOOTS, NETHERITE_LEGGINGS, NETHERITE_CHESTPLATE, NETHERITE_HELMET -> 0.1;
+            default -> 0;
+        };
     }
 
     /**
@@ -280,31 +272,30 @@ public final class ItemsManager {
      * @return The AttributeModifier with a unique UUID.
      */
     public static AttributeModifier attributeModifier(Attribute a, double value, EquipmentSlot slot) {
-        int mod = -1;
-        switch (a) {
-            case GENERIC_MAX_HEALTH: mod = 1; break;
-            case GENERIC_ARMOR: mod = 2; break;
-            case GENERIC_ARMOR_TOUGHNESS: mod = 3; break;
-            case GENERIC_ATTACK_DAMAGE: mod = 4; break;
-            case GENERIC_KNOCKBACK_RESISTANCE: mod = 5; break;
-            case GENERIC_MOVEMENT_SPEED: mod = 6; break;
-            case GENERIC_LUCK: mod = 7; break;
-            case HORSE_JUMP_STRENGTH: mod = 8; break;
-            case GENERIC_ATTACK_SPEED: mod = 9; break;
-            case GENERIC_ATTACK_KNOCKBACK: mod = 10; break;
-            case GENERIC_FLYING_SPEED: mod = 11; break;
-            case GENERIC_FOLLOW_RANGE: mod = 12; break;
-            case ZOMBIE_SPAWN_REINFORCEMENTS: mod = 13; break;
-        }
-        int slotN = -1;
-        switch (slot) {
-            case FEET: slotN = 1; break;
-            case LEGS: slotN = 2; break;
-            case CHEST: slotN = 3; break;
-            case HEAD: slotN = 4; break;
-            case HAND: slotN = 5; break;
-            case OFF_HAND: slotN = 6; break;
-        }
+        int mod = switch (a) {
+            case GENERIC_MAX_HEALTH -> 1;
+            case GENERIC_ARMOR -> 2;
+            case GENERIC_ARMOR_TOUGHNESS -> 3;
+            case GENERIC_ATTACK_DAMAGE -> 4;
+            case GENERIC_KNOCKBACK_RESISTANCE -> 5;
+            case GENERIC_MOVEMENT_SPEED -> 6;
+            case GENERIC_LUCK -> 7;
+            case HORSE_JUMP_STRENGTH -> 8;
+            case GENERIC_ATTACK_SPEED -> 9;
+            case GENERIC_ATTACK_KNOCKBACK -> 10;
+            case GENERIC_FLYING_SPEED -> 11;
+            case GENERIC_FOLLOW_RANGE -> 12;
+            case ZOMBIE_SPAWN_REINFORCEMENTS -> 13;
+            default -> 0;
+        };
+        int slotN = switch (slot) {
+            case FEET -> 1;
+            case LEGS -> 2;
+            case CHEST -> 3;
+            case HEAD -> 4;
+            case HAND -> 5;
+            case OFF_HAND -> 6;
+        };
         return new AttributeModifier(new UUID(slotN, mod), a.toString(), value, AttributeModifier.Operation.ADD_NUMBER, slot);
     }
 
