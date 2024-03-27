@@ -3,6 +3,7 @@ package io.github.math0898.rpgframework.items;
 import io.github.math0898.rpgframework.RPGFramework;
 import io.github.math0898.rpgframework.items.implementations.SylvathianThornWeaver;
 import io.github.math0898.rpgframework.items.implementations.WrathOfFeyrith;
+import io.github.math0898.utils.items.ItemParser;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -46,30 +47,9 @@ public class ItemManager {
         for (String itemResources : new String[]{ "items/krusk.yml", "items/other.yml", "items/eiryeras.yml", "items/feyrith.yml"})
             plugin.saveResource(itemResources, true); // todo: refactor to reduce scope when adding multiple bosses and sets.
         File[] files = itemsDir.listFiles();
-        if (files == null) {
-            console("Cannot find any item files.", ChatColor.YELLOW);
-            return;
-        }
-        for (File f : files) {
-            try {
-                YamlConfiguration yaml = new YamlConfiguration();
-                yaml.load(f);
-                for (String k : yaml.getKeys(false)) {
-                    ItemStack i = null;
-                    try {
-                        i = yaml.getItemStack(k);
-                    } catch (Exception ignored) {}
-                    String goodName = toCamelSpaceNamespace(f.getName(), k);
-                    if (i != null) {
-                        rpgItems.put(goodName, i);
-                        console("Registered item by name: " + goodName, ChatColor.GRAY);
-                    } else console("Failed to parse: " + goodName + " in: " + f.getPath(), ChatColor.RED);
-                }
-            } catch (InvalidConfigurationException | IOException e) {
-                console(e.getMessage(), ChatColor.RED);
-                console("Failed to parse item located at: " + f.getPath(), ChatColor.RED);
-            }
-        }
+        if (files == null) console("Cannot find any item files.", ChatColor.YELLOW);
+        else parseFiles(files);
+
         Bukkit.getScheduler().runTaskAsynchronously(getInstance(), this::passives);
         Bukkit.getPluginManager().registerEvents(new SylvathianThornWeaver(), getInstance());
         Bukkit.getPluginManager().registerEvents(new WrathOfFeyrith(), getInstance());
@@ -145,5 +125,34 @@ public class ItemManager {
             }
         }
         Bukkit.getScheduler().runTaskLaterAsynchronously(RPGFramework.getInstance(), this::passives, 20 * 20);
+    }
+
+    /**
+     * Parses all the files given and the items contained.
+     *
+     * @param files The files to parse.
+     */
+    public void parseFiles (File[] files) {
+        assert files != null;
+        for (File f : files) {
+            try {
+                YamlConfiguration yaml = new YamlConfiguration();
+                yaml.load(f);
+                for (String k : yaml.getKeys(false)) {
+                    ItemStack i = null;
+                    try {
+                        i = new ItemParser(yaml.getConfigurationSection(k)).build();
+                    } catch (Exception ignored) {}
+                    String goodName = toCamelSpaceNamespace(f.getName(), k);
+                    if (i != null) {
+                        rpgItems.put(goodName, i);
+                        console("Registered item by name: " + goodName, ChatColor.GRAY);
+                    } else console("Failed to parse: " + goodName + " in: " + f.getPath(), ChatColor.RED);
+                }
+            } catch (InvalidConfigurationException | IOException e) {
+                console(e.getMessage(), ChatColor.RED);
+                console("Failed to parse item located at: " + f.getPath(), ChatColor.RED);
+            }
+        }
     }
 }
