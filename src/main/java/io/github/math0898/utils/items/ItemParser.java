@@ -2,6 +2,7 @@ package io.github.math0898.utils.items;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -9,6 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ColorableArmorMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -69,6 +71,7 @@ public class ItemParser {
             flags.add(ItemFlag.valueOf(s));
         ItemMeta meta = Bukkit.getItemFactory().getItemMeta(type);
         assert meta != null;
+        if (meta instanceof ColorableArmorMeta colorable) parseColor(colorable, section.getConfigurationSection("color"));
         meta.setLore(lore);
         if (section.contains("attribute-modifiers")) {
             ConfigurationSection tmp = section.getConfigurationSection("attribute-modifiers");
@@ -99,6 +102,19 @@ public class ItemParser {
             AttributeModifier modifier = new AttributeModifier(uuid,  name, amnt, op, slot);
             meta.addAttributeModifier(attribute, modifier);
         }
+    }
+
+    /**
+     * Parses the given color configuration section and mutates the given ColorableArmorMeta to use the given color.
+     *
+     * @param meta    The meta to mutate.
+     * @param section The section to pull the data from.
+     */
+    public void parseColor (ColorableArmorMeta meta, ConfigurationSection section) {
+        meta.setColor(Color.fromARGB(section.getInt("ALPHA", 255),
+                section.getInt("RED", 0),
+                section.getInt("GREEN", 0),
+                section.getInt("BLUE", 0)));
     }
 
     /**
