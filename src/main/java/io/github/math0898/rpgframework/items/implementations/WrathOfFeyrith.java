@@ -61,15 +61,10 @@ public class WrathOfFeyrith implements Listener {
         lastUsed.put(player.getUniqueId(), System.currentTimeMillis());
         final UUID uuid = player.getUniqueId();
         RpgPlayer rpg = PlayerManager.getPlayer(uuid);
-        List<Player> friendly = new ArrayList<>();
-        for (RpgPlayer r : rpg.friendlyCasterTargets())
-            friendly.add(r.getBukkitPlayer());
-        player.getNearbyEntities(8.0 ,8.0, 8.0).forEach((e) -> {
-            if (!(e instanceof LivingEntity)) return;
-            LivingEntity entity = (LivingEntity) e;
-            if (friendly.contains(e)) return;
-            entity.getWorld().strikeLightningEffect(entity.getLocation());
-            entity.damage(100.0 / 5.0, player);
+        if (rpg == null) return;
+        rpg.nearbyEnemyCasterTargets(8.0).forEach((e) -> {
+            e.getWorld().strikeLightningEffect(e.getLocation());
+            e.damage(100.0 / 5.0, player);
         });
     }
 }

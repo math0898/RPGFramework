@@ -1,8 +1,8 @@
 package io.github.math0898.rpgframework.items.implementations;
 
+import io.github.math0898.rpgframework.PlayerManager;
+import io.github.math0898.rpgframework.RpgPlayer;
 import org.bukkit.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -74,13 +74,11 @@ public class SylvathianThornWeaver implements Listener {
                 p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, p.getLocation().add((rand.nextDouble() * 8.0) - 4.0, (rand.nextDouble() * 2.0) - 1.0, (rand.nextDouble() * 8.0) - 4.0), 2);
         }, 0, 9);
         BukkitTask task3 = Bukkit.getScheduler().runTaskTimer(getInstance(), () -> {
-            Player p = Bukkit.getPlayer(uuid);
-            List<Entity> entity = p.getNearbyEntities(4.0, 4.0, 4.0);
-            entity.forEach((e) -> {
-                if (!e.equals(p) && e instanceof LivingEntity le) { // todo: Will need to do something like this for advanced damage.
-                    le.damage(2.0, p);
-                    if (le.getNoDamageTicks() == 0) le.setNoDamageTicks(0);
-                }
+            RpgPlayer rpg = PlayerManager.getPlayer(uuid);
+            if (rpg == null) return;
+            rpg.nearbyEnemyCasterTargets(4.0).forEach((e) -> { // todo: Will need to do something like this for advanced damage.
+                e.damage(10.0 / 5.0, rpg.getBukkitPlayer());
+                if (e.getNoDamageTicks() == 0) e.setNoDamageTicks(0);
             });
         }, 0, 20);
         Bukkit.getScheduler().runTaskLater(getInstance(), () -> {

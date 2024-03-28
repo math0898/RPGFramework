@@ -6,6 +6,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -317,6 +319,38 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
         List<RpgPlayer> toReturn = new ArrayList<>();
         if (party != null) toReturn.addAll(party.getRpgPlayers());
         else toReturn.add(this);
+        return toReturn;
+    }
+
+    /**
+     * A helpful utility method to wrangle all nearby enemy caster targets.
+     *
+     * @param distance The distance from this RpgPlayer to look for targets.
+     * @return A list of nearby enemy casting targets.
+     */
+    public List<LivingEntity> nearbyEnemyCasterTargets (double distance) {
+        return nearbyEnemyCasterTargets(distance, distance, distance);
+    }
+
+    /**
+     * A helpful utility method to wrangle all nearby enemy caster targets.
+     *
+     * @param dx The distance in the x direction to look for nearby targets.
+     * @param dy The distance in the y direction to look for nearby targets.
+     * @param dz The distance in the z direction to look for nearby targets.
+     * @return A list of nearby enemy casting targets.
+     */
+    public List<LivingEntity> nearbyEnemyCasterTargets (double dx, double dy, double dz) {
+        List<LivingEntity> toReturn = new ArrayList<>();
+        List<RpgPlayer> friendlies = friendlyCasterTargets();
+        List<LivingEntity> friendlyEntities = new ArrayList<>();
+        for (RpgPlayer rpg : friendlies)
+            friendlyEntities.add(rpg.getBukkitPlayer());
+        List<Entity> entities = getBukkitPlayer().getNearbyEntities(dx, dy, dz);
+        for (Entity e : entities)
+            if (e instanceof LivingEntity le)
+                if (!friendlyEntities.contains(le))
+                    toReturn.add(le);
         return toReturn;
     }
 
