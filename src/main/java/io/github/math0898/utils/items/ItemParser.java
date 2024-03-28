@@ -111,6 +111,7 @@ public class ItemParser {
      * @param section The section to pull the data from.
      */
     public void parseColor (ColorableArmorMeta meta, ConfigurationSection section) {
+        if (section == null) return;
         meta.setColor(Color.fromARGB(section.getInt("ALPHA", 255),
                 section.getInt("RED", 0),
                 section.getInt("GREEN", 0),
