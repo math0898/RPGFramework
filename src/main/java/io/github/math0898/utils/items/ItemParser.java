@@ -7,9 +7,11 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -56,11 +58,15 @@ public class ItemParser {
      * @param section The configuration section to pull the ItemMeta from.
      * @return The parsed ItemMeta.
      */
-    public ItemMeta parseMeta (ConfigurationSection section) { // todo: ItemFlags
+    public ItemMeta parseMeta (ConfigurationSection section) {
         String displayName = section.getString("display-name", ChatColor.WHITE + "Failed to Parse Name");
         List<String> lore = section.getStringList("lore");
         boolean unbreakable = section.getBoolean("Unbreakable", false);
         int customModelData = section.getInt("custom-model-data", 0);
+        List<String> itemFlags = section.getStringList("ItemFlags");
+        List<ItemFlag> flags = new ArrayList<>();
+        for (String s : itemFlags)
+            flags.add(ItemFlag.valueOf(s));
         ItemMeta meta = Bukkit.getItemFactory().getItemMeta(type);
         assert meta != null;
         meta.setLore(lore);
@@ -72,6 +78,7 @@ public class ItemParser {
         meta.setDisplayName(displayName);
         meta.setUnbreakable(unbreakable);
         meta.setCustomModelData(customModelData);
+        meta.addItemFlags(flags.toArray(new ItemFlag[0]));
         return meta;
     }
 
