@@ -3,19 +3,15 @@ package io.github.math0898.rpgframework.items.implementations;
 import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RpgPlayer;
 import org.bukkit.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
-import static io.github.math0898.rpgframework.RPGFramework.getInstance;
 import static io.github.math0898.rpgframework.RPGFramework.itemManager;
 
 /**
