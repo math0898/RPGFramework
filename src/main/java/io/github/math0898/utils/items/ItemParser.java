@@ -3,11 +3,15 @@ package io.github.math0898.utils.items;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The ItemParser class parses configuration sections into a usable ItemStack.
@@ -39,7 +43,11 @@ public class ItemParser {
     public ItemParser (ConfigurationSection section) {
         type = Material.valueOf(section.getString("type", "IRON_NUGGET"));
         amount = section.getInt("amount", 1);
-        if (section.contains("meta")) meta = parseMeta(section.getConfigurationSection("meta"));
+        if (section.contains("meta")) {
+            ConfigurationSection tmp = section.getConfigurationSection("meta");
+            assert tmp != null; // 46
+            meta = parseMeta(tmp);
+        }
     }
 
     /**
@@ -56,8 +64,11 @@ public class ItemParser {
         ItemMeta meta = Bukkit.getItemFactory().getItemMeta(type);
         assert meta != null;
         meta.setLore(lore);
-        if (section.contains("attribute-modifiers"))
-            parseAttributes(section.getConfigurationSection("attribute-modifiers"), meta);
+        if (section.contains("attribute-modifiers")) {
+            ConfigurationSection tmp = section.getConfigurationSection("attribute-modifiers");
+            assert tmp != null; // 63
+            parseAttributes(tmp, meta);
+        }
         meta.setDisplayName(displayName);
         meta.setUnbreakable(unbreakable);
         meta.setCustomModelData(customModelData);
@@ -71,7 +82,16 @@ public class ItemParser {
      * @param meta The meta to mutate.
      */
     public void parseAttributes (ConfigurationSection section, ItemMeta meta) {
-        // todo: Implement.
+        for (String s : section.getKeys(false)) {
+            Attribute attribute = Attribute.valueOf(s);
+            double amnt = section.getDouble(s + ".amount", 0.0);
+            String name = section.getString(s + ".name", "DefaultName");
+            EquipmentSlot slot = EquipmentSlot.valueOf(section.getString(s + ".slot", "CHEST"));
+            UUID uuid = UUID.fromString(section.getString(s + ".uuid", "00000000-0000-0000-0000-000000000000"));
+            AttributeModifier.Operation op = AttributeModifier.Operation.ADD_NUMBER;
+            AttributeModifier modifier = new AttributeModifier(uuid,  name, amnt, op, slot);
+            meta.addAttributeModifier(attribute, modifier);
+        }
     }
 
     /**
