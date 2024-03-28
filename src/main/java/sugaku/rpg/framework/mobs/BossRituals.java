@@ -38,15 +38,19 @@ public class BossRituals {
         Item drop = event.getItemDrop();
         Player player = event.getPlayer();
         ItemStack stack = drop.getItemStack();
-        if (stack.equals(ItemsManager.KruskSpawn) || stack.equals(RPGFramework.itemManager.getItem("krusk:Spawn"))) {
+        if (stack.equals(ItemsManager.KruskSpawn)
+                || stack.equals(RPGFramework.itemManager.getItem("krusk:Spawn"))
+                || stack.equals(RPGFramework.itemManager.getItem("krusk:LegacySpawn"))) {
             drop.setPickupDelay(60);
             send(player, "You are summoning " + ChatColor.GREEN + "Krusk" + ChatColor.GRAY + ", one of the Undead Generals.");
             Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> ritual(drop, player.getName(), Bosses.KRUSK), 40);
-        } else if (stack.equals(ItemsManager.EiryerasSpawn) || stack.equals(RPGFramework.itemManager.getItem("eiryeras:Spawn"))) {
+        } else if (stack.equals(ItemsManager.EiryerasSpawn)
+                || stack.equals(RPGFramework.itemManager.getItem("eiryeras:Spawn"))) {
             drop.setPickupDelay(60);
             send(player, "You are summoning " + ChatColor.GREEN + "Eiryeras" + ChatColor.GRAY + ", honored hunter of the Agloytan area.");
             Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> ritual(drop, player.getName(), Bosses.EIRYERAS), 40);
-        } else if (drop.getItemStack().equals(ItemsManager.FeyrithSpawn) || stack.equals(RPGFramework.itemManager.getItem("feyrith:Spawn"))) {
+        } else if (drop.getItemStack().equals(ItemsManager.FeyrithSpawn)
+                || stack.equals(RPGFramework.itemManager.getItem("feyrith:Spawn"))) {
             drop.setPickupDelay(60);
             send(player, "You are summoning " + ChatColor.BLUE + "Feyrith" + ChatColor.GRAY + ", an apprentice mage of the castle.");
             Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> ritual(drop, player.getName(), Bosses.FEYRITH), 40);

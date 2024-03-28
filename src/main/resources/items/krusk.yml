@@ -1,9 +1,20 @@
-spawn: # TODO: This item does not allow krusk to be summoned. It is missing unbreakable flag. This is the better version.
-  ==: org.bukkit.inventory.ItemStack
+spawn:
   type: WHEAT
   amount: 1
   meta:
-    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: §9Krusk Boss Spawn
+    lore:
+      - §7Drop this item anywhere to spawn
+      - §aKrusk, Undead General§7 on the spot.
+      - §7Attacking bosses whilst they are in
+      - §7water will cause you to get struck
+      - §7by lighting.
+
+legacy-spawn:
+  type: WHEAT
+  amount: 1
+  meta:
     meta-type: UNSPECIFIC
     display-name: §9Krusk Boss Spawn
     lore:
@@ -12,12 +23,11 @@ spawn: # TODO: This item does not allow krusk to be summoned. It is missing unbr
       - §7Attacking bosses whilst they are in
       - §7water will cause you to get struck
       - §7by lighting.
+
 lore:
-  ==: org.bukkit.inventory.ItemStack
   type: WHEAT
   amount: 1
   meta:
-    ==: ItemMeta
     meta-type: UNSPECIFIC
     display-name: §6Krusk's Lore
     lore:
@@ -26,12 +36,14 @@ lore:
       - §7this noble, §aKrusk §7was given the
       - §7fairly easy task of defending
       - §7farmers from stray beasts.
+
 krusk-axe:
-  ==: org.bukkit.inventory.ItemStack
   type: IRON_AXE
   amount: 1
   meta:
-    ==: ItemMeta
+    ItemFlags:
+      - HIDE_ATTRIBUTES
+      - HIDE_UNBREAKABLE
     meta-type: UNSPECIFIC
     display-name: §aKrusk's Axe
     lore:
@@ -39,28 +51,32 @@ krusk-axe:
       - §7He was not particularly good at what
       - §7he did but now he gives adventurers
       - §7a hard time anyways.
+      - ""
+      - "§7Hand:"
+      - §9+60 Damage
+      - §c-3 Attack Speed
     attribute-modifiers:
       GENERIC_ATTACK_DAMAGE:
-      - ==: org.bukkit.attribute.AttributeModifier
         amount: 12.0
         name: generic.damage
         slot: HAND
         uuid: 00000000-0000-0005-0000-000000000004
         operation: 0
       GENERIC_ATTACK_SPEED:
-      - ==: org.bukkit.attribute.AttributeModifier
         amount: -3.0
         name: generic.attackSpeed
         slot: HAND
         uuid: 00000000-0000-0005-0000-000000000005
         operation: 0
     Unbreakable: true
+
 krusk-boots:
-  ==: org.bukkit.inventory.ItemStack
   type: DIAMOND_BOOTS
   amount: 1
   meta:
-    ==: ItemMeta
+    ItemFlags:
+      - HIDE_ATTRIBUTES
+      - HIDE_UNBREAKABLE
     Unbreakable: true
     meta-type: UNSPECIFIC
     display-name: §aKrusk's Boots
@@ -69,34 +85,38 @@ krusk-boots:
       - §7by §dKrusk's Mom §7to celebrate his
       - §7promotion to general. Wear them
       - §7well.
+      - ""
+      - "§7Feet:"
+      - §9+60 Health
+      - §9+1 Armor
+      - §9+2 Armor Toughness
     attribute-modifiers:
       GENERIC_ARMOR_TOUGHNESS:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 2.0
           name: generic.armorToughness
           slot: FEET
           uuid: 00000000-0000-0001-0000-000000000003
           operation: 0
       GENERIC_ARMOR:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 1.0
           name: generic.armor
           slot: FEET
           uuid: 00000000-0000-0001-0000-000000000002
           operation: 0
       GENERIC_MAX_HEALTH:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 12
           name: generic.health
           slot: FEET
           uuid: 00000000-0000-0001-0000-000000000001
           operation: 0
+
 krusk-helmet:
-  ==: org.bukkit.inventory.ItemStack
   type: DIAMOND_HELMET
   amount: 1
   meta:
-    ==: ItemMeta
+    ItemFlags:
+      - HIDE_ATTRIBUTES
+      - HIDE_UNBREAKABLE
     meta-type: UNSPECIFIC
     Unbreakable: true
     display-name: §9Krusk's Trusty Helmet
@@ -107,34 +127,38 @@ krusk-helmet:
       - §7maybe... §aKrusk §7would've lived long
       - §7enough to save enough pevsar to
       - §7buy his own house.
+      - ""
+      - "§7Head:"
+      - §9+90 Health
+      - §9+1.25 Armor
+      - §9+2.25 Armor Toughness
     attribute-modifiers:
       GENERIC_ARMOR_TOUGHNESS:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 2.25
           name: generic.armorToughness
           slot: HEAD
           uuid: 00000000-0000-0004-0000-000000000003
           operation: 0
       GENERIC_ARMOR:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 1.25
           name: generic.armor
           slot: HEAD
           uuid: 00000000-0000-0004-0000-000000000002
           operation: 0
       GENERIC_MAX_HEALTH:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 16
           name: generic.health
           slot: HEAD
           uuid: 00000000-0000-0004-0000-000000000001
           operation: 0
+
 krusk-leggings:
-  ==: org.bukkit.inventory.ItemStack
   type: LEATHER_LEGGINGS
   amount: 1
   meta:
-    ==: ItemMeta
+    ItemFlags:
+      - HIDE_ATTRIBUTES
+      - HIDE_UNBREAKABLE
     Unbreakable: true
     meta-type: UNSPECIFIC
     display-name: §aKrusk's Leggings
@@ -143,27 +167,31 @@ krusk-leggings:
       - §7on staying flexible. Leather pants
       - §7suited this goal nicely allowing him
       - §7to practice stretches on the job.
+      - ""
+      - "§7Legs:"
+      - §9+25 Health
+      - §9+0.75 Armor
     attribute-modifiers:
       GENERIC_ARMOR:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 0.75
           name: generic.armor
           slot: LEGS
           uuid: 00000000-0000-0002-0000-000000000002
           operation: 0
       GENERIC_MAX_HEALTH:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 5
           name: generic.health
           slot: LEGS
           uuid: 00000000-0000-0002-0000-000000000001
           operation: 0
+
 undead-chestplate:
-  ==: org.bukkit.inventory.ItemStack
   type: IRON_CHESTPLATE
   amount: 1
   meta:
-    ==: ItemMeta
+    ItemFlags:
+      - HIDE_ATTRIBUTES
+      - HIDE_UNBREAKABLE
     Unbreakable: true
     meta-type: UNSPECIFIC
     display-name: §aUndead Chestplate
@@ -174,16 +202,18 @@ undead-chestplate:
       - §7
       - "§7§oIssue Date:"
       - "§f               I5 - Pretits - Ve"
+      - ""
+      - "§7Chest:"
+      - §9+50 Health
+      - §9+1.75 Armor
     attribute-modifiers:
       GENERIC_ARMOR:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 1.75
           name: generic.armor
           slot: CHEST
           uuid: 00000000-0000-0003-0000-000000000002
           operation: 0
       GENERIC_MAX_HEALTH:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 10
           name: generic.health
           slot: CHEST
