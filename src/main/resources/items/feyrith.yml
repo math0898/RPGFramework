@@ -1,9 +1,7 @@
 spawn:
-  ==: org.bukkit.inventory.ItemStack
   type: GOLD_INGOT
   amount: 1
   meta:
-    ==: ItemMeta
     meta-type: UNSPECIFIC
     display-name: §6Feyrith Boss Spawn
     lore:
@@ -14,11 +12,9 @@ spawn:
       - §7by lighting.
 
 fire-gemstone:
-  ==: org.bukkit.inventory.ItemStack
   type: DIAMOND
   amount: 1
   meta:
-    ==: ItemMeta
     meta-type: UNSPECIFIC
     display-name: §aFire Gemstone
     custom-model-data: 1
@@ -39,26 +35,22 @@ fire-gemstone:
       - HIDE_ATTRIBUTES
     attribute-modifiers:
       GENERIC_ATTACK_DAMAGE:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 5.0
           name: generic.damage
           slot: OFF_HAND
           uuid: 00000000-0000-0006-0000-000000000004
           operation: 0
       GENERIC_ATTACK_SPEED:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 0.25
           name: generic.attackSpeed
           slot: OFF_HAND
           uuid: 00000000-0000-0006-0000-000000000005
           operation: 0
 
-sylvathian-thorn-weaver: # todo: Maybe make look enchanted
-  ==: org.bukkit.inventory.ItemStack
+sylvathian-thorn-weaver:
   type: EMERALD
   amount: 1
   meta:
-    ==: ItemMeta
     meta-type: UNSPECIFIC
     display-name: §9Sylvathian Thornweaver
     custom-model-data: 1
@@ -80,11 +72,9 @@ sylvathian-thorn-weaver: # todo: Maybe make look enchanted
 
 # Ideally copper ingot
 wrath-of-feyrith:
-  ==: org.bukkit.inventory.ItemStack
   type: PRISMARINE_SHARD
   amount: 1
   meta:
-    ==: ItemMeta
     meta-type: UNSPECIFIC
     display-name: §9Wrath of Feyrith
     custom-model-data: 1
@@ -103,11 +93,9 @@ wrath-of-feyrith:
       - "§9Range: 8 blocks"
 
 mage-kaftan:
-  ==: org.bukkit.inventory.ItemStack
   type: DIAMOND_CHESTPLATE
   amount: 1
   meta:
-    ==: ItemMeta
     Unbreakable: true
     meta-type: UNSPECIFIC
     display-name: §9Mage's Kaftan
@@ -127,33 +115,28 @@ mage-kaftan:
       - HIDE_UNBREAKABLE
     attribute-modifiers:
       GENERIC_ARMOR_TOUGHNESS:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 2.0
           name: generic.armorToughness
-          slot: FEET
+          slot: CHEST
           uuid: 00000000-0000-0003-0000-000000000003
           operation: 0
       GENERIC_ARMOR:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 2.0
           name: generic.armor
-          slot: FEET
+          slot: CHEST
           uuid: 00000000-0000-0003-0000-000000000002
           operation: 0
       GENERIC_MAX_HEALTH:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 35
           name: generic.health
-          slot: FEET
+          slot: CHEST
           uuid: 00000000-0000-0003-0000-000000000001
           operation: 0
 
 royal-clogs:
-  ==: org.bukkit.inventory.ItemStack
   type: DIAMOND_BOOTS
   amount: 1
   meta:
-    ==: ItemMeta
     Unbreakable: true
     meta-type: UNSPECIFIC
     display-name: §dBalkan Clogs
@@ -171,21 +154,18 @@ royal-clogs:
       - HIDE_UNBREAKABLE
     attribute-modifiers:
       GENERIC_ARMOR_TOUGHNESS:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 2.0
           name: generic.armorToughness
           slot: FEET
           uuid: 00000000-0000-0001-0000-000000000003
           operation: 0
       GENERIC_ARMOR:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 1.0
           name: generic.armor
           slot: FEET
           uuid: 00000000-0000-0001-0000-000000000002
           operation: 0
       GENERIC_MAX_HEALTH:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 25
           name: generic.health
           slot: FEET
@@ -193,11 +173,9 @@ royal-clogs:
           operation: 0
 
 visionary-coif:
-  ==: org.bukkit.inventory.ItemStack
   type: DIAMOND_HELMET
   amount: 1
   meta:
-    ==: ItemMeta
     Unbreakable: true
     meta-type: UNSPECIFIC
     display-name: §aCoif of Visions
@@ -218,33 +196,28 @@ visionary-coif:
       - HIDE_UNBREAKABLE
     attribute-modifiers:
       GENERIC_ARMOR_TOUGHNESS:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 2.0
           name: generic.armorToughness
-          slot: FEET
+          slot: HEAD
           uuid: 00000000-0000-0004-0000-000000000003
           operation: 0
       GENERIC_ARMOR:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 1.25
           name: generic.armor
-          slot: FEET
+          slot: HEAD
           uuid: 00000000-0000-0004-0000-000000000002
           operation: 0
       GENERIC_MAX_HEALTH:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 12
           name: generic.health
-          slot: FEET
+          slot: HEAD
           uuid: 00000000-0000-0004-0000-000000000001
           operation: 0
 
 comfortable-breeches:
-  ==: org.bukkit.inventory.ItemStack
   type: DIAMOND_LEGGINGS
   amount: 1
   meta:
-    ==: ItemMeta
     Unbreakable: true
     meta-type: UNSPECIFIC
     display-name: §9Comfortable Breeches
@@ -266,27 +239,23 @@ comfortable-breeches:
       - HIDE_UNBREAKABLE
     attribute-modifiers:
       GENERIC_ARMOR_TOUGHNESS:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 2.0
           name: generic.armorToughness
-          slot: FEET
+          slot: LEGS
           uuid: 00000000-0000-0002-0000-000000000003
           operation: 0
       GENERIC_ARMOR:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 1.5
           name: generic.armor
-          slot: FEET
+          slot: LEGS
           uuid: 00000000-0000-0002-0000-000000000002
           operation: 0
       GENERIC_MAX_HEALTH:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 20
           name: generic.health
-          slot: FEET
+          slot: LEGS
           uuid: 00000000-0000-0002-0000-000000000001
           operation: 0
 
 lore:
-  ==: org.bukkit.inventory.ItemStack
   type: GOLD_INGOT

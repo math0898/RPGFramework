@@ -142,7 +142,9 @@ public class ItemManager {
                     ItemStack i = null;
                     try {
                         i = new ItemParser(yaml.getConfigurationSection(k)).build();
-                    } catch (Exception ignored) {}
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
                     String goodName = toCamelSpaceNamespace(f.getName(), k);
                     if (i != null) {
                         rpgItems.put(goodName, i);
