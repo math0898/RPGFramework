@@ -1,69 +1,68 @@
 spawn:
-  ==: org.bukkit.inventory.ItemStack
-  v: 3700
   type: BEEF
   meta:
-    ==: ItemMeta
     meta-type: UNSPECIFIC
-    display-name: '{"text":"","extra":[{"text":"Eiryeras Boss Spawn","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"blue","bold":false}]}'
+    display-name: §9Eiryeras Boss Spawn
     lore:
-      - '{"text":"","extra":[{"text":"Drop this item anywhere to spawn","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"Eiryeras, Honored Hunter","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"green","bold":false},{"text":"
-      on the","italic":false,"color":"gray"}]}'
-      - '{"text":"","extra":[{"text":"spot. Attacking bosses whilst they","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"are in water will cause you to get","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"struck by lighting.","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
+      - §7Drop this item anywhere to spawn
+      - §aEiryeras§7, §aHonored Hunter §7on the
+      - §7spot. Attacking bosses whilst they
+      - §7are in water will cause you to get
+      - §7struck by lighting.
+
 hand-crafted-bow:
-  ==: org.bukkit.inventory.ItemStack
-  v: 3700
   type: BOW
   meta:
-    ==: ItemMeta
     meta-type: UNSPECIFIC
-    display-name: '{"text":"","extra":[{"text":"Hand Crafted Bow","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"blue","bold":false}]}'
+    display-name: §9Hand Crafted Bow
     lore:
-      - '{"text":"","extra":[{"text":"A bow crafted by a very","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"experienced artisan from","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"Strathenberg","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"blue","bold":false},{"text":".
-      The unique","italic":false,"color":"gray"}]}'
-      - '{"text":"","extra":[{"text":"Shape of the limbs help","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"transfer more energy into","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"each shot.","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"Arrow Damage: + 4","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"blue","bold":false}]}'
+      - §7A bow crafted by a very
+      - §7experienced artisan from
+      - §9Strathenberg§7. The unique
+      - §7Shape of the limbs help
+      - §7transfer more energy into
+      - §7each shot.
+      - ""
+      - §9+20 Arrow Damage
+    ItemFlags:
+      - HIDE_UNBREAKABLE
     Unbreakable: true
+
 worn-galoshes:
-  ==: org.bukkit.inventory.ItemStack
-  v: 3700
   type: LEATHER_BOOTS
   meta:
-    ==: ItemMeta
     meta-type: COLORABLE_ARMOR
-    display-name: '{"text":"","extra":[{"text":"Worn Galoshes","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"green","bold":false}]}'
+    display-name: §aWorn Galoshes
     lore:
-      - '{"text":"","extra":[{"text":"While traveling it is very","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"important to keep your feet","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"dry. Failing to do so can","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"result in fungal infections","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"blisters, and warts. Do","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"yourself a favor and get a","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"good pair of footwear.","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
+      - §7While traveling it is very
+      - §7important to keep your feet
+      - §7dry. Failing to do so can
+      - §7result in fungal infections
+      - §7blisters, and warts. Do
+      - §7yourself a favor and get a
+      - §7good pair of footwear.
+      - ""
+      - "§7Feet:"
+      - §9+10 Health
+      - §9+0.5 Armor
+      - "§9+5 Damage"
+    ItemFlags:
+      - HIDE_ATTRIBUTES
+      - HIDE_UNBREAKABLE
     attribute-modifiers:
       GENERIC_ATTACK_DAMAGE:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 1.0
           name: GENERIC_ATTACK_DAMAGE
           slot: FEET
           uuid: 00000000-0000-0001-0000-000000000004
           operation: 0
       GENERIC_MAX_HEALTH:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 2.0
           name: GENERIC_MAX_HEALTH
           slot: FEET
           uuid: 00000000-0000-0001-0000-000000000001
           operation: 0
       GENERIC_ARMOR:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 0.5
           name: GENERIC_ARMOR
           slot: FEET
@@ -71,44 +70,46 @@ worn-galoshes:
           operation: 0
     Unbreakable: true
     color:
-      ==: Color
       ALPHA: 255
       RED: 60
       BLUE: 31
       GREEN: 115
+
 hide-leggings:
-  ==: org.bukkit.inventory.ItemStack
-  v: 3700
   type: LEATHER_LEGGINGS
   meta:
-    ==: ItemMeta
     meta-type: COLORABLE_ARMOR
-    display-name: '{"text":"","extra":[{"text":"Hide Leggings","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"green","bold":false}]}'
+    display-name: §aHide Leggings
     lore:
-      - '{"text":"","extra":[{"text":"Woods which do not reside in","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"floodplains often cultivate","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"a large amount of undergrowth","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"which can be thorny and","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"difficult to move through.","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"A good pair of protective","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"pants is a good idea.","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
+      - §7Woods which do not reside in
+      - §7floodplains often cultivate
+      - §7a large amount of undergrowth
+      - §7which can be thorny and
+      - §7difficult to move through.
+      - §7A good pair of protective
+      - §7pants is a good idea.
+      - ""
+      - "§7Legs:"
+      - §9+15 Health
+      - §9+0.75 Armor
+      - §9+5 Attack Damage
+    ItemFlags:
+      - HIDE_ATTRIBUTES
+      - HIDE_UNBREAKABLE
     attribute-modifiers:
       GENERIC_ATTACK_DAMAGE:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 1.0
           name: GENERIC_ATTACK_DAMAGE
           slot: LEGS
           uuid: 00000000-0000-0002-0000-000000000004
           operation: 0
       GENERIC_MAX_HEALTH:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 3.0
           name: GENERIC_MAX_HEALTH
           slot: LEGS
           uuid: 00000000-0000-0002-0000-000000000001
           operation: 0
       GENERIC_ARMOR:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 0.75
           name: GENERIC_ARMOR
           slot: LEGS
@@ -116,44 +117,46 @@ hide-leggings:
           operation: 0
     Unbreakable: true
     color:
-      ==: Color
       ALPHA: 255
       RED: 93
       BLUE: 124
       GREEN: 161
+
 hunters-cloak:
-  ==: org.bukkit.inventory.ItemStack
-  v: 3700
   type: LEATHER_CHESTPLATE
   meta:
-    ==: ItemMeta
     meta-type: COLORABLE_ARMOR
-    display-name: '{"text":"","extra":[{"text":"Hunter''s Cloak","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"green","bold":false}]}'
+    display-name: §aHunter's Cloak
     lore:
-      - '{"text":"","extra":[{"text":"Similar to hoods, cloaks help","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"greatly to reduce environmental","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"hazards as well as recolor the","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"wearer to match their terrain.","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"This particular cloak is","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"specifically colored for the","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"forests of Agloytan.","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
+      - §7Similar to hoods, cloaks help
+      - §7greatly to reduce environmental
+      - §7hazards as well as recolor the
+      - §7wearer to match their terrain.
+      - §7This particular cloak is
+      - §7specifically colored for the
+      - §7forests of §9Agloytan§7.
+      - ""
+      - "§7Chest:"
+      - §9+20 Health
+      - §9+1 Armor
+      - §9+5 Attack Damage
+    ItemFlags:
+      - HIDE_ATTRIBUTES
+      - HIDE_UNBREAKABLE
     attribute-modifiers:
       GENERIC_ATTACK_DAMAGE:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 1.0
           name: GENERIC_ATTACK_DAMAGE
           slot: CHEST
           uuid: 00000000-0000-0003-0000-000000000004
           operation: 0
       GENERIC_MAX_HEALTH:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 4.0
           name: GENERIC_MAX_HEALTH
           slot: CHEST
           uuid: 00000000-0000-0003-0000-000000000001
           operation: 0
       GENERIC_ARMOR:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 1.0
           name: GENERIC_ARMOR
           slot: CHEST
@@ -161,42 +164,44 @@ hunters-cloak:
           operation: 0
     Unbreakable: true
     color:
-      ==: Color
       ALPHA: 255
       RED: 113
       BLUE: 11
       GREEN: 172
+
 hunters-hood:
-  ==: org.bukkit.inventory.ItemStack
-  v: 3700
   type: LEATHER_HELMET
   meta:
-    ==: ItemMeta
     meta-type: COLORABLE_ARMOR
-    display-name: '{"text":"","extra":[{"text":"Hunter''s Hood","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"green","bold":false}]}'
+    display-name: §aHunter's hood
     lore:
-      - '{"text":"","extra":[{"text":"Hoods serve to help to conceal","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"humanoid features among the","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"trees as well as protect the","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"wearer against most","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"environmental hazards.","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
+      - §7Hoods serve to help conceal
+      - §7humanoid features among the
+      - §7trees as well as protect the
+      - §7wearer against most
+      - §7environmental hazards
+      - ""
+      - "§7Head:"
+      - §9+10 Health
+      - §9+0.5 Armor
+      - §9+5 Attack Damage
+    ItemFlags:
+      - HIDE_ATTRIBUTES
+      - HIDE_UNBREAKABLE
     attribute-modifiers:
       GENERIC_ATTACK_DAMAGE:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 1.0
           name: GENERIC_ATTACK_DAMAGE
           slot: HEAD
           uuid: 00000000-0000-0004-0000-000000000004
           operation: 0
       GENERIC_MAX_HEALTH:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 2.0
           name: GENERIC_MAX_HEALTH
           slot: HEAD
           uuid: 00000000-0000-0004-0000-000000000001
           operation: 0
       GENERIC_ARMOR:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 0.5
           name: GENERIC_ARMOR
           slot: HEAD
@@ -204,57 +209,54 @@ hunters-hood:
           operation: 0
     Unbreakable: true
     color:
-      ==: Color
       ALPHA: 255
       RED: 60
       BLUE: 31
       GREEN: 115
+
 ceremonial-knife:
-  ==: org.bukkit.inventory.ItemStack
-  v: 3700
   type: IRON_SWORD
   meta:
-    ==: ItemMeta
     meta-type: UNSPECIFIC
-    display-name: '{"text":"","extra":[{"text":"Ceremonial Knife","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"blue","bold":false}]}'
+    display-name: §9Ceremonial Knife
     lore:
-      - '{"text":"","extra":[{"text":"This is a ceremonial knife used","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"by followers of","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false},{"text":"
-      Inos","italic":false,"color":"red"},{"text":",","italic":false,"color":"gray"},{"text":"
-      God of","italic":false,"color":"red"}]}'
-      - '{"text":"","extra":[{"text":"Spring","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"red","bold":false},{"text":".
-      The blade is used when","italic":false,"color":"gray"}]}'
-      - '{"text":"","extra":[{"text":"gathering natural resources to","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"show thanks and to humbly ask","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"for its rejuvenation.","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
+      - §7This is a ceremonial knife used
+      - §7by followers of §cInos§7, §cGod of
+      - §cSpring§7. The blade is used when
+      - §7gathering natural resources to
+      - §7show thanks and to humbly ask
+      - §7for its rejuvenation
+      - ""
+      - "§7Hand:"
+      - §9+50 Attack Damage
+    ItemFlags:
+      - HIDE_ATTRIBUTES
+      - HIDE_UNBREAKABLE
     attribute-modifiers:
       GENERIC_ATTACK_DAMAGE:
-        - ==: org.bukkit.attribute.AttributeModifier
           amount: 10.0
           name: GENERIC_ATTACK_DAMAGE
           slot: HAND
           uuid: 00000000-0000-0005-0000-000000000004
           operation: 0
     Unbreakable: true
+
 lore:
-  ==: org.bukkit.inventory.ItemStack
-  v: 3700
   type: IRON_SWORD
   meta:
-    ==: ItemMeta
     meta-type: UNSPECIFIC
-    display-name: '{"text":"","extra":[{"text":"Eiryeras Lore","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gold","bold":false}]}'
+    display-name: §6Eiryeras Lore
     lore:
-      - '{"text":"","extra":[{"text":"Eiryeras","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"green","bold":false},{"text":"
-      from a young age has","italic":false,"color":"gray"}]}'
-      - '{"text":"","extra":[{"text":"always been very chaotic. Rather","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"than study","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false},{"text":"
-      Eiryeras","italic":false,"color":"green"},{"text":" would much","italic":false,"color":"gray"}]}'
-      - '{"text":"","extra":[{"text":"rather spend their time amongst","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"the bugs and birds of the forest.","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"Eiryeras","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"green","bold":false},{"text":"
-      in old age would often","italic":false,"color":"gray"}]}'
-      - '{"text":"","extra":[{"text":"proclaim that the company of","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"animals is far superior to that","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
-      - '{"text":"","extra":[{"text":"of man.","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
+      - §aEiryeras §7from a young age has
+      - §7always been very chaotic. Rather
+      - §7than study §aEiryeras §7would much
+      - §7rather spend their time amongst
+      - §7the bugs and birds of the forest.
+      - §aEiryeras §7in old age would often
+      - §7proclaim that the company of
+      - §7animals is far superior to that
+      - §7of man.
+    ItemFlags:
+      - HIDE_ATTRIBUTES
+      - HIDE_UNBREAKABLE
     Unbreakable: true

@@ -70,7 +70,6 @@ sylvathian-thorn-weaver:
       - "§9Damage: 10/s"
       - "§9Range: 4 blocks"
 
-# Ideally copper ingot
 wrath-of-feyrith:
   type: PRISMARINE_SHARD
   amount: 1
@@ -106,10 +105,10 @@ mage-kaftan:
       - §7magics.
       - ""
       - "§7Chest:"
-      - §9+10 Magic Power
       - §9+175 Health
       - §9+2 Armor
       - §9+2 Armor Toughness
+      - §9+10 Magic Power
     ItemFlags:
       - HIDE_ATTRIBUTES
       - HIDE_UNBREAKABLE
