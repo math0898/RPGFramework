@@ -5,6 +5,7 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -277,7 +278,7 @@ public class FeyrithBoss extends CustomMob implements Listener {
      *
      * @param event First filtered by cause then does things that need to happen.
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public static void EntityDamaged(EntityDamageEvent event) {
 
         Entity entity = event.getEntity();

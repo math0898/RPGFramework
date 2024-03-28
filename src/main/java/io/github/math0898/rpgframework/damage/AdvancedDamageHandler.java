@@ -28,7 +28,7 @@ public class AdvancedDamageHandler implements Listener {
      *
      * @param event The damage event.
      */
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDamage (EntityDamageEvent event) {
         AdvancedDamageEvent advancedDamageEvent = new AdvancedDamageEvent(event);
         Bukkit.getPluginManager().callEvent(advancedDamageEvent); //Call the event
