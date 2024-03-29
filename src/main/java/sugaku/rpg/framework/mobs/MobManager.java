@@ -53,23 +53,28 @@ public class MobManager {
         if (event.getEntity().getKiller() == null) return;
         Random r = new Random();
         double drops = r.nextDouble();
-        int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
-        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2)) drop(RPGFramework.itemManager.getItem("krusk:Spawn"), event.getEntity().getLocation());
+//        int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
+        if (drops < 0.02)
+//        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
+            event.getDrops().add(RPGFramework.itemManager.getItem("krusk:Spawn"));
     }
 
     public static void skeletonDrops (EntityDeathEvent event) {
         if (event.getEntity().getKiller() == null) return;
         Random r = new Random();
         double drops = r.nextDouble();
-        int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
-        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2)) drop(RPGFramework.itemManager.getItem("eiryeras:Spawn"), event.getEntity().getLocation());
+        // int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
+        if (drops < 0.02)
+//        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
+            event.getDrops().add(RPGFramework.itemManager.getItem("eiryeras:Spawn"));
     }
 
     public static void witherSkeletonDrops (EntityDeathEvent event) {
         if (event.getEntity().getKiller() == null) return;
         Random r = new Random();
         double drops = r.nextDouble();
-        int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
-        if (drops < 2.0/((Math.abs(gearScore - 150)) + 2)) drop(RPGFramework.itemManager.getItem("feyrith:Spawn"), event.getEntity().getLocation());
-    }
+        // int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
+        if (drops < 0.02)
+//        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
+            event.getDrops().add(RPGFramework.itemManager.getItem("feyrith:Spawn"));}
 }
