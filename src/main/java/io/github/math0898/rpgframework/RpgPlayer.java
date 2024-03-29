@@ -9,6 +9,8 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -69,9 +71,14 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
      * Gets a gear score for the given player.
      * @param player The player we're calculating gear score for.
      */
-    public static int getGearScore(Player player) {
-
+    public static int getGearScore (Player player) {
         int runningScore = 0;
+//        EntityEquipment equipment = player.getEquipment();
+//        if (equipment == null) return 0;
+//        for (EquipmentSlot slot : EquipmentSlot.values()) {
+//            if (slot.equals(EquipmentSlot.OFF_HAND)) continue;
+//            ItemStack item = equipment.getItem(slot);
+//        }
 
         ItemStack[] collection = player.getInventory().getArmorContents();
 

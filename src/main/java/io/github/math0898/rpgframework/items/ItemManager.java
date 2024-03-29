@@ -157,4 +157,13 @@ public class ItemManager {
             }
         }
     }
+
+    /**
+     * Rates the given item on a scale of 0-120. Assumes it is the correct gear for a player.
+     *
+     * @param item The item to rate on a scale of 0-120.
+     */
+    public int rateItem (ItemStack item) {
+        return 0;
+    }
 }
