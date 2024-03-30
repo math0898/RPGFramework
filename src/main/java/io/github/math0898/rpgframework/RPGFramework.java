@@ -6,6 +6,7 @@ import io.github.math0898.rpgframework.commands.Tutorial;
 import io.github.math0898.rpgframework.commands.Updates;
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
 import io.github.math0898.rpgframework.commands.GiveCommand;
+import io.github.math0898.rpgframework.hooks.HookManager;
 import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.rpgframework.parties.PartyCommand;
 import io.github.math0898.rpgframework.parties.PartyManager;
@@ -94,6 +95,7 @@ public final class RPGFramework extends JavaPlugin implements Listener {
         Objects.requireNonNull(Bukkit.getPluginCommand("party")).setTabCompleter(PartyCommand.autocomplete);
 
         //Establish hooks
+        HookManager.getInstance();
         useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
         if (!useHolographicDisplays) {
             console("Holographic displays was not found.", ChatColor.YELLOW);

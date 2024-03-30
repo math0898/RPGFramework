@@ -10,7 +10,7 @@ public class HookManager {
     /**
      * The active HookManager instance.
      */
-    private HookManager instance;
+    private static HookManager instance;
 
     /**
      * Creates a new HookManager.
@@ -24,7 +24,7 @@ public class HookManager {
      *
      * @return The active HookManager instance.
      */
-    public HookManager getInstance () {
+    public static HookManager getInstance () {
         if (instance == null) instance = new HookManager();
         return instance;
     }
