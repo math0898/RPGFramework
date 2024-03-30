@@ -166,6 +166,7 @@ public class BerserkerClass extends AbstractClass { // todo: Re-add regeneration
     public void damaged (AdvancedDamageEvent event) {
         if (correctArmor())
             event.addDamage(-10.0, event.getPrimaryDamage());
+        if (getCooldowns()[Abilities.INDOMITABLE_SPIRIT.ordinal()].getRemaining() >= 175) event.setCancelled(true);
     }
 
     /**
