@@ -1,14 +1,9 @@
 package io.github.math0898.rpgframework;
 
-import io.github.math0898.rpgframework.commands.Classes;
-import io.github.math0898.rpgframework.commands.SummonRPG;
-import io.github.math0898.rpgframework.commands.Tutorial;
-import io.github.math0898.rpgframework.commands.Updates;
+import io.github.math0898.rpgframework.commands.*;
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
-import io.github.math0898.rpgframework.commands.GiveCommand;
 import io.github.math0898.rpgframework.hooks.HookManager;
 import io.github.math0898.rpgframework.items.ItemManager;
-import io.github.math0898.rpgframework.parties.PartyCommand;
 import io.github.math0898.rpgframework.parties.PartyManager;
 import io.github.math0898.rpgframework.systems.GodEventListener;
 import org.bukkit.Bukkit;
@@ -16,7 +11,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Objects;
 import java.util.logging.Level;
 
 /**
@@ -91,8 +85,6 @@ public final class RPGFramework extends JavaPlugin implements Listener {
         PlayerManager.init();
         DataManager.getInstance();
         registerCommands();
-        Objects.requireNonNull(Bukkit.getPluginCommand("party")).setExecutor(new PartyCommand());
-        Objects.requireNonNull(Bukkit.getPluginCommand("party")).setTabCompleter(PartyCommand.autocomplete);
 
         //Establish hooks
         HookManager.getInstance();
@@ -119,6 +111,7 @@ public final class RPGFramework extends JavaPlugin implements Listener {
         new Classes();
         new SummonRPG();
         new GiveCommand();
+        new PartyCommand();
         console("Commands registered.", ChatColor.GREEN);
     }
 }
