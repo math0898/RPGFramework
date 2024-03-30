@@ -98,10 +98,11 @@ public class PartyManager implements Listener {
             event.setCancelled(true);
             Party party = findParty(p);
             if (party == null) return;
-            RpgPlayer rpg = PlayerManager.getPlayer(p.getUniqueId());
+            // todo: Refactor to new RpgPlayer
+            sugaku.rpg.framework.players.RpgPlayer rpg = sugaku.rpg.framework.players.PlayerManager.getPlayer(p.getUniqueId());
             String prefix = ChatColor.GREEN + p.getName() + ChatColor.DARK_GRAY + " > " + ChatColor.LIGHT_PURPLE;
             if (rpg == null) prefix = ChatColor.DARK_GRAY + "[" + Classes.NONE.getFormattedName() + ChatColor.DARK_GRAY + "] " + prefix;
-            else prefix = rpg.getFormattedClass() + prefix;
+            else prefix = ChatColor.DARK_GRAY + "[" + rpg.getCombatClass().getFormattedName() + ChatColor.DARK_GRAY + "] " + prefix;
             party.sendAll(prefix + event.getMessage());
             Bukkit.getConsoleSender().sendMessage(prefix + event.getMessage());
         }
