@@ -110,14 +110,6 @@ public final class RPGFramework extends JavaPlugin implements Listener {
     }
 
     /**
-     * Not much here either. If something needs to be here it will be.
-     */
-    @Override
-    public void onDisable () {
-        // Plugin shutdown logic
-    }
-
-    /**
      * Registers all the commands in a simple group.
      */
     private void registerCommands () {

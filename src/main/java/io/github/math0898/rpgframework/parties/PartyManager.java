@@ -1,5 +1,8 @@
 package io.github.math0898.rpgframework.parties;
 
+import io.github.math0898.rpgframework.PlayerManager;
+import io.github.math0898.rpgframework.RpgPlayer;
+import io.github.math0898.rpgframework.classes.Classes;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Arrow;
@@ -95,9 +98,12 @@ public class PartyManager implements Listener {
             event.setCancelled(true);
             Party party = findParty(p);
             if (party == null) return;
-            // todo add in class coloring.
-            party.sendAll(ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "None" + ChatColor.DARK_GRAY + "] "
-                    + ChatColor.GREEN + p.getName() + ChatColor.DARK_GRAY + " > " + ChatColor.LIGHT_PURPLE + event.getMessage());
+            RpgPlayer rpg = PlayerManager.getPlayer(p.getUniqueId());
+            String prefix = ChatColor.GREEN + p.getName() + ChatColor.DARK_GRAY + " > " + ChatColor.LIGHT_PURPLE;
+            if (rpg == null) prefix = ChatColor.DARK_GRAY + "[" + Classes.NONE.getFormattedName() + ChatColor.DARK_GRAY + "] " + prefix;
+            else prefix = rpg.getFormattedClass() + prefix;
+            party.sendAll(prefix + event.getMessage());
+            Bukkit.getConsoleSender().sendMessage(prefix + event.getMessage());
         }
     }
 
