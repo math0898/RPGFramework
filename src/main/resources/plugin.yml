@@ -5,7 +5,9 @@ api-version: 1.20
 authors: [ Sugaku ]
 description: The main framework plugin used for all of Math0898/Sugaku's RPG plugins.
 prefix: RPG Framework
-softdepend: [ HolographicDisplays ]
+softdepend:
+  - HolographicDisplays
+  - StackMob
 permissions:
   rpg.*:
     default: false

@@ -212,7 +212,8 @@ public abstract class CustomMob {
     /**
      * Returns the custom name of the mob being created.
      */
-    public String getCustomName() { return ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + rarity + name; }
+    public String getCustomName() {
+        return ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + rarity + name; }
 
     /**
      * Handles drops of the custom mob. By default no items are dropped.
