@@ -69,7 +69,7 @@ public abstract class AbstractClass implements Class {
      *
      * @return The cooldown array that is a member of this class.
      */
-    protected Cooldown[] getCooldowns () {
+    public Cooldown[] getCooldowns () {
         return cooldowns;
     }
 

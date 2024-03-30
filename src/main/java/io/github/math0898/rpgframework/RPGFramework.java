@@ -112,6 +112,7 @@ public final class RPGFramework extends JavaPlugin implements Listener {
         new SummonRPG();
         new GiveCommand();
         new PartyCommand();
+        new DebugCommand();
         console("Commands registered.", ChatColor.GREEN);
     }
 }

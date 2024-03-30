@@ -1,5 +1,7 @@
 package sugaku.rpg.framework.players;
 
+import io.github.math0898.rpgframework.Cooldown;
+import io.github.math0898.rpgframework.classes.AbstractClass;
 import io.github.math0898.rpgframework.classes.implementations.*;
 import io.github.math0898.rpgframework.classes.Class;
 import org.bukkit.Bukkit;
@@ -282,6 +284,16 @@ public class RpgPlayer {
      */
     public void heal () {
         getBukkitPlayer().setHealth(getMaxHealth());
+    }
+
+    /**
+     * Resets all the cooldowns that are in this RpgPlayer.
+     */
+    public void resetCooldowns () {
+        Class tmp = classObject;
+        if (tmp instanceof AbstractClass rpg)
+            for (Cooldown cd : rpg.getCooldowns())
+                cd.setComplete();
     }
 
     //TODO: Implement the damage bonus of the bow
