@@ -71,6 +71,7 @@ public class BossRituals {
             case FEYRITH -> new FeyrithBoss();
             case KRUSK -> new KruskBoss();
         };
+        if (rpg != null) rpg.setBoss(tmp);
         drop.setPickupDelay(60);
         send(player, message);
         Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> ritual(drop, player, tmp), 40);

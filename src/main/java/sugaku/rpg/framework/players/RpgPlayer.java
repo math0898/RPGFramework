@@ -324,7 +324,11 @@ public class RpgPlayer {
         io.github.math0898.rpgframework.RpgPlayer player = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
         if (player == null) return null;
         Party party = player.getParty();
-        if (player.getParty() != null) return party.getActiveBoss();
+        if (player.getParty() != null) {
+            CustomMob candidate = party.getActiveBoss();
+            if (candidate != null)
+                return candidate;
+        }
         if (activeBoss != null)
             if (activeBoss.isSpawned())
                 if (!activeBoss.getEntity().isValid() || activeBoss.getEntity().isDead())

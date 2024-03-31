@@ -123,9 +123,6 @@ public class FeyrithBoss extends CustomMob implements Listener {
                 ItemsManager.createLeatherArmor(Material.LEATHER_CHESTPLATE, " ", new String[]{}, 25, 64, 255),
                 ItemsManager.createLeatherArmor(Material.LEATHER_LEGGINGS, " ", new String[]{}, 148, 161, 227),
                 ItemsManager.createLeatherArmor(Material.LEATHER_BOOTS, " ", new String[]{}, 22, 44, 156));
-        getEntity().setGravity(false);
-        getEntity().setVelocity(new Vector(0, 0, 0));
-        Objects.requireNonNull(getEntity().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)).setBaseValue(1000);
     }
 
     /**
@@ -146,6 +143,9 @@ public class FeyrithBoss extends CustomMob implements Listener {
     @Override
     public void spawn (Location l) {
         super.spawn(l);
+        getEntity().setGravity(false);
+        getEntity().setVelocity(new Vector(0, 0, 0));
+        Objects.requireNonNull(getEntity().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)).setBaseValue(1000);
         runAI();
     }
 
