@@ -148,26 +148,25 @@ public class EiryerasBoss extends CustomMob implements Listener {
     });
 
     /**
-     * Creates an Eiryeras boss for reference purposes.
+     * Makes sure that items and other things required for the boss fight are set up.
      */
     public EiryerasBoss() {
-        super(name, EntityType.SKELETON, Rarity.UNCOMMON, 150);
-    }
-
-    /**
-     * Spawns Eiryeras as the given location l. Also makes sure that items and other things required for the boss fight
-     * are setup.
-     *
-     * @param l The spawn location of Eiryeras.
-     */
-    public EiryerasBoss(Location l) {
         super(name, EntityType.SKELETON, Rarity.UNCOMMON, 150);
         setArmor(ItemsManager.createLeatherArmor(Material.LEATHER_HELMET, " ", new String[]{}, 60, 115, 31),
                 ItemsManager.createLeatherArmor(Material.LEATHER_CHESTPLATE, " ", new String[]{}, 113, 172, 11),
                 ItemsManager.createLeatherArmor(Material.LEATHER_LEGGINGS, " ", new String[]{}, 93, 161, 124),
                 ItemsManager.createLeatherArmor(Material.LEATHER_BOOTS, " ", new String[]{}, 60, 115, 31));
         setHand(new ItemStack(Material.BOW, 1));
-        spawn(l);
+    }
+
+    /**
+     * Makes sure that items and other things required for the boss fight are set up. <b>This will also spawn the boss.</b>
+     *
+     * @param location The location to spawn the boss at.
+     */
+    public EiryerasBoss (Location location) {
+        this();
+        spawn(location);
     }
 
     /**

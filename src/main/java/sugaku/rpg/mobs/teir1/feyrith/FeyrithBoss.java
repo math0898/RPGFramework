@@ -34,10 +34,6 @@ import static org.bukkit.Material.*;
 
 public class FeyrithBoss extends CustomMob implements Listener {
 
-    public FeyrithBoss() {
-        super(name, EntityType.WITHER_SKELETON, Rarity.RARE, 350);
-    }
-
     /**
      * Describes the metadata behind Feyrith projectiles.
      */
@@ -118,21 +114,38 @@ public class FeyrithBoss extends CustomMob implements Listener {
     };
 
     /**
-     * Creates and spawns a Feyrith boss at the given location.
-     *
-     * @param l The location to spawn the boss.
+     * Creates and spawns a Feyrith boss.
      */
-    public FeyrithBoss(Location l) {
+    public FeyrithBoss () {
         super(name, EntityType.WITHER_SKELETON, Rarity.RARE, maxHealth);
 
         setArmor(new ItemStack(Material.AIR, 0),
                 ItemsManager.createLeatherArmor(Material.LEATHER_CHESTPLATE, " ", new String[]{}, 25, 64, 255),
                 ItemsManager.createLeatherArmor(Material.LEATHER_LEGGINGS, " ", new String[]{}, 148, 161, 227),
                 ItemsManager.createLeatherArmor(Material.LEATHER_BOOTS, " ", new String[]{}, 22, 44, 156));
-        spawn(l);
         getEntity().setGravity(false);
         getEntity().setVelocity(new Vector(0, 0, 0));
         Objects.requireNonNull(getEntity().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)).setBaseValue(1000);
+    }
+
+    /**
+     * Makes sure that items and other things required for the boss fight are set up. <b>This will also spawn the boss.</b>
+     *
+     * @param location The location to spawn the boss at.
+     */
+    public FeyrithBoss (Location location) {
+        this();
+        spawn(location);
+    }
+
+    /**
+     * Spawn the mob described by the CustomMob object at the given location l.
+     *
+     * @param l The location the mob should be spawned at.
+     */
+    @Override
+    public void spawn (Location l) {
+        super.spawn(l);
         runAI();
     }
 

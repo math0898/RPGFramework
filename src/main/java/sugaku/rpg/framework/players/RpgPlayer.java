@@ -19,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import io.github.math0898.rpgframework.classes.Classes;
 import sugaku.rpg.main;
 import io.github.math0898.rpgframework.parties.Party;
+import sugaku.rpg.mobs.CustomMob;
 
 import java.util.UUID;
 import java.util.Objects;
@@ -62,6 +63,11 @@ public class RpgPlayer {
     private Classes combatClass = Classes.NONE;
 
     private Class classObject = new NoneClass(this);
+
+    /**
+     * A reference to any active bosses that are fighting this player.
+     */
+    private CustomMob activeBoss = null;
 
     /**
      * Returns the uuid of the player this construct points to.
@@ -294,6 +300,36 @@ public class RpgPlayer {
         if (tmp instanceof AbstractClass rpg)
             for (Cooldown cd : rpg.getCooldowns())
                 cd.setComplete();
+    }
+
+    /**
+     * Sets the active boss.
+     *
+     * @param boss The boss to assign to this player.
+     */
+    public void setBoss (CustomMob boss) {
+        io.github.math0898.rpgframework.RpgPlayer player = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
+        if (player == null) return;
+        Party party = player.getParty();
+        if (player.getParty() != null) party.setBoss(boss);
+        activeBoss = boss;
+    }
+
+    /**
+     * An accessor method for the boss that is actively fighting this player. Will validate the boss before returning.
+     *
+     * @return The boss actively fighting this Party.
+     */
+    public CustomMob getActiveBoss () {
+        io.github.math0898.rpgframework.RpgPlayer player = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
+        if (player == null) return null;
+        Party party = player.getParty();
+        if (player.getParty() != null) return party.getActiveBoss();
+        if (activeBoss != null)
+            if (activeBoss.isSpawned())
+                if (!activeBoss.getEntity().isValid() || activeBoss.getEntity().isDead())
+                    activeBoss = null;
+        return activeBoss;
     }
 
     //TODO: Implement the damage bonus of the bow

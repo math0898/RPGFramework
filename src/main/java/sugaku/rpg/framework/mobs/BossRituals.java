@@ -9,8 +9,11 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import sugaku.rpg.framework.items.ItemsManager;
+import sugaku.rpg.framework.players.PlayerManager;
+import sugaku.rpg.framework.players.RpgPlayer;
 import sugaku.rpg.main;
 import sugaku.rpg.mobs.Bosses;
+import sugaku.rpg.mobs.CustomMob;
 import sugaku.rpg.mobs.teir1.eiryeras.EiryerasBoss;
 import sugaku.rpg.mobs.teir1.feyrith.FeyrithBoss;
 import sugaku.rpg.mobs.teir1.krusk.KruskBoss;
@@ -38,36 +41,50 @@ public class BossRituals {
         Item drop = event.getItemDrop();
         Player player = event.getPlayer();
         ItemStack stack = drop.getItemStack();
+        RpgPlayer rpg = PlayerManager.getPlayer(player.getUniqueId());
+        if (rpg != null)
+            if (rpg.getActiveBoss() != null) {
+                send(player, ChatColor.RED + "You, or your party, already have an active boss.");
+                send(player, ChatColor.RED + "Kill it, let it kill you, or leave to despawn it first.");
+                event.setCancelled(true);
+                return;
+            }
+        String message = "";
+        Bosses boss = null;
         if (stack.equals(ItemsManager.KruskSpawn)
                 || stack.equals(RPGFramework.itemManager.getItem("krusk:Spawn"))
                 || stack.equals(RPGFramework.itemManager.getItem("krusk:LegacySpawn"))) {
-            drop.setPickupDelay(60);
-            send(player, "You are summoning " + ChatColor.GREEN + "Krusk" + ChatColor.GRAY + ", one of the Undead Generals.");
-            Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> ritual(drop, player.getName(), Bosses.KRUSK), 40);
+            message = "You are summoning " + ChatColor.GREEN + "Krusk" + ChatColor.GRAY + ", one of the Undead Generals.";
+            boss = Bosses.KRUSK;
         } else if (stack.equals(ItemsManager.EiryerasSpawn)
                 || stack.equals(RPGFramework.itemManager.getItem("eiryeras:Spawn"))) {
-            drop.setPickupDelay(60);
-            send(player, "You are summoning " + ChatColor.GREEN + "Eiryeras" + ChatColor.GRAY + ", honored hunter of the Agloytan area.");
-            Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> ritual(drop, player.getName(), Bosses.EIRYERAS), 40);
+            message = "You are summoning " + ChatColor.GREEN + "Eiryeras" + ChatColor.GRAY + ", honored hunter of the Agloytan area.";
+            boss = Bosses.EIRYERAS;
         } else if (drop.getItemStack().equals(ItemsManager.FeyrithSpawn)
                 || stack.equals(RPGFramework.itemManager.getItem("feyrith:Spawn"))) {
-            drop.setPickupDelay(60);
-            send(player, "You are summoning " + ChatColor.BLUE + "Feyrith" + ChatColor.GRAY + ", an apprentice mage of the castle.");
-            Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> ritual(drop, player.getName(), Bosses.FEYRITH), 40);
+            message = "You are summoning " + ChatColor.BLUE + "Feyrith" + ChatColor.GRAY + ", an apprentice mage of the castle.";
+            boss = Bosses.FEYRITH;
         }
+        if (boss == null) return;
+        final CustomMob tmp = switch(boss) {
+            case EIRYERAS -> new EiryerasBoss();
+            case FEYRITH -> new FeyrithBoss();
+            case KRUSK -> new KruskBoss();
+        };
+        drop.setPickupDelay(60);
+        send(player, message);
+        Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> ritual(drop, player, tmp), 40);
     }
 
-    public static void ritual(Item drop, String player, Bosses b) {
+    public static void ritual(Item drop, Player player, CustomMob boss) {
         Location location = drop.getLocation();
         assert location.getWorld() != null;
         SummoningParticles(Particle.LAVA, new Location(location.getWorld(), location.getX(), location.getY() + 0.5, location.getZ()), 159);
         SummoningParticles(Particle.ENCHANTMENT_TABLE, new Location(location.getWorld(), location.getX(), location.getY() + 0.5, location.getZ()), 159);
-        send(Bukkit.getServer().getConsoleSender(), Bosses.getFormattedName(b) + ChatColor.GRAY + "is being spawned at: " + ChatColor.GRAY + location + ChatColor.GRAY + " - " + player);
-        switch(b) {
-            case EIRYERAS: Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> MobManager.addMob(new EiryerasBoss(location)), 160); break;
-            case FEYRITH: Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> MobManager.addMob(new FeyrithBoss(location)), 160); break;
-            case KRUSK: Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> MobManager.addMob(new KruskBoss(location)), 160); break;
-        }
+        send(Bukkit.getServer().getConsoleSender(), boss.getCustomName() + ChatColor.GRAY + "is being spawned at: " + ChatColor.GRAY + location + ChatColor.GRAY + " - " + player);
+        Bukkit.getScheduler().runTaskLater(main.plugin, () -> boss.setLocale(location), 158);
+        Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> boss.spawn(boss.getLocale()), 160);
+        Bukkit.getScheduler().runTaskLater(main.plugin, () -> MobManager.addMob(boss), 157);
         drop.remove();
         Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> location.getWorld().playSound(location, "entity.wither.spawn", 0.8f, 1), 160);
         new BukkitRunnable() { @Override public void run() { if(location.getWorld().getBlockAt(location).getType() == Material.FIRE) location.getWorld().getBlockAt(location).setType(Material.AIR); } }.runTaskLater(main.plugin, 150);

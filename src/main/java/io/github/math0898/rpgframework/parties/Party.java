@@ -2,6 +2,7 @@ package io.github.math0898.rpgframework.parties;
 
 import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RpgPlayer;
+import sugaku.rpg.mobs.CustomMob;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
@@ -27,6 +28,11 @@ public class Party {
      * This is a reference to the leader of the party. They should also be contained within {@link #players}.
      */
     private Player leader;
+
+    /**
+     * A reference to any active bosses that are fighting this Party.
+     */
+    private CustomMob activeBoss = null;
 
     /**
      * Creates a new party with the given player as the leader.
@@ -141,5 +147,27 @@ public class Party {
         else if (o instanceof Party rhs) {
             return this.leader.equals(rhs.leader);
         } else return false;
+    }
+
+    /**
+     * Sets the active boss.
+     *
+     * @param boss The boss to assign to this party.
+     */
+    public void setBoss (CustomMob boss) {
+        activeBoss = boss;
+    }
+
+    /**
+     * An accessor method for the boss that is actively fighting this party. Will validate the boss before returning.
+     *
+     * @return The boss actively fighting this Party.
+     */
+    public CustomMob getActiveBoss () {
+        if (activeBoss != null)
+            if (activeBoss.isSpawned())
+                if (!activeBoss.getEntity().isValid() || activeBoss.getEntity().isDead())
+                    activeBoss = null;
+        return activeBoss;
     }
 }

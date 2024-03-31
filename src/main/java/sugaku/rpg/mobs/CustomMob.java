@@ -84,6 +84,16 @@ public abstract class CustomMob {
     private final String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY;
 
     /**
+     * The location to spawn this mob at.
+     */
+    private Location locale;
+
+    /**
+     * Has this mob been spawned.
+     */
+    private boolean spawned = false;
+
+    /**
      * Sends a message to the given recipient.
      */
     public void send(CommandSender user, String message) {
@@ -102,6 +112,33 @@ public abstract class CustomMob {
         setMobType(mobType);
         setRarity(rarity);
         setMaxHealth(maxHealth);
+    }
+
+    /**
+     * An accessor method to the location to spawn this CustomMob at.
+     *
+     * @return The location that this mob will be spawned at.
+     */
+    public Location getLocale () {
+        return locale;
+    }
+
+    /**
+     * Sets the location that this mob will be spawned at.
+     *
+     * @param locale Sets the location to spawn this mob.
+     */
+    public void setLocale (Location locale) {
+        this.locale = locale;
+    }
+
+    /**
+     * An accessor method for if the CustomMob has been spawned into the world yet or not.
+     *
+     * @return Whether this mob has been spawned or not.
+     */
+    public boolean isSpawned () {
+        return spawned;
     }
 
     /**
@@ -133,6 +170,7 @@ public abstract class CustomMob {
         e.setCanPickupItems(false); //No more stealing gear
 
         this.entity = e;
+        spawned = true;
     }
 
     /**

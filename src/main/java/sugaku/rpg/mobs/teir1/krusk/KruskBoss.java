@@ -30,24 +30,25 @@ public class KruskBoss extends CustomMob {
     private static final String name = "Krusk, Undead General";
 
     /**
-     * A bare bones constructor not intended for spawning.
-     */
-    public KruskBoss() { super(name, ZOMBIE, Rarity.UNCOMMON, 250); }
-
-    /**
      * A constructor for Krusk the Boss.
      */
-    public KruskBoss(Location l) {
+    public KruskBoss() {
         super(name, ZOMBIE, Rarity.UNCOMMON, 250);
         init();
         setArmor(this.helm, this.chestplate, this.leggings, this.boots);
         setHand(getWeapon());
         setOffHand(new ItemStack(SHIELD, 1));
         setActiveMechanics(3);
+    }
 
-        spawn(l);
-
-        ((Ageable) getEntity()).setAdult(); //Forces adults
+    /**
+     * Makes sure that items and other things required for the boss fight are set up. <b>This will also spawn the boss.</b>
+     *
+     * @param location The location to spawn the boss at.
+     */
+    public KruskBoss (Location location) {
+        this();
+        spawn(location);
     }
 
     /**
@@ -100,6 +101,17 @@ public class KruskBoss extends CustomMob {
     }
 
     public static String getName() { return name; }
+
+    /**
+     * Spawn the mob described by the CustomMob object at the given location l.
+     *
+     * @param l The location the mob should be spawned at.
+     */
+    @Override
+    public void spawn (Location l) {
+        super.spawn(l);
+        ((Ageable) getEntity()).setAdult(); //Forces adults
+    }
 
     /**
      * Handles drops.
