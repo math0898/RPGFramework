@@ -25,14 +25,21 @@ import sugaku.rpg.main;
 import sugaku.rpg.mobs.teir1.krusk.KruskBoss;
 import sugaku.rpg.mobs.teir1.krusk.KruskMinion;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 //import static sugaku.rpg.framework.menus.ForgeManager.forgeClose;
+import static io.github.math0898.rpgframework.RPGFramework.itemManager;
 import static org.bukkit.event.entity.EntityDamageEvent.DamageCause.*;
 import static sugaku.rpg.framework.items.ItemsManager.updateArmor;
 
 public class RPGEventListener implements Listener {
+
+    /**
+     * A list of items that are not allowed to be picked up by hoppers.
+     */
+    private static final List<ItemStack> hopperBannedItems = Arrays.asList(ItemsManager.KruskSpawn, ItemsManager.EiryerasSpawn, ItemsManager.FeyrithSpawn, itemManager.getItem("krusk:Spawn"), itemManager.getItem("eiryeras:Spawn"), itemManager.getItem("feyrith:Spawn"));
 
     /**
      * When inventory slots are clicked.
@@ -212,15 +219,15 @@ public class RPGEventListener implements Listener {
                 return false;
         }
     }
-
     /**
      * Called when an inventory tries to pick up an item.
      */
     @EventHandler
     public void onInventoryPickup (InventoryPickupItemEvent event) {
         if (event.getInventory().getType() == InventoryType.HOPPER) {
-            if (Objects.equals(event.getItem().getItemStack().getItemMeta(), ItemsManager.KruskSpawn.getItemMeta())) event.setCancelled(true);
-            else if (Objects.equals(event.getItem().getItemStack().getItemMeta(), ItemsManager.EiryerasSpawn.getItemMeta())) event.setCancelled(true);
+            ItemStack item = event.getItem().getItemStack();
+            if (hopperBannedItems.contains(item))
+                event.setCancelled(true);
         }
     }
 
