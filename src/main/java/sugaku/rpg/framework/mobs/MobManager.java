@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
-import sugaku.rpg.framework.players.RpgPlayer;
 import sugaku.rpg.mobs.CustomMob;
 
 import java.util.ArrayList;
@@ -56,7 +55,8 @@ public class MobManager {
         double drops = r.nextDouble();
 //        int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
         ItemStack item = event.getEntity().getKiller().getEquipment().getItemInHand();
-        int bonus = item.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS);
+        Integer tmp = item.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS);
+        int bonus = tmp == null ? 0 : tmp;
         if (drops < 0.02 + (bonus / 100.0))
 //        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
             event.getDrops().add(RPGFramework.itemManager.getItem("krusk:Spawn"));
@@ -67,7 +67,8 @@ public class MobManager {
         Random r = new Random();
         double drops = r.nextDouble();
         ItemStack item = event.getEntity().getKiller().getEquipment().getItemInHand();
-        int bonus = item.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS);
+        Integer tmp = item.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS);
+        int bonus = tmp == null ? 0 : tmp;
         if (drops < 0.02 + (bonus / 100.0))
 //        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
             event.getDrops().add(RPGFramework.itemManager.getItem("eiryeras:Spawn"));
@@ -79,7 +80,8 @@ public class MobManager {
         double drops = r.nextDouble();
         // int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
         ItemStack item = event.getEntity().getKiller().getEquipment().getItemInHand();
-        int bonus = item.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS);
+        Integer tmp = item.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS);
+        int bonus = tmp == null ? 0 : tmp;
         if (drops < 0.02 + (bonus / 100.0))
 //        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
             event.getDrops().add(RPGFramework.itemManager.getItem("feyrith:Spawn"));}
