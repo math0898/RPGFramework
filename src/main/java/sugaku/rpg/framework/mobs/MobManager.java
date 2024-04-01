@@ -2,6 +2,7 @@ package sugaku.rpg.framework.mobs;
 
 import io.github.math0898.rpgframework.RPGFramework;
 import org.bukkit.Location;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -54,7 +55,9 @@ public class MobManager {
         Random r = new Random();
         double drops = r.nextDouble();
 //        int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
-        if (drops < 0.02)
+        ItemStack item = event.getEntity().getKiller().getEquipment().getItemInHand();
+        int bonus = item.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS);
+        if (drops < 0.02 + (bonus / 100.0))
 //        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
             event.getDrops().add(RPGFramework.itemManager.getItem("krusk:Spawn"));
     }
@@ -63,8 +66,9 @@ public class MobManager {
         if (event.getEntity().getKiller() == null) return;
         Random r = new Random();
         double drops = r.nextDouble();
-        // int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
-        if (drops < 0.02)
+        ItemStack item = event.getEntity().getKiller().getEquipment().getItemInHand();
+        int bonus = item.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS);
+        if (drops < 0.02 + (bonus / 100.0))
 //        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
             event.getDrops().add(RPGFramework.itemManager.getItem("eiryeras:Spawn"));
     }
@@ -74,7 +78,9 @@ public class MobManager {
         Random r = new Random();
         double drops = r.nextDouble();
         // int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
-        if (drops < 0.02)
+        ItemStack item = event.getEntity().getKiller().getEquipment().getItemInHand();
+        int bonus = item.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS);
+        if (drops < 0.02 + (bonus / 100.0))
 //        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
             event.getDrops().add(RPGFramework.itemManager.getItem("feyrith:Spawn"));}
 }
