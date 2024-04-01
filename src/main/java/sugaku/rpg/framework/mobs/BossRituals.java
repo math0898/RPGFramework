@@ -82,7 +82,7 @@ public class BossRituals {
         assert location.getWorld() != null;
         SummoningParticles(Particle.LAVA, new Location(location.getWorld(), location.getX(), location.getY() + 0.5, location.getZ()), 159);
         SummoningParticles(Particle.ENCHANTMENT_TABLE, new Location(location.getWorld(), location.getX(), location.getY() + 0.5, location.getZ()), 159);
-        send(Bukkit.getServer().getConsoleSender(), boss.getCustomName() + ChatColor.GRAY + "is being spawned at: " + ChatColor.GRAY + location + ChatColor.GRAY + " - " + player);
+        send(Bukkit.getServer().getConsoleSender(), boss.getCustomName() + ChatColor.GRAY + " is being spawned at: " + ChatColor.GRAY + location + ChatColor.GRAY + " - " + player);
         Bukkit.getScheduler().runTaskLater(main.plugin, () -> boss.setLocale(location), 158);
         Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> boss.spawn(boss.getLocale()), 160);
         Bukkit.getScheduler().runTaskLater(main.plugin, () -> MobManager.addMob(boss), 157);
