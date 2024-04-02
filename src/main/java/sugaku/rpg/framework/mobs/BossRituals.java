@@ -34,21 +34,15 @@ public class BossRituals {
         user.sendMessage(prefix + message);
     }
 
-    public static void general(PlayerDropItemEvent event) { ritualStart(event); }
+    public static void general (PlayerDropItemEvent event) {
+        ritualStart(event);
+    }
 
     public static void ritualStart(PlayerDropItemEvent event) {
 
         Item drop = event.getItemDrop();
         Player player = event.getPlayer();
         ItemStack stack = drop.getItemStack();
-        RpgPlayer rpg = PlayerManager.getPlayer(player.getUniqueId());
-        if (rpg != null)
-            if (rpg.getActiveBoss() != null) {
-                send(player, ChatColor.RED + "You, or your party, already have an active boss.");
-                send(player, ChatColor.RED + "Kill it, let it kill you, or leave to despawn it first.");
-                event.setCancelled(true);
-                return;
-            }
         String message = "";
         Bosses boss = null;
         if (stack.equals(ItemsManager.KruskSpawn)
@@ -66,6 +60,14 @@ public class BossRituals {
             boss = Bosses.FEYRITH;
         }
         if (boss == null) return;
+        RpgPlayer rpg = PlayerManager.getPlayer(player.getUniqueId());
+        if (rpg != null)
+            if (rpg.getActiveBoss() != null) {
+                send(player, ChatColor.RED + "You, or your party, already have an active boss.");
+                send(player, ChatColor.RED + "Kill it, let it kill you, or leave to despawn it first.");
+                event.setCancelled(true);
+                return;
+            }
         final CustomMob tmp = switch(boss) {
             case EIRYERAS -> new EiryerasBoss();
             case FEYRITH -> new FeyrithBoss();
