@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -34,6 +35,11 @@ public class ItemManager {
     private final Map<String, ItemStack> rpgItems = new HashMap<>();
 
     /**
+     * The active ItemManager instance.
+     */
+    private static ItemManager instance = new ItemManager();
+
+    /**
      * Creates a new ItemManager.
      */ // todo: Refactor to singleton design pattern.
     public ItemManager () {
@@ -50,9 +56,44 @@ public class ItemManager {
         if (files == null) console("Cannot find any item files.", ChatColor.YELLOW);
         else parseFiles(files);
 
-        Bukkit.getScheduler().runTaskAsynchronously(getInstance(), this::passives);
-        Bukkit.getPluginManager().registerEvents(new SylvathianThornWeaver(), getInstance());
-        Bukkit.getPluginManager().registerEvents(new WrathOfFeyrith(), getInstance());
+        Bukkit.getScheduler().runTaskAsynchronously(RPGFramework.getInstance(), this::passives);
+        Bukkit.getPluginManager().registerEvents(new SylvathianThornWeaver(), RPGFramework.getInstance());
+        Bukkit.getPluginManager().registerEvents(new WrathOfFeyrith(), RPGFramework.getInstance());
+    }
+
+    /**
+     * A static accessor for the active ItemManager instance.
+     *
+     * @return The active ItemManager.
+     */
+    public static ItemManager getInstance () {
+        if (instance == null) instance = new ItemManager();
+        return instance;
+    }
+
+    /**
+     * Awards this item to the given player. Supports placeholder text.
+     *
+     * @param player The player to award the item to.
+     * @param name The name of the item to award.
+     */
+    public void awardItem (Player player, String name) {
+        ItemStack item = rpgItems.get(name);
+        if (item == null) return;
+        // todo: Refactor to consider multiple placeholders.
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) meta = Bukkit.getItemFactory().getItemMeta(item.getType());
+        assert meta != null;
+        meta.setDisplayName(meta.getDisplayName().replace("%player%", player.getName()));
+        List<String> tmp = new ArrayList<>();
+        List<String> lore = meta.getLore();
+        if (lore != null) {
+            lore.forEach((l) -> tmp.add(l.replace("%player%", player.getName())));
+            meta.setLore(tmp);
+        }
+        item.setItemMeta(meta);
+        Map<Integer, ItemStack> failed = player.getInventory().addItem(item);
+        failed.forEach((i, stack) -> player.getWorld().dropItemNaturally(player.getLocation(), stack));
     }
 
     /**

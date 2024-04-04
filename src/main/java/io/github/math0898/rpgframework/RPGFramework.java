@@ -34,6 +34,7 @@ public final class RPGFramework extends JavaPlugin implements Listener {
     /**
      * The ItemManager being used with this RPGFramework instance.
      */
+    @Deprecated
     public static ItemManager itemManager;
 
     /**
