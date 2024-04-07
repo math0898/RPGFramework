@@ -4,11 +4,15 @@ import io.github.math0898.utils.commands.BetterCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import sugaku.rpg.framework.players.PlayerManager;
 import sugaku.rpg.framework.players.RpgPlayer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The debug command includes a number of utility methods to aid in debugging.
@@ -32,13 +36,23 @@ public class DebugCommand extends BetterCommand {
      */
     @Override
     public boolean onPlayerCommand (Player player, String[] args) {
-        if (args.length > 0)
+        if (args.length > 0) {
             if (args[0].equalsIgnoreCase("reset-cooldowns")) {
                 RpgPlayer rpg = PlayerManager.getPlayer(player.getUniqueId());
                 if (rpg == null) return true;
                 rpg.resetCooldowns();
                 send(player, ChatColor.GREEN + "Reset cooldowns.");
+            } else if (args[0].equalsIgnoreCase("item-details")) {
+                ItemStack item = player.getEquipment().getItemInMainHand();
+                player.sendMessage(ChatColor.RESET + ": " + item.getItemMeta().getDisplayName());
+                System.out.println(item.getItemMeta().getDisplayName());
+            } else if (args[0].equalsIgnoreCase("regex")) {
+                Pattern pattern = Pattern.compile(args[1]);
+                Matcher matcher = pattern.matcher(args[3]);
+                System.out.println(matcher.replaceAll(args[2]));
+                player.sendMessage(matcher.replaceAll(args[2]));
             }
+        }
         return true;
     }
 
@@ -61,6 +75,6 @@ public class DebugCommand extends BetterCommand {
      */
     @Override
     public List<String> simplifiedTab (CommandSender sender, String[] args) {
-        return new ArrayList<>();
+        return new ArrayList<>(Arrays.asList("reset-cooldowns", "item-details", "regex"));
     }
 }

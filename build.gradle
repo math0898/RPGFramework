@@ -26,6 +26,8 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter:5.9.0"
     compileOnly "com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.0"
     implementation "org.jetbrains:annotations:23.0.0"
+    implementation "net.kyori:adventure-api:4.16.0"
+    implementation "net.kyori:adventure-text-minimessage:4.16.0"
     compileOnly "uk.antiperson.stackmob:StackMob:5.8.2"
 }
 

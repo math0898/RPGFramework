@@ -1,5 +1,6 @@
 package io.github.math0898.utils.items;
 
+import io.github.math0898.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -62,6 +63,7 @@ public class ItemParser {
      */
     public ItemMeta parseMeta (ConfigurationSection section) {
         String displayName = section.getString("display-name", ChatColor.WHITE + "Failed to Parse Name");
+        displayName = StringUtils.convertHexCodes(displayName);
         List<String> lore = section.getStringList("lore");
         boolean unbreakable = section.getBoolean("Unbreakable", false);
         int customModelData = section.getInt("custom-model-data", 0);

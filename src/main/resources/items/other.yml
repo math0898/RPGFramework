@@ -1,7 +1,7 @@
 helmet-of-darkness:
   type: LEATHER_HELMET
   meta:
-    display-name: §9Helmet of Darkness
+    display-name: "#080808Helmet of Darkness"
     lore:
       - §7The helmet of darkness allows one to
       - §7see into §0§kthe abyss§7, granting them some
