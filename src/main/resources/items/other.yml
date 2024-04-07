@@ -1,41 +1,19 @@
 helmet-of-darkness:
-  type: LEATHER_HELMET
-  meta:
-    display-name: "#080808Helmet of Darkness"
-    lore:
-      - §7The helmet of darkness allows one to
-      - §7see into §0§kthe abyss§7, granting them some
-      - §7resistances and strength at a cost.
-      - ""
-      - "§7Head:"
-      - §9+40 Health
-      - §9+0.75 Armor
-      - §9+2 Attack Damage
-    ItemFlags:
-      - HIDE_ATTRIBUTES
-      - HIDE_UNBREAKABLE
-    attribute-modifiers:
-      GENERIC_ARMOR:
-          amount: 0.75
-          name: generic.armor
-          slot: HEAD
-          uuid: 00000000-0000-0004-0000-000000000002
-          operation: 0
-      GENERIC_MAX_HEALTH:
-          amount: 8.0
-          name: generic.health
-          slot: HEAD
-          uuid: 00000000-0000-0004-0000-000000000001
-          operation: 0
-      GENERIC_ATTACK_DAMAGE:
-          amount: 2.0
-          name: generic.attack.damage
-          slot: HEAD
-          uuid: 00000000-0000-0004-0000-000000000005
-          operation: 0
-    Unbreakable: true
-    color:
-      ALPHA: 255
-      RED: 0
-      BLUE: 0
-      GREEN: 0
+  material: "LEATHER_HELMET"
+  name: "Helmet of Darkness"
+  slot: "HEAD"
+  armor-type: "LIGHT"
+  description:
+    - The helmet of darkness allows one to
+    - see into the abyss, granting them some
+    - resistances and strength at a cost.
+  rarity: "HEROIC"
+  stats:
+    health: 40
+    armor: 0.75
+    damage: 10
+  color:
+    alpha: 255
+    red: 0
+    blue: 0
+    green: 0

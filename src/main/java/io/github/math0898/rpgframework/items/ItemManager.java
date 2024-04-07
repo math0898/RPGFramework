@@ -3,7 +3,6 @@ package io.github.math0898.rpgframework.items;
 import io.github.math0898.rpgframework.RPGFramework;
 import io.github.math0898.rpgframework.items.implementations.SylvathianThornWeaver;
 import io.github.math0898.rpgframework.items.implementations.WrathOfFeyrith;
-import io.github.math0898.utils.items.ItemParser;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -32,7 +31,7 @@ public class ItemManager {
     /**
      * A list of RpgItems which have been registered.
      */
-    private final Map<String, ItemStack> rpgItems = new HashMap<>();
+    private final Map<String, RpgItem> rpgItems = new HashMap<>();
 
     /**
      * The active ItemManager instance.
@@ -77,8 +76,9 @@ public class ItemManager {
      * @param player The player to award the item to.
      * @param name The name of the item to award.
      */
+    @Deprecated
     public void awardItem (Player player, String name) {
-        ItemStack item = rpgItems.get(name);
+        ItemStack item = rpgItems.get(name).getItemStack();
         if (item == null) return;
         // todo: Refactor to consider multiple placeholders.
         ItemMeta meta = item.getItemMeta();
@@ -132,7 +132,7 @@ public class ItemManager {
      * @return The RpgItem associated with the given name.
      */
     public ItemStack getItem (String name) {
-        return rpgItems.get(name);
+        return rpgItems.get(name).getItemStack();
     }
 
     /**
@@ -180,9 +180,9 @@ public class ItemManager {
                 YamlConfiguration yaml = new YamlConfiguration();
                 yaml.load(f);
                 for (String k : yaml.getKeys(false)) {
-                    ItemStack i = null;
+                    RpgItem i = null;
                     try {
-                        i = new ItemParser(yaml.getConfigurationSection(k)).build();
+                        i = new RpgItem(yaml.getConfigurationSection(k));
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     }
@@ -204,6 +204,7 @@ public class ItemManager {
      *
      * @param item The item to rate on a scale of 0-120.
      */
+    @Deprecated
     public int rateItem (ItemStack item) {
         return 0;
     }
