@@ -59,7 +59,7 @@ public class SummonRPG extends BetterCommand {
             MobManager.addMob(new FeyrithBoss(player.getLocation()));
         } else if (args[0].equalsIgnoreCase("Inos")) {
             send(player, "One of " + ChatColor.RED +  "Inos" + ChatColor.GRAY + " has been summoned.");
-            MobManager.addMob(new Inos(player.getLocation()));
+            for (int i = 0; i < loop; i++) MobManager.addMob(new Inos(player.getLocation()));
         } else send(player, ChatColor.RED + "Sorry but we could not find that mob.");
         return true;
     }

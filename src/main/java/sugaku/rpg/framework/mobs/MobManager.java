@@ -97,7 +97,7 @@ public class MobManager {
         if (event.getEntity().getKiller() == null) return;
         Random r = new Random();
         double drops = r.nextDouble();
-        if (drops < 0.50) {
+        if (drops < 0.001) {
             event.getEntity().getWorld().strikeLightningEffect(event.getEntity().getLocation());
             event.getEntity().getKiller().sendTitle( "", StringUtils.convertHexCodes("#CCCCCCYou feel the presence of a " + Rarity.MYTHIC.getHexColor() + "god#CCCCCC."), 20, 80, 20);
             CustomMob boss = new Inos(event.getEntity().getLocation());
