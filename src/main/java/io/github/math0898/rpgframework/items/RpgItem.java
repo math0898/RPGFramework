@@ -87,7 +87,12 @@ public class RpgItem {
     /**
      * The armor type of this RpgItem.
      */
-    private final ArmorTypes type;
+    private final ArmorTypes armorType;
+
+    /**
+     * The weapon type of this RpgItem.
+     */
+    private final WeaponType weaponType;
 
     /**
      * Creates a new RpgItem by loading the given configuration section.
@@ -111,8 +116,10 @@ public class RpgItem {
         armor = section.getDouble("stats.armor", 0);
         toughness = section.getDouble("stats.toughness", 0);
         attackSpeed = section.getDouble("stats.attack-speed", 0);
-        if (section.contains("armor-type")) type = ArmorTypes.valueOf(section.getString("armor-type", "HEAVY"));
-        else type = null;
+        if (section.contains("armor-type")) armorType = ArmorTypes.valueOf(section.getString("armor-type", "HEAVY"));
+        else armorType = null;
+        if (section.contains("weapon-type")) weaponType = WeaponType.valueOf(section.getString("weapon-type", "SWORD"));
+        else weaponType = null;
         color = new int[]{ section.getInt("color.alpha", 255),
                 section.getInt("color.red", 0),
                 section.getInt("color.green", 0),
@@ -146,7 +153,8 @@ public class RpgItem {
         if (toughness != 0) clone.add(StringUtils.convertHexCodes("#CCFF33") + "Toughness: " + toughness);
         clone.add(StringUtils.convertHexCodes("#606060") + " ----- ----- ----- ");
         String details = "#CCCCCC" + StringUtils.capitalize(slot.toString());
-        if (type != null) details = details + "#606060 | " + type.getFormattedName();
+        if (armorType != null) details = details + "#606060 | " + armorType.getFormattedName();
+        if (weaponType != null) details = details + "#606060 | " + weaponType.getFormattedName();
         details = details + "#606060 | #F2D951" + getGearScore();
         clone.add(StringUtils.convertHexCodes(details));
         builder.setLore(clone.toArray(new String[0]));

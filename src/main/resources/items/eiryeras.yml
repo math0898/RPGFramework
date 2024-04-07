@@ -14,6 +14,7 @@ hand-crafted-bow: # todo: LORE HELPER!
   material: "BOW"
   name: "Hand Crafted Bow"
   slot: "HAND"
+  weapon-type: "BOW"
   description:
     - "A bow crafted by a very"
     - "experienced artisan from"
@@ -44,176 +45,92 @@ worn-galoshes:
     armor: 0.5
     damage: 5
   color:
-    alpha: 255
     red: 60
     blue: 31
     green: 115
 
 hide-leggings:
-  type: LEATHER_LEGGINGS
-  meta:
-    meta-type: COLORABLE_ARMOR
-    display-name: §aHide Leggings
-    lore:
-      - §7Woods which do not reside in
-      - §7floodplains often cultivate
-      - §7a large amount of undergrowth
-      - §7which can be thorny and
-      - §7difficult to move through.
-      - §7A good pair of protective
-      - §7pants is a good idea.
-      - ""
-      - "§7Legs:"
-      - §9+15 Health
-      - §9+0.75 Armor
-      - §9+5 Attack Damage
-    ItemFlags:
-      - HIDE_ATTRIBUTES
-      - HIDE_UNBREAKABLE
-    attribute-modifiers:
-      GENERIC_ATTACK_DAMAGE:
-          amount: 1.0
-          name: GENERIC_ATTACK_DAMAGE
-          slot: LEGS
-          uuid: 00000000-0000-0002-0000-000000000004
-          operation: 0
-      GENERIC_MAX_HEALTH:
-          amount: 3.0
-          name: GENERIC_MAX_HEALTH
-          slot: LEGS
-          uuid: 00000000-0000-0002-0000-000000000001
-          operation: 0
-      GENERIC_ARMOR:
-          amount: 0.75
-          name: GENERIC_ARMOR
-          slot: LEGS
-          uuid: 00000000-0000-0002-0000-000000000002
-          operation: 0
-    Unbreakable: true
-    color:
-      ALPHA: 255
-      RED: 93
-      BLUE: 124
-      GREEN: 161
+  material: "LEATHER_LEGGINGS"
+  name: "Hide Leggings"
+  slot: "LEGS"
+  armor-type: "LIGHT"
+  description:
+    - "Woods which do not reside in"
+    - "floodplains often cultivate"
+    - "a large amount of undergrowth"
+    - "which can be thorny and"
+    - "difficult to move through."
+    - "A good pair of protective"
+    - "pants is a good idea."
+  rarity: "UNCOMMON"
+  stats:
+    health: 15
+    armor: 0.75
+    damage: 5
+  color:
+    red: 93
+    blue: 124
+    green: 161
 
-hunters-cloak:
-  type: LEATHER_CHESTPLATE
-  meta:
-    meta-type: COLORABLE_ARMOR
-    display-name: §aHunter's Cloak
-    lore:
-      - §7Similar to hoods, cloaks help
-      - §7greatly to reduce environmental
-      - §7hazards as well as recolor the
-      - §7wearer to match their terrain.
-      - §7This particular cloak is
-      - §7specifically colored for the
-      - §7forests of §9Agloytan§7.
-      - ""
-      - "§7Chest:"
-      - §9+20 Health
-      - §9+1 Armor
-      - §9+5 Attack Damage
-    ItemFlags:
-      - HIDE_ATTRIBUTES
-      - HIDE_UNBREAKABLE
-    attribute-modifiers:
-      GENERIC_ATTACK_DAMAGE:
-          amount: 1.0
-          name: GENERIC_ATTACK_DAMAGE
-          slot: CHEST
-          uuid: 00000000-0000-0003-0000-000000000004
-          operation: 0
-      GENERIC_MAX_HEALTH:
-          amount: 4.0
-          name: GENERIC_MAX_HEALTH
-          slot: CHEST
-          uuid: 00000000-0000-0003-0000-000000000001
-          operation: 0
-      GENERIC_ARMOR:
-          amount: 1.0
-          name: GENERIC_ARMOR
-          slot: CHEST
-          uuid: 00000000-0000-0003-0000-000000000002
-          operation: 0
-    Unbreakable: true
-    color:
-      ALPHA: 255
-      RED: 113
-      BLUE: 11
-      GREEN: 172
+hunters-cloak: # TODO: Lore Helper!
+  material: "LEATHER_CHESTPLATE"
+  name: "Hunter's Cloak"
+  slot: "CHEST"
+  armor-type: "LIGHT"
+  description:
+    - "Similar to hoods, cloaks help"
+    - "greatly to reduce environmental"
+    - "hazards as well as recolor the"
+    - "wearer to match their terrain."
+    - "This particular cloak is"
+    - "specifically colored for the"
+    - "forests of #23A5DBAgloytan#CCCCCC."
+  rarity: "UNCOMMON"
+  stats:
+    health: 20
+    armor: 1.0
+    damage: 5
+  color:
+    red: 113
+    blue: 11
+    green: 172
 
 hunters-hood:
-  type: LEATHER_HELMET
-  meta:
-    meta-type: COLORABLE_ARMOR
-    display-name: §aHunter's hood
-    lore:
-      - §7Hoods serve to help conceal
-      - §7humanoid features among the
-      - §7trees as well as protect the
-      - §7wearer against most
-      - §7environmental hazards
-      - ""
-      - "§7Head:"
-      - §9+10 Health
-      - §9+0.5 Armor
-      - §9+5 Attack Damage
-    ItemFlags:
-      - HIDE_ATTRIBUTES
-      - HIDE_UNBREAKABLE
-    attribute-modifiers:
-      GENERIC_ATTACK_DAMAGE:
-          amount: 1.0
-          name: GENERIC_ATTACK_DAMAGE
-          slot: HEAD
-          uuid: 00000000-0000-0004-0000-000000000004
-          operation: 0
-      GENERIC_MAX_HEALTH:
-          amount: 2.0
-          name: GENERIC_MAX_HEALTH
-          slot: HEAD
-          uuid: 00000000-0000-0004-0000-000000000001
-          operation: 0
-      GENERIC_ARMOR:
-          amount: 0.5
-          name: GENERIC_ARMOR
-          slot: HEAD
-          uuid: 00000000-0000-0004-0000-000000000002
-          operation: 0
-    Unbreakable: true
-    color:
-      ALPHA: 255
-      RED: 60
-      BLUE: 31
-      GREEN: 115
+  material: "LEATHER_HELMET"
+  name: "Hunter's Hood"
+  slot: "HEAD"
+  armor-type: "LIGHT"
+  description:
+    - "Hoods serve to help conceal"
+    - "humanoid features among the"
+    - "trees as well as protect the"
+    - "wearer against most"
+    - "environmental hazards."
+  rarity: "UNCOMMON"
+  stats:
+    health: 10
+    armor: 0.5
+    damage: 5
+  color:
+    red: 60
+    blue: 31
+    green: 115
 
-ceremonial-knife:
-  type: IRON_SWORD
-  meta:
-    meta-type: UNSPECIFIC
-    display-name: §9Ceremonial Knife
-    lore:
-      - §7This is a ceremonial knife used
-      - §7by followers of §cInos§7, §cGod of
-      - §cSpring§7. The blade is used when
-      - §7gathering natural resources to
-      - §7show thanks and to humbly ask
-      - §7for its rejuvenation
-      - ""
-      - "§7Hand:"
-      - §9+50 Attack Damage
-    ItemFlags:
-      - HIDE_ATTRIBUTES
-      - HIDE_UNBREAKABLE
-    attribute-modifiers:
-      GENERIC_ATTACK_DAMAGE:
-          amount: 10.0
-          name: GENERIC_ATTACK_DAMAGE
-          slot: HAND
-          uuid: 00000000-0000-0005-0000-000000000004
-          operation: 0
-    Unbreakable: true
+ceremonial-knife: # todo: LORE HELPER!
+  material: "IRON_SWORD"
+  name: "Ceremonial Knife"
+  rarity: "RARE"
+  slot: "HAND"
+  weapon-type: "SWORD"
+  description:
+    - "This is a ceremonial knife used"
+    - "by followers of #D93747Inos#CCCCCC, #D93747God of"
+    - "#D93747Spring#CCCCCC. The blade is used when"
+    - "gathering natural resources to"
+    - "show thanks and to humbly ask"
+    - "for its rejuvenation."
+  stats:
+    damage: 50
 
 lore:
   type: IRON_SWORD
