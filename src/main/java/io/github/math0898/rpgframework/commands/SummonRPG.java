@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import sugaku.rpg.framework.mobs.MobManager;
+import sugaku.rpg.mobs.gods.Inos;
 import sugaku.rpg.mobs.teir1.eiryeras.EiryerasBoss;
 import sugaku.rpg.mobs.teir1.feyrith.FeyrithBoss;
 import sugaku.rpg.mobs.teir1.krusk.KruskBoss;
@@ -56,6 +57,9 @@ public class SummonRPG extends BetterCommand {
         } else if (args[0].equalsIgnoreCase("Feyrith")) {
             send(player, "One of " + ChatColor.BLUE +  "Feyrith" + ChatColor.GRAY + " has been summoned.");
             MobManager.addMob(new FeyrithBoss(player.getLocation()));
+        } else if (args[0].equalsIgnoreCase("Inos")) {
+            send(player, "One of " + ChatColor.RED +  "Inos" + ChatColor.GRAY + " has been summoned.");
+            MobManager.addMob(new Inos(player.getLocation()));
         } else send(player, ChatColor.RED + "Sorry but we could not find that mob.");
         return true;
     }
@@ -82,7 +86,7 @@ public class SummonRPG extends BetterCommand {
     public List<String> simplifiedTab (CommandSender sender, String[] args) {
         ArrayList<String> list = new ArrayList<>();
         if (args.length == 1) {
-            list.addAll(List.of("Eiryeras", "Krusk", "KruskMinion")); // todo: I do not like the idea of manually typing these in.
+            list.addAll(List.of("Eiryeras", "Krusk", "KruskMinion", "Feyrith", "Inos")); // todo: I do not like the idea of manually typing these in.
             return everythingStartsWith(list, args[0]);
         } else if (args.length == 2)
             list.add("(amnt)");

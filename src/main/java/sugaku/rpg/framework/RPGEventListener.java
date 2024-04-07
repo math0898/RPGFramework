@@ -22,6 +22,7 @@ import sugaku.rpg.framework.mobs.MobManager;
 import sugaku.rpg.framework.players.PlayerManager;
 import sugaku.rpg.framework.players.RpgPlayer;
 import sugaku.rpg.main;
+import sugaku.rpg.mobs.gods.Inos;
 import sugaku.rpg.mobs.teir1.krusk.KruskBoss;
 import sugaku.rpg.mobs.teir1.krusk.KruskMinion;
 
@@ -107,12 +108,14 @@ public class RPGEventListener implements Listener {
         if (m.getType() == EntityType.ZOMBIE) MobManager.zombieDrops(e);
         else if (m.getType() == EntityType.SKELETON) MobManager.skeletonDrops(e);
         else if (m.getType() == EntityType.WITHER_SKELETON) MobManager.witherSkeletonDrops(e);
+        else if (m.getType() == EntityType.CHICKEN) MobManager.chickenDrops(e);
 
         assert m.getCustomName() != null;
 
         try {
             if (m.getCustomName().contains("Krusk, Undead General")) KruskBoss.handleDrops(e);
             else if (m.getCustomName().contains(", Underling of Krusk")) KruskMinion.handleDrops(e);
+            else if (m.getCustomName().contains("Inos")) Inos.handleDrops(e);
         } catch (NullPointerException exception) {
             //do NOTHING!
         }
