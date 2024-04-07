@@ -188,6 +188,7 @@ public class ItemBuilder {
             colorable.setColor(Color.fromARGB(color[0], color[1], color[2], color[3]));
         if (!flags.isEmpty())
             meta.addItemFlags(flags.toArray(new ItemFlag[0]));
+        meta.setUnbreakable(unbreakable);
         item.setItemMeta(meta);
         return item;
     }

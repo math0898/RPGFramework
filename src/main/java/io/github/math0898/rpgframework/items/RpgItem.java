@@ -119,10 +119,11 @@ public class RpgItem {
         else armorType = null;
         if (section.contains("weapon-type")) weaponType = WeaponType.valueOf(section.getString("weapon-type", "SWORD"));
         else weaponType = null;
-        color = new int[]{ section.getInt("color.alpha", 255),
+        if (section.contains("color")) color = new int[]{ section.getInt("color.alpha", 255),
                 section.getInt("color.red", 0),
                 section.getInt("color.green", 0),
                 section.getInt("color.blue", 0) };
+        else color = null;
         if (item == null) item = generateItemStack();
     }
 
@@ -146,10 +147,10 @@ public class RpgItem {
             clone.set(i, StringUtils.convertHexCodes("#CCCCCC" + description.get(i)));
         clone.add(StringUtils.convertHexCodes("#606060") + " ----- ----- ----- ");
         if (damage != 0) clone.add(StringUtils.convertHexCodes("#D93747") + "Damage: " + damage);
-        if (attackSpeed != 0) clone.add(StringUtils.convertHexCodes("#3366FF") + "Attack Speed:" + attackSpeed);
+        if (attackSpeed != 0) clone.add(StringUtils.convertHexCodes("#23A5DB") + "Attack Speed: " + attackSpeed);
         if (health != 0) clone.add(StringUtils.convertHexCodes("#F454DA") + "Health: " + health);
         if (armor != 0) clone.add(StringUtils.convertHexCodes("#3FB74A") + "Armor: " + armor);
-        if (toughness != 0) clone.add(StringUtils.convertHexCodes("#CCFF33") + "Toughness: " + toughness);
+        if (toughness != 0) clone.add(StringUtils.convertHexCodes("#F2D951") + "Toughness: " + toughness);
         clone.add(StringUtils.convertHexCodes("#606060") + " ----- ----- ----- ");
         String details = "#CCCCCC" + StringUtils.capitalize(slot.toString());
         if (armorType != null) details = details + "#606060 | " + armorType.getFormattedName();
@@ -162,7 +163,7 @@ public class RpgItem {
         builder.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughness, slot);
         builder.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, attackSpeed, slot);
         builder.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, damage / 5.0, slot);
-        builder.setColor(color);
+        if (color != null) builder.setColor(color);
         builder.setUnbreakable(true);
         builder.addItemFlag(ItemFlag.HIDE_ATTRIBUTES);
         builder.addItemFlag(ItemFlag.HIDE_UNBREAKABLE);
