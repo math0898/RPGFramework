@@ -4,9 +4,9 @@ helmet-of-darkness:
   slot: "HEAD"
   armor-type: "LIGHT"
   description:
-    - The helmet of darkness allows one to
-    - see into the abyss, granting them some
-    - resistances and strength at a cost.
+    - "The helmet of darkness allows one to"
+    - "see into the abyss, granting them some"
+    - "resistances and strength at a cost."
   rarity: "HEROIC"
   stats:
     health: 40

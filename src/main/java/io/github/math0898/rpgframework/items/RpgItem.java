@@ -137,12 +137,12 @@ public class RpgItem {
         builder.setDisplayName(StringUtils.convertHexCodes(rarity.getHexColor() + name));
         List<String> clone = new ArrayList<>(description);
         for (int i = 0; i < clone.size(); i++) // todo: Placeholder support.
-            clone.set(i, StringUtils.convertHexCodes("#CCCCCC") + description.get(i));
+            clone.set(i, StringUtils.convertHexCodes("#CCCCCC" + description.get(i)));
         clone.add(StringUtils.convertHexCodes("#606060") + " ----- ----- ----- ");
-        if (damage != 0) clone.add(StringUtils.convertHexCodes("#BB1010") + "Damage: " + damage);
+        if (damage != 0) clone.add(StringUtils.convertHexCodes("#D93747") + "Damage: " + damage);
         if (attackSpeed != 0) clone.add(StringUtils.convertHexCodes("#3366FF") + "Attack Speed:" + attackSpeed);
-        if (health != 0) clone.add(StringUtils.convertHexCodes("#FF33CC") + "Health: " + health);
-        if (armor != 0) clone.add(StringUtils.convertHexCodes("#339933") + "Armor: " + armor);
+        if (health != 0) clone.add(StringUtils.convertHexCodes("#F454DA") + "Health: " + health);
+        if (armor != 0) clone.add(StringUtils.convertHexCodes("#3FB74A") + "Armor: " + armor);
         if (toughness != 0) clone.add(StringUtils.convertHexCodes("#CCFF33") + "Toughness: " + toughness);
         clone.add(StringUtils.convertHexCodes("#606060") + " ----- ----- ----- ");
         String details = "#CCCCCC" + StringUtils.capitalize(slot.toString());

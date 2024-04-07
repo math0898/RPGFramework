@@ -10,70 +10,44 @@ spawn:
       - §7are in water will cause you to get
       - §7struck by lighting.
 
-hand-crafted-bow:
-  type: BOW
-  meta:
-    meta-type: UNSPECIFIC
-    display-name: §9Hand Crafted Bow
-    lore:
-      - §7A bow crafted by a very
-      - §7experienced artisan from
-      - §9Strathenberg§7. The unique
-      - §7Shape of the limbs help
-      - §7transfer more energy into
-      - §7each shot.
-      - ""
-      - §9+20 Arrow Damage
-    ItemFlags:
-      - HIDE_UNBREAKABLE
-    Unbreakable: true
+hand-crafted-bow: # todo: LORE HELPER!
+  material: "BOW"
+  name: "Hand Crafted Bow"
+  slot: "HAND"
+  description:
+    - "A bow crafted by a very"
+    - "experienced artisan from"
+    - "#23A5DBStrathenberg#CCCCCC. The unique"
+    - "Shape of the limbs help"
+    - "transfer more energy into"
+    - "each shot."
+  rarity: "RARE"
+  stats:
+    damage: 20
 
 worn-galoshes:
-  type: LEATHER_BOOTS
-  meta:
-    meta-type: COLORABLE_ARMOR
-    display-name: §aWorn Galoshes
-    lore:
-      - §7While traveling it is very
-      - §7important to keep your feet
-      - §7dry. Failing to do so can
-      - §7result in fungal infections
-      - §7blisters, and warts. Do
-      - §7yourself a favor and get a
-      - §7good pair of footwear.
-      - ""
-      - "§7Feet:"
-      - §9+10 Health
-      - §9+0.5 Armor
-      - "§9+5 Damage"
-    ItemFlags:
-      - HIDE_ATTRIBUTES
-      - HIDE_UNBREAKABLE
-    attribute-modifiers:
-      GENERIC_ATTACK_DAMAGE:
-          amount: 1.0
-          name: GENERIC_ATTACK_DAMAGE
-          slot: FEET
-          uuid: 00000000-0000-0001-0000-000000000004
-          operation: 0
-      GENERIC_MAX_HEALTH:
-          amount: 2.0
-          name: GENERIC_MAX_HEALTH
-          slot: FEET
-          uuid: 00000000-0000-0001-0000-000000000001
-          operation: 0
-      GENERIC_ARMOR:
-          amount: 0.5
-          name: GENERIC_ARMOR
-          slot: FEET
-          uuid: 00000000-0000-0001-0000-000000000002
-          operation: 0
-    Unbreakable: true
-    color:
-      ALPHA: 255
-      RED: 60
-      BLUE: 31
-      GREEN: 115
+  material: "LEATHER_BOOTS"
+  name: "Worn Galoshes"
+  slot: "FEET"
+  armor-type: "LIGHT"
+  description:
+    - "While traveling it is very"
+    - "important to keep your feet"
+    - "dry. Failing to do so can"
+    - "result in fungal infections"
+    - "blisters, and warts. Do"
+    - "yourself a favor and get a"
+    - "good pair of footwear."
+  rarity: "UNCOMMON"
+  stats:
+    health: 10
+    armor: 0.5
+    damage: 5
+  color:
+    alpha: 255
+    red: 60
+    blue: 31
+    green: 115
 
 hide-leggings:
   type: LEATHER_LEGGINGS
