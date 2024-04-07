@@ -1,5 +1,6 @@
 package io.github.math0898.utils.items;
 
+import io.github.math0898.rpgframework.items.EquipmentSlots;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -50,6 +51,11 @@ public class ItemBuilder {
      * The color of this Item. Ignored if not an instance of Colorable. Stored in ARGB.
      */
     private int[] color = null;
+
+    /**
+     * Whether this item is unbreakable or not.
+     */
+    private boolean unbreakable = false;
 
     /**
      * Any ItemFlags tha tare present on this ItemBuilder.
@@ -117,10 +123,11 @@ public class ItemBuilder {
      * @param slot      The slot this item will be equipped in.
      * @return The mutated ItemBuilder.
      */
-    public ItemBuilder addAttributeModifier (Attribute attribute, double value, EquipmentSlot slot) {
+    public ItemBuilder addAttributeModifier (Attribute attribute, double value, EquipmentSlots slot) {
+        if (slot.getSlot() == null) return this;
         modifiers.putIfAbsent(attribute, new ArrayList<>());
         List<AttributeModifier> list = modifiers.get(attribute);
-        list.add(attributeModifier(attribute, value, slot));
+        list.add(attributeModifier(attribute, value, slot.getSlot()));
         return this;
     }
 
@@ -133,6 +140,17 @@ public class ItemBuilder {
     public ItemBuilder setColor (int[] color) {
         if (color.length != 4) return this;
         this.color = color;
+        return this;
+    }
+
+    /**
+     * Sets whether this item is unbreakable or not.
+     *
+     * @param unbreakable Whether the item should be able to break or not.
+     * @return The mutated ItemBuilder.
+     */
+    public ItemBuilder setUnbreakable (boolean unbreakable) {
+        this.unbreakable = unbreakable;
         return this;
     }
 

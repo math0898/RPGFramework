@@ -121,7 +121,7 @@ ceremonial-knife: # todo: LORE HELPER!
   name: "Ceremonial Knife"
   rarity: "RARE"
   slot: "HAND"
-  weapon-type: "SWORD"
+  weapon-type: "DAGGER"
   description:
     - "This is a ceremonial knife used"
     - "by followers of #D93747Inos#CCCCCC, #D93747God of"

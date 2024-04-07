@@ -8,7 +8,6 @@ import io.github.math0898.utils.items.ItemParser;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
@@ -47,7 +46,7 @@ public class RpgItem {
     /**
      * The slot that this ItemStack should be equipped in.
      */
-    private final EquipmentSlot slot;
+    private final EquipmentSlots slot;
 
     /**
      * The description of the ItemStack.
@@ -108,7 +107,7 @@ public class RpgItem {
         }
         material = Material.valueOf(section.getString("material", "COBBLESTONE"));
         name = section.getString("name", "No name");
-        slot = EquipmentSlot.valueOf(section.getString("slot", "HEAD"));
+        slot = EquipmentSlots.valueOf(section.getString("slot", "HEAD"));
         description = section.getStringList("description");
         rarity = Rarity.valueOf(section.getString("rarity", "COMMON"));
         health = section.getInt("stats.health", 0);
@@ -164,6 +163,7 @@ public class RpgItem {
         builder.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, attackSpeed, slot);
         builder.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, damage / 5.0, slot);
         builder.setColor(color);
+        builder.setUnbreakable(true);
         builder.addItemFlag(ItemFlag.HIDE_ATTRIBUTES);
         builder.addItemFlag(ItemFlag.HIDE_UNBREAKABLE);
         return builder.build();
