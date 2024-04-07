@@ -1,9 +1,13 @@
 package io.github.math0898.rpgframework.commands;
 
+import io.github.math0898.rpgframework.Rarity;
+import io.github.math0898.utils.StringUtils;
 import io.github.math0898.utils.commands.BetterCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import sugaku.rpg.framework.players.PlayerManager;
 import sugaku.rpg.framework.players.RpgPlayer;
@@ -51,6 +55,16 @@ public class DebugCommand extends BetterCommand {
                 Matcher matcher = pattern.matcher(args[3]);
                 System.out.println(matcher.replaceAll(args[2]));
                 player.sendMessage(matcher.replaceAll(args[2]));
+            } else if (args[0].equalsIgnoreCase("spawn")) {
+                Zombie zombie = (Zombie) player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
+                zombie.setCustomNameVisible(true);
+                zombie.setCustomName(StringUtils.convertHexCodes(args[1]));
+            } else if (args[0].equalsIgnoreCase("rarity")) {
+                for (Rarity r : Rarity.values()) {
+                    Zombie zombie = (Zombie) player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
+                    zombie.setCustomNameVisible(true);
+                    zombie.setCustomName(StringUtils.convertHexCodes(r.modify(r.toString())));
+                }
             }
         }
         return true;
@@ -75,6 +89,8 @@ public class DebugCommand extends BetterCommand {
      */
     @Override
     public List<String> simplifiedTab (CommandSender sender, String[] args) {
-        return new ArrayList<>(Arrays.asList("reset-cooldowns", "item-details", "regex"));
+        List<String> toReturn = new ArrayList<>();
+        if (args.length <= 1) toReturn.addAll(Arrays.asList("reset-cooldowns", "item-details", "regex", "spawn", "rarity"));
+        return everythingStartsWith(toReturn, args[args.length - 1]);
     }
 }

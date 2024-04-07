@@ -12,12 +12,13 @@ public class StringUtils { // todo: Builder Pattern and Allows Placeholders.
 
     /**
      * Converts hex codes into Minecraft's legacy color formatting.
+     * Works for item display, lore, and mob names.
      *
      * @param string The string to convert from hex codes.
      * @return The string using Minecraft's legacy color formatting instead of hex colors.
      */
     public static String convertHexCodes (String string) {
-        Pattern pattern = Pattern.compile("#(\\d)(\\d)(\\d)(\\d)(\\d)(\\d)");
+        Pattern pattern = Pattern.compile("#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
         Matcher matcher = pattern.matcher(string);
         return matcher.replaceAll("§x§$1§$2§$3§$4§$5§$6");
     }
