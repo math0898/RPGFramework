@@ -80,7 +80,7 @@ public class KruskBoss extends CustomMob {
         assert meta != null;
         meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(new UUID(4, 1), "generic.health", 75, ADD_NUMBER, EquipmentSlot.FEET));
         meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(new UUID(4, 2), "generic.armor", -0.5, ADD_NUMBER, EquipmentSlot.FEET));
-        meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(new UUID(4, 3), "generic.speed", 0.2, ADD_NUMBER, EquipmentSlot.FEET));
+        meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(new UUID(4, 3), "generic.speed", 0.1, ADD_NUMBER, EquipmentSlot.FEET));
         meta.setUnbreakable(true);
         boots.setItemMeta(meta);
     }
@@ -94,7 +94,7 @@ public class KruskBoss extends CustomMob {
 
         assert meta != null;
 
-        meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(new UUID(5, 4), "generic.damage", 5.0, ADD_NUMBER, EquipmentSlot.HAND));
+        meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(new UUID(5, 4), "generic.damage", 3.0, ADD_NUMBER, EquipmentSlot.HAND));
         item.setItemMeta(meta);
 
         return item;

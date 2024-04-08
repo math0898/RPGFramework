@@ -56,8 +56,8 @@ public class PaladinClass extends AbstractClass {
     public PaladinClass (RpgPlayer p) {
         super(p);
         Cooldown[] cds = new Cooldown[3];
-        cds[Abilities.MEND.ordinal()] = new Cooldown(30);
-        cds[Abilities.PURIFY.ordinal()] = new Cooldown(60);
+        cds[Abilities.MEND.ordinal()] = new Cooldown(60);
+        cds[Abilities.PURIFY.ordinal()] = new Cooldown(45);
         cds[Abilities.PROTECTION_OF_THE_HEALER.ordinal()] = new Cooldown(300);
         setCooldowns(cds);
         setClassItems(Material.GOLDEN_SHOVEL);

@@ -3,14 +3,14 @@ package io.github.math0898.rpgframework.items;
 import io.github.math0898.rpgframework.RPGFramework;
 import io.github.math0898.rpgframework.items.implementations.SylvathianThornWeaver;
 import io.github.math0898.rpgframework.items.implementations.WrathOfFeyrith;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -49,12 +49,12 @@ public class ItemManager {
                 return;
             }
         }
-        for (String itemResources : new String[]{ "items/krusk.yml", "items/other.yml", "items/eiryeras.yml", "items/feyrith.yml", "items/gods.yml"})
+        for (String itemResources : new String[]{ "items/krusk.yml", "items/other.yml", "items/eiryeras.yml", "items/feyrith.yml", "items/gods.yml", "items/vanilla.yml"})
             plugin.saveResource(itemResources, true); // todo: refactor to reduce scope when adding multiple bosses and sets.
         File[] files = itemsDir.listFiles();
         if (files == null) console("Cannot find any item files.", ChatColor.YELLOW);
         else parseFiles(files);
-
+        replaceRecipies();
         Bukkit.getScheduler().runTaskAsynchronously(RPGFramework.getInstance(), this::passives);
         Bukkit.getPluginManager().registerEvents(new SylvathianThornWeaver(), RPGFramework.getInstance());
         Bukkit.getPluginManager().registerEvents(new WrathOfFeyrith(), RPGFramework.getInstance());
@@ -207,5 +207,20 @@ public class ItemManager {
     @Deprecated
     public int rateItem (ItemStack item) {
         return 0;
+    }
+
+    /**
+     * Replaces Minecraft armor recipies with RPG equivalents.
+     */
+    public void replaceRecipies () {
+        List<Recipe> recipes = Bukkit.getServer().getRecipesFor(new ItemStack(Material.DIAMOND_HELMET));
+        recipes.forEach((r) -> {
+            if (r instanceof Keyed key)
+                Bukkit.removeRecipe(key.getKey());
+        });
+        ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(RPGFramework.getInstance(), "diamond-helmet"), getItem("vanilla:DiamondHelmet"));
+        recipe.shape("AAA", "ABA", "BBB");
+        recipe.setIngredient('A', Material.DIAMOND);
+        Bukkit.addRecipe(recipe);
     }
 }
