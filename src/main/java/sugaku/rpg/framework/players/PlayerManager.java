@@ -192,6 +192,7 @@ public class PlayerManager {
     public static void allDeaths (RpgPlayer rpg, String msg) {
         Player player = rpg.getBukkitPlayer();
         Location spawn = player.getBedSpawnLocation();
+        console("Death location: " + rpg.getBukkitPlayer().getLocation());
         if (spawn == null) player.teleport(Bukkit.getWorld("world").getSpawnLocation());
         else player.teleport(spawn);
 

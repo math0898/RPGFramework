@@ -98,7 +98,7 @@ public class RpgItem {
      *
      * @param section The configuration section to load.
      */
-    public RpgItem (ConfigurationSection section) {
+    public RpgItem (ConfigurationSection section) { // todo: We should add Gear Score, Armor/Weapon Type, ItemID, etc. to a Persistent Data Value to make classes and custom effects easier.
         if (section == null)throw new NullPointerException("Configuration section is null!");
         if (section.contains("meta")) {
             Logger logger = RPGFramework.getInstance().getLogger();
