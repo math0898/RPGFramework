@@ -94,6 +94,52 @@ public class RpgItem {
     private final WeaponType weaponType;
 
     /**
+     * Creates a new RpgItem with the given values.
+     *
+     * @param material    The material of this RpgItem.
+     * @param name        The display name of this RpgItem.
+     * @param slot        The equipment slot this item belongs in.
+     * @param description Any lore that should be present on this item.
+     * @param rarity      The rarity of this item.
+     * @param health      Any health that this item may give.
+     * @param damage      Any damage stat included on this item.
+     * @param armor       The armor value of this item.
+     * @param toughness   Toughness on this item.
+     * @param attackSpeed The attackSpeed stat of this RpgItem.
+     * @param armorType   Any, if, armor type is present.
+     * @param weaponType  Any, if, weapon type is present.
+     * @param color       The ARGB of this item.
+     */
+    public RpgItem (Material material,
+                    String name,
+                    EquipmentSlots slot,
+                    List<String> description,
+                    Rarity rarity,
+                    int health,
+                    int damage,
+                    double armor,
+                    double toughness,
+                    double attackSpeed,
+                    ArmorTypes armorType,
+                    WeaponType weaponType,
+                    int[] color) {
+        this.material = material;
+        this.name = name;
+        this.slot = slot;
+        this.description = description;
+        this.rarity = rarity;
+        this.health = health;
+        this.damage = damage;
+        this.armor = armor;
+        this.toughness = toughness;
+        this.attackSpeed = attackSpeed;
+        this.armorType = armorType;
+        this.weaponType = weaponType;
+        this.color = color;
+        item = generateItemStack();
+    }
+
+    /**
      * Creates a new RpgItem by loading the given configuration section.
      *
      * @param section The configuration section to load.

@@ -4,6 +4,7 @@ import io.github.math0898.rpgframework.commands.*;
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
 import io.github.math0898.rpgframework.hooks.HookManager;
 import io.github.math0898.rpgframework.items.ItemManager;
+import io.github.math0898.rpgframework.items.editor.EditorGUI;
 import io.github.math0898.rpgframework.parties.PartyManager;
 import io.github.math0898.rpgframework.systems.GodEventListener;
 import org.bukkit.Bukkit;
@@ -114,6 +115,7 @@ public final class RPGFramework extends JavaPlugin implements Listener {
         new GiveCommand();
         new PartyCommand();
         new DebugCommand();
+        new EditorCommand();
         console("Commands registered.", ChatColor.GREEN);
     }
 }
