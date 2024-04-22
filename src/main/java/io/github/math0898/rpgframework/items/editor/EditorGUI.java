@@ -5,6 +5,7 @@ import io.github.math0898.rpgframework.items.EquipmentSlots;
 import io.github.math0898.rpgframework.items.WeaponType;
 import io.github.math0898.utils.gui.GUI;
 import io.github.math0898.utils.gui.GUIManager;
+import io.github.math0898.utils.items.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -70,7 +71,19 @@ public class EditorGUI implements GUI {
     public void buildInventory (Player player, Inventory inventory) {
         ItemConstruct construct = itemConstructs.get(player);
         if (construct == null) return;
-        inventory.setItem(22, construct.toItemStack());
+        inventory.setItem(13, construct.toItemStack());
+        inventory.setItem(28, new ItemBuilder(Material.ANVIL).setDisplayName("Material").build()); // Material
+        inventory.setItem(29, new ItemBuilder(Material.PAPER).setDisplayName("Name").build()); // Name
+        inventory.setItem(30, new ItemBuilder(Material.BOOK).setDisplayName("Description").build()); // Description
+        inventory.setItem(32, new ItemBuilder(Material.WOODEN_SHOVEL).setDisplayName("Slot").build()); // Slot
+        inventory.setItem(33, new ItemBuilder(Material.ARROW).setDisplayName("Type").build()); // Type
+        inventory.setItem(34, new ItemBuilder(Material.END_CRYSTAL).setDisplayName("Rarity").build()); // Rarity
+        inventory.setItem(38, new ItemBuilder(Material.SPLASH_POTION).setDisplayName("Health").build()); // Health
+        inventory.setItem(39, new ItemBuilder(Material.NETHERITE_SWORD).setDisplayName("Damage").build()); // Damage
+        inventory.setItem(40, new ItemBuilder(Material.SHIELD).setDisplayName("Toughness").build()); // Toughness
+        inventory.setItem(41, new ItemBuilder(Material.IRON_CHESTPLATE).setDisplayName("Armor").build()); // Armor
+        inventory.setItem(42, new ItemBuilder(Material.FEATHER).setDisplayName("Attack Speed").build()); // AttackSpeed
+        // todo: Color
     }
 
     /**
