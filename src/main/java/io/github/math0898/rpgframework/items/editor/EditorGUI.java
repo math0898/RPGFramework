@@ -2,7 +2,6 @@ package io.github.math0898.rpgframework.items.editor;
 
 import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.rpgframework.items.EquipmentSlots;
-import io.github.math0898.rpgframework.items.WeaponType;
 import io.github.math0898.utils.Utils;
 import io.github.math0898.utils.gui.GUI;
 import io.github.math0898.utils.gui.GUIManager;
@@ -54,23 +53,19 @@ public class EditorGUI implements GUI, Listener {
      */
     @Override
     public void openInventory (Player player) {
-        ItemConstruct construct = itemConstructs.get(player);
-        if (construct == null) {
-            construct = new ItemConstruct(Material.GOLDEN_CARROT,
-                    "Sample Name",
-                    EquipmentSlots.HAND,
-                    List.of("Sample description."),
-                    Rarity.COMMON,
-                    1,
-                    1,
-                    1.0,
-                    1.0,
-                    1.0,
-                    null,
-                    WeaponType.DAGGER,
-                    null);
-            itemConstructs.put(player, construct);
-        }
+        itemConstructs.computeIfAbsent(player, k -> new ItemConstruct(Material.GOLDEN_CARROT,
+                "Sample Name",
+                EquipmentSlots.HAND,
+                List.of("Sample description."),
+                Rarity.COMMON,
+                0,
+                0,
+                0.0,
+                0.0,
+                0.0,
+                null,
+                null,
+                null));
         Inventory inv = Bukkit.createInventory(player, 54, getTitle());
         buildInventory(player, inv);
         player.openInventory(inv);
@@ -112,9 +107,28 @@ public class EditorGUI implements GUI, Listener {
             event.setCancelled(true);
             pendingPlayers.remove(player);
             ItemConstruct construct = itemConstructs.get(player);
-            // todo: modify construct.
+            try {
+                switch (action) {
+                    case "material" -> construct.setMaterial(Material.valueOf(event.getMessage()));
+                    case "name" -> construct.setName(event.getMessage());
+                    case "description" ->  {
+                        // todo: A little more needs to be done here.
+                        construct.setDescription(List.of(event.getMessage()));
+                    }
+                    case "slot" -> {
+                        // todo: Implement
+                    }
+                    case "rarity" -> construct.setRarity(Rarity.valueOf(event.getMessage()));
+                    case "health" -> construct.setHealth(Integer.parseInt(event.getMessage()));
+                    case "damage" -> construct.setDamage(Integer.parseInt(event.getMessage()));
+                    case "toughness" -> construct.setToughness(Double.parseDouble(event.getMessage()));
+                    case "armor"-> construct.setArmor(Double.parseDouble(event.getMessage()));
+                    case "attack-speed" -> construct.setAttackSpeed(Double.parseDouble(event.getMessage()));
+                }
+            } catch (Exception exception) {
+                player.sendMessage(ChatColor.RED + "Action failed: " + exception.getMessage());
+            }
             itemConstructs.put(player, construct);
-            player.sendMessage(event.getMessage());
             Bukkit.getScheduler().runTask(Utils.getPlugin(), () -> openInventory(player));
         }
     }
@@ -130,6 +144,16 @@ public class EditorGUI implements GUI, Listener {
         String action = null;
         switch(event.getSlot()) {
             case 28 -> action = "material";
+            case 29 -> action = "name";
+            case 30 -> action = "description";
+            case 32 -> action = "slot";
+            case 33 -> action = "type";
+            case 34 -> action = "rarity";
+            case 38 -> action = "health";
+            case 39 -> action = "damage";
+            case 40 -> action = "toughness";
+            case 41 -> action = "armor";
+            case 42 -> action = "attack-speed";
         };
         if (action != null) {
             pendingPlayers.put((Player) event.getWhoClicked(), action);
@@ -144,7 +168,7 @@ public class EditorGUI implements GUI, Listener {
      */
     @Override
     public void onClose (InventoryCloseEvent event) {
-        itemConstructs.remove((Player) event.getPlayer());
+//        itemConstructs.remove((Player) event.getPlayer());
     }
 
     /**
