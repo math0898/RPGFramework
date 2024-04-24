@@ -3,6 +3,7 @@ package io.github.math0898.rpgframework.items.editor;
 import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.rpgframework.items.EquipmentSlots;
 import io.github.math0898.rpgframework.items.WeaponType;
+import io.github.math0898.utils.Utils;
 import io.github.math0898.utils.gui.GUI;
 import io.github.math0898.utils.gui.GUIManager;
 import io.github.math0898.utils.items.ItemBuilder;
@@ -10,8 +11,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
@@ -23,7 +27,7 @@ import java.util.Map;
  *
  * @author Sugaku
  */
-public class EditorGUI implements GUI {
+public class EditorGUI implements GUI, Listener {
 
     /**
      * A map of ItemConstructs organized by the opening player.
@@ -31,10 +35,16 @@ public class EditorGUI implements GUI {
     private final Map<Player, ItemConstruct> itemConstructs = new HashMap<>();
 
     /**
+     * A set of players we're checking for a message from.
+     */
+    private final Map<Player, String> pendingPlayers = new HashMap<>();
+
+    /**
      * Creates the EditorGUI and registers it to the GUIManager.
      */
     public EditorGUI () {
         GUIManager.getInstance().addGUI("editor", this);
+        Bukkit.getPluginManager().registerEvents(this, Utils.getPlugin());
     }
 
     /**
@@ -44,20 +54,23 @@ public class EditorGUI implements GUI {
      */
     @Override
     public void openInventory (Player player) {
-        ItemConstruct construct = new ItemConstruct(Material.GOLDEN_CARROT,
-                "Sample Name",
-                EquipmentSlots.HAND,
-                List.of("Sample description."),
-                Rarity.COMMON,
-                1,
-                1,
-                1.0,
-                1.0,
-                1.0,
-                null,
-                WeaponType.DAGGER,
-                null);
-        itemConstructs.put(player, construct);
+        ItemConstruct construct = itemConstructs.get(player);
+        if (construct == null) {
+            construct = new ItemConstruct(Material.GOLDEN_CARROT,
+                    "Sample Name",
+                    EquipmentSlots.HAND,
+                    List.of("Sample description."),
+                    Rarity.COMMON,
+                    1,
+                    1,
+                    1.0,
+                    1.0,
+                    1.0,
+                    null,
+                    WeaponType.DAGGER,
+                    null);
+            itemConstructs.put(player, construct);
+        }
         Inventory inv = Bukkit.createInventory(player, 54, getTitle());
         buildInventory(player, inv);
         player.openInventory(inv);
@@ -87,6 +100,26 @@ public class EditorGUI implements GUI {
     }
 
     /**
+     * Called whenever a player sends a message.
+     *
+     * @param event The player message send event.
+     */
+    @EventHandler
+    public void onMessageAttempt (AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        String action = pendingPlayers.get(player);
+        if (action != null) {
+            event.setCancelled(true);
+            pendingPlayers.remove(player);
+            ItemConstruct construct = itemConstructs.get(player);
+            // todo: modify construct.
+            itemConstructs.put(player, construct);
+            player.sendMessage(event.getMessage());
+            Bukkit.getScheduler().runTask(Utils.getPlugin(), () -> openInventory(player));
+        }
+    }
+
+    /**
      * Called whenever this GUI is clicked.
      *
      * @param event The inventory click event.
@@ -94,6 +127,14 @@ public class EditorGUI implements GUI {
     @Override
     public void onClick (InventoryClickEvent event) {
         event.setCancelled(true);
+        String action = null;
+        switch(event.getSlot()) {
+            case 28 -> action = "material";
+        };
+        if (action != null) {
+            pendingPlayers.put((Player) event.getWhoClicked(), action);
+            event.getWhoClicked().closeInventory();
+        }
     }
 
     /**
@@ -103,7 +144,7 @@ public class EditorGUI implements GUI {
      */
     @Override
     public void onClose (InventoryCloseEvent event) {
-
+        itemConstructs.remove((Player) event.getPlayer());
     }
 
     /**
