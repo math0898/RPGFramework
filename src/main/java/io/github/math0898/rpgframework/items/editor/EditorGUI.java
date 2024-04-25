@@ -9,6 +9,7 @@ import io.github.math0898.utils.items.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,17 +18,20 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * The EditorGUI is the GUI instance behind the in game item editor.
  *
  * @author Sugaku
  */
-public class EditorGUI implements GUI, Listener {
-
+public class EditorGUI implements GUI, Listener { // todo: Tag player submission, output to yaml file, non-admin stats on rarity.
+// todo: Prevent spamming abuse.
     /**
      * A map of ItemConstructs organized by the opening player.
      */
@@ -92,6 +96,8 @@ public class EditorGUI implements GUI, Listener {
         inventory.setItem(41, new ItemBuilder(Material.IRON_CHESTPLATE).setDisplayName("Armor").build()); // Armor
         inventory.setItem(42, new ItemBuilder(Material.FEATHER).setDisplayName("Attack Speed").build()); // AttackSpeed
         // todo: Color
+        inventory.setItem(45, new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setDisplayName("Reset").build());
+        inventory.setItem(53, new ItemBuilder(Material.LIME_STAINED_GLASS_PANE).setDisplayName("Submit").build());
     }
 
     /**
@@ -142,6 +148,7 @@ public class EditorGUI implements GUI, Listener {
     public void onClick (InventoryClickEvent event) {
         event.setCancelled(true);
         String action = null;
+        Player player = (Player) event.getWhoClicked();
         switch(event.getSlot()) {
             case 28 -> action = "material";
             case 29 -> action = "name";
@@ -154,10 +161,56 @@ public class EditorGUI implements GUI, Listener {
             case 40 -> action = "toughness";
             case 41 -> action = "armor";
             case 42 -> action = "attack-speed";
+            case 45 -> {
+                itemConstructs.put(player, new ItemConstruct(Material.GOLDEN_CARROT,
+                        "Sample Name",
+                        EquipmentSlots.HAND,
+                        List.of("Sample description."),
+                        Rarity.COMMON,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        null,
+                        null,
+                        null));
+                player.closeInventory();
+                openInventory(player);
+                return;
+            }
+            case 53 -> {
+                File container = new File("./plugins/RPGFramework/submissions/");
+                container.mkdir();
+                File file = new File("./plugins/RPGFramework/submissions/" + player.getName() + ".yml");
+                YamlConfiguration save = YamlConfiguration.loadConfiguration(file);
+                ItemConstruct construct = itemConstructs.get(player);
+                construct.save(save.createSection(construct.name()));
+                try {
+                    save.save(file);
+                } catch (IOException exception) {
+                    Utils.getPlugin().getLogger().log(Level.WARNING, exception.getMessage());
+                }
+                itemConstructs.put(player, new ItemConstruct(Material.GOLDEN_CARROT,
+                        "Sample Name",
+                        EquipmentSlots.HAND,
+                        List.of("Sample description."),
+                        Rarity.COMMON,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        null,
+                        null,
+                        null));
+                player.closeInventory();
+                return;
+            }
         };
         if (action != null) {
-            pendingPlayers.put((Player) event.getWhoClicked(), action);
-            event.getWhoClicked().closeInventory();
+            pendingPlayers.put(player, action);
+            player.closeInventory();
         }
     }
 

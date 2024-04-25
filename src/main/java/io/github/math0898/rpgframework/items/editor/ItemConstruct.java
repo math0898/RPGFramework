@@ -8,6 +8,7 @@ import io.github.math0898.rpgframework.items.WeaponType;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
 import java.util.Objects;
@@ -181,4 +182,29 @@ public final class ItemConstruct {
                 "color=" + color + ']';
     }
 
+    /**
+     * Saves this ItemConstruct to the given configuration section.
+     *
+     * @param section The section to save this ItemConstruct to.
+     */
+    public void save (ConfigurationSection section) {
+        section.set("material", material.toString());
+        section.set("name", name);
+        section.set("slot", slot.toString());
+        section.set("description", description);
+        section.set("rarity", rarity.toString());
+        if (health != 0) section.set("stats.health", health);
+        if (damage != 0) section.set("stats.damage", damage);
+        if (armor != 0) section.set("stats.armor", armor);
+        if (toughness != 0) section.set("stats.toughness", toughness);
+        if (attackSpeed != 0) section.set("stats.attack-speed", attackSpeed);
+        if (armorType != null) section.set("armor-type", armorType.toString());
+        if (weaponType != null) section.set("weapon-type", weaponType.toString());
+        if (color != null) {
+            section.set("color.alpha", color[0]);
+            section.set("color.red", color[0]);
+            section.set("color.blue", color[0]);
+            section.set("color.green", color[0]);
+        }
+    }
 }
