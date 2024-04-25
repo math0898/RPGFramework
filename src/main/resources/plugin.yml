@@ -18,7 +18,7 @@ permissions:
 commands:
   rpg-editor:
     description: "Allows players to create items in game using a convenient editor."
-    permission: "rpg.admin"
+    permission: "rpg.beta"
   party:
     description: Lets players join, leave, and manipulate parties.
     permission: rpg.parties

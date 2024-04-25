@@ -20,17 +20,19 @@ import org.bukkit.inventory.Inventory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.stream.Stream;
 
 /**
  * The EditorGUI is the GUI instance behind the in game item editor.
  *
  * @author Sugaku
  */
-public class EditorGUI implements GUI, Listener { // todo: Tag player submission, output to yaml file, non-admin stats on rarity.
+public class EditorGUI implements GUI, Listener { // todo: Tag player submission, non-admin stats on rarity.
 // todo: Prevent spamming abuse.
     /**
      * A map of ItemConstructs organized by the opening player.
@@ -118,12 +120,24 @@ public class EditorGUI implements GUI, Listener { // todo: Tag player submission
                     case "material" -> construct.setMaterial(Material.valueOf(event.getMessage()));
                     case "name" -> construct.setName(event.getMessage());
                     case "description" ->  {
-                        // todo: A little more needs to be done here.
-                        construct.setDescription(List.of(event.getMessage()));
+                        Stream<String> lines = event.getMessage().replace(' ', '\n').lines();
+                        ArrayList<String> desc = new ArrayList<>();
+                        StringBuilder pending = new StringBuilder();
+                        for (String l : lines.toList()) {
+                            if (pending.length() + l.length() < 31) pending.append(l).append(" ");
+                            else {
+                                desc.add(pending.toString());
+                                pending = new StringBuilder(l);
+                                pending.append(" ");
+                            }
+                        }
+                        desc.add(pending.toString());
+                        construct.setDescription(desc);
                     }
-                    case "slot" -> {
-                        // todo: Implement
+                    case "type" -> {
+                        // todo: Weapon/Armor typing
                     }
+                    case "slot" -> construct.setSlot(EquipmentSlots.valueOf(event.getMessage()));
                     case "rarity" -> construct.setRarity(Rarity.valueOf(event.getMessage()));
                     case "health" -> construct.setHealth(Integer.parseInt(event.getMessage()));
                     case "damage" -> construct.setDamage(Integer.parseInt(event.getMessage()));
@@ -185,7 +199,7 @@ public class EditorGUI implements GUI, Listener { // todo: Tag player submission
                 File file = new File("./plugins/RPGFramework/submissions/" + player.getName() + ".yml");
                 YamlConfiguration save = YamlConfiguration.loadConfiguration(file);
                 ItemConstruct construct = itemConstructs.get(player);
-                construct.save(save.createSection(construct.name()));
+                construct.save(save.createSection(construct.name().toLowerCase().replace(" ", "-")));
                 try {
                     save.save(file);
                 } catch (IOException exception) {
