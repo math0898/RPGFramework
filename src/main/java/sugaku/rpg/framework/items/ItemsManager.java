@@ -16,7 +16,7 @@ import java.util.*;
 import static io.github.math0898.rpgframework.RPGFramework.itemManager;
 import static org.bukkit.attribute.AttributeModifier.Operation.*;
 
-public final class ItemsManager {
+public final class ItemsManager { // todo: AttributeModifiers should now be constructed with a NamespacedKey rather than UUID.
 
     /**
      * The rare Dark Helmet custom item.
@@ -272,7 +272,7 @@ public final class ItemsManager {
      * @return The AttributeModifier with a unique UUID.
      */
     public static AttributeModifier attributeModifier(Attribute a, double value, EquipmentSlot slot) {
-        int mod = switch (a) {
+        int mod = switch (a) { // Todo: Support additional, new attribute types.
             case GENERIC_MAX_HEALTH -> 1;
             case GENERIC_ARMOR -> 2;
             case GENERIC_ARMOR_TOUGHNESS -> 3;
@@ -280,7 +280,7 @@ public final class ItemsManager {
             case GENERIC_KNOCKBACK_RESISTANCE -> 5;
             case GENERIC_MOVEMENT_SPEED -> 6;
             case GENERIC_LUCK -> 7;
-            case HORSE_JUMP_STRENGTH -> 8;
+            case GENERIC_JUMP_STRENGTH -> 8;
             case GENERIC_ATTACK_SPEED -> 9;
             case GENERIC_ATTACK_KNOCKBACK -> 10;
             case GENERIC_FLYING_SPEED -> 11;
@@ -295,6 +295,7 @@ public final class ItemsManager {
             case HEAD -> 4;
             case HAND -> 5;
             case OFF_HAND -> 6;
+            case BODY -> 7; // Horses and Wolves
         };
         return new AttributeModifier(new UUID(slotN, mod), a.toString(), value, AttributeModifier.Operation.ADD_NUMBER, slot);
     }

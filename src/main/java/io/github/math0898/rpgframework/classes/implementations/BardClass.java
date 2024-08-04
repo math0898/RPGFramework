@@ -39,9 +39,9 @@ public class BardClass extends AbstractClass {
         SWIFTNESS(ChatColor.AQUA + "Swiftness", PotionEffectType.SPEED),
 
         /**
-         * {@link org.bukkit.potion.PotionEffectType#INCREASE_DAMAGE}
+         * {@link org.bukkit.potion.PotionEffectType#STRENGTH}
          */
-        STRENGTH(ChatColor.RED + "Strength", PotionEffectType.INCREASE_DAMAGE);
+        STRENGTH(ChatColor.RED + "Strength", PotionEffectType.STRENGTH);
 
         /**
          * The text to display this buff as.
@@ -191,7 +191,7 @@ public class BardClass extends AbstractClass {
             rpg.heal(10.0);
             rpg.addPotionEffect(PotionEffectType.REGENERATION, 10 * 20, 2);
             rpg.addPotionEffect(PotionEffectType.SPEED, 10 * 20, 2);
-            rpg.addPotionEffect(PotionEffectType.INCREASE_DAMAGE, 10 * 20, 2);
+            rpg.addPotionEffect(PotionEffectType.STRENGTH, 10 * 20, 2);
             getCooldowns()[Abilities.LIFE_OF_MUSIC.ordinal()].restart();
             return false;
         }

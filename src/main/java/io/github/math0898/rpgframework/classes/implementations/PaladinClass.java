@@ -112,8 +112,8 @@ public class PaladinClass extends AbstractClass {
             for (RpgPlayer rpg: toApply) {
                 rpg.heal(5.0);
                 rpg.getBukkitPlayer().setFireTicks(0);
-                rpg.cleanseEffects(BLINDNESS, BAD_OMEN, CONFUSION, DARKNESS, HARM, HUNGER, POISON, SLOW, LEVITATION,
-                        SLOW_DIGGING, UNLUCK, WEAKNESS, WITHER);
+                rpg.cleanseEffects(BLINDNESS, BAD_OMEN, NAUSEA, DARKNESS, INSTANT_DAMAGE, HUNGER, POISON, SLOWNESS, LEVITATION,
+                        MINING_FATIGUE, UNLUCK, WEAKNESS, WITHER);
                 rpg.sendMessage(username + ChatColor.GREEN + " has used purify!");
             }
             getCooldowns()[Abilities.PURIFY.ordinal()].restart();

@@ -98,7 +98,7 @@ public class AssassinClass extends AbstractClass {
                 if (entity instanceof Player) event.addDamage(5.0, DamageType.SLASH);
                 else event.addDamage(10.0, DamageType.SLASH);
                 if (getCooldowns()[Abilities.POISONED_BLADE.ordinal()].getRemaining() >= 50)
-                    for (PotionEffectType type : new PotionEffectType[]{PotionEffectType.BLINDNESS, PotionEffectType.POISON, PotionEffectType.SLOW})
+                    for (PotionEffectType type : new PotionEffectType[]{PotionEffectType.BLINDNESS, PotionEffectType.POISON, PotionEffectType.SLOWNESS})
                         entity.addPotionEffect(new PotionEffect(type, 10 * 20, 0));
             }
     }

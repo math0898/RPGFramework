@@ -14,6 +14,7 @@ import sugaku.rpg.framework.players.RpgPlayer;
 import sugaku.rpg.main;
 import sugaku.rpg.mobs.Bosses;
 import sugaku.rpg.mobs.CustomMob;
+import sugaku.rpg.mobs.teir1.Seignour;
 import sugaku.rpg.mobs.teir1.eiryeras.EiryerasBoss;
 import sugaku.rpg.mobs.teir1.feyrith.FeyrithBoss;
 import sugaku.rpg.mobs.teir1.krusk.KruskBoss;
@@ -72,6 +73,7 @@ public class BossRituals {
             case EIRYERAS -> new EiryerasBoss();
             case FEYRITH -> new FeyrithBoss();
             case KRUSK -> new KruskBoss();
+            case SEIGNOUR -> new Seignour();
         };
         if (rpg != null) rpg.setBoss(tmp);
         drop.setPickupDelay(60);
@@ -83,7 +85,7 @@ public class BossRituals {
         Location location = drop.getLocation();
         assert location.getWorld() != null;
         SummoningParticles(Particle.LAVA, new Location(location.getWorld(), location.getX(), location.getY() + 0.5, location.getZ()), 159);
-        SummoningParticles(Particle.ENCHANTMENT_TABLE, new Location(location.getWorld(), location.getX(), location.getY() + 0.5, location.getZ()), 159);
+        SummoningParticles(Particle.ENCHANT, new Location(location.getWorld(), location.getX(), location.getY() + 0.5, location.getZ()), 159);
         send(Bukkit.getServer().getConsoleSender(), boss.getCustomName() + ChatColor.GRAY + " is being spawned at: " + ChatColor.GRAY + location + ChatColor.GRAY + " - " + player);
         Bukkit.getScheduler().runTaskLater(main.plugin, () -> boss.setLocale(location), 158);
         Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> boss.spawn(boss.getLocale()), 160);

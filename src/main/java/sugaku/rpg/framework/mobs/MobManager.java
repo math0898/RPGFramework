@@ -62,7 +62,7 @@ public class MobManager {
         double drops = r.nextDouble();
 //        int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
         ItemStack item = event.getEntity().getKiller().getEquipment().getItemInHand();
-        Integer tmp = item.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS);
+        Integer tmp = item.getEnchantments().get(Enchantment.LOOTING);
         int bonus = tmp == null ? 0 : tmp;
         if (drops < 0.02 + (bonus / 100.0))
 //        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
@@ -74,7 +74,7 @@ public class MobManager {
         Random r = new Random();
         double drops = r.nextDouble();
         ItemStack item = event.getEntity().getKiller().getEquipment().getItemInHand();
-        Integer tmp = item.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS);
+        Integer tmp = item.getEnchantments().get(Enchantment.LOOTING);
         int bonus = tmp == null ? 0 : tmp;
         if (drops < 0.02 + (bonus / 100.0))
 //        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
@@ -87,7 +87,7 @@ public class MobManager {
         double drops = r.nextDouble();
         // int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
         ItemStack item = event.getEntity().getKiller().getEquipment().getItemInHand();
-        Integer tmp = item.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS);
+        Integer tmp = item.getEnchantments().get(Enchantment.LOOTING);
         int bonus = tmp == null ? 0 : tmp;
         if (drops < 0.02 + (bonus / 100.0))
 //        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))

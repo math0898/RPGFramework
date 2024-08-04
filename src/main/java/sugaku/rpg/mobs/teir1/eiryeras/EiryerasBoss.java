@@ -1,6 +1,8 @@
 package sugaku.rpg.mobs.teir1.eiryeras;
 
 import io.github.math0898.rpgframework.RPGFramework;
+import io.github.math0898.rpgframework.items.EquipmentSlots;
+import io.github.math0898.utils.items.ItemBuilder;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -142,10 +144,9 @@ public class EiryerasBoss extends CustomMob implements Listener {
     /**
      * The hunter's knife Eiryeras uses to charge down enemies and deal the finishing blow.
      */
-    private static final ItemStack huntersKnife = ItemsManager.createItem(IRON_SWORD, 1, " ", new String[]{}, new AttributeModifier[]{
-            ItemsManager.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, meleeDamage, EquipmentSlot.HAND),
-            ItemsManager.attributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, bonusMoveSpeed, EquipmentSlot.HAND)
-    });
+    private static final ItemStack huntersKnife = new ItemBuilder(IRON_SWORD).setDisplayName(" ")
+            .addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, meleeDamage, EquipmentSlots.HAND)
+            .addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, bonusMoveSpeed, EquipmentSlots.HAND).build();
 
     /**
      * Makes sure that items and other things required for the boss fight are set up.
@@ -212,7 +213,7 @@ public class EiryerasBoss extends CustomMob implements Listener {
             }
             for (Entity e: event.getEntity().getNearbyEntities(25, 25, 25)) {
                 if (e instanceof Player) if (((Player) e).getPotionEffect(PotionEffectType.POISON) != null
-                        && ((Player) e).getPotionEffect(PotionEffectType.SLOW) != null ) {
+                        && ((Player) e).getPotionEffect(PotionEffectType.SLOWNESS) != null ) {
                     switchToSword(event.getEntity());
                     Bukkit.getScheduler().runTaskLater(main.plugin, () -> switchToBow(event.getEntity()), 60);
                     break;
@@ -235,7 +236,7 @@ public class EiryerasBoss extends CustomMob implements Listener {
                 switch((Arrows) Objects.requireNonNull(a.getMetadata("eiryeras").get(0).value())) {
                     case SLOWNESS:
                         e.setDamage(slownessDamage);
-                        ((Player) e.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5*20, 0, true));
+                        ((Player) e.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 5*20, 0, true));
                         break;
                     case POISON:
                         e.setDamage(poisonDamage);

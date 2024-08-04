@@ -20,7 +20,7 @@ import java.util.*;
  *
  * @author Sugaku
  */
-public class ItemBuilder {
+public class ItemBuilder { // todo: AttributeModifiers should now be constructed with a NamespacedKey rather than UUID.
 
     /**
      * The material that the resulting item will have.
@@ -202,7 +202,7 @@ public class ItemBuilder {
      * @return The AttributeModifier with a unique UUID.
      */
     private AttributeModifier attributeModifier (Attribute a, double value, EquipmentSlot slot) {
-        int mod = switch (a) {
+        int mod = switch (a) { // Todo: Support additional, new attribute types.
             case GENERIC_MAX_HEALTH -> 1;
             case GENERIC_ARMOR -> 2;
             case GENERIC_ARMOR_TOUGHNESS -> 3;
@@ -210,7 +210,7 @@ public class ItemBuilder {
             case GENERIC_KNOCKBACK_RESISTANCE -> 5;
             case GENERIC_MOVEMENT_SPEED -> 6;
             case GENERIC_LUCK -> 7;
-            case HORSE_JUMP_STRENGTH -> 8;
+            case GENERIC_JUMP_STRENGTH -> 8;
             case GENERIC_ATTACK_SPEED -> 9;
             case GENERIC_ATTACK_KNOCKBACK -> 10;
             case GENERIC_FLYING_SPEED -> 11;
@@ -225,6 +225,7 @@ public class ItemBuilder {
             case HEAD -> 4;
             case HAND -> 5;
             case OFF_HAND -> 6;
+            case BODY -> 7;
         };
         return new AttributeModifier(new UUID(slotN, mod), a.toString(), value, AttributeModifier.Operation.ADD_NUMBER, slot);
     }

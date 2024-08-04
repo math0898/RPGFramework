@@ -84,7 +84,7 @@ public class BerserkerClass extends AbstractClass { // todo: Re-add regeneration
         if (!correctArmor()) send("Use leather middle pieces to use abilities.");
         else if (offCooldown(Abilities.RAGE.ordinal())) {
             send(ChatColor.GREEN + "You've used rage!");
-            getPlayer().addPotionEffect(PotionEffectType.INCREASE_DAMAGE, 10 * 20, 2);
+            getPlayer().addPotionEffect(PotionEffectType.STRENGTH, 10 * 20, 2);
             getCooldowns()[Abilities.RAGE.ordinal()].restart();
         }
     }
@@ -118,7 +118,7 @@ public class BerserkerClass extends AbstractClass { // todo: Re-add regeneration
             RpgPlayer rpg = getPlayer();
             Player player = rpg.getBukkitPlayer();
             player.getWorld().playSound(player.getLocation(), Sound.ITEM_TOTEM_USE, 0.8f, 1.0f);
-            rpg.addPotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20, 3);
+            rpg.addPotionEffect(PotionEffectType.STRENGTH, 5 * 20, 3);
             getCooldowns()[Abilities.INDOMITABLE_SPIRIT.ordinal()].restart();
             return false;
         }

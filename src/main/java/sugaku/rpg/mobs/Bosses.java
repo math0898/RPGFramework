@@ -1,5 +1,6 @@
 package sugaku.rpg.mobs;
 
+import sugaku.rpg.mobs.teir1.Seignour;
 import sugaku.rpg.mobs.teir1.eiryeras.EiryerasBoss;
 import sugaku.rpg.mobs.teir1.feyrith.FeyrithBoss;
 import sugaku.rpg.mobs.teir1.krusk.KruskBoss;
@@ -9,7 +10,7 @@ public enum Bosses {
     /**
      * All of the bosses currently in the game.
      */
-    EIRYERAS, KRUSK, FEYRITH;
+    EIRYERAS, KRUSK, FEYRITH, SEIGNOUR;
 
     /**
      * Returns the formatted name of the given boss.
@@ -22,6 +23,7 @@ public enum Bosses {
             case EIRYERAS: return EiryerasBoss.getName();
             case KRUSK: return KruskBoss.getName();
             case FEYRITH: return FeyrithBoss.getName();
+            case SEIGNOUR: return Seignour.getName();
         }
         return "";
     }

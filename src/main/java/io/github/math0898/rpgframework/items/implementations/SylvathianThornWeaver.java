@@ -71,7 +71,7 @@ public class SylvathianThornWeaver implements Listener {
             Random rand = new Random();
             Player p = Bukkit.getPlayer(uuid);
             for (int i = 0; i < 50; i++)
-                p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, p.getLocation().add((rand.nextDouble() * 8.0) - 4.0, (rand.nextDouble() * 2.0) - 1.0, (rand.nextDouble() * 8.0) - 4.0), 2);
+                p.getWorld().spawnParticle(Particle.HAPPY_VILLAGER, p.getLocation().add((rand.nextDouble() * 8.0) - 4.0, (rand.nextDouble() * 2.0) - 1.0, (rand.nextDouble() * 8.0) - 4.0), 2);
         }, 0, 9);
         BukkitTask task3 = Bukkit.getScheduler().runTaskTimer(getInstance(), () -> {
             RpgPlayer rpg = PlayerManager.getPlayer(uuid);

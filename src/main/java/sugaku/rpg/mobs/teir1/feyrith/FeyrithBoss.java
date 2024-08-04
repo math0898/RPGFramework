@@ -187,7 +187,7 @@ public class FeyrithBoss extends CustomMob implements Listener {
     private void lightingAttack(List<Entity> nearby) {
         if (phase == 1) dyeArmor(25, 64, 255, 0.75, 0.5, 1);
         for (Entity e: nearby) {
-            particlesVert(Particle.WATER_DROP, e.getLocation(), 30, 5);
+            particlesVert(Particle.FALLING_WATER, e.getLocation(), 30, 5);
             double x = e.getLocation().getX();
             double y = e.getLocation().getY();
             double z = e.getLocation().getZ();
@@ -210,7 +210,7 @@ public class FeyrithBoss extends CustomMob implements Listener {
         BukkitTask task2 = Bukkit.getScheduler().runTaskTimer(getInstance(), () -> {
             Random rand = new Random();
             for (int i = 0; i < 50; i++)
-                entity.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, entity.getLocation().add((rand.nextDouble() * 8.0) - 4.0, (rand.nextDouble() * 2.0) - 1.0, (rand.nextDouble() * 8.0) - 4.0), 2);
+                entity.getWorld().spawnParticle(Particle.HAPPY_VILLAGER, entity.getLocation().add((rand.nextDouble() * 8.0) - 4.0, (rand.nextDouble() * 2.0) - 1.0, (rand.nextDouble() * 8.0) - 4.0), 2);
         }, 0, 9);
         BukkitTask task3 = Bukkit.getScheduler().runTaskTimer(getInstance(), () -> {
             List<Entity> entities = entity.getNearbyEntities(4.0, 4.0, 4.0);

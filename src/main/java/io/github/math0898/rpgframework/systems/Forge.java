@@ -151,14 +151,14 @@ public class Forge {
             case IRON_SWORD: case WOODEN_SWORD: case STONE_SWORD: case GOLDEN_SWORD: case DIAMOND_SWORD: case NETHERITE_SWORD:
                 legal.add( SWEEPING_EDGE);
             case WOODEN_AXE: case STONE_AXE: case GOLDEN_AXE: case IRON_AXE: case DIAMOND_AXE: case NETHERITE_AXE: case TRIDENT:
-                legal.add(DAMAGE_ALL);
-                legal.add(DAMAGE_ARTHROPODS);
+                legal.add(SHARPNESS);
+                legal.add(BANE_OF_ARTHROPODS);
                 legal.add(FIRE_ASPECT);
-                legal.add(LOOT_BONUS_MOBS);
+                legal.add(LOOTING);
                 legal.add(KNOCKBACK);
-                legal.add(DAMAGE_UNDEAD);
+                legal.add(SMITE);
                 legal.add(MENDING);
-                legal.add(DURABILITY);
+                legal.add(UNBREAKING);
                 legal.add(VANISHING_CURSE);
                 break;
         }
@@ -169,8 +169,8 @@ public class Forge {
                     CHAINMAIL_HELMET, GOLDEN_BOOTS, GOLDEN_LEGGINGS, GOLDEN_CHESTPLATE, GOLDEN_HELMET, DIAMOND_BOOTS,
                     DIAMOND_LEGGINGS, DIAMOND_CHESTPLATE, DIAMOND_HELMET, NETHERITE_BOOTS, NETHERITE_LEGGINGS,
                     NETHERITE_CHESTPLATE, NETHERITE_HELMET ->
-                    legal.addAll(Arrays.asList( PROTECTION_ENVIRONMENTAL, PROTECTION_FIRE, PROTECTION_PROJECTILE,
-                            PROTECTION_EXPLOSIONS, MENDING, VANISHING_CURSE, DURABILITY));
+                    legal.addAll(Arrays.asList( PROTECTION, FIRE_PROTECTION, PROJECTILE_PROTECTION,
+                            BLAST_PROTECTION, MENDING, VANISHING_CURSE, UNBREAKING));
 
         }
         if (legal.isEmpty()) return false;
