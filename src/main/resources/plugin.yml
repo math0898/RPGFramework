@@ -9,6 +9,7 @@ load: POSTWORLD
 softdepend:
   - HolographicDisplays
   - StackMob
+  - DecentHolograms
 permissions:
   rpg.*:
     default: false

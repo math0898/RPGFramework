@@ -32,6 +32,11 @@ public final class RPGFramework extends JavaPlugin implements Listener {
     public static boolean useHolographicDisplays = false;
 
     /**
+     * Is decent holograms on the server?
+     */
+    public static boolean useDecentHolograms = false;
+
+    /**
      * The ItemManager being used with this RPGFramework instance.
      */
     @Deprecated
@@ -90,11 +95,11 @@ public final class RPGFramework extends JavaPlugin implements Listener {
         //Establish hooks
         HookManager.getInstance();
         useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
-        if (!useHolographicDisplays) {
-            console("Holographic displays was not found.", ChatColor.YELLOW);
+        useDecentHolograms = Bukkit.getPluginManager().isPluginEnabled("DecentHolograms");
+        if (!useHolographicDisplays && !useDecentHolograms) {
+            console("Holographic Displays nor Decent Holograms was not found.", ChatColor.YELLOW);
             console("This is non fatal error however you will not see damage numbers when you hit mobs.", ChatColor.YELLOW);
         }
-
         itemManager = new ItemManager();
 
         sugaku.rpg.main.onEnable();
