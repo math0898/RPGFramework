@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -94,6 +95,11 @@ public class RpgItem {
     private final WeaponType weaponType;
 
     /**
+     * The url of the skin to use if this is a skull.
+     */
+    private final String skinUrl;
+
+    /**
      * Creates a new RpgItem by loading the given configuration section.
      *
      * @param section The configuration section to load.
@@ -119,6 +125,18 @@ public class RpgItem {
         else armorType = null;
         if (section.contains("weapon-type")) weaponType = WeaponType.valueOf(section.getString("weapon-type", "SWORD"));
         else weaponType = null;
+        String url = null;
+        if (section.contains("skull")) {
+            url = section.getString("skull.url", null);
+            if (url == null) {
+                String base64 = section.getString("skull.base64", null);
+                if (base64 != null) {
+                    String decoded = new String(Base64.getDecoder().decode(base64));
+                    url = decoded.substring("{\"textures\":{\"SKIN\":{\"url\":\"".length(), decoded.length() - "\"}}}".length());
+                }
+            }
+        }
+        skinUrl = url;
         if (section.contains("color")) color = new int[]{ section.getInt("color.alpha", 255),
                 section.getInt("color.red", 0),
                 section.getInt("color.green", 0),
@@ -158,6 +176,7 @@ public class RpgItem {
         details = details + "#606060 | #F2D951" + getGearScore();
         clone.add(StringUtils.convertHexCodes(details));
         builder.setLore(clone.toArray(new String[0]));
+        if (skinUrl != null) builder.setSkullSkinUrl(skinUrl);
         builder.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, health / 5.0, slot);
         builder.addAttributeModifier(Attribute.GENERIC_ARMOR, armor, slot);
         builder.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughness, slot);
