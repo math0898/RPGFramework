@@ -3,7 +3,9 @@ package io.github.math0898.rpgframework.commands;
 import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.utils.StringUtils;
 import io.github.math0898.utils.commands.BetterCommand;
+import io.github.math0898.utils.items.ItemBuilder;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -65,6 +67,11 @@ public class DebugCommand extends BetterCommand {
                     zombie.setCustomNameVisible(true);
                     zombie.setCustomName(StringUtils.convertHexCodes(r.modify(r.toString())));
                 }
+            } else if (args[0].equalsIgnoreCase("skulls")) {
+                ItemBuilder builder = new ItemBuilder(Material.PLAYER_HEAD);
+                builder.setSkullSkinBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzM0NTJiOThhYjlhODhkMTc1N2YwMzJjMDcyYWY4MWNmYTM1ZGRiNDc5NDU4NTkxNDc4MTFiY2RjZmQ5ODcxZSJ9fX0=");
+                player.getInventory().addItem(builder.build());
+                send(player, "Here's a knight helmet!");
             }
         }
         return true;
@@ -90,7 +97,7 @@ public class DebugCommand extends BetterCommand {
     @Override
     public List<String> simplifiedTab (CommandSender sender, String[] args) {
         List<String> toReturn = new ArrayList<>();
-        if (args.length <= 1) toReturn.addAll(Arrays.asList("reset-cooldowns", "item-details", "regex", "spawn", "rarity"));
+        if (args.length <= 1) toReturn.addAll(Arrays.asList("reset-cooldowns", "item-details", "regex", "spawn", "rarity", "skulls"));
         return everythingStartsWith(toReturn, args[args.length - 1]);
     }
 }

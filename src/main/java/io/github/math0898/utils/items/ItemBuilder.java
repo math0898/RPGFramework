@@ -12,7 +12,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ColorableArmorMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerProfile;
+import org.bukkit.profile.PlayerTextures;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -51,6 +55,11 @@ public class ItemBuilder { // todo: AttributeModifiers should now be constructed
      * The color of this Item. Ignored if not an instance of Colorable. Stored in ARGB.
      */
     private int[] color = null;
+
+    /**
+     * The url of the skin to use if this is a skull.
+     */
+    private String skinUrl = null;
 
     /**
      * Whether this item is unbreakable or not.
@@ -166,6 +175,28 @@ public class ItemBuilder { // todo: AttributeModifiers should now be constructed
     }
 
     /**
+     * Sets the skin url to utilize with a Skull.
+     *
+     * @param url The url of the string to apply to the skull.
+     * @return The mutated ItemBuilder.
+     */
+    public ItemBuilder setSkullSkinUrl (String url) {
+        skinUrl = url;
+        return this;
+    }
+
+    /**
+     * Sets the skin url to utilize with a Skull.
+     *
+     * @param base64 The encoded url of the skin to apply to the Skull.
+     * @return The mutated ItemBuilder.
+     */
+    public ItemBuilder setSkullSkinBase64 (String base64) {
+        String decoded = new String(Base64.getDecoder().decode(base64));
+        return setSkullSkinUrl(decoded.substring("{\"textures\":{\"SKIN\":{\"url\":\"".length(), decoded.length() - "\"}}}".length()));
+    }
+
+    /**
      * Called to get the resulting ItemStack object.
      *
      * @return The builder's resulting item.
@@ -188,6 +219,15 @@ public class ItemBuilder { // todo: AttributeModifiers should now be constructed
             colorable.setColor(Color.fromARGB(color[0], color[1], color[2], color[3]));
         if (!flags.isEmpty())
             meta.addItemFlags(flags.toArray(new ItemFlag[0]));
+        if (skinUrl != null && meta instanceof SkullMeta skull) {
+            PlayerProfile profile = Bukkit.createPlayerProfile(UUID.randomUUID()); // todo: Will this cause problems?
+            PlayerTextures textures = profile.getTextures();
+            try {
+                textures.setSkin(new URL(skinUrl));
+            } catch (MalformedURLException ignored) {}
+            profile.setTextures(textures);
+            skull.setOwnerProfile(profile);
+        }
         meta.setUnbreakable(unbreakable);
         item.setItemMeta(meta);
         return item;
