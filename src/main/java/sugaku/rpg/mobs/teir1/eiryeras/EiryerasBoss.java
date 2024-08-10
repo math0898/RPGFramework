@@ -5,7 +5,6 @@ import io.github.math0898.rpgframework.items.EquipmentSlots;
 import io.github.math0898.utils.items.ItemBuilder;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,14 +13,12 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.EntityEquipment;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValueAdapter;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import sugaku.rpg.framework.items.BossDrop;
-import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.items.Rarity;
 import sugaku.rpg.main;
 import sugaku.rpg.mobs.CustomMob;
@@ -153,10 +150,10 @@ public class EiryerasBoss extends CustomMob implements Listener {
      */
     public EiryerasBoss() {
         super(name, EntityType.SKELETON, Rarity.UNCOMMON, 150);
-        setArmor(ItemsManager.createLeatherArmor(Material.LEATHER_HELMET, " ", new String[]{}, 60, 115, 31),
-                ItemsManager.createLeatherArmor(Material.LEATHER_CHESTPLATE, " ", new String[]{}, 113, 172, 11),
-                ItemsManager.createLeatherArmor(Material.LEATHER_LEGGINGS, " ", new String[]{}, 93, 161, 124),
-                ItemsManager.createLeatherArmor(Material.LEATHER_BOOTS, " ", new String[]{}, 60, 115, 31));
+        setArmor(new ItemBuilder(LEATHER_HELMET).setColor(new int[]{255, 60, 115, 31}).build(),
+                new ItemBuilder(Material.LEATHER_CHESTPLATE).setColor(new int[]{255,  113, 172, 11}).build(),
+                new ItemBuilder(Material.LEATHER_LEGGINGS).setColor(new int[]{255,  93, 161, 124}).build(),
+                new ItemBuilder(Material.LEATHER_BOOTS).setColor(new int[]{255,  60, 115, 31}).build());
         setHand(new ItemStack(Material.BOW, 1));
     }
 

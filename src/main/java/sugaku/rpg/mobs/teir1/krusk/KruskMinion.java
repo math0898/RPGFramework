@@ -1,15 +1,13 @@
 package sugaku.rpg.mobs.teir1.krusk;
 
+import io.github.math0898.rpgframework.items.EquipmentSlots;
+import io.github.math0898.utils.items.ItemBuilder;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.items.Rarity;
 import sugaku.rpg.mobs.CustomMob;
 
@@ -39,30 +37,28 @@ public class KruskMinion extends CustomMob {
      */
     public KruskMinion(Location l, int i) {
         super(names[i] + ", Underling of Krusk", EntityType.ZOMBIE, Rarity.UNCOMMON, 40);
-        ItemStack main = new ItemStack(weapons[i], 1);
-        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
-        ItemMeta bootsMeta = boots.getItemMeta();
-        ItemMeta meta = main.getItemMeta();
-        assert meta != null;
-        assert bootsMeta != null;
-        meta.setUnbreakable(true);
-        bootsMeta.setUnbreakable(true);
+        ItemBuilder main = new ItemBuilder(weapons[i]).setUnbreakable(true);
+        ItemBuilder boots = new ItemBuilder(Material.LEATHER_BOOTS).setUnbreakable(true);
+        ItemBuilder leggings = new ItemBuilder(Material.NETHERITE_LEGGINGS).setUnbreakable(true);
+        ItemBuilder chestplate = new ItemBuilder(Material.NETHERITE_CHESTPLATE).setUnbreakable(true);
+        ItemBuilder helmet = new ItemBuilder(Material.LEATHER_HELMET).setUnbreakable(true);
         if (i > 5) {
             setMaxHealth(60);
-            bootsMeta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, ItemsManager.attributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, 0.12, EquipmentSlot.FEET));
-            bootsMeta.addAttributeModifier(Attribute.GENERIC_ARMOR, ItemsManager.attributeModifier(Attribute.GENERIC_ARMOR, -17, EquipmentSlot.FEET));
-            setArmor(new ItemStack(Material.LEATHER_HELMET), new ItemStack(Material.NETHERITE_CHESTPLATE), new ItemStack(Material.NETHERITE_LEGGINGS), new ItemStack(Material.LEATHER_BOOTS));
-            meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, ItemsManager.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 1, EquipmentSlot.HAND));
+            boots.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, 0.12, EquipmentSlots.FEET);
+            boots.addAttributeModifier(Attribute.GENERIC_ARMOR, -17, EquipmentSlots.FEET);
+            main.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 1.0, EquipmentSlots.HAND);
         } else {
-            bootsMeta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, ItemsManager.attributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, 0.18, EquipmentSlot.FEET));
-            bootsMeta.addAttributeModifier(Attribute.GENERIC_ARMOR, ItemsManager.attributeModifier(Attribute.GENERIC_ARMOR, -11, EquipmentSlot.FEET));
-            setArmor(new ItemStack(Material.LEATHER_HELMET), new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.LEATHER_LEGGINGS, 1), new ItemStack(Material.LEATHER_BOOTS, 1));
-            meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, ItemsManager.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 2.5, EquipmentSlot.HAND));
+            boots.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, 0.18, EquipmentSlots.FEET);
+            boots.addAttributeModifier(Attribute.GENERIC_ARMOR, -11, EquipmentSlots.FEET);
+            leggings.setMaterial(Material.LEATHER_LEGGINGS);
+            chestplate.setMaterial(Material.IRON_CHESTPLATE);
+            main.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 2.5, EquipmentSlots.HAND);
         }
-        main.setItemMeta(meta);
-        boots.setItemMeta(bootsMeta);
-        setBoots(boots);
-        setHand(main);
+        setBoots(boots.build());
+        setLeggings(leggings.build());
+        setChestplate(chestplate.build());
+        setHelm(helmet.build());
+        setHand(main.build());
         spawn(l);
 
         ((Ageable) getEntity()).setAdult();

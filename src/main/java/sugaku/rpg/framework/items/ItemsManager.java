@@ -1,21 +1,19 @@
 package sugaku.rpg.framework.items;
 
+import io.github.math0898.rpgframework.items.ItemManager;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 import sugaku.rpg.mobs.teir1.eiryeras.EiryerasBoss;
 
 import java.util.*;
 
 import static io.github.math0898.rpgframework.RPGFramework.itemManager;
-import static org.bukkit.attribute.AttributeModifier.Operation.*;
 
+@Deprecated
 public final class ItemsManager { // todo: AttributeModifiers should now be constructed with a NamespacedKey rather than UUID.
 
     /**
@@ -127,44 +125,37 @@ public final class ItemsManager { // todo: AttributeModifiers should now be cons
     }
 
     /**
+     * A map of items to helpfully convert between vanilla and RPG.
+     */
+    private static final Map<Material, ItemStack> itemMap = new HashMap<>();
+
+    /**
+     * A utility method to populate the ItemMap.
+     */
+    private static void populateItemMap () {
+        ItemManager manager = ItemManager.getInstance();
+        Material[] mats = new Material[]{ Material.LEATHER_BOOTS, Material.LEATHER_LEGGINGS, Material.LEATHER_CHESTPLATE, Material.LEATHER_HELMET,
+                Material.IRON_BOOTS, Material.IRON_LEGGINGS, Material.IRON_CHESTPLATE, Material.IRON_HELMET,
+                Material.GOLDEN_BOOTS, Material.GOLDEN_LEGGINGS, Material.GOLDEN_CHESTPLATE, Material.GOLDEN_HELMET,
+                Material.DIAMOND_BOOTS, Material.DIAMOND_LEGGINGS, Material.DIAMOND_CHESTPLATE, Material.DIAMOND_HELMET,
+                Material.NETHERITE_BOOTS, Material.NETHERITE_LEGGINGS, Material.NETHERITE_CHESTPLATE, Material.NETHERITE_HELMET};
+        ItemStack[] items = new ItemStack[]{manager.getItem("vanilla:LeatherBoots"), manager.getItem("vanilla:LeatherLeggings"), manager.getItem("vanilla:LeatherChestplate"), manager.getItem("vanilla:LeatherHelmet"),
+                manager.getItem("vanilla:IronBoots"), manager.getItem("vanilla:IronLeggings"), manager.getItem("vanilla:IronChestplate"), manager.getItem("vanilla:IronHelmet"),
+                manager.getItem("vanilla:GoldBoots"), manager.getItem("vanilla:GoldLeggings"), manager.getItem("vanilla:GoldChestplate"), manager.getItem("vanilla:GoldHelmet"),
+                manager.getItem("vanilla:DiamondBoots"), manager.getItem("vanilla:DiamondLeggings"), manager.getItem("vanilla:DiamondChestplate"), manager.getItem("vanilla:DiamondHelmet"),
+                manager.getItem("vanilla:NetheriteBoots"), manager.getItem("vanilla:NetheriteLeggings"), manager.getItem("vanilla:NetheriteChestplate"), manager.getItem("vanilla:NetheriteHelmet")};
+        for (int i = 0; i < mats.length; i++)
+            itemMap.put(mats[i], items[i]);
+    }
+
+    /**
      * Updates vanilla armor to have the right meta and attributes.
      */
+    @Deprecated // todo: Use recipe replacement.
     public static void updateArmor(ItemStack item) {
-        ItemMeta meta = item.getItemMeta();
-        assert meta != null;
-        ArrayList<String> lore = new ArrayList<>();
-        EquipmentSlot slot = EquipmentSlot.HAND;
-        int slotUuid = 0;
-
-        meta.setDisplayName(ChatColor.WHITE + genName(item.getType().toString().toLowerCase().toCharArray()));
-        if (meta.hasEnchants()) meta.setDisplayName(increaseRarity(meta.getDisplayName()));
-
-        switch(item.getType()) {
-            case LEATHER_BOOTS: case IRON_BOOTS: case CHAINMAIL_BOOTS: case GOLDEN_BOOTS: case DIAMOND_BOOTS: case NETHERITE_BOOTS:
-                slot = EquipmentSlot.FEET; slotUuid = 1; break;
-            case LEATHER_LEGGINGS: case IRON_LEGGINGS: case CHAINMAIL_LEGGINGS: case GOLDEN_LEGGINGS: case DIAMOND_LEGGINGS: case NETHERITE_LEGGINGS:
-                slot = EquipmentSlot.LEGS; slotUuid = 2; break;
-            case LEATHER_CHESTPLATE: case IRON_CHESTPLATE: case CHAINMAIL_CHESTPLATE: case GOLDEN_CHESTPLATE: case DIAMOND_CHESTPLATE: case NETHERITE_CHESTPLATE:
-                slot = EquipmentSlot.CHEST; slotUuid = 3; break;
-            case LEATHER_HELMET: case IRON_HELMET: case CHAINMAIL_HELMET: case GOLDEN_HELMET: case DIAMOND_HELMET: case NETHERITE_HELMET:
-                slot = EquipmentSlot.HEAD; slotUuid = 4; break;
-        }
-
-        meta.removeAttributeModifier(Attribute.GENERIC_ARMOR);
-        meta.removeAttributeModifier(Attribute.GENERIC_MAX_HEALTH);
-        meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);
-        meta.removeAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
-
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(new UUID(slotUuid,1), "generic.armor", calArmor(item.getType())/4.0, ADD_NUMBER, slot));
-        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(new UUID(slotUuid,2), "generic.health", calHealth(item.getType()), ADD_NUMBER, slot));
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(new UUID(slotUuid, 3), "generic.armorToughness", calToughness(item.getType()), ADD_NUMBER, slot));
-        meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, new AttributeModifier(new UUID(slotUuid, 4), "generic.knockbackResist", calKnockback(item.getType()), ADD_NUMBER, slot));
-
-        lore.add(ChatColor.GRAY + "Item modified by RPG - 1.2");
-        lore.add("");
-        lore.add("Modified Vanilla");
-        meta.setLore(lore);
-        item.setItemMeta(meta);
+        if (item.getType().toString().contains("CHAINMAIL")) return;
+        if (itemMap.isEmpty()) populateItemMap();
+        item.setItemMeta(itemMap.get(item.getType()).getItemMeta());
     }
 
     /**
@@ -205,99 +196,6 @@ public final class ItemsManager { // todo: AttributeModifiers should now be cons
         r += " §" + r.toCharArray()[1] +"§k-";
 
         return r;
-    }
-
-    /**
-     * Returns the int value of the piece of armor. This is a helper method.
-     */
-    private static int calArmor(Material m) {
-        return switch (m) {
-            case LEATHER_BOOTS, LEATHER_HELMET, GOLDEN_BOOTS, CHAINMAIL_BOOTS -> 1;
-            case LEATHER_LEGGINGS, IRON_BOOTS, GOLDEN_HELMET, CHAINMAIL_HELMET, IRON_HELMET -> 2;
-            case LEATHER_CHESTPLATE, GOLDEN_LEGGINGS, DIAMOND_HELMET, DIAMOND_BOOTS, NETHERITE_BOOTS, NETHERITE_HELMET -> 3;
-            case CHAINMAIL_LEGGINGS -> 4;
-            case GOLDEN_CHESTPLATE, CHAINMAIL_CHESTPLATE, IRON_LEGGINGS -> 5;
-            case IRON_CHESTPLATE, DIAMOND_LEGGINGS, NETHERITE_LEGGINGS -> 6;
-            case DIAMOND_CHESTPLATE, NETHERITE_CHESTPLATE -> 8;
-            default -> -1;
-        };
-    }
-
-    /**
-     * Calculates the int health value of the piece of armor. This is a helper method.
-     */
-    private static int calHealth(Material m) {
-        return switch (m) {
-            case LEATHER_HELMET, LEATHER_BOOTS, LEATHER_LEGGINGS -> 1;
-            case LEATHER_CHESTPLATE -> 2;
-            case GOLDEN_BOOTS, GOLDEN_LEGGINGS, GOLDEN_CHESTPLATE, GOLDEN_HELMET, CHAINMAIL_HELMET, CHAINMAIL_BOOTS -> 3;
-            case CHAINMAIL_LEGGINGS, CHAINMAIL_CHESTPLATE -> 4;
-            case IRON_HELMET, IRON_BOOTS -> 5;
-            case IRON_LEGGINGS -> 6;
-            case IRON_CHESTPLATE -> 7;
-            case NETHERITE_BOOTS, DIAMOND_BOOTS -> 8;
-            case NETHERITE_HELMET, DIAMOND_HELMET -> 10;
-            case NETHERITE_LEGGINGS, DIAMOND_LEGGINGS -> 12;
-            case NETHERITE_CHESTPLATE, DIAMOND_CHESTPLATE -> 30;
-            default -> -1;
-        };
-    }
-
-    /**
-     * Calculates the int armor toughness value of the piece of armor. This is a helper method.
-     */
-    private static int calToughness(Material m) {
-        return switch (m) {
-            case DIAMOND_BOOTS, DIAMOND_LEGGINGS, DIAMOND_CHESTPLATE, DIAMOND_HELMET -> 2;
-            case NETHERITE_BOOTS, NETHERITE_LEGGINGS, NETHERITE_CHESTPLATE, NETHERITE_HELMET -> 3;
-            default -> 0;
-        };
-    }
-
-    /**
-     * Calculates the double knockback resistance value of a piece of armor. This is a helper method.
-     */
-    private static double calKnockback(Material m) {
-        return switch (m) {
-            case NETHERITE_BOOTS, NETHERITE_LEGGINGS, NETHERITE_CHESTPLATE, NETHERITE_HELMET -> 0.1;
-            default -> 0;
-        };
-    }
-
-    /**
-     * Creates an AttributeModifier with a unique UUID
-     * @param a The attribute being modified.
-     * @param value The desired value.
-     * @param slot The slot this should apply to.
-     * @return The AttributeModifier with a unique UUID.
-     */
-    public static AttributeModifier attributeModifier(Attribute a, double value, EquipmentSlot slot) {
-        int mod = switch (a) { // Todo: Support additional, new attribute types.
-            case GENERIC_MAX_HEALTH -> 1;
-            case GENERIC_ARMOR -> 2;
-            case GENERIC_ARMOR_TOUGHNESS -> 3;
-            case GENERIC_ATTACK_DAMAGE -> 4;
-            case GENERIC_KNOCKBACK_RESISTANCE -> 5;
-            case GENERIC_MOVEMENT_SPEED -> 6;
-            case GENERIC_LUCK -> 7;
-            case GENERIC_JUMP_STRENGTH -> 8;
-            case GENERIC_ATTACK_SPEED -> 9;
-            case GENERIC_ATTACK_KNOCKBACK -> 10;
-            case GENERIC_FLYING_SPEED -> 11;
-            case GENERIC_FOLLOW_RANGE -> 12;
-            case ZOMBIE_SPAWN_REINFORCEMENTS -> 13;
-            default -> 0;
-        };
-        int slotN = switch (slot) {
-            case FEET -> 1;
-            case LEGS -> 2;
-            case CHEST -> 3;
-            case HEAD -> 4;
-            case HAND -> 5;
-            case OFF_HAND -> 6;
-            case BODY -> 7; // Horses and Wolves
-        };
-        return new AttributeModifier(new UUID(slotN, mod), a.toString(), value, AttributeModifier.Operation.ADD_NUMBER, slot);
     }
 
     /**
@@ -355,26 +253,6 @@ public final class ItemsManager { // todo: AttributeModifiers should now be cons
         ItemMeta meta = item.getItemMeta();
         assert meta != null;
         for (AttributeModifier a: attributes) meta.addAttributeModifier(Attribute.valueOf(a.getName()), a);
-        item.setItemMeta(meta);
-        return item;
-    }
-
-    /**
-     * Creates a leather armor item with the given dyes. It's implied that each item stack will only have one item.
-     *
-     * @param m The material for the item.
-     * @param n The name of the item.
-     * @param lines The lines of lore.
-     * @param r The red of the dye.
-     * @param g The green of the dye.
-     * @param b The blue of the dye.
-     */
-    public static ItemStack createLeatherArmor(Material m, String n, String[] lines, int r, int g, int b) {
-        if (m != Material.LEATHER_BOOTS && m != Material.LEATHER_LEGGINGS && m != Material.LEATHER_CHESTPLATE && m != Material.LEATHER_HELMET) return null;
-        ItemStack item = createItem(m, 1, n, lines);
-        LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
-        assert meta != null;
-        meta.setColor(Color.fromRGB(r, g, b));
         item.setItemMeta(meta);
         return item;
     }

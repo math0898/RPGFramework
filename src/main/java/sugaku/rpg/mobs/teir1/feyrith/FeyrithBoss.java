@@ -1,6 +1,7 @@
 package sugaku.rpg.mobs.teir1.feyrith;
 
 import io.github.math0898.rpgframework.RPGFramework;
+import io.github.math0898.utils.items.ItemBuilder;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
@@ -19,7 +20,6 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 import sugaku.rpg.framework.items.BossDrop;
-import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.items.Rarity;
 import sugaku.rpg.main;
 import sugaku.rpg.mobs.CustomMob;
@@ -120,9 +120,9 @@ public class FeyrithBoss extends CustomMob implements Listener {
         super(name, EntityType.WITHER_SKELETON, Rarity.RARE, maxHealth);
 
         setArmor(new ItemStack(Material.AIR, 0),
-                ItemsManager.createLeatherArmor(Material.LEATHER_CHESTPLATE, " ", new String[]{}, 25, 64, 255),
-                ItemsManager.createLeatherArmor(Material.LEATHER_LEGGINGS, " ", new String[]{}, 148, 161, 227),
-                ItemsManager.createLeatherArmor(Material.LEATHER_BOOTS, " ", new String[]{}, 22, 44, 156));
+                new ItemBuilder(Material.LEATHER_CHESTPLATE).setColor(new int[]{255, 25, 64, 255}).build(),
+                new ItemBuilder(Material.LEATHER_LEGGINGS).setColor(new int[]{255, 148, 161, 227}).build(),
+                new ItemBuilder(Material.LEATHER_BOOTS).setColor(new int[]{255, 22, 44, 156}).build());
     }
 
     /**
@@ -274,9 +274,9 @@ public class FeyrithBoss extends CustomMob implements Listener {
         LivingEntity entity = getEntity();
         EntityEquipment equipment = entity.getEquipment();
         assert equipment != null;
-        equipment.setChestplate(ItemsManager.createLeatherArmor(Material.LEATHER_CHESTPLATE, " ", new String[]{}, (int) (r * c), (int) (g * c), (int) (b * c)));
-        equipment.setLeggings(ItemsManager.createLeatherArmor(Material.LEATHER_LEGGINGS, " ", new String[]{}, (int) (r * l), (int) (g * l), (int) (b * l)));
-        equipment.setBoots(ItemsManager.createLeatherArmor(Material.LEATHER_BOOTS, " ", new String[]{}, (int) (r * f), (int) (g * f), (int) (b * f)));
+        equipment.setChestplate(new ItemBuilder(Material.LEATHER_CHESTPLATE).setColor(new int[]{255, (int) (r * c), (int) (g * c), (int) (b * c)}).build());
+        equipment.setLeggings(new ItemBuilder(Material.LEATHER_LEGGINGS).setColor(new int[]{255, (int) (r * l), (int) (g * l), (int) (b * l)}).build());
+        equipment.setBoots(new ItemBuilder(Material.LEATHER_BOOTS).setColor(new int[]{255, (int) (r * f), (int) (g * f), (int) (b * f)}).build());
     }
 
     /**
