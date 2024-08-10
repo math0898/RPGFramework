@@ -1,7 +1,7 @@
 package io.github.math0898.rpgframework.commands;
 
 import io.github.math0898.rpgframework.Rarity;
-import io.github.math0898.rpgframework.enemies.CustomMob;
+import io.github.math0898.rpgframework.enemies.CustomMobEntry;
 import io.github.math0898.rpgframework.enemies.MobManager;
 import io.github.math0898.utils.StringUtils;
 import io.github.math0898.utils.commands.BetterCommand;
@@ -75,7 +75,7 @@ public class DebugCommand extends BetterCommand {
                 player.getInventory().addItem(builder.build());
                 send(player, "Here's a knight helmet!");
             } else if (args[0].equalsIgnoreCase("spawnCustom")) {
-                CustomMob mob = MobManager.getInstance().getCustomMob(args[1]);
+                CustomMobEntry mob = MobManager.getInstance().getCustomMob(args[1]);
                 mob.spawn(player.getLocation());
             }
         }

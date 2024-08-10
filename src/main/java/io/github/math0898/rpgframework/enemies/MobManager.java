@@ -29,14 +29,14 @@ public class MobManager {
     /**
      * A map of the mobs by their namespace name.
      */
-    private static Map<String, CustomMob> customMobMap = new HashMap<>();
+    private static Map<String, CustomMobEntry> customMobMap = new HashMap<>();
 
     /**
      * Gets the active MobManager instance.
      *
      * @return The active MobManager instance.
      */
-    public static MobManager getInstance () {
+    public static MobManager getInstance() {
         if (instance == null) instance = new MobManager();
         return instance;
     }
@@ -44,7 +44,7 @@ public class MobManager {
     /**
      * Creates a new MobManager instance by loading and registering custom mobs.
      */
-    private MobManager () {
+    private MobManager() {
         File itemsDir = new File("./plugins/RPGFramework/mobs/");
         if (!itemsDir.exists()) {
             if (!itemsDir.mkdirs()) {
@@ -52,7 +52,7 @@ public class MobManager {
                 return;
             }
         }
-        for (String itemResources : new String[]{ "mobs/boss.yml" })
+        for (String itemResources : new String[]{"mobs/boss.yml"})
             plugin.saveResource(itemResources, true); // todo: refactor to reduce scope when adding multiple bosses and sets.
         File[] files = itemsDir.listFiles();
         if (files == null) console("Cannot find any custom mob files.", ChatColor.YELLOW);
@@ -66,7 +66,7 @@ public class MobManager {
      * @param fileName The namespace in the beginning.
      * @return The resulting namespace key.
      */
-    private String toCamelSpaceNamespace (String fileName, String key) {
+    private String toCamelSpaceNamespace(String fileName, String key) {
         String toReturn = fileName.replace(".yml", "").replace(".yaml", "") + ":";
         char[] tmp = key.toCharArray();
         tmp[0] = Character.toUpperCase(tmp[0]);
@@ -84,7 +84,7 @@ public class MobManager {
      *
      * @return The list of mobs registered with the MobManager.
      */
-    public List<String> getCustomMobNameList () {
+    public List<String> getCustomMobNameList() {
         return new ArrayList<>(customMobMap.keySet());
     }
 
@@ -94,7 +94,7 @@ public class MobManager {
      * @param name The name of the mob to get.
      * @return The CustomMob associated with the given name.
      */
-    public CustomMob getCustomMob (String name) {
+    public CustomMobEntry getCustomMob(String name) {
         return customMobMap.get(name);
     }
 
@@ -104,7 +104,7 @@ public class MobManager {
      * @param name The name of the mob to check for.
      * @return True if the mob exists.
      */
-    public boolean hasMob (String name) {
+    public boolean hasMob(String name) {
         return customMobMap.containsKey(name);
     }
 
@@ -113,16 +113,16 @@ public class MobManager {
      *
      * @param files The files to parse.
      */
-    public void parseFiles (File[] files) {
+    public void parseFiles(File[] files) {
         assert files != null;
         for (File f : files) {
             try {
                 YamlConfiguration yaml = new YamlConfiguration();
                 yaml.load(f);
                 for (String k : yaml.getKeys(false)) {
-                    CustomMob mob = null;
+                    CustomMobEntry mob = null;
                     try {
-                        mob = new CustomMob(yaml.getConfigurationSection(k)); // todo: We'll need custom implementations of CustomMob based on k.
+                        mob = new CustomMobEntry(yaml.getConfigurationSection(k)); // todo: We'll need custom implementations of CustomMob based on k.
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     }
