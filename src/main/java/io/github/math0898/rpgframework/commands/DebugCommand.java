@@ -1,6 +1,8 @@
 package io.github.math0898.rpgframework.commands;
 
 import io.github.math0898.rpgframework.Rarity;
+import io.github.math0898.rpgframework.enemies.CustomMob;
+import io.github.math0898.rpgframework.enemies.MobManager;
 import io.github.math0898.utils.StringUtils;
 import io.github.math0898.utils.commands.BetterCommand;
 import io.github.math0898.utils.items.ItemBuilder;
@@ -72,6 +74,9 @@ public class DebugCommand extends BetterCommand {
                 builder.setSkullSkinBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzM0NTJiOThhYjlhODhkMTc1N2YwMzJjMDcyYWY4MWNmYTM1ZGRiNDc5NDU4NTkxNDc4MTFiY2RjZmQ5ODcxZSJ9fX0=");
                 player.getInventory().addItem(builder.build());
                 send(player, "Here's a knight helmet!");
+            } else if (args[0].equalsIgnoreCase("spawnCustom")) {
+                CustomMob mob = MobManager.getInstance().getCustomMob(args[1]);
+                mob.spawn(player.getLocation());
             }
         }
         return true;
@@ -97,7 +102,8 @@ public class DebugCommand extends BetterCommand {
     @Override
     public List<String> simplifiedTab (CommandSender sender, String[] args) {
         List<String> toReturn = new ArrayList<>();
-        if (args.length <= 1) toReturn.addAll(Arrays.asList("reset-cooldowns", "item-details", "regex", "spawn", "rarity", "skulls"));
+        if (args.length <= 1) toReturn.addAll(Arrays.asList("reset-cooldowns", "item-details", "regex", "spawn", "rarity", "skulls", "spawnCustom"));
+        else if (args.length == 2 && args[0].equalsIgnoreCase("spawnCustom")) toReturn.addAll(MobManager.getInstance().getCustomMobNameList());
         return everythingStartsWith(toReturn, args[args.length - 1]);
     }
 }

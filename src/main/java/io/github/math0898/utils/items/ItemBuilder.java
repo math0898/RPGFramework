@@ -6,6 +6,7 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -78,6 +79,23 @@ public class ItemBuilder { // todo: AttributeModifiers should now be constructed
      */
     public ItemBuilder(Material material) {
         this.material = material;
+    }
+
+    /**
+     * Creates a new ItemBuilder using the given configuration section.
+     *
+     * @param section The configuration section to make this ItemBuilder from.
+     */
+    public ItemBuilder (ConfigurationSection section) {
+        setMaterial(Material.AIR);
+        if (section == null) return;
+        setMaterial(Material.valueOf(section.getString("material", "IRON_NUGGET")));
+        if (section.contains("color")) setColor(new int[]{255,
+                section.getInt("color.red", 0),
+                section.getInt("color.blue", 0),
+                section.getInt("color.green", 0)});
+        if (section.contains("skull.url")) setSkullSkinUrl(section.getString("skull.url"));
+        if (section.contains("skull.base64")) setSkullSkinBase64(section.getString("skull.base64"));
     }
 
     /**
@@ -205,7 +223,6 @@ public class ItemBuilder { // todo: AttributeModifiers should now be constructed
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
         if (meta == null) Bukkit.getItemFactory().getItemMeta(material);
-        assert meta != null;
         if (displayName != null) meta.setDisplayName(displayName);
         if (lore != null) meta.setLore(lore);
         if (owningPlayer != null && meta instanceof SkullMeta skull)

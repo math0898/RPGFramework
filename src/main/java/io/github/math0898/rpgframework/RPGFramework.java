@@ -2,6 +2,7 @@ package io.github.math0898.rpgframework;
 
 import io.github.math0898.rpgframework.commands.*;
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
+import io.github.math0898.rpgframework.enemies.MobManager;
 import io.github.math0898.rpgframework.hooks.HookManager;
 import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.rpgframework.parties.PartyManager;
@@ -101,6 +102,7 @@ public final class RPGFramework extends JavaPlugin implements Listener {
             console("This is non fatal error however you will not see damage numbers when you hit mobs.", ChatColor.YELLOW);
         }
         itemManager = new ItemManager();
+        MobManager.getInstance();
 
         sugaku.rpg.main.onEnable();
 

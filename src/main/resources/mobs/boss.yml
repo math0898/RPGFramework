@@ -1,0 +1,29 @@
+seignour:
+  name: "Seignour"
+  rarity: "RARE"
+  mob-type: "ZOMBIE"
+  stats:
+    health: 2000
+  equipment:
+    off-hand:
+      material: "GOLDEN_SHOVEL"
+    hand:
+      material: "WOODEN_SWORD"
+    boots:
+      material: "LEATHER_BOOTS"
+      color:
+        red: 255
+        blue: 140
+        green: 64
+    leggings:
+      material: "GOLDEN_LEGGINGS"
+    chestplate:
+      material: "LEATHER_CHESTPLATE"
+      color:
+        red: 255
+        blue: 194
+        green: 115
+    helmet:
+      material: "PLAYER_HEAD"
+      skull:
+        base64: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzM0NTJiOThhYjlhODhkMTc1N2YwMzJjMDcyYWY4MWNmYTM1ZGRiNDc5NDU4NTkxNDc4MTFiY2RjZmQ5ODcxZSJ9fX0="
