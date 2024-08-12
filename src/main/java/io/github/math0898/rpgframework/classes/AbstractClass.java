@@ -1,6 +1,6 @@
 package io.github.math0898.rpgframework.classes;
 
-import io.github.math0898.rpgframework.damage.AdvancedDamageEvent;
+import io.github.math0898.rpgframework.damage.events.AdvancedDamageEvent;
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
 import org.bukkit.Material;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;

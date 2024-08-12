@@ -1,6 +1,6 @@
 //package io.github.math0898.junitTests;
 //
-//import io.github.math0898.rpgframework.damage.AdvancedDamageEvent;
+//import io.github.math0898.rpgframework.damage.events.AdvancedDamageEvent;
 //import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
 //import io.github.math0898.rpgframework.damage.DamageResistance;
 //import io.github.math0898.rpgframework.damage.DamageType;

@@ -1,6 +1,7 @@
 package io.github.math0898.rpgframework.enemies;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -36,7 +37,7 @@ public class MobManager {
      *
      * @return The active MobManager instance.
      */
-    public static MobManager getInstance() {
+    public static MobManager getInstance () {
         if (instance == null) instance = new MobManager();
         return instance;
     }
@@ -44,7 +45,7 @@ public class MobManager {
     /**
      * Creates a new MobManager instance by loading and registering custom mobs.
      */
-    private MobManager() {
+    private MobManager () {
         File itemsDir = new File("./plugins/RPGFramework/mobs/");
         if (!itemsDir.exists()) {
             if (!itemsDir.mkdirs()) {
@@ -66,7 +67,7 @@ public class MobManager {
      * @param fileName The namespace in the beginning.
      * @return The resulting namespace key.
      */
-    private String toCamelSpaceNamespace(String fileName, String key) {
+    private String toCamelSpaceNamespace (String fileName, String key) {
         String toReturn = fileName.replace(".yml", "").replace(".yaml", "") + ":";
         char[] tmp = key.toCharArray();
         tmp[0] = Character.toUpperCase(tmp[0]);
@@ -84,7 +85,7 @@ public class MobManager {
      *
      * @return The list of mobs registered with the MobManager.
      */
-    public List<String> getCustomMobNameList() {
+    public List<String> getCustomMobNameList () {
         return new ArrayList<>(customMobMap.keySet());
     }
 
@@ -94,7 +95,7 @@ public class MobManager {
      * @param name The name of the mob to get.
      * @return The CustomMob associated with the given name.
      */
-    public CustomMobEntry getCustomMob(String name) {
+    public CustomMobEntry getCustomMob (String name) {
         return customMobMap.get(name);
     }
 
@@ -104,7 +105,7 @@ public class MobManager {
      * @param name The name of the mob to check for.
      * @return True if the mob exists.
      */
-    public boolean hasMob(String name) {
+    public boolean hasMob (String name) {
         return customMobMap.containsKey(name);
     }
 
@@ -113,7 +114,7 @@ public class MobManager {
      *
      * @param files The files to parse.
      */
-    public void parseFiles(File[] files) {
+    public void parseFiles (File[] files) {
         assert files != null;
         for (File f : files) {
             try {
@@ -121,12 +122,12 @@ public class MobManager {
                 yaml.load(f);
                 for (String k : yaml.getKeys(false)) {
                     CustomMobEntry mob = null;
+                    String goodName = toCamelSpaceNamespace(f.getName(), k);
                     try {
-                        mob = new CustomMobEntry(yaml.getConfigurationSection(k)); // todo: We'll need custom implementations of CustomMob based on k.
+                        mob = new CustomMobEntry(yaml.getConfigurationSection(k), goodName); // todo: We'll need custom implementations of CustomMob based on k.
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     }
-                    String goodName = toCamelSpaceNamespace(f.getName(), k);
                     if (mob != null) {
                         customMobMap.put(goodName, mob);
                         console("Registered mob by name: " + goodName, ChatColor.GRAY);
@@ -137,5 +138,18 @@ public class MobManager {
                 console("Failed to parse mob located at: " + f.getPath(), ChatColor.RED);
             }
         }
+    }
+
+    /**
+     * Called back to when a Mob in the MobManager dies.
+     *
+     * @param location     The location that the mob died at.
+     * @param namespaceKey The namespace key of the mob who died.
+     */
+    public void reportCustomMobDeath (Location location, String namespaceKey) {
+        CustomMobEntry entry = customMobMap.get(namespaceKey);
+        if (entry == null) return;
+        System.out.println("Death of " + namespaceKey + " at " + location + " reported!");
+        entry.handleDeath(location);
     }
 }

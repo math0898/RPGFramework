@@ -5,7 +5,7 @@ import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RPGFramework;
 import io.github.math0898.rpgframework.RpgPlayer;
 import io.github.math0898.rpgframework.classes.AbstractClass;
-import io.github.math0898.rpgframework.damage.AdvancedDamageEvent;
+import io.github.math0898.rpgframework.damage.events.AdvancedDamageEvent;
 import io.github.math0898.rpgframework.damage.DamageResistance;
 import io.github.math0898.rpgframework.damage.DamageType;
 import org.bukkit.Bukkit;

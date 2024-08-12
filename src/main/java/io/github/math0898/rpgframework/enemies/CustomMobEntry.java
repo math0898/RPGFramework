@@ -16,7 +16,7 @@ import java.util.Objects;
  *
  * @author Sugaku
  */
-public class CustomMobEntry {
+public class CustomMobEntry { // todo: Drops and xp entries. Items need to be able to be from ItemManager.
 
     /**
      * The helmet of the custom mob.
@@ -142,6 +142,16 @@ public class CustomMobEntry {
             case "SeignourBoss" -> new SeignourBoss(entity, namespaceKey);
             default -> new ActiveCustomMob(entity, namespaceKey);
         }
+    }
+
+    /**
+     * Called whenever an instance of this CustomMobEntry dies.
+     *
+     * @param location The location that the mob died at.
+     */
+    public void handleDeath (Location location) {
+        System.out.println("Handling death of " + namespaceKey + " at " + location + "!");
+        // todo: Implement!
     }
 //    /**
 //     * Handles drops of the custom mob. By default no items are dropped.

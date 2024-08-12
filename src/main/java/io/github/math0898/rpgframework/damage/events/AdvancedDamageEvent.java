@@ -1,5 +1,7 @@
-package io.github.math0898.rpgframework.damage;
+package io.github.math0898.rpgframework.damage.events;
 
+import io.github.math0898.rpgframework.damage.DamageResistance;
+import io.github.math0898.rpgframework.damage.DamageType;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageEvent;

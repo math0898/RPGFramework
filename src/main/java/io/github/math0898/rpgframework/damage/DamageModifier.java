@@ -1,5 +1,6 @@
 package io.github.math0898.rpgframework.damage;
 
+import io.github.math0898.rpgframework.damage.events.AdvancedDamageEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 

@@ -4,9 +4,14 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import eu.decentsoftware.holograms.api.DHAPI;
 import io.github.math0898.rpgframework.RPGFramework;
+import io.github.math0898.rpgframework.damage.events.AdvancedDamageEvent;
+import io.github.math0898.rpgframework.damage.events.LethalDamageEvent;
+import io.github.math0898.rpgframework.damage.events.VerifiedDeathEvent;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -44,8 +49,29 @@ public class AdvancedDamageHandler implements Listener {
 
         double damage = damageCalculation(advancedDamageEvent);
         event.setDamage(damage/5.00);
+
         if (RPGFramework.useHolographicDisplays || RPGFramework.useDecentHolograms)
             displayDamage(damage, event.getEntity().getLocation());
+
+        if (advancedDamageEvent.isCancelled()) {
+            event.setCancelled(true);
+            return;
+        }
+
+        Entity entity = event.getEntity(); // todo: Clean up.
+        event.getFinalDamage();
+        if (entity instanceof LivingEntity living)
+            if (living.getHealth() <= event.getFinalDamage()) {
+                LethalDamageEvent lethalDamageEvent = new LethalDamageEvent(advancedDamageEvent);
+                Bukkit.getPluginManager().callEvent(lethalDamageEvent);
+                if (lethalDamageEvent.isCancelled()) {
+                    event.setCancelled(true);
+                    return;
+                }
+
+                VerifiedDeathEvent verifiedDeathEvent = new VerifiedDeathEvent(advancedDamageEvent);
+                Bukkit.getPluginManager().callEvent(verifiedDeathEvent);
+            }
     }
 
     /**
