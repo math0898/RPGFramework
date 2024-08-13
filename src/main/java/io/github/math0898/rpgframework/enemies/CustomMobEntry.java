@@ -1,22 +1,27 @@
 package io.github.math0898.rpgframework.enemies;
 import io.github.math0898.rpgframework.Rarity;
+import io.github.math0898.rpgframework.enemies.instances.SeignourBoss;
 import io.github.math0898.utils.StringUtils;
 import io.github.math0898.utils.items.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * A CustomMob is a mob specific to the RPG plugin and has custom equipment, names, drops, and abilities.
  *
  * @author Sugaku
  */
-public class CustomMobEntry { // todo: Drops and xp entries. Items need to be able to be from ItemManager.
+public class CustomMobEntry {
 
     /**
      * The helmet of the custom mob.
@@ -79,6 +84,21 @@ public class CustomMobEntry { // todo: Drops and xp entries. Items need to be ab
     private final String namespaceKey;
 
     /**
+     * This is a list of items that will always drop in some number from this boss.
+     */
+    private final List<MobDrop> normalDrops = new ArrayList<>();
+
+    /**
+     * The amount of XP that this boss drops.
+     */
+    private final int xpReward;
+
+    /**
+     * This is a list where only a single item is dropped per kill.
+     */
+    private final List<MobDrop> limitedDrops = new ArrayList<>();
+
+    /**
      * Creates a new CustomMob using the given configuration section.
      *
      * @param section      The configuration section that defines this CustomMob.
@@ -98,10 +118,30 @@ public class CustomMobEntry { // todo: Drops and xp entries. Items need to be ab
         helm = new ItemBuilder(section.getConfigurationSection("equipment.helmet")).setUnbreakable(true);
         instanceClass = section.getString("instance-class-name", "default");
         this.namespaceKey = namespaceKey;
+        xpReward = section.getInt("drops.xp", 0);
+        parseDrops(section.getConfigurationSection("drops"));
+    }
+
+    /**
+     * A helpful utility method to break up parsing MobDrops from the main constructor.
+     *
+     * @param section The ConfigurationSection that defines the mob.
+     */
+    private void parseDrops (ConfigurationSection section) {
+        if (section == null) return;
+        ConfigurationSection normal = section.getConfigurationSection("normal");
+        if (normal != null)
+            for (String s : normal.getKeys(false))
+                normalDrops.add(new MobDrop(normal.getConfigurationSection(s)));
+        ConfigurationSection limited = section.getConfigurationSection("limited");
+        if (limited != null)
+            for (String s : limited.getKeys(false))
+                limitedDrops.add(new MobDrop(limited.getConfigurationSection(s)));
     }
 
     /**
      * Spawn the mob described by the CustomMob object at the given location l.
+     *
      * @param l The location the mob should be spawned at.
      */
     @SuppressWarnings("deprecation")
@@ -150,46 +190,18 @@ public class CustomMobEntry { // todo: Drops and xp entries. Items need to be ab
      * @param location The location that the mob died at.
      */
     public void handleDeath (Location location) {
-        System.out.println("Handling death of " + namespaceKey + " at " + location + "!");
-        // todo: Implement!
+        World world = location.getWorld();
+        if (world == null) return;
+        for (MobDrop drop : normalDrops)
+            world.dropItemNaturally(location, drop.getItemStack());
+        double roll = new Random().nextDouble();
+        double cumulative = 0;
+        for (MobDrop drop : limitedDrops) {
+            if (cumulative + roll >= drop.getChance()) {
+                world.dropItemNaturally(location, drop.getItemStack());
+                break;
+            }
+            cumulative += roll;
+        }
     }
-//    /**
-//     * Handles drops of the custom mob. By default no items are dropped.
-//     */
-//    public static void handleDrops(EntityDeathEvent event) {
-//        event.getDrops().clear();
-//        event.setDroppedExp(0);
-//    }
-//
-//    /**
-//     * Handles the drops of the custom mob. Uses the table of BossDrops combined with the boss's rarity to determine
-//     * what loot should drop at what rate.
-//     *
-//     * @param event The event where the entity died.
-//     * @param bossDrops The table of drops.
-//     */
-//    public static void handleDrops(EntityDeathEvent event, Object[] bossDrops, LegacyRarity rarity) {
-////        handleDrops(event);
-////        event.setDroppedExp(25 * rarity.toInt(rarity));
-////        double roll = new Random().nextDouble();
-////        double check = 0.0;
-////        for (BossDrop i: bossDrops) {
-////            if (roll < check + getRate(i.getRarity(), rarity)) { MobManager.drop(i.getItem(), event.getEntity().getLocation()); break; }
-////            else check += getRate(i.getRarity(), rarity);
-////        }
-//    }
-//
-//    private static double getRate(LegacyRarity item, LegacyRarity boss) {
-//        switch (boss) {
-//            case UNCOMMON: switch (item) {
-//                case COMMON: return 0.16;
-//                case UNCOMMON: return 0.08;
-//                case RARE: return 0.04;
-//                case LEGENDARY: return 0.02;
-//                case HEROIC: return 0.01;
-//                case MYTHIC: return 0.005;
-//            }
-//        }
-//        return 0.0;
-//    }
 }

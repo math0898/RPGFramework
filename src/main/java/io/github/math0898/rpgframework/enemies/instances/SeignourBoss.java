@@ -1,7 +1,8 @@
-package io.github.math0898.rpgframework.enemies;
+package io.github.math0898.rpgframework.enemies.instances;
 
 import io.github.math0898.rpgframework.damage.events.AdvancedDamageEvent;
 import io.github.math0898.rpgframework.damage.events.LethalDamageEvent;
+import io.github.math0898.rpgframework.enemies.ActiveCustomMob;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -11,10 +12,10 @@ import org.bukkit.event.HandlerList;
  *
  * @author Suagku
  */
-public class SeignourBoss extends ActiveCustomMob {
-
-    /**
-     * Creates a new ActiveCustomMob with the given entity instance.
+public class SeignourBoss extends ActiveCustomMob { // todo: Charge Counter attack with an AOE smash, break blocks.
+ // todo: Charge heal interrupted by attacks.
+    /** // todo: Pull players towards boss and give slowness 3 for a few seconds.
+     * Creates a new ActiveCustomMob with the given entity instance. // todo: When breaking blocks, simply drop while in town. Regenerate when in wilds.
      *
      * @param entity       The entity to attach to this specific ActiveCustomMob instance.
      * @param namespaceKey The key for the CustomMobEntry inside the MobManager.

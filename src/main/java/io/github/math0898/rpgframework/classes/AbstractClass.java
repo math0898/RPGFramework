@@ -1,8 +1,14 @@
 package io.github.math0898.rpgframework.classes;
 
+import io.github.math0898.rpgframework.RPGFramework;
 import io.github.math0898.rpgframework.damage.events.AdvancedDamageEvent;
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
+import io.github.math0898.rpgframework.damage.events.LethalDamageEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -20,7 +26,7 @@ import java.util.List;
  *
  * @author Sugaku
  */
-public abstract class AbstractClass implements Class {
+public abstract class AbstractClass implements Class, Listener {
 
     /**
      * The RpgPlayer that this AbstractClass is referencing.
@@ -44,6 +50,7 @@ public abstract class AbstractClass implements Class {
      */
     public AbstractClass (RpgPlayer p) {
         player = p;
+        Bukkit.getPluginManager().registerEvents(this, RPGFramework.getInstance());
     }
 
     /**
@@ -120,7 +127,7 @@ public abstract class AbstractClass implements Class {
     }
 
     @Deprecated
-    public void damaged (EntityDamageEvent event) {
+    public void damaged (EntityDamageEvent event) { // todo: Refactor to use AdvancedDamageEvent similar to ActiveCustomMob
         AdvancedDamageEvent advancedDamageEvent = new AdvancedDamageEvent(event);
         damaged(advancedDamageEvent);
         if (advancedDamageEvent.isCancelled()) event.setCancelled(true);
@@ -188,9 +195,21 @@ public abstract class AbstractClass implements Class {
      *
      * @return Whether a death should be respected or not.
      */
+    @Deprecated
     @Override
     public boolean onDeath () {
         return true;
+    }
+
+    /**
+     * Called whenever a lethal amount of damage would be inflicted upon the holder of this class.
+     *
+     * @param event The LethalDamageEvent to consider.
+     */
+    @EventHandler
+    public void onLethalDamage (LethalDamageEvent event) {
+        if (player != null && !player.getBukkitPlayer().isOnline())
+            HandlerList.unregisterAll(this);
     }
 
     /**

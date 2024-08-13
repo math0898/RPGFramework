@@ -30,7 +30,7 @@ public class MobManager {
     /**
      * A map of the mobs by their namespace name.
      */
-    private static Map<String, CustomMobEntry> customMobMap = new HashMap<>();
+    private static final Map<String, CustomMobEntry> customMobMap = new HashMap<>();
 
     /**
      * Gets the active MobManager instance.
