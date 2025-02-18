@@ -24,7 +24,7 @@ legacy-spawn:
       - §7water will cause you to get struck
       - §7by lighting.
 
-lore:
+lore-legacy:
   type: WHEAT
   amount: 1
   meta:
@@ -36,6 +36,20 @@ lore:
       - §7this noble, §aKrusk §7was given the
       - §7fairly easy task of defending
       - §7farmers from stray beasts.
+
+lore:
+  material: "WHEAT"
+  name: "Krusk's Lore"
+  rarity: "RARE"
+  slot: "ARTIFACT"
+  stats:
+    damage: 10
+  description:
+    - "#53C975Krusk #CCCCCCwas a general for a small"
+    - "time noble named #F454DAKairon. #CCCCCCFor"
+    - "this noble, #53C975Krusk was given the"
+    - "fairly easy task of defending"
+    - "farmers from stray beasts."
 
 krusk-axe:
   material: "IRON_AXE"

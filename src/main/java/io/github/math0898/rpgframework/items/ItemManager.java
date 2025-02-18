@@ -40,8 +40,8 @@ public class ItemManager {
 
     /**
      * Creates a new ItemManager.
-     */ // todo: Refactor to singleton design pattern.
-    public ItemManager () {
+     */
+    private ItemManager () {
         File itemsDir = new File("./plugins/RPGFramework/items/");
         if (!itemsDir.exists()) {
             if (!itemsDir.mkdirs()) {

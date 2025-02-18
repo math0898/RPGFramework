@@ -101,7 +101,7 @@ public final class RPGFramework extends JavaPlugin implements Listener {
             console("Holographic Displays nor Decent Holograms was not found.", ChatColor.YELLOW);
             console("This is non fatal error however you will not see damage numbers when you hit mobs.", ChatColor.YELLOW);
         }
-        itemManager = new ItemManager();
+        itemManager = ItemManager.getInstance();
         MobManager.getInstance();
 
         sugaku.rpg.main.onEnable();

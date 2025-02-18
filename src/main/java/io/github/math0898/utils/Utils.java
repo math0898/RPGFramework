@@ -1,7 +1,10 @@
 package io.github.math0898.utils;
 
 import io.github.math0898.rpgframework.RPGFramework;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.logging.Level;
 
 /**
  * Substitutes for the main JavaPlugin class when concerned with utils classes and objects.
@@ -11,11 +14,53 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Utils {
 
     /**
+     * Reference to the plugin that this Utils package is added to.
+     */
+    private static final JavaPlugin plugin = RPGFramework.getInstance();
+
+    /**
      * Accessor method to get the plugin in use.
      *
      * @return The active plugin.
      */
     public static JavaPlugin getPlugin () {
-        return RPGFramework.getInstance();
+        return plugin;
+    }
+
+    /**
+     * This method sends a message to the console and infers the level it should be sent at.
+     *
+     * @param message The message to send to the console.
+     * @param color   The main color of the message being sent.
+     */
+    public static void console (String message, ChatColor color) {
+        switch (color) {
+            case RED -> console(message, color, Level.SEVERE);
+            case YELLOW -> console(message, color, Level.WARNING);
+            default -> console(message, color, Level.INFO);
+        }
+    }
+
+    /**
+     * This method sends a message to the console and infers the level it should be sent at.
+     *
+     * @param message The message to send to the console.
+     * @param lvl     The level that the message should be sent at.
+     */
+    public static void console (String message, Level lvl) {
+        if (lvl.equals(Level.SEVERE)) console(message, ChatColor.RED, lvl);
+        else if (lvl.equals(Level.WARNING)) console(message, ChatColor.YELLOW, lvl);
+        else console(message, ChatColor.GRAY, Level.INFO);
+    }
+
+    /**
+     * This method sends a message to the console.
+     *
+     * @param message The message to send to the console.
+     * @param color   The main color of the message being sent.
+     * @param lvl     The level that the message should be sent at.
+     */
+    public static void console (String message, ChatColor color, Level lvl) {
+        plugin.getLogger().log(lvl, color + message);
     }
 }
