@@ -83,7 +83,7 @@ public abstract class PageableGUI implements GUI {
     }
 
     /**
-     * Loads the given page index. Contains items (n * 27) -> (n * 27) + 27. Does do bounds checking!
+     * Loads the given page index. Contains items (n * 27) -> (n * 27) + 26. Does do bounds checking!
      *
      * @param inv The inventory to fill with this page.
      * @param n   The page index to load.

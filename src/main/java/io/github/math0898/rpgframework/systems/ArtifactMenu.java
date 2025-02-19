@@ -1,6 +1,7 @@
 package io.github.math0898.rpgframework.systems;
 
 import io.github.math0898.utils.gui.PageableGUI;
+import io.github.math0898.utils.gui.PersonalizedPageableGUI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
@@ -10,14 +11,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
  *
  * @author Sugaku
  */
-public class ArtifactMenu extends PageableGUI { // todo: PageableGUI is currently implemented to have 1 list of items per instance.
-                                                //       For this case we need it to be per player.
+public class ArtifactMenu extends PersonalizedPageableGUI {
+
     /**
      * Creates a new PageableGUI with the given name.
      */
     public ArtifactMenu () {
         super("Artifacts");
-        setItems(); // todo: Implement here.
     }
 
     /**
@@ -26,7 +26,7 @@ public class ArtifactMenu extends PageableGUI { // todo: PageableGUI is currentl
      * @param player The player to open the GUI to.
      */
     @Override
-    public void openInventory (Player player) {
+    public void openInventory (Player player) { // todo: Query ItemManager and RPGPlayer.
         super.openInventory(player);
     }
 
