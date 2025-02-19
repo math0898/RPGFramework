@@ -5,6 +5,7 @@ plugins {
 
 group = 'io.github.math0898'
 version = '2.1.1'
+var filename = "RPGFramework.jar"
 
 repositories {
     mavenCentral()
@@ -53,6 +54,10 @@ tasks.withType(JavaCompile).configureEach {
     }
 }
 
+jar {
+    archiveFileName = filename;
+}
+
 processResources {
     def props = [version: version]
     inputs.properties props
@@ -69,7 +74,7 @@ task testLocal() {
     doLast {
         exec {
             ignoreExitValue = true
-            commandLine "./test_local.sh"
+            commandLine "./test_local.sh", filename;
         }
     }
 }
@@ -81,7 +86,7 @@ task publishServer() {
     doLast {
         exec {
             ignoreExitValue = true
-            commandLine "./publish_server.sh"
+            commandLine "./publish_server.sh", filename
         }
     }
 }
