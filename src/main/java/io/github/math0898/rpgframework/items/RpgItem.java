@@ -5,6 +5,7 @@ import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.utils.StringUtils;
 import io.github.math0898.utils.items.ItemBuilder;
 import io.github.math0898.utils.items.ItemParser;
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,7 +24,7 @@ import java.util.logging.Logger;
  * @author Sugaku
  */
 public class RpgItem {
-// todo: Create accessors for many of the static fields of this record, including Health, Slot, Damage, etc.
+
     /**
      * A generated ItemStack representation of this RpgItem.
      */
@@ -46,7 +47,12 @@ public class RpgItem {
 
     /**
      * The slot that this ItemStack should be equipped in.
+     * -- GETTER --
+     * Accessor method for the slot that this equipment belongs in.
+     *
+     * @return The EquipmentSlot this equipment can be equipped in.
      */
+    @Getter
     private final EquipmentSlots slot;
 
     /**
@@ -56,27 +62,52 @@ public class RpgItem {
 
     /**
      * The amount of health this ItemStack gives.
+     * -- GETTER --
+     * Accessor method for the amount of health added onto the player by equipping this item.
+     *
+     * @return This item's health stat.
      */
+    @Getter
     private final int health;
 
     /**
      * The amount of damage this ItemStack gives.
+     * -- GETTER --
+     * Accessor method for the damage increase awarded by this item.
+     *
+     * @return The item's damage stat.
      */
+    @Getter
     private final int damage;
 
     /**
      * The amount of armor that this ItemStack gives.
+     * -- GETTER --
+     * Accessor method for the amount of armor increase awarded by this item.
+     *
+     * @return The item's armor stat.
      */
+    @Getter
     private final double armor;
 
     /**
      * The amount of armor toughness that this ItemStack gives.
+     * -- GETTER --
+     * Accessor method for toughness stat on this item.
+     *
+     * @return The item's toughness.
      */
+    @Getter
     private final double toughness;
 
     /**
      * The amount of attack speed that this ItemStack has.
+     * -- GETTER --
+     * Accessor method for the attack speed of this item.
+     *
+     * @return The item's attack speed.
      */
+    @Getter
     private final double attackSpeed;
 
     /**
@@ -86,12 +117,22 @@ public class RpgItem {
 
     /**
      * The armor type of this RpgItem.
+     * -- GETTER --
+     * Accessor method for the armor equipment type of this item.
+     *
+     * @return The item's armor typing.
      */
+    @Getter
     private final ArmorTypes armorType;
 
     /**
      * The weapon type of this RpgItem.
+     * -- GETTER --
+     * Accessor method for the weapon typing.
+     *
+     * @return The item's weapon typing.
      */
+    @Getter
     private final WeaponType weaponType;
 
     /**

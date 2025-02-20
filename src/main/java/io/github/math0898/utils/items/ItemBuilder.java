@@ -223,6 +223,7 @@ public class ItemBuilder { // todo: AttributeModifiers should now be constructed
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
         if (meta == null) Bukkit.getItemFactory().getItemMeta(material);
+        assert meta != null;
         if (displayName != null) meta.setDisplayName(displayName);
         if (lore != null) meta.setLore(lore);
         if (owningPlayer != null && meta instanceof SkullMeta skull)
@@ -259,7 +260,7 @@ public class ItemBuilder { // todo: AttributeModifiers should now be constructed
      * @return The AttributeModifier with a unique UUID.
      */
     private AttributeModifier attributeModifier (Attribute a, double value, EquipmentSlot slot) {
-        int mod = switch (a) { // Todo: Support additional, new attribute types.
+        int mod = switch (a) { // Todo: Support additional, new attribute types, refactor to utilize AttributeBuilder.
             case GENERIC_MAX_HEALTH -> 1;
             case GENERIC_ARMOR -> 2;
             case GENERIC_ARMOR_TOUGHNESS -> 3;

@@ -3,6 +3,7 @@ package io.github.math0898.rpgframework.commands;
 import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.rpgframework.enemies.CustomMobEntry;
 import io.github.math0898.rpgframework.enemies.MobManager;
+import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.utils.StringUtils;
 import io.github.math0898.utils.commands.BetterCommand;
 import io.github.math0898.utils.items.ItemBuilder;
@@ -77,6 +78,11 @@ public class DebugCommand extends BetterCommand {
             } else if (args[0].equalsIgnoreCase("spawnCustom")) {
                 CustomMobEntry mob = MobManager.getInstance().getCustomMob(args[1]);
                 mob.spawn(player.getLocation());
+                send(player, "Custom mob spawned!");
+            } else if (args[0].equalsIgnoreCase("collect-item")) {
+                io.github.math0898.rpgframework.RpgPlayer rpgPlayer = io.github.math0898.rpgframework.PlayerManager.getPlayer(player.getUniqueId());
+                rpgPlayer.addCollectedArtifacts(List.of(args[1]));
+                send(player, "Collected " + args[1] + "!");
             }
         }
         return true;
@@ -102,8 +108,9 @@ public class DebugCommand extends BetterCommand {
     @Override
     public List<String> simplifiedTab (CommandSender sender, String[] args) {
         List<String> toReturn = new ArrayList<>();
-        if (args.length <= 1) toReturn.addAll(Arrays.asList("reset-cooldowns", "item-details", "regex", "spawn", "rarity", "skulls", "spawnCustom"));
+        if (args.length <= 1) toReturn.addAll(Arrays.asList("reset-cooldowns", "collect-item", "item-details", "regex", "spawn", "rarity", "skulls", "spawnCustom"));
         else if (args.length == 2 && args[0].equalsIgnoreCase("spawnCustom")) toReturn.addAll(MobManager.getInstance().getCustomMobNameList());
+        else if (args.length == 2 && args[0].equalsIgnoreCase("collect-item")) toReturn.addAll(ItemManager.getInstance().getItemNames());
         return everythingStartsWith(toReturn, args[args.length - 1]);
     }
 }

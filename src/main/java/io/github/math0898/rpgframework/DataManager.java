@@ -94,7 +94,6 @@ public class DataManager {
                 for (String s : collectedArtifacts)
                     console(" > " + s);
                 player.addCollectedArtifacts(collectedArtifacts);
-                player.refresh();
                 console("Loaded.", ChatColor.GREEN);
             } catch (Exception exception) {
                 console("Failed to load data for " + player.getName() + ": " + exception.getMessage());

@@ -129,10 +129,20 @@ public class ItemManager {
      * Accessor method for items by the given name.
      *
      * @param name The name of the item to get.
+     * @return The ItemStack of the RpgItem associated with the given name.
+     */
+    public ItemStack getItem (String name) {
+        return rpgItems.get(name).getItemStack();
+    }
+
+    /**
+     * Accessor method for RPGItems by the given name.
+     *
+     * @param name The name of the item to get.
      * @return The RpgItem associated with the given name.
      */
-    public ItemStack getItem (String name) { // todo: Add accessor for RPGItems.
-        return rpgItems.get(name).getItemStack();
+    public RpgItem getRpgItem (String name) {
+        return rpgItems.get(name);
     }
 
     /**

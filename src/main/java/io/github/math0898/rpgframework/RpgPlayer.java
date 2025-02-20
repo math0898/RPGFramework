@@ -1,8 +1,10 @@
 package io.github.math0898.rpgframework;
 
+import io.github.math0898.rpgframework.items.EquipmentSlots;
 import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.rpgframework.items.RpgItem;
 import io.github.math0898.rpgframework.parties.Party;
+import io.github.math0898.utils.items.AttributeBuilder;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import io.github.math0898.rpgframework.classes.Classes;
+import sugaku.rpg.framework.players.PlayerManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +82,7 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
      */
     public void addCollectedArtifacts (List<String> collection) {
         artifactCollection.addAll(collection);
+        refresh();
     }
 
     /**
@@ -86,12 +90,50 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
      * the player to full.
      */
     public void refresh () {
+        Player player = getBukkitPlayer();
         if (!artifactCollection.isEmpty()) {
             ItemManager itemManager = ItemManager.getInstance();
+            double healthMod = 0;
+            double damageMod = 0;
+            double armorMod = 0;
+            double toughnessMod = 0;
+            double attackSpeedMod = 0;
             for (String a : artifactCollection) {
-//                RpgItem item = itemManager.(a);
-                // todo: Grab the RPG item and apply attribute modifiers to the base Player entity.
+                RpgItem item = itemManager.getRpgItem(a);
+                if (item.getSlot() != EquipmentSlots.ARTIFACT) continue;
+                healthMod += item.getHealth();
+                damageMod += item.getDamage();
+                armorMod += item.getArmor();
+                toughnessMod += item.getToughness();
+                attackSpeedMod += item.getAttackSpeed();
             }
+            AttributeInstance healthInstance = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+            AttributeInstance damageInstance = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+            AttributeInstance armorInstance = player.getAttribute(Attribute.GENERIC_ARMOR);
+            AttributeInstance attackSpeed = player.getAttribute(Attribute.GENERIC_ATTACK_SPEED);
+            AttributeInstance toughnessInstance = player.getAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS);
+            if (healthMod != 0 && healthInstance != null) {
+                healthInstance.removeModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_MAX_HEALTH, healthMod / 5.0, null));
+                healthInstance.addModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_MAX_HEALTH, healthMod / 5.0, null));
+            }
+            if (damageMod != 0 && damageInstance != null) { // todo: Requires more testing damage might be bugged or interacting funny.
+                damageInstance.removeModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, damageMod / 5.0, null));
+                damageInstance.addModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, damageMod / 5.0, null));
+            }
+            if (armorMod != 0 && armorInstance != null) {
+                armorInstance.removeModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_ARMOR, armorMod, null));
+                armorInstance.addModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_ARMOR, armorMod, null));
+            }
+            if (attackSpeedMod != 0 && attackSpeed != null) {
+                attackSpeed.removeModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_ATTACK_SPEED, attackSpeedMod, null));
+                attackSpeed.addModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_ATTACK_SPEED, attackSpeedMod, null));
+            }
+            if (toughnessMod != 0 && toughnessInstance != null) {
+                toughnessInstance.removeModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessMod, null));
+                toughnessInstance.addModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessMod, null));
+            }
+            player.setHealthScale(20);
+            PlayerManager.scaleRegen(player, 1);
         }
         heal();
     }
