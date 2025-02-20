@@ -43,3 +43,6 @@ commands:
   rpg-debug:
     description: "A debugging command used to help debug the complicated RPG plugin."
     permission: "rpg.admin"
+  artifact:
+    description: "Command for accessing a player's artifact collection."
+    permission: "rpg.artifact"

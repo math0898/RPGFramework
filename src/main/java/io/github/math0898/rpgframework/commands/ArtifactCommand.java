@@ -6,12 +6,9 @@ import io.github.math0898.utils.gui.GUIManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import sugaku.rpg.framework.menus.Menu;
 
 import java.util.List;
 
-import static sugaku.rpg.main.plugin;
 
 /**
  * The ArtifactCommand is used by players in order to open and check their current artifacts.

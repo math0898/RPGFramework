@@ -55,8 +55,8 @@ public abstract class PageableGUI implements GUI {
         Inventory inv = Bukkit.createInventory(player, 45, getTitle());
         inv.setItem(36, new ItemBuilder(Material.ARROW).setDisplayName(ChatColor.GRAY + "Previous Page").build());
         inv.setItem(44, new ItemBuilder(Material.ARROW).setDisplayName(ChatColor.GRAY + "Next Page").build());
-        loadPage(inv, 0);
         player.openInventory(inv);
+        loadPage(inv, 0);
     }
 
     /**
