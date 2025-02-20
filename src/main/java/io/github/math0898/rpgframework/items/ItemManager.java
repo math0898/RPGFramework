@@ -131,7 +131,7 @@ public class ItemManager {
      * @param name The name of the item to get.
      * @return The RpgItem associated with the given name.
      */
-    public ItemStack getItem (String name) {
+    public ItemStack getItem (String name) { // todo: Add accessor for RPGItems.
         return rpgItems.get(name).getItemStack();
     }
 

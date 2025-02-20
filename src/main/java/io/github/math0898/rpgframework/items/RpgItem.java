@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * @author Sugaku
  */
 public class RpgItem {
-
+// todo: Create accessors for many of the static fields of this record, including Health, Slot, Damage, etc.
     /**
      * A generated ItemStack representation of this RpgItem.
      */

@@ -1,7 +1,6 @@
 package io.github.math0898.rpgframework.systems;
 
 import io.github.math0898.rpgframework.items.ItemManager;
-import io.github.math0898.utils.gui.PageableGUI;
 import io.github.math0898.utils.gui.PersonalizedPageableGUI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;

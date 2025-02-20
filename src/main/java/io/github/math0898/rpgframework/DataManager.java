@@ -1,6 +1,5 @@
 package io.github.math0898.rpgframework;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -10,7 +9,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
+
+import static io.github.math0898.utils.Utils.*;
 
 /**
  * The DataManager wrangles, loads, saves, and manages player data on the disk. This includes but is not limited to exp,
@@ -19,26 +21,6 @@ import java.util.UUID;
  * @author Sugaku
  */
 public class DataManager {
-
-    /**
-     * Prints the given string into console as ChatColor.GRAY.
-     *
-     * @param message The message to be sent to console
-     */
-    @Deprecated
-    private void console (String message) {
-        console(message, ChatColor.GRAY);
-    }
-
-    /**
-     * Prints the given string into console with the given coloring.
-     * @param message The message be the sent to console
-     * @param color The color the message should be in
-     */
-    @Deprecated
-    private void console (String message, ChatColor color) {
-        Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] [" + ChatColor.LIGHT_PURPLE + "IO" + ChatColor.DARK_GRAY + "] " + color + message);
-    }
 
     /**
      * The active DataManager instance.
@@ -107,6 +89,12 @@ public class DataManager {
                 console("Class: " + classString);
                 // todo: This should use the new RpgPlayer objects.
                 sugaku.rpg.framework.players.PlayerManager.getPlayer(player.getUuid()).joinClass(Classes.fromString(classString));
+                List<String> collectedArtifacts = yaml.getStringList("artifacts");
+                console("Artifacts: "); // todo: Add setter to RPGPlayer.
+                for (String s : collectedArtifacts)
+                    console(" > " + s);
+                player.addCollectedArtifacts(collectedArtifacts);
+                player.refresh();
                 console("Loaded.", ChatColor.GREEN);
             } catch (Exception exception) {
                 console("Failed to load data for " + player.getName() + ": " + exception.getMessage());
@@ -143,12 +131,17 @@ public class DataManager {
         if (player == null) return;
         console("Saving data for " + player.getName() + ".");
         YamlConfiguration toSave = new YamlConfiguration();
-        console("Version: 2.0");
-        toSave.set("version", "2.0");
+        console("Version: 2.1");
+        toSave.set("version", "2.1");
         // todo: Use new RpgPlayer object.
         String classString = sugaku.rpg.framework.players.PlayerManager.getPlayer(player.getUuid()).getCombatClass().toString();
         console("Class: " + classString);
         toSave.set("class", classString);
+        List<String> collectedArtifacts = player.getArtifactCollection();
+        console("Artifacts: ");
+        for (String s : collectedArtifacts)
+            console(" > " + s);
+        toSave.set("artifacts", collectedArtifacts);
         try {
             File file = new File("./plugins/RPG/PlayerData/" + player.getUuid());
             if (file.exists()) file.delete();

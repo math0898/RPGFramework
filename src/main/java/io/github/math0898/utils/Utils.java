@@ -1,6 +1,7 @@
 package io.github.math0898.utils;
 
 import io.github.math0898.rpgframework.RPGFramework;
+import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -11,20 +12,25 @@ import java.util.logging.Level;
  *
  * @author Sugaku
  */
-public class Utils {
+public class Utils { // todo: Add loggers and logging styles system. (I want to be able to send to ConsoleSender using ChatColors and a predefined prefix per system.)
 
     /**
      * Reference to the plugin that this Utils package is added to.
-     */
-    private static final JavaPlugin plugin = RPGFramework.getInstance();
-
-    /**
-     * Accessor method to get the plugin in use.
+     * -- GETTER --
+     *  Accessor method to get the plugin in use.
      *
      * @return The active plugin.
      */
-    public static JavaPlugin getPlugin () {
-        return plugin;
+    @Getter
+    private static final JavaPlugin plugin = RPGFramework.getInstance();
+
+    /**
+     * This method sends a message to the console assuming the message to simply be informational.
+     *
+     * @param message The message to send to the console.
+     */
+    public static void console (String message) {
+        console(message, ChatColor.GRAY, Level.INFO);
     }
 
     /**

@@ -1,6 +1,9 @@
 package io.github.math0898.rpgframework;
 
+import io.github.math0898.rpgframework.items.ItemManager;
+import io.github.math0898.rpgframework.items.RpgItem;
 import io.github.math0898.rpgframework.parties.Party;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -29,19 +32,34 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
     private static final String MESSAGE_PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY;
 
     /**
+     * A list of artifacts that have been collected by this player.
+     * -- GETTER --
+     *  Accessor method for the artifact collection of this player.
+     *
+     * @return The artifact collection.
+     */
+    @Getter
+    private final List<String> artifactCollection = new ArrayList<>();
+
+    /**
      * Default constructor for an RpgPlayer construct just requiring an uuid.
      *
      * @param p The player this construct points to.
      */
-    public RpgPlayer(Player p) throws NullPointerException {
+    public RpgPlayer (Player p) {
         this.uuid = p.getUniqueId();
         this.name = p.getName();
-        refresh(p);
+        refresh();
     }
 
     /**
      * Uuid of the player this construct points to.
+     * -- GETTER --
+     *  Returns the uuid of the player this construct points to.
+     *
+     * @return The uuid of the player.
      */
+    @Getter
     private final UUID uuid;
 
     private final String name;
@@ -55,16 +73,27 @@ public class RpgPlayer { // todo Needs updating for the new framework. Copied fr
 //    private Class classObject = new None(Bukkit.getPlayer(uuid));
 
     /**
-     * Returns the uuid of the player this construct points to.
-     * @return The uuid of the player.
+     * Adds a list of artifacts to the list that this Player has already completed.
+     *
+     * @param collection The artifacts to tag onto the list.
      */
-    public UUID getUuid() { return uuid; }
+    public void addCollectedArtifacts (List<String> collection) {
+        artifactCollection.addAll(collection);
+    }
 
     /**
-     * Refreshes the player's stats.
+     * The refresh method recalculates artifact bonuses given to the player, reapplies the attributes bonuses, and heals
+     * the player to full.
      */
-    public void refresh(Player p) throws NullPointerException {
-        p.setHealth(Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue());
+    public void refresh () {
+        if (!artifactCollection.isEmpty()) {
+            ItemManager itemManager = ItemManager.getInstance();
+            for (String a : artifactCollection) {
+//                RpgItem item = itemManager.(a);
+                // todo: Grab the RPG item and apply attribute modifiers to the base Player entity.
+            }
+        }
+        heal();
     }
 
     /**
