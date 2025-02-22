@@ -1,10 +1,14 @@
 package io.github.math0898.rpgframework.systems;
 
+import io.github.math0898.rpgframework.PlayerManager;
+import io.github.math0898.rpgframework.RpgPlayer;
 import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.utils.gui.PersonalizedPageableGUI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 /**
  * The ArtifactMenu displays all artifacts to players. In the case where a player has obtained a specific artifact we
@@ -27,9 +31,15 @@ public class ArtifactMenu extends PersonalizedPageableGUI {
      * @param player The player to open the GUI to.
      */
     @Override
-    public void openInventory (Player player) { // todo: Query ItemManager and RPGPlayer.
+    public void openInventory (Player player) {
         ItemManager itemManager = ItemManager.getInstance();
-        ItemStack[] items = new ItemStack[]{ itemManager.getItem("gods:InosAspectI") };
+        RpgPlayer rpgPlayer = PlayerManager.getPlayer(player.getUniqueId());
+        if (rpgPlayer == null) return;
+        List<String> collection = rpgPlayer.getArtifactCollection();
+        if (collection == null) collection = List.of();
+        ItemStack[] items = new ItemStack[collection.size()];
+        for (int i = 0; i < items.length; i++)
+            items[i] = itemManager.getItem(collection.get(i));
         super.openInventory(player, items);
     }
 

@@ -136,6 +136,20 @@ public class ItemManager {
     }
 
     /**
+     * Attempts to find an RpgItem that matches the given ItemStack. This is a relatively expensive method that should
+     * be run infrequently and with consideration.
+     *
+     * @param item The ItemStack that is the result from the RpgItem we're locating.
+     * @return Null if no item found, otherwise the located item id.
+     */
+    public String findRpgItem (ItemStack item) {
+        for (String k : rpgItems.keySet())
+            if (rpgItems.get(k).getItemStack().isSimilar(item))
+                return k;
+        return null;
+    }
+
+    /**
      * Accessor method for RPGItems by the given name.
      *
      * @param name The name of the item to get.

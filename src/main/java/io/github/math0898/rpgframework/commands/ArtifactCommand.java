@@ -1,12 +1,21 @@
 package io.github.math0898.rpgframework.commands;
 
+import io.github.math0898.rpgframework.PlayerManager;
+import io.github.math0898.rpgframework.RpgPlayer;
+import io.github.math0898.rpgframework.items.EquipmentSlots;
+import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.rpgframework.systems.ArtifactMenu;
+import io.github.math0898.utils.Utils;
 import io.github.math0898.utils.commands.BetterCommand;
 import io.github.math0898.utils.gui.GUIManager;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,7 +41,44 @@ public class ArtifactCommand extends BetterCommand {
      * @param args   The arguments they passed to the command.
      */
     @Override
-    public boolean onPlayerCommand (Player player, String[] args) {
+    public boolean onPlayerCommand (Player player, String[] args) { // todo: Simplify and refactor.
+        if (args.length > 0)
+            if (args[0].equalsIgnoreCase("collect")) {
+                ItemStack item = null;
+                EntityEquipment equipment = player.getEquipment();
+                if (equipment != null) item = equipment.getItemInMainHand();
+                if (item == null) {
+                    send(player, ChatColor.RED + "Are you holding anything?");
+                    return true;
+                }
+
+                String rpgItemId = ItemManager.getInstance().findRpgItem(item);
+                if (rpgItemId == null) {
+                    send(player, ChatColor.RED + "That isn't an RPG item.");
+                    return true;
+                }
+                if (ItemManager.getInstance().getRpgItem(rpgItemId).getSlot() != EquipmentSlots.ARTIFACT) {
+                    send(player, ChatColor.RED + "That doesn't belong in an artifact equipment slot!");
+                    return true;
+                }
+
+                RpgPlayer rpgPlayer = PlayerManager.getPlayer(player.getUniqueId());
+                if (rpgPlayer == null) {
+                    send(player, ChatColor.RED + "A serious bug has occurred, contact an admin.");
+                    Utils.console(player.getName() + " has no RpgPlayer object.", ChatColor.RED);
+                    return true;
+                }
+                if (rpgPlayer.getArtifactCollection().contains(rpgItemId)) {
+                    send(player, ChatColor.YELLOW + "You've already collected that artifact.");
+                    return true;
+                }
+
+                rpgPlayer.addCollectedArtifacts(List.of(rpgItemId));
+                player.getInventory().remove(item);
+                send(player, ChatColor.GREEN + "Item collected!");
+                player.playSound(player, Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.5f, 1.0f);
+                return true;
+            }
         GUIManager.getInstance().openGUI("Artifacts", player);
         return true;
     }
@@ -57,6 +103,9 @@ public class ArtifactCommand extends BetterCommand {
      */
     @Override
     public List<String> simplifiedTab (CommandSender sender, String[] args) {
-        return List.of();
+        List<String> toReturn = new ArrayList<>();
+        if (sender.hasPermission("rpg.artifact") && args.length < 2)
+            toReturn.add("collect");
+        return everythingStartsWith(toReturn, args[args.length - 1]);
     }
 }

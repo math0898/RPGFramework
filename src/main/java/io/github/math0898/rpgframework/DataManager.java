@@ -90,7 +90,7 @@ public class DataManager {
                 // todo: This should use the new RpgPlayer objects.
                 sugaku.rpg.framework.players.PlayerManager.getPlayer(player.getUuid()).joinClass(Classes.fromString(classString));
                 List<String> collectedArtifacts = yaml.getStringList("artifacts");
-                console("Artifacts: "); // todo: Add setter to RPGPlayer.
+                console("Artifacts: ");
                 for (String s : collectedArtifacts)
                     console(" > " + s);
                 player.addCollectedArtifacts(collectedArtifacts);
