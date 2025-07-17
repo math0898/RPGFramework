@@ -1,12 +1,14 @@
 package io.github.math0898.rpgframework.commands;
 
 import io.github.math0898.rpgframework.Rarity;
+import io.github.math0898.rpgframework.dungeons.DungeonManager;
 import io.github.math0898.rpgframework.enemies.CustomMobEntry;
 import io.github.math0898.rpgframework.enemies.MobManager;
 import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.utils.StringUtils;
 import io.github.math0898.utils.commands.BetterCommand;
 import io.github.math0898.utils.items.ItemBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -83,6 +85,11 @@ public class DebugCommand extends BetterCommand {
                 io.github.math0898.rpgframework.RpgPlayer rpgPlayer = io.github.math0898.rpgframework.PlayerManager.getPlayer(player.getUniqueId());
                 rpgPlayer.addCollectedArtifacts(List.of(args[1]));
                 send(player, "Collected " + args[1] + "!");
+            } else if (args[0].equalsIgnoreCase("dungeon")) {
+                io.github.math0898.rpgframework.RpgPlayer rpgPlayer = io.github.math0898.rpgframework.PlayerManager.getPlayer(player.getUniqueId());
+                if (args.length >= 2) rpgPlayer = io.github.math0898.rpgframework.PlayerManager.getPlayer(args[1]);
+                send(player, "Attempted to start dungeon for " + rpgPlayer.getName() + "!");
+                DungeonManager.getInstance().joinDungeon(rpgPlayer);
             }
         }
         return true;
@@ -108,9 +115,14 @@ public class DebugCommand extends BetterCommand {
     @Override
     public List<String> simplifiedTab (CommandSender sender, String[] args) {
         List<String> toReturn = new ArrayList<>();
-        if (args.length <= 1) toReturn.addAll(Arrays.asList("reset-cooldowns", "collect-item", "item-details", "regex", "spawn", "rarity", "skulls", "spawnCustom"));
+        if (args.length <= 1) toReturn.addAll(Arrays.asList("reset-cooldowns", "collect-item", "item-details", "regex", "spawn", "rarity", "skulls", "spawnCustom", "dungeon"));
         else if (args.length == 2 && args[0].equalsIgnoreCase("spawnCustom")) toReturn.addAll(MobManager.getInstance().getCustomMobNameList());
         else if (args.length == 2 && args[0].equalsIgnoreCase("collect-item")) toReturn.addAll(ItemManager.getInstance().getItemNames());
+        else if (args.length == 2 && args[0].equalsIgnoreCase("dungeon")) {
+            List<String> playerNames = new ArrayList<>();
+            for (Player p : Bukkit.getOnlinePlayers()) playerNames.add(p.getName());
+            toReturn.addAll(playerNames);
+        }
         return everythingStartsWith(toReturn, args[args.length - 1]);
     }
 }
