@@ -35,5 +35,14 @@ public class DungeonManager {
      */
     public void joinDungeon (RpgPlayer rpgPlayer) {
         // todo: Implement.
+        // generateDungeon(DungeonTileset);
+        // DungeonTileset.generateStartingRoom(callback?); // --> Teleport Players to Waiting Room
+        // DungeonTileset.generateDungeon(Golden Path Length, Spread Probability, Max Rooms, callback?);
+        // unlockDungeon(); // todo: Do we need a specific object to keep track of an active dungeon?
+
+        // Listen for deaths
+        // Spawn mobs/bosses
+        // Unlock doors
+        // IN_FUTURE: apply boons
     }
 }
