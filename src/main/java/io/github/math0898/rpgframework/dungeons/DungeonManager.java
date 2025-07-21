@@ -6,9 +6,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static io.github.math0898.rpgframework.RPGFramework.console;
+import static io.github.math0898.rpgframework.RPGFramework.plugin;
 
 /**
  * The dungeon manager handles moving players to and from their dungeons. This includes win detection and dungeon
@@ -26,21 +30,30 @@ public class DungeonManager {
     /**
      * A list of DungeonTilesets that are known to this DungeonMaster.
      */
-    private final List<DungeonTileset> dungeonTilesets;
+    private final List<DungeonTileset> dungeonTilesets = new ArrayList<>();
 
     /**
      * A list of active dungeons.
      */
-    private final List<Dungeon> dungeons;
+    private final List<Dungeon> dungeons = new ArrayList<>();
 
     /**
      * Creates a new DungeonManager object.
      */
     private DungeonManager () {
-        dungeonTilesets = new ArrayList<>();
-        dungeonTilesets.add(new DungeonTileset("BLANK_TILESET"));
-        dungeons = new ArrayList<>();
-        // todo: Load tile sets from drive.
+        File tilesetDir = new File("./plugins/RPGFramework/tilesets/");
+        if (!tilesetDir.exists()) {
+            if (!tilesetDir.mkdirs()) {
+                console("Failed to create tilesets directories.", ChatColor.YELLOW);
+                return;
+            }
+        }
+        for (String itemResources : new String[]{ "tilesets/TestTileset.yml" })
+            plugin.saveResource(itemResources, true); // todo: refactor to reduce scope when adding multiple tilesets.
+        File[] files = tilesetDir.listFiles();
+        if (files == null) console("Cannot find any tileset files.", ChatColor.YELLOW);
+        for (File f : files)
+            dungeonTilesets.add(new DungeonTileset(f.getAbsolutePath()));
     }
 
     /**
@@ -65,6 +78,6 @@ public class DungeonManager {
         DungeonTileset randomTileset = dungeonTilesets.get(new Random().nextInt(0, dungeonTilesets.size()));
         Dungeon dungeon = new Dungeon(players, new Location(Bukkit.getWorld("world"), -574, 65, -485), randomTileset); // todo: Create and algorithm to actually determine starting location.
         dungeons.add(dungeon);
-        RPGFramework.console("Created Dungeon", ChatColor.AQUA);
+        RPGFramework.console("Dungeon Manager: Created Dungeon", ChatColor.AQUA);
     }
 }

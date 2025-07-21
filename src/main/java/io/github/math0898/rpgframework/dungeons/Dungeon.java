@@ -81,13 +81,14 @@ public class Dungeon implements Listener {
     public void teleportParticipants () {
         for (RpgPlayer p : players)
             p.getBukkitPlayer().teleport(originPoint);
-        RPGFramework.console("Teleported Participants", ChatColor.AQUA);
+        RPGFramework.console("Dungeon: Teleported Participants", ChatColor.AQUA);
     }
 
     /**
      * Unlocks the dungeon and allows players to begin progressing through it.
      */
     public void unlockDungeon () {
-        RPGFramework.console("Dungeon Unlocked", ChatColor.DARK_GREEN);
+        RPGFramework.console("Dungeon: Dungeon Unlocked", ChatColor.DARK_GREEN);
+        // todo: Implement
     }
 }
