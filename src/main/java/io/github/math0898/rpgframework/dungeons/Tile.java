@@ -22,17 +22,26 @@ public class Tile {
     private final List<BlockPlacement> blocks = new ArrayList<>();
 
     /**
+     * The first corner of this Tile.
+     */
+
+    /**
+     * The second corner of this tile.
+     */
+
+    /**
      * Creates a new Tile with the given YamlConfiguration section.
      *
      * @param section The configuration section that defines this tile.
      */
     public Tile (ConfigurationSection section) {
-        Set<String> mats = section.getKeys(false);
+        ConfigurationSection blocksSection = section.getConfigurationSection("blocks");
+        Set<String> mats = blocksSection.getKeys(false);
         for (String m : mats) {
             Material material = Material.valueOf(m);
-            Set<String> coordinates = section.getConfigurationSection(m).getKeys(false);
+            Set<String> coordinates = blocksSection.getConfigurationSection(m).getKeys(false);
             for (String b : coordinates)
-                blocks.add(new BlockPlacement(material, section.getConfigurationSection(m + "." + b)));
+                blocks.add(new BlockPlacement(material, blocksSection.getConfigurationSection(m + "." + b)));
         }
     }
 
