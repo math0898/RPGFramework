@@ -150,10 +150,10 @@ public class EiryerasBoss extends CustomMob implements Listener {
      */
     public EiryerasBoss() {
         super(name, EntityType.SKELETON, Rarity.UNCOMMON, 150);
-        setArmor(new ItemBuilder(LEATHER_HELMET).setColor(new int[]{255, 60, 115, 31}).build(),
-                new ItemBuilder(Material.LEATHER_CHESTPLATE).setColor(new int[]{255,  113, 172, 11}).build(),
-                new ItemBuilder(Material.LEATHER_LEGGINGS).setColor(new int[]{255,  93, 161, 124}).build(),
-                new ItemBuilder(Material.LEATHER_BOOTS).setColor(new int[]{255,  60, 115, 31}).build());
+        setArmor(new ItemBuilder(LEATHER_HELMET).setColor(255, 60, 115, 31).build(),
+                new ItemBuilder(Material.LEATHER_CHESTPLATE).setColor(255,  113, 172, 11).build(),
+                new ItemBuilder(Material.LEATHER_LEGGINGS).setColor(255,  93, 161, 124).build(),
+                new ItemBuilder(Material.LEATHER_BOOTS).setColor(255,  60, 115, 31).build());
         setHand(new ItemStack(Material.BOW, 1));
     }
 

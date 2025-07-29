@@ -159,6 +159,19 @@ public class ItemBuilder { // todo: AttributeModifiers should now be constructed
     }
 
     /**
+     * Sets the color of the resulting Item. Include 4 values [0,255] for A, R, G, B.
+     *
+     * @param alpha The alpha of the color.
+     * @param red   The red channel.
+     * @param green The green channel.
+     * @param blue  The blue channel.
+     * @return The mutated ItemBuilder.
+     */
+    public ItemBuilder setColor (int alpha, int red, int green, int blue) {
+        return setColor(new int[]{ alpha, red, green ,blue });
+    }
+
+    /**
      * Sets the color of the resulting Item. Passed color should have a length of 4 and be in ARGB order.
      *
      * @param color The color to assign to this Item.
