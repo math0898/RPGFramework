@@ -30,7 +30,7 @@ public class ProceduralGeneration {
     /**
      * The starting room.
      */
-    private static final Room STARTING_ROOM = new Room("Starting Room", new Pos(4, 4), new Pos(0, 0), Arrays.asList(new Pos(5, 2)));
+    private static final Room STARTING_ROOM = new Room("Starting Room", new Pos(6, 6), new Pos(0, 0), Arrays.asList(new Pos(7, 3)));
 
     /**
      * Most positions, except the very first origin point, are offsets from doorways.
@@ -126,7 +126,7 @@ public class ProceduralGeneration {
      * Attempts to place a room in the given map.
      */
     private static boolean attemptPlacement (int[][] copy, Room room) {
-        boolean picked = false;
+        boolean picked = false; // todo: This bias's generation up and to the left. We should make a list of all good positions and randomly pick one.
         try {
             for (int i = 0; i < copy.length && !picked; i++)
                 for (int j = 0; j < copy[i].length && !picked; j++) {
@@ -191,21 +191,21 @@ public class ProceduralGeneration {
     public static void main (String[] args) { // todo: Pick a chain of n non-terminating rooms to place, followed by the boss room.
         rooms.add(new Room("Up Hallway", new Pos(4, 1), new Pos(0, -1), Arrays.asList(new Pos(5, 0)))); // "North" Hallway
         rooms.add(new Room("Down Hallway", new Pos(0, 1), new Pos(-4, -1), Arrays.asList(new Pos(-5, 0)))); // "South" Hallway
-//        rooms.add(new Room("Right Hallway", new Pos(0, -1), new Pos(4, 1), Arrays.asList(new Pos(5, 0)))); // "East" Hallway
-//        rooms.add(new Room("Left Hallway", new Pos(-4, 1), new Pos(0, -1), Arrays.asList(new Pos(-5, 0)))); // "West" Hallway
+        rooms.add(new Room("Right Hallway", new Pos(1, 0), new Pos(-1, -4), Arrays.asList(new Pos(0, -5)))); // "East" Hallway
+        rooms.add(new Room("Left Hallway", new Pos(1, 4), new Pos(-1, 0), Arrays.asList(new Pos(0, 5)))); // "West" Hallway
 
         // todo: There is a serious consideration to be made here.
         //  Right now each room kinda has an origin which is the entry point.
         //  But that means I need 4 roughly identical data entries to represent a large 4 way room.
-//        rooms.add(new Room(new Pos(-2, 0), new Pos(2, 5), Arrays.asList(new Pos(0, 6), new Pos(2, 3), new Pos(-2, 3)))); // Small Room
-//        rooms.add(new Room(new Pos(2, 0), new Pos(2, -5), Arrays.asList(new Pos(0, -6), new Pos(2, -3), new Pos(-2, -3)))); // Small Room
+        rooms.add(new Room("Small Room From Bottom", new Pos(4, 2), new Pos(0, -2), Arrays.asList(new Pos(5, 0), new Pos(3, 3), new Pos(3, -3)))); // Small Room
+        rooms.add(new Room("Small Room From Left", new Pos(2, 5), new Pos(-2, 0), Arrays.asList(new Pos(0, 5), new Pos(3, -3), new Pos(-3, -3)))); // Small Room
 //        rooms.add(new Room(new Pos(-2, 0), new Pos(2, 0), Arrays.asList(new Pos(6, 0), new Pos(-3, 2), new Pos(-2, -3))));
 //        rooms.add(new Room(new Pos(-2, 0), new Pos(2, 0), Arrays.asList(new Pos(6, 0), new Pos(-3, 2), new Pos(-2, -3))));
 
 //        rooms.add(new Room(new Pos(1, 10), new Pos(-1, 0), Arrays.asList(new Pos(0, 10)))); // Large Room
 
         initArray(FLOOR);
-        algorithm(2, 0.2, 0);
+        algorithm(5, 0.2, 0);
         matrixReplace(FLOOR, -1, 5);
         printMatrix();
     }
