@@ -3,6 +3,7 @@ package io.github.math0898.junitTests;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * A test sandbox for the Procedural Algorithm used by the RPGFramework plugin to generate dungeons.
@@ -48,8 +49,26 @@ public class ProceduralGeneration {
     /**
      * Init the floor matrix.
      */
-    private static void init_FLOOR () {
-        for (int[] ints : FLOOR) Arrays.fill(ints, 0);
+    private static void initArray (int[][] array) {
+        for (int[] ints : array) Arrays.fill(ints, 0);
+    }
+
+    /**
+     * Copies the given matrix into the next matrix.
+     */
+    private static void copyArray (int[][] target, int[][] source) {
+        for (int i = 0; i < target.length; i++)
+            System.arraycopy(source[i], 0, target[i], 0, target[i].length);
+    }
+
+    /**
+     * Validates whether the given matrix is a valid room placement or not.
+     */
+    private static boolean validateArray (int[][] array) {
+        for (int i = 0; i < 50; i++)
+            for (int j = 0; j < 50; j++)
+                if (array[i][j] > 1) return false;
+        return true;
     }
 
     /**
@@ -65,10 +84,51 @@ public class ProceduralGeneration {
         }
     }
 
+    /**
+     * Attempts to place a room in the given map.
+     */
+    private static boolean attemptPlacement (int[][] copy, Room room) {
+        boolean picked = false;
+        try {
+            for (int i = 0; i < 50 && !picked; i++)
+                for (int j = 0; j < 50 && !picked; j++) {
+                    if (copy[i][j] == -1) {
+                        room.placeRoom(new Pos(i, j), copy);
+                        if (validateArray(copy)) {
+                            picked = true;
+                        } else copyArray(copy, FLOOR);
+                    }
+                }
+        } catch (ArrayIndexOutOfBoundsException ignored) { } // Room placement failed. Picked is still false.
+        return picked;
+    }
+
+    /**
+     * The important algorithm portion of the generation.
+     */
+    private static void algorithm (int lengthToEnd, double deadEndProb, int maxRooms) {
+        int numRooms = 1;
+        int attempts = 0;
+        Random rand = new Random(3);
+        rooms.get(1).placeRoom(new Pos(25, 25), FLOOR);
+        while (numRooms < maxRooms && attempts < 10) {
+            Room room = rooms.get(rand.nextInt(rooms.size()));
+            int[][] copy = new int[50][50];
+            copyArray(copy, FLOOR);
+            boolean result = attemptPlacement(copy, room);
+            if (result) { // A room was picked.
+                copyArray(FLOOR, copy);
+                attempts = 0;
+                numRooms++;
+            } else attempts++;
+        }
+    }
+
     public static void main (String[] args) {
         rooms.add(new Room(new Pos(1, 10), new Pos(-1, 0), Arrays.asList(new Pos(0, 10)))); // Hallway
-        init_FLOOR();
-        rooms.get(0).placeRoom(new Pos(25, 25), FLOOR);
+        rooms.add(new Room(new Pos(4, 4), new Pos(0, 0), Arrays.asList(new Pos(5, 2)))); // Starting Room
+        initArray(FLOOR);
+        algorithm(5, 0.2, 5);
         printMatrix();
     }
 }
