@@ -1,1 +1,5 @@
-rootProject.name = 'RPG-Framework'
+rootProject.name = 'RPG'
+include('plugin', 'studio')
+
+project(":plugin").name = "RPG-Framework"
+project(":studio").name = "RPG-Studio"
