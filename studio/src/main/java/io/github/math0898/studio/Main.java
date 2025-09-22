@@ -11,8 +11,18 @@ import suga.engine.input.mouse.BasicMouseListener;
 
 import java.awt.*;
 
+/**
+ * The main execution class for the RPG-Studio program.
+ *
+ * @author Sugaku
+ */
 public class Main {
 
+    /**
+     * The main execution method and program entry point.
+     *
+     * @param args Any arguments that have been passed through the commandline.
+     */
     public static void main (String[] args) {
         gui();
     }
@@ -28,5 +38,6 @@ public class Main {
         game.setPanel(graphicsPanel);
         GameEngine.launchGameWindow(1920, 1000, "RPG Studio", true, graphicsPanel,
                 Color.getHSBColor(0, 0, 0.05f), 30, 30, gameKeyListener, gameMouseListener, game);
+        game.loadScene("Item Creation");
     }
 }
