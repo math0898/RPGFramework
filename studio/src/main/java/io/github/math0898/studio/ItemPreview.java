@@ -57,7 +57,7 @@ public class ItemPreview extends BasicGameObject {
     /**
      * The separation between the item name text and the first row of lore/enchantments.
      */
-    private static final int TITLE_VERTICAL_BUFFER = 8;
+    private static final int TITLE_VERTICAL_BUFFER = 4; // Actual is 8 pixels from the top of the box.
 
     /**
      * The separation between the item name text and the top of the item box.
@@ -85,7 +85,12 @@ public class ItemPreview extends BasicGameObject {
         panel.setRectangle(posX + INNER_BORDER, posY + INNER_BORDER, BACKGROUND_BOX_WIDTH - (2 * INNER_BORDER), BACKGROUND_BOX_HEIGHT - (2 * INNER_BORDER), HIGHLIGHT_COLOR);
         panel.setRectangle(posX + INNER_BORDER + INNER_BORDER_WIDTH, posY + INNER_BORDER + INNER_BORDER_WIDTH, BACKGROUND_BOX_WIDTH - (2 * (INNER_BORDER_WIDTH + INNER_BORDER)), BACKGROUND_BOX_HEIGHT - (2 * (INNER_BORDER_WIDTH + INNER_BORDER)), BACKGROUND_COLOR);
 
-        BufferedImage itemName = Utils.imageFromText(new Font("Comic Sans", Font.BOLD, 14), new Color(81, 197, 115), "Krusk's Axe");
-        panel.addImage(posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_BUFFER - itemName.getHeight(), itemName.getWidth(), itemName.getHeight(), itemName);
+        /* ---- Extract to Helper Method ---- */
+        String itemName = "Krusk's Axe";
+        BufferedImage dropShadow = Utils.imageFromText(new Font("Comic Sans", Font.BOLD, 14), new Color(45, 76, 49), itemName, 500, 14);
+        panel.addImage(posX + TEXT_HORIZONTAL_OFFSET + 2, posY + TITLE_VERTICAL_BUFFER + 2, dropShadow.getWidth(), dropShadow.getHeight(), dropShadow);
+        BufferedImage mainText = Utils.imageFromText(new Font("Comic Sans", Font.BOLD, 14), new Color(81, 197, 115), itemName, 500, 14);
+        panel.addImage(posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_BUFFER, mainText.getWidth(), mainText.getHeight(), mainText);
+        /* ---- ----- ----- */
     }
 }
