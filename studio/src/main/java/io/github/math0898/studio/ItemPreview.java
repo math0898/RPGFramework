@@ -47,7 +47,7 @@ public class ItemPreview extends BasicGameObject {
     /**
      * The horizontal offset for text.
      */
-    private static final int TEXT_HORIZONTAL_OFFSET = 8;
+    private static final int TEXT_HORIZONTAL_OFFSET = 10;
 
     /**
      * The separation between text lines.
@@ -67,7 +67,7 @@ public class ItemPreview extends BasicGameObject {
     /**
      * The size of the text font used.
      */
-    private static final int TEXT_FONT_SIZE = 16;
+    private static final int TEXT_FONT_SIZE = 14;
 
     /**
      * Called every drawing frame so programs have a chance to make their voices heard on what gets drawn.
@@ -87,9 +87,9 @@ public class ItemPreview extends BasicGameObject {
 
         /* ---- Extract to Helper Method ---- */
         String itemName = "Krusk's Axe";
-        BufferedImage dropShadow = Utils.imageFromText(new Font("Comic Sans", Font.BOLD, 14), new Color(45, 76, 49), itemName, 500, 14);
+        BufferedImage dropShadow = Utils.imageFromText(new Font("Comic Sans", Font.BOLD, TEXT_FONT_SIZE), new Color(45, 76, 49), itemName, 500, 14);
         panel.addImage(posX + TEXT_HORIZONTAL_OFFSET + 2, posY + TITLE_VERTICAL_BUFFER + 2, dropShadow.getWidth(), dropShadow.getHeight(), dropShadow);
-        BufferedImage mainText = Utils.imageFromText(new Font("Comic Sans", Font.BOLD, 14), new Color(81, 197, 115), itemName, 500, 14);
+        BufferedImage mainText = Utils.imageFromText(new Font("Comic Sans", Font.BOLD, TEXT_FONT_SIZE), new Color(81, 197, 115), itemName, 500, 14);
         panel.addImage(posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_BUFFER, mainText.getWidth(), mainText.getHeight(), mainText);
         /* ---- ----- ----- */
     }
