@@ -80,9 +80,10 @@ public class ItemPreview extends BasicGameObject {
      * @param color The main text color to use.
      */
     private void dropShadowText (GraphicsPanel panel, int posX, int posY, String text, Font font, Color color) {
-        BufferedImage dropShadow = Utils.imageFromText(font, color.darker().darker().darker().darker(), text, 500, font.getSize() * 2);
+        FontMetrics metrics = panel.getFontMetrics(font);
+        BufferedImage dropShadow = Utils.imageFromText(font, color.darker().darker().darker().darker(), text, metrics.stringWidth(text), font.getSize() * 2);
         panel.addImage(posX + 2, posY + 2, dropShadow.getWidth(), dropShadow.getHeight(), dropShadow);
-        BufferedImage mainText = Utils.imageFromText(font, color, text, 500, font.getSize() * 2);
+        BufferedImage mainText = Utils.imageFromText(font, color, text, metrics.stringWidth(text), font.getSize() * 2);
         panel.addImage(posX, posY, mainText.getWidth(), mainText.getHeight(), mainText);
     }
 
@@ -103,7 +104,17 @@ public class ItemPreview extends BasicGameObject {
         panel.setRectangle(posX + INNER_BORDER + INNER_BORDER_WIDTH, posY + INNER_BORDER + INNER_BORDER_WIDTH, BACKGROUND_BOX_WIDTH - (2 * (INNER_BORDER_WIDTH + INNER_BORDER)), BACKGROUND_BOX_HEIGHT - (2 * (INNER_BORDER_WIDTH + INNER_BORDER)), BACKGROUND_COLOR);
 
         // todo: Minecraft's font is not monospaced. Using visuals here to determine line break points may work and will hopefully still make a consistent edge within an item, but maybe not a namespace.
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET, "Krusk's Axe", new Font("Monospaced", Font.BOLD, TEXT_FONT_SIZE), new Color(81,197,115));
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + TEXT_FONT_SIZE + TITLE_VERTICAL_BUFFER, "Damage: 60", new Font("Monospaced", Font.BOLD, TEXT_FONT_SIZE), new Color(212, 54, 69));
+        final Font font = new Font("Monospaced", Font.BOLD, TEXT_FONT_SIZE);
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET, "Krusk's Axe", font, new Color(81,197,115));
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + TEXT_FONT_SIZE + TITLE_VERTICAL_BUFFER, "Sharpness V", font, new Color(167, 167, 167));
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 2) + TITLE_VERTICAL_BUFFER, "During life Krusk was a human general.", font, new Color(200, 200, 200));
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 3) + TITLE_VERTICAL_BUFFER, "He was not particularly good at what", font, new Color(200, 200, 200));
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 4) + TITLE_VERTICAL_BUFFER, "he did but now he gives adventurers", font, new Color(200, 200, 200));
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 5) + TITLE_VERTICAL_BUFFER, "a hard time anyways.", font, new Color(200, 200, 200));
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 6) + TITLE_VERTICAL_BUFFER, " ---- ---- ---- ", font, new Color(94, 94, 94));
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 7) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Damage: 60", font, new Color(212, 54, 69));
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 8) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Attack Speed: -3.0", font, new Color(35, 162, 214));
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 9) + TITLE_VERTICAL_BUFFER, " ---- ---- ---- ", font, new Color(94, 94, 94));
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 10) + TITLE_VERTICAL_BUFFER, "Hand | Axe | 310", font, new Color(200, 200, 200)); // todo: Multiple colors in a line.
     }
 }
