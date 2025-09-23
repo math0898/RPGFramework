@@ -38,7 +38,7 @@ public class Utils {
         Graphics graphics = buffer.createGraphics();
         graphics.setFont(font);
         graphics.setColor(color);
-        graphics.drawString(text, 0, canvasHeight);
+        graphics.drawString(text, 0, canvasHeight / 2);
         graphics.dispose();
         return buffer;
     }

@@ -27,12 +27,12 @@ public class ItemPreview extends BasicGameObject {
     /**
      * The width of the background box.
      */
-    private static final int BACKGROUND_BOX_WIDTH = 408;
+    private static final int BACKGROUND_BOX_WIDTH = 708;
 
     /**
      * The base height of the background box. TODO: This is scaled by the number of rows.
      */
-    private static final int BACKGROUND_BOX_HEIGHT = 376;
+    private static final int BACKGROUND_BOX_HEIGHT = 676;
 
     /**
      * The border between the background box and the inner box.
@@ -67,7 +67,7 @@ public class ItemPreview extends BasicGameObject {
     /**
      * The size of the text font used.
      */
-    private static final int TEXT_FONT_SIZE = 14;
+    private static final int TEXT_FONT_SIZE = 30;
 
     /**
      * Draws drop shadowed text to the given graphics panel at the given positions in the font and color.
@@ -80,9 +80,9 @@ public class ItemPreview extends BasicGameObject {
      * @param color The main text color to use.
      */
     private void dropShadowText (GraphicsPanel panel, int posX, int posY, String text, Font font, Color color) {
-        BufferedImage dropShadow = Utils.imageFromText(font, color.darker().darker().darker().darker(), text, 500, font.getSize());
+        BufferedImage dropShadow = Utils.imageFromText(font, color.darker().darker().darker().darker(), text, 500, font.getSize() * 2);
         panel.addImage(posX + 2, posY + 2, dropShadow.getWidth(), dropShadow.getHeight(), dropShadow);
-        BufferedImage mainText = Utils.imageFromText(font, color, text, 500, font.getSize());
+        BufferedImage mainText = Utils.imageFromText(font, color, text, 500, font.getSize() * 2);
         panel.addImage(posX, posY, mainText.getWidth(), mainText.getHeight(), mainText);
     }
 
@@ -102,14 +102,8 @@ public class ItemPreview extends BasicGameObject {
         panel.setRectangle(posX + INNER_BORDER, posY + INNER_BORDER, BACKGROUND_BOX_WIDTH - (2 * INNER_BORDER), BACKGROUND_BOX_HEIGHT - (2 * INNER_BORDER), HIGHLIGHT_COLOR);
         panel.setRectangle(posX + INNER_BORDER + INNER_BORDER_WIDTH, posY + INNER_BORDER + INNER_BORDER_WIDTH, BACKGROUND_BOX_WIDTH - (2 * (INNER_BORDER_WIDTH + INNER_BORDER)), BACKGROUND_BOX_HEIGHT - (2 * (INNER_BORDER_WIDTH + INNER_BORDER)), BACKGROUND_COLOR);
 
-        /* ---- Extract to Helper Method ---- */
-        String itemName = "Krusk's Axe";
-        BufferedImage dropShadow = Utils.imageFromText(new Font("Comic Sans", Font.BOLD, TEXT_FONT_SIZE), new Color(45, 76, 49), itemName, 500, 14);
-        panel.addImage(posX + TEXT_HORIZONTAL_OFFSET + 2, posY + TITLE_VERTICAL_OFFSET + 2, dropShadow.getWidth(), dropShadow.getHeight(), dropShadow);
-        BufferedImage mainText = Utils.imageFromText(new Font("Comic Sans", Font.BOLD, TEXT_FONT_SIZE), new Color(81, 197, 115), itemName, 500, 14);
-        panel.addImage(posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET, mainText.getWidth(), mainText.getHeight(), mainText);
-        /* ---- ----- ----- */
-
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + TEXT_FONT_SIZE + TITLE_VERTICAL_BUFFER, "Damage: 60", new Font("Comic Sans", Font.BOLD, TEXT_FONT_SIZE), new Color(212, 54, 69));
+        // todo: Minecraft's font is not monospaced. Using visuals here to determine line break points may work and will hopefully still make a consistent edge within an item, but maybe not a namespace.
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET, "Krusk's Axe", new Font("Monospaced", Font.BOLD, TEXT_FONT_SIZE), new Color(81,197,115));
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + TEXT_FONT_SIZE + TITLE_VERTICAL_BUFFER, "Damage: 60", new Font("Monospaced", Font.BOLD, TEXT_FONT_SIZE), new Color(212, 54, 69));
     }
 }
