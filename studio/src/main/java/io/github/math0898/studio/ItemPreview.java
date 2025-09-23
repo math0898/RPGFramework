@@ -57,17 +57,34 @@ public class ItemPreview extends BasicGameObject {
     /**
      * The separation between the item name text and the first row of lore/enchantments.
      */
-    private static final int TITLE_VERTICAL_BUFFER = 4; // Actual is 8 pixels from the top of the box.
+    private static final int TITLE_VERTICAL_BUFFER = 8;
 
     /**
      * The separation between the item name text and the top of the item box.
      */
-    private static final int TITLE_VERTICAL_OFFSET = 8;
+    private static final int TITLE_VERTICAL_OFFSET = 4; // Actual is 8 pixels from the top of the box.
 
     /**
      * The size of the text font used.
      */
     private static final int TEXT_FONT_SIZE = 14;
+
+    /**
+     * Draws drop shadowed text to the given graphics panel at the given positions in the font and color.
+     *
+     * @param panel The panel to draw the drop shadow to.
+     * @param posX The x position.
+     * @param posY The y position.
+     * @param font The font to use.
+     * @param text The text to draw.
+     * @param color The main text color to use.
+     */
+    private void dropShadowText (GraphicsPanel panel, int posX, int posY, String text, Font font, Color color) {
+        BufferedImage dropShadow = Utils.imageFromText(font, color.darker().darker().darker().darker(), text, 500, font.getSize());
+        panel.addImage(posX + 2, posY + 2, dropShadow.getWidth(), dropShadow.getHeight(), dropShadow);
+        BufferedImage mainText = Utils.imageFromText(font, color, text, 500, font.getSize());
+        panel.addImage(posX, posY, mainText.getWidth(), mainText.getHeight(), mainText);
+    }
 
     /**
      * Called every drawing frame so programs have a chance to make their voices heard on what gets drawn.
@@ -88,9 +105,11 @@ public class ItemPreview extends BasicGameObject {
         /* ---- Extract to Helper Method ---- */
         String itemName = "Krusk's Axe";
         BufferedImage dropShadow = Utils.imageFromText(new Font("Comic Sans", Font.BOLD, TEXT_FONT_SIZE), new Color(45, 76, 49), itemName, 500, 14);
-        panel.addImage(posX + TEXT_HORIZONTAL_OFFSET + 2, posY + TITLE_VERTICAL_BUFFER + 2, dropShadow.getWidth(), dropShadow.getHeight(), dropShadow);
+        panel.addImage(posX + TEXT_HORIZONTAL_OFFSET + 2, posY + TITLE_VERTICAL_OFFSET + 2, dropShadow.getWidth(), dropShadow.getHeight(), dropShadow);
         BufferedImage mainText = Utils.imageFromText(new Font("Comic Sans", Font.BOLD, TEXT_FONT_SIZE), new Color(81, 197, 115), itemName, 500, 14);
-        panel.addImage(posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_BUFFER, mainText.getWidth(), mainText.getHeight(), mainText);
+        panel.addImage(posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET, mainText.getWidth(), mainText.getHeight(), mainText);
         /* ---- ----- ----- */
+
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + TEXT_FONT_SIZE + TITLE_VERTICAL_BUFFER, "Damage: 60", new Font("Comic Sans", Font.BOLD, TEXT_FONT_SIZE), new Color(212, 54, 69));
     }
 }
