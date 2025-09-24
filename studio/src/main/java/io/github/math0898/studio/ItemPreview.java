@@ -6,6 +6,7 @@ import suga.engine.graphics.GraphicsPanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 /**
  * An ItemPreview is a preview of how an item will appear in game based upon the given values.
@@ -70,6 +71,11 @@ public class ItemPreview extends BasicGameObject {
     private static final int TEXT_FONT_SIZE = 30;
 
     /**
+     * The RpgItem that this object is previewing.
+     */
+    private final RpgItem rpgItem = new RpgItem();
+
+    /**
      * Draws drop shadowed text to the given graphics panel at the given positions in the font and color.
      *
      * @param panel The panel to draw the drop shadow to.
@@ -103,18 +109,42 @@ public class ItemPreview extends BasicGameObject {
         panel.setRectangle(posX + INNER_BORDER, posY + INNER_BORDER, BACKGROUND_BOX_WIDTH - (2 * INNER_BORDER), BACKGROUND_BOX_HEIGHT - (2 * INNER_BORDER), HIGHLIGHT_COLOR);
         panel.setRectangle(posX + INNER_BORDER + INNER_BORDER_WIDTH, posY + INNER_BORDER + INNER_BORDER_WIDTH, BACKGROUND_BOX_WIDTH - (2 * (INNER_BORDER_WIDTH + INNER_BORDER)), BACKGROUND_BOX_HEIGHT - (2 * (INNER_BORDER_WIDTH + INNER_BORDER)), BACKGROUND_COLOR);
 
+        rpgItem.setLore(Arrays.asList("During life Krusk was a human general.", "He was not particularly good at what", "he did but now he gives adventurers", "a hard time anyways."));
+
         // todo: Minecraft's font is not monospaced. Using visuals here to determine line break points may work and will hopefully still make a consistent edge within an item, but maybe not a namespace.
         final Font font = new Font("Monospaced", Font.BOLD, TEXT_FONT_SIZE);
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET, "Krusk's Axe", font, new Color(81,197,115));
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET, rpgItem.getName(), font, Color.decode(rpgItem.getRarities().getHexColor()));
         dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + TEXT_FONT_SIZE + TITLE_VERTICAL_BUFFER, "Sharpness V", font, new Color(167, 167, 167));
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 2) + TITLE_VERTICAL_BUFFER, "During life Krusk was a human general.", font, new Color(200, 200, 200));
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 3) + TITLE_VERTICAL_BUFFER, "He was not particularly good at what", font, new Color(200, 200, 200));
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 4) + TITLE_VERTICAL_BUFFER, "he did but now he gives adventurers", font, new Color(200, 200, 200));
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 5) + TITLE_VERTICAL_BUFFER, "a hard time anyways.", font, new Color(200, 200, 200));
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 6) + TITLE_VERTICAL_BUFFER, " ---- ---- ---- ", font, new Color(94, 94, 94));
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 7) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Damage: 60", font, new Color(212, 54, 69));
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 8) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Attack Speed: -3.0", font, new Color(35, 162, 214));
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 9) + TITLE_VERTICAL_BUFFER, " ---- ---- ---- ", font, new Color(94, 94, 94));
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * 10) + TITLE_VERTICAL_BUFFER, "Hand | Axe | 310", font, new Color(200, 200, 200)); // todo: Multiple colors in a line.
+
+        final int loreLines = rpgItem.getLore().size();
+        for (int i = 0; i < rpgItem.getLore().size(); i++)
+            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (i + 2)) + TITLE_VERTICAL_BUFFER, rpgItem.getLore().get(i), font, new Color(204, 204, 204));
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 2)) + TITLE_VERTICAL_BUFFER, " ---- ---- ---- ", font, new Color(96, 96, 96));
+
+        int statCount = 0;
+        if (rpgItem.getDamage() != 0) {
+            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3)) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Damage: " + rpgItem.getDamage(), font, new Color(217, 55, 71));
+            statCount++;
+        }
+        if (rpgItem.getAttackSpeed() != 0) {
+            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3 + statCount)) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Attack Speed: " + rpgItem.getAttackSpeed(), font, new Color(35, 165, 219));
+            statCount++;
+        }
+        if (rpgItem.getHealth() != 0) {
+            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3 + statCount)) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Health: " + rpgItem.getHealth(), font, new Color(244, 84, 218));
+            statCount++;
+        }
+        if (rpgItem.getArmor() != 0) {
+            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3 + statCount)) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Armor: " + rpgItem.getArmor(), font, new Color(63, 183, 74));
+            statCount++;
+        }
+        if (rpgItem.getToughness() != 0) {
+            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3 + statCount)) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Toughness: " + rpgItem.getToughness(), font, new Color(242, 217, 81));
+            statCount++;
+        }
+
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3 + statCount)) + TITLE_VERTICAL_BUFFER, " ---- ---- ---- ", font, new Color(96, 96, 96));
+        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 4 + statCount)) + TITLE_VERTICAL_BUFFER, "Hand | Axe | 310", font, new Color(242, 217, 81)); // todo: Multiple colors in a line.
+        // todo: Calculate gear score
     }
 }
