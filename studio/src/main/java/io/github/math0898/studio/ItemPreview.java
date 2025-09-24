@@ -30,11 +30,6 @@ public class ItemPreview extends BasicGameObject {
      */
     private static final int BACKGROUND_BOX_WIDTH = 708;
 
-//    /**
-//     * The base height of the background box. TODO: This is scaled by the number of rows.
-//     */
-//    private static final int BACKGROUND_BOX_HEIGHT = 676;
-
     /**
      * The border between the background box and the inner box.
      */
