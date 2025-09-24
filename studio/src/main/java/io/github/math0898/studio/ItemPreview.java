@@ -30,10 +30,10 @@ public class ItemPreview extends BasicGameObject {
      */
     private static final int BACKGROUND_BOX_WIDTH = 708;
 
-    /**
-     * The base height of the background box. TODO: This is scaled by the number of rows.
-     */
-    private static final int BACKGROUND_BOX_HEIGHT = 676;
+//    /**
+//     * The base height of the background box. TODO: This is scaled by the number of rows.
+//     */
+//    private static final int BACKGROUND_BOX_HEIGHT = 676;
 
     /**
      * The border between the background box and the inner box.
@@ -105,10 +105,6 @@ public class ItemPreview extends BasicGameObject {
         final int posX = 100;
         final int posY = 100;
 
-        panel.setRectangle(posX, posY, BACKGROUND_BOX_WIDTH, BACKGROUND_BOX_HEIGHT, BACKGROUND_COLOR);
-        panel.setRectangle(posX + INNER_BORDER, posY + INNER_BORDER, BACKGROUND_BOX_WIDTH - (2 * INNER_BORDER), BACKGROUND_BOX_HEIGHT - (2 * INNER_BORDER), HIGHLIGHT_COLOR);
-        panel.setRectangle(posX + INNER_BORDER + INNER_BORDER_WIDTH, posY + INNER_BORDER + INNER_BORDER_WIDTH, BACKGROUND_BOX_WIDTH - (2 * (INNER_BORDER_WIDTH + INNER_BORDER)), BACKGROUND_BOX_HEIGHT - (2 * (INNER_BORDER_WIDTH + INNER_BORDER)), BACKGROUND_COLOR);
-
         rpgItem.setLore(Arrays.asList("During life Krusk was a human general.", "He was not particularly good at what", "he did but now he gives adventurers", "a hard time anyways."));
 
         // todo: Minecraft's font is not monospaced. Using visuals here to determine line break points may work and will hopefully still make a consistent edge within an item, but maybe not a namespace.
@@ -146,5 +142,9 @@ public class ItemPreview extends BasicGameObject {
         dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3 + statCount)) + TITLE_VERTICAL_BUFFER, " ---- ---- ---- ", font, new Color(96, 96, 96));
         dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 4 + statCount)) + TITLE_VERTICAL_BUFFER, "Hand | Axe | 310", font, new Color(242, 217, 81)); // todo: Multiple colors in a line.
         // todo: Calculate gear score
+
+        panel.setRectangle(posX, posY, BACKGROUND_BOX_WIDTH, TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 6 + statCount)), BACKGROUND_COLOR);
+        panel.setRectangle(posX + INNER_BORDER, posY + INNER_BORDER, BACKGROUND_BOX_WIDTH - (2 * INNER_BORDER), TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 6 + statCount)) - (2 * INNER_BORDER), HIGHLIGHT_COLOR);
+        panel.setRectangle(posX + INNER_BORDER + INNER_BORDER_WIDTH, posY + INNER_BORDER + INNER_BORDER_WIDTH, BACKGROUND_BOX_WIDTH - (2 * (INNER_BORDER_WIDTH + INNER_BORDER)), TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 6 + statCount)) - (2 * (INNER_BORDER_WIDTH + INNER_BORDER)), BACKGROUND_COLOR);
     }
 }
