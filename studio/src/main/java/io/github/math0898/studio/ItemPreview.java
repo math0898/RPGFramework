@@ -1,6 +1,7 @@
 package io.github.math0898.studio;
 
 import io.github.math0898.utils.Utils;
+import lombok.Getter;
 import suga.engine.game.objects.BasicGameObject;
 import suga.engine.graphics.GraphicsPanel;
 
@@ -13,6 +14,7 @@ import java.util.Arrays;
  *
  * @author Sugaku
  */
+@Getter
 public class ItemPreview extends BasicGameObject {
 
     /**

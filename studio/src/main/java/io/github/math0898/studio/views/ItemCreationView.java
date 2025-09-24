@@ -15,11 +15,60 @@ import java.awt.*;
 public class ItemCreationView extends BasicScene {
 
     /**
+     * The fields that can be actively edited.
+     */
+    private enum Selection {
+
+        /**
+         *
+         */
+        NAME,
+
+        RARITY,
+
+        LORE,
+
+        DAMAGE,
+
+        ATTACK_SPEED,
+
+        HEALTH,
+
+        ARMOR,
+
+        TOUGHNESS;
+
+        /**
+         * Gets the next enum value.
+         */
+        public Selection nextSelection () {
+            return TOUGHNESS; // todo: Implement.
+        }
+
+        /**
+         * Gets the previous enum value.
+         */
+        public Selection previousSelection () {
+            return NAME; // todo: Implement.
+        }
+    }
+
+    /**
+     * The active ItemPreview in this view.
+     */
+    private final ItemPreview preview = new ItemPreview();
+
+    /**
+     * The currently active selection.
+     */
+    private Selection activeSelection = Selection.NAME;
+
+    /**
      * Loads this scene into the given game.
      */
     public boolean load (Game game) {
         game.clear();
-        game.addGameObject("Item Preview", new ItemPreview());
+        game.addGameObject("Item Preview", preview);
         return true;
     }
 
@@ -32,7 +81,11 @@ public class ItemCreationView extends BasicScene {
      */
     @Override
     public void keyboardInput (KeyValue key, boolean pressed) {
-
+        if (!pressed) return;
+        switch (key) {
+            case ARROW_UP -> activeSelection = activeSelection.previousSelection();
+            case ARROW_DOWN -> activeSelection = activeSelection.nextSelection();
+        }
     }
 
     /**
