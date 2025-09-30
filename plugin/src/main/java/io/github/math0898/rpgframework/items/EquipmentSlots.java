@@ -43,7 +43,17 @@ public enum EquipmentSlots {
     /**
      * Boots and shoes.
      */
-    FEET;
+    FEET,
+
+    /**
+     * An item that is used like a spell instead of any kind of equipping.
+     */
+    ON_USE,
+
+    /**
+     * A custom item that is not equipped anywhere, instead just utilized for crafting.
+     */
+    MATERIAL;
 
     /**
      * Returns the Bukkit EquipmentSlot associated with this EquipmentSlot.
