@@ -62,7 +62,7 @@ public enum EquipmentSlots {
      */
     public EquipmentSlot getSlot () {
         return switch (this) {
-            case ARTIFACT -> null;
+            default -> null;
             case HAND -> EquipmentSlot.HAND;
             case OFF_HAND -> EquipmentSlot.OFF_HAND;
             case HEAD -> EquipmentSlot.HEAD;
