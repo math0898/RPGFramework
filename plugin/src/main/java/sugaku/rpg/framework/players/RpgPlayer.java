@@ -1,6 +1,7 @@
 package sugaku.rpg.framework.players;
 
 import io.github.math0898.rpgframework.Cooldown;
+import io.github.math0898.rpgframework.RPGFramework;
 import io.github.math0898.rpgframework.classes.AbstractClass;
 import io.github.math0898.rpgframework.classes.implementations.*;
 import io.github.math0898.rpgframework.classes.Class;
@@ -47,6 +48,11 @@ public class RpgPlayer {
     private Entity lastHitBy = null;
 
     /**
+     * The amount of XP that this player has accumulated.
+     */
+    private long experience = 0;
+
+    /**
      * Default constructor for an RpgPlayer construct just requiring a uuid.
      * @param p The player this construct points to.
      */
@@ -71,9 +77,54 @@ public class RpgPlayer {
 
     /**
      * Returns the uuid of the player this construct points to.
+     *
      * @return The uuid of the player.
      */
-    public UUID getUuid() { return uuid; }
+    public UUID getUuid () {
+        return uuid;
+    }
+
+    /**
+     * Returns the experience that this player has accumulated.
+     *
+     * @return The amount of experience owned by this player.
+     */
+    public long getExperience () {
+        return experience;
+    }
+
+    /**
+     * Does a small calculation to determine what level this player is currently at.
+     *
+     * @return This player's current level.
+     */
+    public long getLevel () {
+        return (experience / 300) + 1;
+    }
+
+    /**
+     * Adds the given experience to this player.
+     *
+     * @param awarded The amount of awarded experience.
+     */
+    public void giveExperience (long awarded) {
+        long startingLevel = getLevel();
+        experience += awarded;
+        long finalLevel = getLevel();
+        if (startingLevel < finalLevel) levelUp();
+    }
+
+    /**
+     * Called whenever the player levels up.
+     */
+    public void levelUp () {
+        io.github.math0898.rpgframework.RpgPlayer p = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
+        if (p == null) {
+            RPGFramework.console("Encountered a strange error where sugaku.rpg has an RpgPlayer object but no io.github.math0898 RpgPlayer was found.", ChatColor.RED);
+            return;
+        }
+        p.sendMessage(ChatColor.GREEN + "You've leveled up! Level: " + getLevel());
+    }
 
     /**
      * Refreshes the player's stats.
