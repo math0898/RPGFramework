@@ -94,6 +94,15 @@ public class RpgPlayer {
     }
 
     /**
+     * Sets the experience that this play has accumulated.
+     *
+     * @param xp The amount of xp that this player has gotten.
+     */
+    public void setExperience (long xp) {
+        experience = xp;
+    }
+
+    /**
      * Does a small calculation to determine what level this player is currently at.
      *
      * @return This player's current level.

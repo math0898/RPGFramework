@@ -65,6 +65,12 @@ public class DebugCommand extends BetterCommand {
                     zombie.setCustomNameVisible(true);
                     zombie.setCustomName(StringUtils.convertHexCodes(r.modify(r.toString())));
                 }
+            } else if (args[0].equalsIgnoreCase("xp")) {
+                RpgPlayer rpgPlayer = PlayerManager.getPlayer(player.getUniqueId());
+                send(player, "You have " + rpgPlayer.getExperience() + " xp.");
+                send(player, "You are level " + rpgPlayer.getLevel());
+                rpgPlayer.giveExperience(100);
+                send(player, "Awarded 100 xp");
             }
         }
         return true;
@@ -90,7 +96,7 @@ public class DebugCommand extends BetterCommand {
     @Override
     public List<String> simplifiedTab (CommandSender sender, String[] args) {
         List<String> toReturn = new ArrayList<>();
-        if (args.length <= 1) toReturn.addAll(Arrays.asList("reset-cooldowns", "item-details", "regex", "spawn", "rarity"));
+        if (args.length <= 1) toReturn.addAll(Arrays.asList("reset-cooldowns", "item-details", "regex", "spawn", "xp", "rarity"));
         return everythingStartsWith(toReturn, args[args.length - 1]);
     }
 }

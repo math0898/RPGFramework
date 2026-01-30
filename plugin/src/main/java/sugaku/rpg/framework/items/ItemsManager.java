@@ -349,11 +349,15 @@ public final class ItemsManager {
      * @param lines The lines of lore.
      * @param attributes The attributes to be added to the item.
      */
+    @Deprecated
     public static ItemStack createItem(Material m, int i, String n, String[] lines, AttributeModifier[] attributes) {
         ItemStack item = createItem(m, i, n, lines);
         ItemMeta meta = item.getItemMeta();
         assert meta != null;
-        for (AttributeModifier a: attributes) meta.addAttributeModifier(Attribute.valueOf(a.getName()), a);
+        // TODO: This is very specific to make RPG compile and run successfully.
+        for (int j = 0; j < attributes.length; j++) {
+            meta.addAttributeModifier(j == 0 ? Attribute.GENERIC_ATTACK_DAMAGE : Attribute.GENERIC_MOVEMENT_SPEED, attributes[j]);
+        }
         item.setItemMeta(meta);
         return item;
     }

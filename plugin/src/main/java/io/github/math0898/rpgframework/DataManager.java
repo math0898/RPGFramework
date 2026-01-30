@@ -103,10 +103,14 @@ public class DataManager {
                 yaml.load(file);
                 String version = yaml.getString("version");
                 String classString = yaml.getString("class", "NONE");
+                long experiencePoints = yaml.getLong("experience", 0);
                 console("File version: " + version);
                 console("Class: " + classString);
+                console("Experience: " + experiencePoints);
                 // todo: This should use the new RpgPlayer objects.
-                sugaku.rpg.framework.players.PlayerManager.getPlayer(player.getUuid()).joinClass(Classes.fromString(classString));
+                sugaku.rpg.framework.players.RpgPlayer rpgPlayer = sugaku.rpg.framework.players.PlayerManager.getPlayer(player.getUuid());
+                rpgPlayer.joinClass(Classes.fromString(classString));
+                rpgPlayer.setExperience(experiencePoints);
                 console("Loaded.", ChatColor.GREEN);
             } catch (Exception exception) {
                 console("Failed to load data for " + player.getName() + ": " + exception.getMessage());
@@ -149,6 +153,9 @@ public class DataManager {
         String classString = sugaku.rpg.framework.players.PlayerManager.getPlayer(player.getUuid()).getCombatClass().toString();
         console("Class: " + classString);
         toSave.set("class", classString);
+        long xp = sugaku.rpg.framework.players.PlayerManager.getPlayer(player.getUuid()).getExperience();
+        console("Experience: " + xp);
+        toSave.set("experience", xp);
         try {
             File file = new File("./plugins/RPG/PlayerData/" + player.getUuid());
             if (file.exists()) file.delete();
