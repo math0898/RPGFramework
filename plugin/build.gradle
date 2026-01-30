@@ -59,8 +59,8 @@ processResources {
 
 task testLocal() {
     onlyIf = { true }
-    dependsOn ":RPG-Framework:build"
-    mustRunAfter ":RPG-Framework:build"
+//    dependsOn ":build"
+//    mustRunAfter ":build"
     doLast {
         exec {
             ignoreExitValue = true
@@ -71,8 +71,8 @@ task testLocal() {
 
 task publishServer() {
     onlyIf = { true }
-    dependsOn ":RPG-Framework:build"
-    mustRunAfter ":RPG-Framework:build"
+    dependsOn "RPG-Framework:plugin:build"
+    mustRunAfter "RPG-Framework:plugin:build"
     doLast {
         exec {
             ignoreExitValue = true

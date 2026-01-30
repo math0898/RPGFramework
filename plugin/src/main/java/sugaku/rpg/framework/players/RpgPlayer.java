@@ -376,6 +376,23 @@ public class RpgPlayer {
     }
 
     /**
+     * An accessor method for the boss that is actively fighting this player.
+     *
+     * @return The boss actively fighting this Party.
+     */
+    public CustomMob getActiveBossUnsafe () {
+        io.github.math0898.rpgframework.RpgPlayer player = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
+        if (player == null) return null;
+        Party party = player.getParty();
+        if (player.getParty() != null) {
+            CustomMob candidate = party.getActiveBossUnsafe();
+            if (candidate != null)
+                return candidate;
+        }
+        return activeBoss;
+    }
+
+    /**
      * An accessor method for the boss that is actively fighting this player. Will validate the boss before returning.
      *
      * @return The boss actively fighting this Party.

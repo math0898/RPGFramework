@@ -159,6 +159,15 @@ public class Party {
     }
 
     /**
+     * An accessor method for the boss that is actively fighting this party.
+     *
+     * @return The boss actively fighting this Party.
+     */
+    public CustomMob getActiveBossUnsafe () {
+        return activeBoss;
+    }
+
+    /**
      * An accessor method for the boss that is actively fighting this party. Will validate the boss before returning.
      *
      * @return The boss actively fighting this Party.

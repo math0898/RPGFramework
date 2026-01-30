@@ -1,5 +1,6 @@
 package sugaku.rpg.mobs;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -273,10 +274,14 @@ public abstract class CustomMob {
     public static void handleDrops(EntityDeathEvent event, BossDrop[] bossDrops, Rarity rarity) {
         handleDrops(event);
         event.setDroppedExp(25 * rarity.toInt(rarity));
-        for (RpgPlayer player : PlayerManager.players)
-            if (player.getActiveBoss().getEntity() != null)
-                if (player.getActiveBoss().getEntity().getEntityId() == event.getEntity().getEntityId())
-                    player.giveExperience(100 - player.getLevel());
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            RpgPlayer player = PlayerManager.getPlayer(p.getUniqueId());
+            if (player == null) continue;
+            if (player.getActiveBossUnsafe() == null) continue;
+            if (player.getActiveBossUnsafe().getEntity() == null) continue;
+            if (player.getActiveBossUnsafe().getEntity().getEntityId() == event.getEntity().getEntityId())
+                player.giveExperience(Math.max(100 - player.getLevel(), 1));
+        }
         Random rand = new Random();
         double roll = rand.nextDouble();
         double check = 0.0;
