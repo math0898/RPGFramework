@@ -254,7 +254,8 @@ public abstract class CustomMob {
      * Returns the custom name of the mob being created.
      */
     public String getCustomName() {
-        return ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + rarity + name; }
+        return ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + rarity + name;
+    }
 
     /**
      * Handles drops of the custom mob. By default no items are dropped.
@@ -271,8 +272,9 @@ public abstract class CustomMob {
      * @param event The event where the entity died.
      * @param bossDrops The table of drops.
      */
-    public static void handleDrops(EntityDeathEvent event, BossDrop[] bossDrops, Rarity rarity) {
-        handleDrops(event);
+    public static void handleDrops (EntityDeathEvent event, BossDrop[] bossDrops, Rarity rarity) {
+        event.getDrops().clear();
+        event.setDroppedExp(0);
         event.setDroppedExp(25 * rarity.toInt(rarity));
         for (Player p : Bukkit.getOnlinePlayers()) {
             RpgPlayer player = PlayerManager.getPlayer(p.getUniqueId());

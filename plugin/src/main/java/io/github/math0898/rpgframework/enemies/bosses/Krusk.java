@@ -109,26 +109,6 @@ public class Krusk extends CustomMob {
     public static String getName() { return name; }
 
     /**
-     * Handles drops.
-     */
-    public static void handleDrops(EntityDeathEvent event) {
-
-        CustomMob.handleDrops(event);
-        event.setDroppedExp(50);
-        Random r = new Random();
-        LivingEntity e = event.getEntity();
-
-        Objects.requireNonNull(e.getLocation().getWorld()).dropItem(e.getLocation(), new ItemStack(ROTTEN_FLESH, (int) (r.nextDouble() * 5) + 1));
-        double roll = r.nextDouble();
-        if (roll < 0.08) drop(KruskAxe, e.getLocation());
-        else if (roll < 0.16) drop(KruskBoots, e.getLocation());
-        else if (roll < 0.24) drop(KruskLeggings, e.getLocation());
-        else if (roll < 0.32) drop(UndeadChestplate, e.getLocation());
-        else if (roll < 0.36) drop(KruskHelmet, e.getLocation());
-        else if (roll < 0.37) drop(KruskLore, e.getLocation());
-    }
-
-    /**
      * Actions to be taken when Krusk is damaged.
      */
     @Override

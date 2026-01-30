@@ -11,6 +11,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import sugaku.rpg.framework.items.Rarity;
+import sugaku.rpg.framework.players.PlayerManager;
+import sugaku.rpg.framework.players.RpgPlayer;
 import sugaku.rpg.mobs.CustomMob;
 
 import java.util.*;
@@ -116,9 +118,19 @@ public class KruskBoss extends CustomMob {
     /**
      * Handles drops.
      */
-    public static void handleDrops(EntityDeathEvent event) {
+    public static void handleDrops(EntityDeathEvent event) { // todo: Refactor Krusk to utilize the same systems as Eiryeras and Feyrith
 
         CustomMob.handleDrops(event);
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            RpgPlayer player = PlayerManager.getPlayer(p.getUniqueId());
+            if (player == null) continue;
+            if (player.getActiveBossUnsafe() == null) continue;
+            System.out.println(player.getActiveBossUnsafe());
+            if (player.getActiveBossUnsafe().getEntity() == null) continue;
+            System.out.println(player.getActiveBossUnsafe().getEntity());
+            if (player.getActiveBossUnsafe().getEntity().getEntityId() == event.getEntity().getEntityId())
+                player.giveExperience(Math.max(100 - player.getLevel(), 1));
+        }
         event.setDroppedExp(50);
         Random r = new Random();
         LivingEntity e = event.getEntity();
