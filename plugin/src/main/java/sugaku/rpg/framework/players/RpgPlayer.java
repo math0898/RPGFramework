@@ -5,6 +5,7 @@ import io.github.math0898.rpgframework.RPGFramework;
 import io.github.math0898.rpgframework.classes.AbstractClass;
 import io.github.math0898.rpgframework.classes.implementations.*;
 import io.github.math0898.rpgframework.classes.Class;
+import io.github.math0898.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -55,6 +56,11 @@ public class RpgPlayer {
     private long experience = 0;
 
     /**
+     * The player's level, cached, so we don't have to recalculate it.
+     */
+    private long level = 1;
+
+    /**
      * Default constructor for an RpgPlayer construct just requiring a uuid.
      * @param p The player this construct points to.
      */
@@ -102,7 +108,23 @@ public class RpgPlayer {
      */
     public void setExperience (long xp) {
         experience = xp;
+        calculateLevel();
         refresh(getBukkitPlayer());
+    }
+
+    /**
+     * Calculates this player's level and updates the cached value.
+     */
+    private void calculateLevel () {
+        long thirties = experience / 30;
+        long bar = 1;
+        long countingLevel = 0;
+        while (thirties > 0) {
+            thirties -= bar;
+            bar++;
+            if (thirties >= 0) countingLevel++;
+        }
+        level = countingLevel + 1;
     }
 
     /**
@@ -111,7 +133,7 @@ public class RpgPlayer {
      * @return This player's current level.
      */
     public long getLevel () {
-        return (experience / 300) + 1;
+        return level;
     }
 
     /**
@@ -122,6 +144,7 @@ public class RpgPlayer {
     public void giveExperience (long awarded) {
         long startingLevel = getLevel();
         experience += awarded;
+        calculateLevel();
         long finalLevel = getLevel();
         if (startingLevel < finalLevel) levelUp();
     }
@@ -136,23 +159,41 @@ public class RpgPlayer {
             return;
         }
         refresh(getBukkitPlayer());
+        getBukkitPlayer().playSound(getBukkitPlayer(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.5f, 1.0f);
         p.sendMessage(ChatColor.GREEN + "You've leveled up! Level: " + getLevel());
+        if (level % 5 != 0)
+            p.sendMessage(StringUtils.convertHexCodes("#F454DA") + " +5 Health");
+        else
+            p.sendMessage(StringUtils.convertHexCodes("#D93747") + " +1 Damage");
     }
 
     /**
      * Refreshes the player's stats.
      */
     public void refresh (Player p) {
-        AttributeModifier mod = new AttributeModifier(new UUID(100, 234), "", (getLevel() - 1) * 1.0, AttributeModifier.Operation.ADD_NUMBER);
-        AttributeInstance instance = p.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-        if (instance != null) {
-            Collection<AttributeModifier> modifiers = instance.getModifiers();
+        // Every level except lvl 1, and lvls ending in 5/10.
+        AttributeModifier healthMod = new AttributeModifier(new UUID(100, 234), "", ((getLevel() - 1) - (getLevel() / 5.0)) * 5, AttributeModifier.Operation.ADD_NUMBER);
+        // Every level that ends in 5/10.
+        AttributeModifier damageMod = new AttributeModifier(new UUID(100, 235), "", (getLevel() / 5.0), AttributeModifier.Operation.ADD_NUMBER);
+        AttributeInstance healthInstance = p.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        AttributeInstance damageInstance = p.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+        if (healthInstance != null) {
+            Collection<AttributeModifier> modifiers = healthInstance.getModifiers();
             if (!modifiers.isEmpty())
-                instance.removeModifier(mod);
-            instance.addModifier(mod);
-            p.setHealth(instance.getValue());
+                healthInstance.removeModifier(healthMod);
+            healthInstance.addModifier(healthMod);
+            p.setHealth(healthInstance.getValue());
+            p.setHealthScale(20);
         } else {
             RPGFramework.console("Attempted to update " + p.getName() + "'s health but GENERIC_MAX_HEALTH instance is null.", ChatColor.RED);
+        }
+        if (damageInstance != null) {
+            Collection<AttributeModifier> modifiers = damageInstance.getModifiers();
+            if (!modifiers.isEmpty())
+                damageInstance.removeModifier(damageMod);
+            damageInstance.addModifier(damageMod);
+        } else {
+            RPGFramework.console("Attempted to update " + p.getName() + "'s damage but GENERIC_ATTACK_DAMAGE instance is null.", ChatColor.RED);
         }
     }
 
