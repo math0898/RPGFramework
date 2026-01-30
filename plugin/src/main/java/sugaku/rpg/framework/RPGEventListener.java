@@ -36,6 +36,7 @@ import static io.github.math0898.rpgframework.RPGFramework.console;
 import static io.github.math0898.rpgframework.RPGFramework.itemManager;
 import static org.bukkit.event.entity.EntityDamageEvent.DamageCause.*;
 import static sugaku.rpg.framework.items.ItemsManager.updateArmor;
+import static sugaku.rpg.framework.items.ItemsManager.updateArmor2;
 
 public class RPGEventListener implements Listener {
 
@@ -128,7 +129,9 @@ public class RPGEventListener implements Listener {
         if (itemCrafted == null) return;
         else if (itemCrafted.getItemMeta() == null) return;
 
-        if (!itemCrafted.getItemMeta().hasLore()) if (isArmor(itemCrafted.getType())) Bukkit.getServer().getScheduler().runTask(main.plugin, () -> updateArmor(itemCrafted));
+        if (!itemCrafted.getItemMeta().hasLore())
+            if (isArmor(itemCrafted.getType()))
+                e.setCurrentItem(updateArmor2(itemCrafted.getType()));
     }
 
     /**

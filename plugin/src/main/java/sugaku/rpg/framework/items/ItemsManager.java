@@ -1,5 +1,6 @@
 package sugaku.rpg.framework.items;
 
+import io.github.math0898.rpgframework.items.ItemManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -127,9 +128,31 @@ public final class ItemsManager {
     }
 
     /**
+     * Gives the correct RPG item to correspond with the given vanilla item.
+     */
+    public static ItemStack updateArmor2 (Material material) {
+        String itemId = "vanilla:";
+        switch (material) {
+            case GOLDEN_BOOTS, GOLDEN_LEGGINGS, GOLDEN_CHESTPLATE, GOLDEN_HELMET -> itemId += "Gold";
+            case LEATHER_BOOTS, LEATHER_LEGGINGS, LEATHER_CHESTPLATE, LEATHER_HELMET -> itemId += "Leather";
+            case IRON_BOOTS, IRON_LEGGINGS, IRON_CHESTPLATE, IRON_HELMET -> itemId += "Iron";
+            case CHAINMAIL_BOOTS, CHAINMAIL_LEGGINGS, CHAINMAIL_CHESTPLATE, CHAINMAIL_HELMET -> itemId += "Mail";
+            case DIAMOND_BOOTS, DIAMOND_LEGGINGS, DIAMOND_CHESTPLATE, DIAMOND_HELMET -> itemId += "Diamond";
+            case NETHERITE_BOOTS, NETHERITE_LEGGINGS, NETHERITE_CHESTPLATE, NETHERITE_HELMET -> itemId += "Netherite";
+        }
+        switch (material) {
+            case GOLDEN_BOOTS, IRON_BOOTS, CHAINMAIL_BOOTS, DIAMOND_BOOTS, NETHERITE_BOOTS -> itemId += "Boots";
+            case LEATHER_LEGGINGS,  IRON_LEGGINGS,  CHAINMAIL_LEGGINGS,  GOLDEN_LEGGINGS,  DIAMOND_LEGGINGS,  NETHERITE_LEGGINGS -> itemId += "Leggings";
+            case LEATHER_CHESTPLATE,  IRON_CHESTPLATE,  CHAINMAIL_CHESTPLATE,  GOLDEN_CHESTPLATE,  DIAMOND_CHESTPLATE,  NETHERITE_CHESTPLATE -> itemId += "Chestplate";
+            case LEATHER_HELMET,  IRON_HELMET,  CHAINMAIL_HELMET,  GOLDEN_HELMET,  DIAMOND_HELMET,  NETHERITE_HELMET -> itemId += "Helmet";
+        }
+        return ItemManager.getInstance().getItem(itemId);
+    }
+
+    /**
      * Updates vanilla armor to have the right meta and attributes.
      */
-    public static void updateArmor(ItemStack item) {
+    public static void updateArmor (ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         assert meta != null;
         ArrayList<String> lore = new ArrayList<>();
