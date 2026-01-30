@@ -41,7 +41,7 @@ public class PlayerManager {
     /**
      * An arraylist holding all the rpg-players currently on the server.
      */
-    private static final ArrayList<RpgPlayer> players = new ArrayList<>();
+    public static final ArrayList<RpgPlayer> players = new ArrayList<>();
 
     /**
      * Returns the arraylist of players.

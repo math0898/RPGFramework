@@ -12,6 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import sugaku.rpg.framework.items.BossDrop;
 import sugaku.rpg.framework.items.Rarity;
 import sugaku.rpg.framework.mobs.MobManager;
+import sugaku.rpg.framework.players.PlayerManager;
+import sugaku.rpg.framework.players.RpgPlayer;
 
 import java.util.Objects;
 import java.util.Random;
@@ -271,6 +273,10 @@ public abstract class CustomMob {
     public static void handleDrops(EntityDeathEvent event, BossDrop[] bossDrops, Rarity rarity) {
         handleDrops(event);
         event.setDroppedExp(25 * rarity.toInt(rarity));
+        for (RpgPlayer player : PlayerManager.players)
+            if (player.getActiveBoss().getEntity() != null)
+                if (player.getActiveBoss().getEntity().getEntityId() == event.getEntity().getEntityId())
+                    player.giveExperience(100 - player.getLevel());
         Random rand = new Random();
         double roll = rand.nextDouble();
         double check = 0.0;
