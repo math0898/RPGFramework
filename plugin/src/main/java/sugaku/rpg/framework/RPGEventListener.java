@@ -29,8 +29,10 @@ import sugaku.rpg.mobs.teir1.krusk.KruskMinion;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 
 //import static sugaku.rpg.framework.menus.ForgeManager.forgeClose;
+import static io.github.math0898.rpgframework.RPGFramework.console;
 import static io.github.math0898.rpgframework.RPGFramework.itemManager;
 import static org.bukkit.event.entity.EntityDamageEvent.DamageCause.*;
 import static sugaku.rpg.framework.items.ItemsManager.updateArmor;
@@ -64,17 +66,12 @@ public class RPGEventListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerLogin (PlayerJoinEvent e) {
-        try {
-            //We need to load their data,
-            RpgPlayer rpgPlayer = new RpgPlayer(e.getPlayer());
-            PlayerManager.addPlayer(rpgPlayer);
-            PlayerManager.scaleHealth(e.getPlayer());
-            // io.github.math0898.rpgframework.PlayerManager.onJoin()
-//            Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> rpgPlayer.heal(), 5);
-        } catch (Exception exception) {
-            main.console("Failed to load data!", ChatColor.RED);
-            main.console(exception.getMessage(), ChatColor.RED);
-        }
+        //We need to load their data,
+        RpgPlayer rpgPlayer = new RpgPlayer(e.getPlayer());
+        PlayerManager.addPlayer(rpgPlayer);
+        PlayerManager.scaleHealth(e.getPlayer());
+        // io.github.math0898.rpgframework.PlayerManager.onJoin()
+//        Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> rpgPlayer.heal(), 5);
     }
 
     /**
@@ -138,9 +135,13 @@ public class RPGEventListener implements Listener {
      * Called when a player interacts.
      */
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event) {
-
-        Objects.requireNonNull(PlayerManager.getPlayer(event.getPlayer().getUniqueId())).onInteract(event);
+    public void onPlayerInteract (PlayerInteractEvent event) {
+        RpgPlayer player = PlayerManager.getPlayer(event.getPlayer().getUniqueId());
+        if (player != null) player.onInteract(event);
+        else {
+            console("Was given player interact event but RpgPlayer not found.", ChatColor.RED, Level.SEVERE);
+            console("UUID: " + event.getPlayer().getUniqueId(), ChatColor.RED, Level.SEVERE);
+        }
 
 //        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && Objects.requireNonNull(event.getClickedBlock()).getType() == Material.ANVIL) {
 //

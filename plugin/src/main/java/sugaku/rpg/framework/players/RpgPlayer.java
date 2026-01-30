@@ -11,6 +11,7 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -22,6 +23,7 @@ import sugaku.rpg.main;
 import io.github.math0898.rpgframework.parties.Party;
 import sugaku.rpg.mobs.CustomMob;
 
+import java.util.Collection;
 import java.util.UUID;
 import java.util.Objects;
 
@@ -56,7 +58,7 @@ public class RpgPlayer {
      * Default constructor for an RpgPlayer construct just requiring a uuid.
      * @param p The player this construct points to.
      */
-    public RpgPlayer(Player p) throws NullPointerException {
+    public RpgPlayer (Player p) {
         this.uuid = p.getUniqueId();
         refresh(p);
     }
@@ -100,6 +102,7 @@ public class RpgPlayer {
      */
     public void setExperience (long xp) {
         experience = xp;
+        refresh(getBukkitPlayer());
     }
 
     /**
@@ -132,14 +135,25 @@ public class RpgPlayer {
             RPGFramework.console("Encountered a strange error where sugaku.rpg has an RpgPlayer object but no io.github.math0898 RpgPlayer was found.", ChatColor.RED);
             return;
         }
+        refresh(getBukkitPlayer());
         p.sendMessage(ChatColor.GREEN + "You've leveled up! Level: " + getLevel());
     }
 
     /**
      * Refreshes the player's stats.
      */
-    public void refresh(Player p) throws NullPointerException {
-        p.setHealth(Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue());
+    public void refresh (Player p) {
+        AttributeModifier mod = new AttributeModifier(new UUID(100, 234), "", (getLevel() - 1) * 1.0, AttributeModifier.Operation.ADD_NUMBER);
+        AttributeInstance instance = p.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        if (instance != null) {
+            Collection<AttributeModifier> modifiers = instance.getModifiers();
+            if (!modifiers.isEmpty())
+                instance.removeModifier(mod);
+            instance.addModifier(mod);
+            p.setHealth(instance.getValue());
+        } else {
+            RPGFramework.console("Attempted to update " + p.getName() + "'s health but GENERIC_MAX_HEALTH instance is null.", ChatColor.RED);
+        }
     }
 
     /**
