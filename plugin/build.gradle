@@ -71,8 +71,8 @@ task testLocal() {
 
 task publishServer() {
     onlyIf = { true }
-    dependsOn "RPG-Framework:plugin:build"
-    mustRunAfter "RPG-Framework:plugin:build"
+//    dependsOn "RPG-Framework:plugin:build"
+//    mustRunAfter "RPG-Framework:plugin:build"
     doLast {
         exec {
             ignoreExitValue = true

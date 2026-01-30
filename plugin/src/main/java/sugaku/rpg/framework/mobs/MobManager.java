@@ -31,12 +31,18 @@ public class MobManager {
     public static void run(EntityDamageByEntityEvent event) {
         Entity damaged = event.getEntity();
         Entity attacker = event.getDamager();
+        if (!(attacker instanceof Player)) return;
 
-        if (attacker instanceof Player) for (CustomMob m: mobs) if (m.getEntity().getEntityId() == damaged.getEntityId()) {
-            m.damaged((Player) attacker);
-            double health = m.getEntity().getHealth();
-            if (health < m.getActiveMechanics() * 0.20 && m.getActiveMechanics() >= 1) m.firstMechanic((Player) attacker);
-            else if (health < m.getMaxHealth() * 0.40 && m.getActiveMechanics() >= 2) m.secondMechanic((Player) attacker);
+        for (CustomMob m: mobs) {
+            if (m.getEntity() == null) continue;
+            if (m.getEntity().getEntityId() == damaged.getEntityId()) {
+                m.damaged((Player) attacker);
+                double health = m.getEntity().getHealth();
+                if (health < m.getActiveMechanics() * 0.20 && m.getActiveMechanics() >= 1)
+                    m.firstMechanic((Player) attacker);
+                else if (health < m.getMaxHealth() * 0.40 && m.getActiveMechanics() >= 2)
+                    m.secondMechanic((Player) attacker);
+            }
         }
     }
 

@@ -164,12 +164,12 @@ public abstract class CustomMob {
         e.setHealth(this.maxHealth);
 
         e.setLootTable(null);
-        e.getEquipment().setHelmetDropChance(-1);
-        e.getEquipment().setChestplateDropChance(-1);
-        e.getEquipment().setLeggingsDropChance(-1);
-        e.getEquipment().setBootsDropChance(-1);
-        e.getEquipment().setItemInMainHandDropChance(-1);
-        e.getEquipment().setItemInOffHandDropChance(-1);
+        e.getEquipment().setHelmetDropChance(0.0f);
+        e.getEquipment().setChestplateDropChance(0.0f);
+        e.getEquipment().setLeggingsDropChance(0.0f);
+        e.getEquipment().setBootsDropChance(0.0f);
+        e.getEquipment().setItemInMainHandDropChance(0.0f);
+        e.getEquipment().setItemInOffHandDropChance(0.0f);
         e.setCanPickupItems(false); //No more stealing gear
 
         this.entity = e;
@@ -278,7 +278,9 @@ public abstract class CustomMob {
             RpgPlayer player = PlayerManager.getPlayer(p.getUniqueId());
             if (player == null) continue;
             if (player.getActiveBossUnsafe() == null) continue;
+            System.out.println(player.getActiveBossUnsafe());
             if (player.getActiveBossUnsafe().getEntity() == null) continue;
+            System.out.println(player.getActiveBossUnsafe().getEntity());
             if (player.getActiveBossUnsafe().getEntity().getEntityId() == event.getEntity().getEntityId())
                 player.giveExperience(Math.max(100 - player.getLevel(), 1));
         }
