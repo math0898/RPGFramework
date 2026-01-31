@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.players.PlayerManager;
-import sugaku.rpg.framework.players.RpgPlayer;
+import io.github.math0898.rpgframework.RpgPlayer;
 import sugaku.rpg.main;
 import sugaku.rpg.mobs.Bosses;
 import sugaku.rpg.mobs.CustomMob;

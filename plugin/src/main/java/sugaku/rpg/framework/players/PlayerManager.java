@@ -1,5 +1,6 @@
 package sugaku.rpg.framework.players;
 
+import io.github.math0898.rpgframework.RpgPlayer;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;

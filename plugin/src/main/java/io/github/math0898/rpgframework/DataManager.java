@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import io.github.math0898.rpgframework.classes.Classes;
-import sugaku.rpg.framework.players.RpgPlayer;
 
 import java.io.File;
 import java.io.IOException;
@@ -109,7 +108,7 @@ public class DataManager {
                 console("Class: " + classString);
                 console("Experience: " + experiencePoints);
                 // todo: This should use the new RpgPlayer objects.
-                sugaku.rpg.framework.players.RpgPlayer rpgPlayer = sugaku.rpg.framework.players.PlayerManager.getPlayer(player.getUuid());
+                RpgPlayer rpgPlayer = sugaku.rpg.framework.players.PlayerManager.getPlayer(player.getUuid());
                 rpgPlayer.joinClass(Classes.fromString(classString));
                 rpgPlayer.setExperience(experiencePoints);
                 console("Loaded.", ChatColor.GREEN);

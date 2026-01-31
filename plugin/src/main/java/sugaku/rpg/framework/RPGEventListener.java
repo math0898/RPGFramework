@@ -20,7 +20,7 @@ import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.mobs.BossRituals;
 import sugaku.rpg.framework.mobs.MobManager;
 import sugaku.rpg.framework.players.PlayerManager;
-import sugaku.rpg.framework.players.RpgPlayer;
+import io.github.math0898.rpgframework.RpgPlayer;
 import sugaku.rpg.main;
 import sugaku.rpg.mobs.gods.Inos;
 import sugaku.rpg.mobs.teir1.krusk.KruskBoss;

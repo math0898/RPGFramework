@@ -1,7 +1,7 @@
 package io.github.math0898.rpgframework.classes.implementations;
 
 import io.github.math0898.rpgframework.Cooldown;
-import sugaku.rpg.framework.players.RpgPlayer;
+import io.github.math0898.rpgframework.RpgPlayer;
 import io.github.math0898.rpgframework.classes.AbstractClass;
 import io.github.math0898.rpgframework.damage.AdvancedDamageEvent;
 import io.github.math0898.rpgframework.damage.DamageResistance;

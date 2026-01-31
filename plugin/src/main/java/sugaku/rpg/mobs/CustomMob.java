@@ -14,7 +14,7 @@ import sugaku.rpg.framework.items.BossDrop;
 import sugaku.rpg.framework.items.Rarity;
 import sugaku.rpg.framework.mobs.MobManager;
 import sugaku.rpg.framework.players.PlayerManager;
-import sugaku.rpg.framework.players.RpgPlayer;
+import io.github.math0898.rpgframework.RpgPlayer;
 
 import java.util.Objects;
 import java.util.Random;

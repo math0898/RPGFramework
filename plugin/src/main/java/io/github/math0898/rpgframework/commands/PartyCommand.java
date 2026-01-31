@@ -2,7 +2,7 @@ package io.github.math0898.rpgframework.commands;
 
 import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.classes.Classes;
-import sugaku.rpg.framework.players.RpgPlayer;
+import io.github.math0898.rpgframework.RpgPlayer;
 import io.github.math0898.rpgframework.parties.Party;
 import io.github.math0898.rpgframework.parties.PartyManager;
 import io.github.math0898.utils.commands.BetterCommand;
@@ -141,7 +141,7 @@ public class PartyCommand extends BetterCommand {
         }
         send(sender, ChatColor.GRAY + "---- Party Status ----");
         for (Player p : party.getPlayers()) {
-            sugaku.rpg.framework.players.RpgPlayer rpg = sugaku.rpg.framework.players.PlayerManager.getPlayer(p.getUniqueId());
+            RpgPlayer rpg = sugaku.rpg.framework.players.PlayerManager.getPlayer(p.getUniqueId());
             if (rpg == null) continue;
             send(sender, ChatColor.GRAY + p.getName() + " -> " + rpg.getFormattedHealth());
         }

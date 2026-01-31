@@ -1,7 +1,5 @@
-package sugaku.rpg.framework.players;
+package io.github.math0898.rpgframework;
 
-import io.github.math0898.rpgframework.Cooldown;
-import io.github.math0898.rpgframework.RPGFramework;
 import io.github.math0898.rpgframework.classes.AbstractClass;
 import io.github.math0898.rpgframework.classes.implementations.*;
 import io.github.math0898.rpgframework.classes.Class;
@@ -25,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import io.github.math0898.rpgframework.classes.Classes;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import sugaku.rpg.framework.players.PlayerManager;
 import sugaku.rpg.main;
 import io.github.math0898.rpgframework.parties.Party;
 import sugaku.rpg.mobs.CustomMob;

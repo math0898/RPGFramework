@@ -1,6 +1,6 @@
 package io.github.math0898.rpgframework.classes.implementations;
 
-import sugaku.rpg.framework.players.RpgPlayer;
+import io.github.math0898.rpgframework.RpgPlayer;
 import io.github.math0898.rpgframework.classes.AbstractClass;
 
 /**

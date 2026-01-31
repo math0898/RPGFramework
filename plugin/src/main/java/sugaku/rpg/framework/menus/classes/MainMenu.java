@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.menus.Menu;
 import sugaku.rpg.framework.players.PlayerManager;
-import sugaku.rpg.framework.players.RpgPlayer;
+import io.github.math0898.rpgframework.RpgPlayer;
 
 import java.util.Objects;
 

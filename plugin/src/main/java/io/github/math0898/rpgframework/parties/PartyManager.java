@@ -1,5 +1,6 @@
 package io.github.math0898.rpgframework.parties;
 
+import io.github.math0898.rpgframework.RpgPlayer;
 import io.github.math0898.rpgframework.classes.Classes;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -97,7 +98,7 @@ public class PartyManager implements Listener {
             Party party = findParty(p);
             if (party == null) return;
             // todo: Refactor to new RpgPlayer
-            sugaku.rpg.framework.players.RpgPlayer rpg = sugaku.rpg.framework.players.PlayerManager.getPlayer(p.getUniqueId());
+            RpgPlayer rpg = sugaku.rpg.framework.players.PlayerManager.getPlayer(p.getUniqueId());
             String prefix = ChatColor.GREEN + p.getName() + ChatColor.DARK_GRAY + " > " + ChatColor.LIGHT_PURPLE;
             if (rpg == null) prefix = ChatColor.DARK_GRAY + "[" + Classes.NONE.getFormattedName() + ChatColor.DARK_GRAY + "] " + prefix;
             else prefix = ChatColor.DARK_GRAY + "[" + rpg.getCombatClass().getFormattedName() + ChatColor.DARK_GRAY + "] " + prefix;
