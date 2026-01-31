@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
-import sugaku.rpg.mobs.CustomMob;
+import io.github.math0898.rpgframework.enemies.CustomMob;
 import sugaku.rpg.mobs.gods.Inos;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class MobManager {
                 double health = m.getEntity().getHealth();
                 if (health < m.getActiveMechanics() * 0.20 && m.getActiveMechanics() >= 1)
                     m.firstMechanic((Player) attacker);
-                else if (health < m.getMaxHealth() * 0.40 && m.getActiveMechanics() >= 2)
+                else if (health < m.getBaseHealth() * 0.40 && m.getActiveMechanics() >= 2)
                     m.secondMechanic((Player) attacker);
             }
         }

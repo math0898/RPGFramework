@@ -7,26 +7,22 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import sugaku.rpg.framework.items.Rarity;
-import sugaku.rpg.mobs.CustomMob;
+import io.github.math0898.rpgframework.enemies.CustomMob;
 import sugaku.rpg.mobs.teir1.krusk.KruskMinion;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
 import static org.bukkit.Material.*;
 import static org.bukkit.attribute.AttributeModifier.Operation.ADD_NUMBER;
 import static org.bukkit.entity.EntityType.ZOMBIE;
-import static sugaku.rpg.framework.items.ItemsManager.*;
-import static sugaku.rpg.framework.mobs.MobManager.drop;
 
 public class Krusk extends CustomMob {
 

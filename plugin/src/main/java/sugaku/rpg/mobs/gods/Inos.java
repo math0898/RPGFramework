@@ -5,7 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDeathEvent;
 import sugaku.rpg.framework.items.Rarity;
-import sugaku.rpg.mobs.CustomMob;
+import io.github.math0898.rpgframework.enemies.CustomMob;
 
 import static sugaku.rpg.framework.mobs.MobManager.drop;
 

@@ -22,7 +22,7 @@ import sugaku.rpg.framework.items.BossDrop;
 import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.items.Rarity;
 import sugaku.rpg.main;
-import sugaku.rpg.mobs.CustomMob;
+import io.github.math0898.rpgframework.enemies.CustomMob;
 
 import java.util.List;
 import java.util.Objects;

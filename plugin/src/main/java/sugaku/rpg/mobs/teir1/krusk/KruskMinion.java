@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.items.Rarity;
-import sugaku.rpg.mobs.CustomMob;
+import io.github.math0898.rpgframework.enemies.CustomMob;
 
 /**
  * KruskMinion describes what makes Krusk minions Krusk minions. There is not much extra to Krusk minions outside of
@@ -48,7 +48,7 @@ public class KruskMinion extends CustomMob {
         meta.setUnbreakable(true);
         bootsMeta.setUnbreakable(true);
         if (i > 5) {
-            setMaxHealth(60);
+            setBaseHealth(60);
             bootsMeta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, ItemsManager.attributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, 0.12, EquipmentSlot.FEET));
             bootsMeta.addAttributeModifier(Attribute.GENERIC_ARMOR, ItemsManager.attributeModifier(Attribute.GENERIC_ARMOR, -17, EquipmentSlot.FEET));
             setArmor(new ItemStack(Material.LEATHER_HELMET), new ItemStack(Material.NETHERITE_CHESTPLATE), new ItemStack(Material.NETHERITE_LEGGINGS), new ItemStack(Material.LEATHER_BOOTS));

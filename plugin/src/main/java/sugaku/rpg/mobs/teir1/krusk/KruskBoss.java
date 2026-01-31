@@ -13,7 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 import sugaku.rpg.framework.items.Rarity;
 import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RpgPlayer;
-import sugaku.rpg.mobs.CustomMob;
+import io.github.math0898.rpgframework.enemies.CustomMob;
 
 import java.util.*;
 

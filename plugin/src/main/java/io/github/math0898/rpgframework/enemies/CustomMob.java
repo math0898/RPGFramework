@@ -1,6 +1,11 @@
 package io.github.math0898.rpgframework.enemies;
+
+import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -8,100 +13,163 @@ import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import sugaku.rpg.framework.items.BossDrop;
+import sugaku.rpg.framework.items.Rarity;
+import sugaku.rpg.framework.mobs.MobManager;
+import io.github.math0898.rpgframework.PlayerManager;
+import io.github.math0898.rpgframework.RpgPlayer;
 
 import java.util.Objects;
 import java.util.Random;
 
+/**
+ * The CustomMob class manages many of the additional things that we need to do to our custom mobs, such as managing
+ * armor and custom attributes.
+ *
+ * @author Sugaku
+ */
 public abstract class CustomMob {
 
     /**
-     * The helmet of the custom mob.
+     * The prefix sent with every message.
      */
+    private final String MESSAGE_PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY;
+
+    /**
+     * The helmet of the custom mob.
+     * -- SETTER --
+     *  Sets the helmet of the new mob.
+     */
+    @Setter
     private ItemStack helm;
 
     /**
      * The chestplate of the custom mob.
+     * -- SETTER --
+     *  Sets the chestplate of the new mob.
      */
+    @Setter
     private ItemStack chestplate;
 
     /**
      * The leggings of the custom mob.
+     * -- SETTER --
+     *  Sets the leggings of the new mob.
      */
+    @Setter
     private ItemStack leggings;
 
     /**
      * The boots of the custom mob.
+     * -- SETTER --
+     *  Sets the boots of the new mob.
      */
+    @Setter
     private ItemStack boots;
 
     /**
      * The held item of the custom mob.
+     * -- SETTER --
+     *  Sets the main hand of the new mob.
      */
+    @Setter
     private ItemStack hand;
 
     /**
-     * The item held in the off hand of the custom mob.
+     * The item held in the off-hand of the custom mob.
+     * -- SETTER --
+     *  Sets the off-hand of the new mob.
      */
+    @Setter
     private ItemStack offHand;
 
     /**
      * The type of mob the custom mob is.
      */
-    private EntityType mobType;
+    private final EntityType mobType;
 
     /**
      * The name string of the mob.
      */
-    private String name;
+    private final String name;
 
     /**
-     * The rarity of the boss. Somewhat related to difficulty.
+     * The rarity of the boss. Somewhat related to difficulty, but mainly used to color their name.
      */
-    private LegacyRarity rarity;
+    private final Rarity rarity;
 
     /**
-     * The maximum health of the mob.
+     * The base health that this mob has. This can be scaled up when battling parties. Some niche situations can re-roll
+     * the enemy's base health which means this can sometimes change after construction.
+     * -- SETTER --
+     *  Sets the max health of the mob.
+     * -- GETTER --
+     *  Accessor method for this mob's base health.
      */
-    private int maxHealth;
+    @Getter
+    @Setter
+    private int baseHealth;
 
     /**
      * A pointer to the living entity object.
      */
+    @Getter
     private LivingEntity entity;
 
     /**
-     * The number of mechanics this mob has, 1-20%,2-40%,3-60%,4-80%,5-onSpawn
+     * The number of mechanics this mob has, 1-20%,2-40%,3-60%,4-80%,5-onSpawn. It's very strange to put a state machine
+     * here in the middle of a CustomMob. Instead, let's define health thresholds at which mechanics should occur in a
+     * yaml file and check if we cross any thresholds on damage taken.
      */
+    @Setter
+    @Getter
+    @Deprecated(forRemoval = true)
     private int activeMechanics = 0;
 
     /**
-     * The prefix sent with every message.
+     * The location to spawn this mob at.
+     * -- SETTER --
+     *  Sets the location that this mob will be spawned at.
+     * -- GETTER --
+     *  An accessor method to the location to spawn this CustomMob at.
      */
-    private final String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY;
+    @Getter
+    @Setter
+    private Location spawnPoint;
+
+    /**
+     * Has this mob been spawned.
+     * -- GETTER --
+     *  An accessor method for if the CustomMob has been spawned into the world yet or not.
+     */
+    @Getter
+    private boolean spawned = false;
+
+    /**
+     * A basic constructor to aid in the construction of a CustomMob. Contains everything essential to run spawn().
+     *
+     * @param name The name of the mob.
+     * @param mobType The type of mob that should be spawned.
+     * @param rarity The rarity of the mob being spawned.
+     * @param baseHealth The maximum health of the mob spawned
+     */
+    public CustomMob (String name, EntityType mobType, Rarity rarity, int baseHealth) {
+        this.name = name;
+        this.mobType = mobType;
+        this.rarity = rarity;
+        this.baseHealth = baseHealth;
+    }
 
     /**
      * Sends a message to the given recipient.
      */
-    public void send(CommandSender user, String message) {
-        user.sendMessage(prefix + message);
-    }
-
-    /**
-     * A basic constructor to aid in the construction of a CustomMob. Contains everything essential to run spawn().
-     * @param name The name of the mob.
-     * @param mobType The type of mob that should be spawned.
-     * @param rarity The rarity of the mob being spawned.
-     * @param maxHealth The maximum health of the mob spawned
-     */
-    public CustomMob (String name, EntityType mobType, LegacyRarity rarity, int maxHealth) {
-        setName(name);
-        setMobType(mobType);
-        setRarity(rarity);
-        setMaxHealth(maxHealth);
+    public void send (CommandSender user, String message) {
+        user.sendMessage(MESSAGE_PREFIX + message);
     }
 
     /**
      * Spawn the mob described by the CustomMob object at the given location l.
+     *
      * @param l The location the mob should be spawned at.
      */
     @SuppressWarnings("deprecation")
@@ -109,111 +177,61 @@ public abstract class CustomMob {
         Mob e = (Mob) Objects.requireNonNull(l.getWorld()).spawnEntity(l, mobType);
 
         e.setCustomNameVisible(true);
-        e.setCustomName(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + LegacyRarity.toColor(rarity) + name);
+        e.setCustomName(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + Rarity.toColor(rarity) + name);
         Objects.requireNonNull(e.getEquipment()).setHelmet(this.helm);
         Objects.requireNonNull(e.getEquipment()).setChestplate(this.chestplate);
         Objects.requireNonNull(e.getEquipment()).setLeggings(this.leggings);
         Objects.requireNonNull(e.getEquipment()).setBoots(this.boots);
         Objects.requireNonNull(e.getEquipment()).setItemInMainHand(this.hand);
         Objects.requireNonNull(e.getEquipment()).setItemInOffHand(this.offHand);
-        e.setMaxHealth(this.maxHealth); //Deprecated
-        e.setHealth(this.maxHealth);
+        e.setMaxHealth(this.baseHealth); //Deprecated
+        e.setHealth(this.baseHealth);
 
         e.setLootTable(null);
-        e.getEquipment().setHelmetDropChance(-1);
-        e.getEquipment().setChestplateDropChance(-1);
-        e.getEquipment().setLeggingsDropChance(-1);
-        e.getEquipment().setBootsDropChance(-1);
-        e.getEquipment().setItemInMainHandDropChance(-1);
-        e.getEquipment().setItemInOffHandDropChance(-1);
+        e.getEquipment().setHelmetDropChance(0.0f);
+        e.getEquipment().setChestplateDropChance(0.0f);
+        e.getEquipment().setLeggingsDropChance(0.0f);
+        e.getEquipment().setBootsDropChance(0.0f);
+        e.getEquipment().setItemInMainHandDropChance(0.0f);
+        e.getEquipment().setItemInOffHandDropChance(0.0f);
         e.setCanPickupItems(false); //No more stealing gear
 
         this.entity = e;
+        spawned = true;
     }
 
     /**
-     * Sets the name of the mob
-     * @param name The desired name.
-     */
-    public void setName(String name) { this.name = name; }
-
-    /**
-     * Applies the given armor to the mob.
+     * A helpful utility method to set armor in a batch.
+     *
      * @param helm The helmet of the new mob.
      * @param chestplate The chestplate of the new mob.
      * @param leggings The leggings of the new mob.
      * @param boots The boots of the new mob.
      */
-    public void setArmor(ItemStack helm, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
-        setHelm(helm);
-        setChestplate(chestplate);
-        setLeggings(leggings);
-        setBoots(boots);
+    public void setArmor (ItemStack helm, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
+        this.helm = helm;
+        this.chestplate = chestplate;
+        this.leggings = leggings;
+        this.boots = boots;
     }
 
     /**
-     * Sets the helmet of the new mob.
-     * @param helm The desired helmet.
-     */
-    public void setHelm(ItemStack helm) { this.helm = helm; }
-
-    /**
-     * Sets the chestplate of the new mob.
-     * @param chestplate The desired chestplate.
-     */
-    public void setChestplate(ItemStack chestplate) { this.chestplate = chestplate; }
-
-    /**
-     * Sets the leggings of the new mob.
-     * @param leggings The desired leggings.
-     */
-    public void setLeggings(ItemStack leggings) { this.leggings = leggings; }
-
-    /**
-     * Sets the boots of the new mob.
-     * @param boots The desired boots.
-     */
-    public void setBoots(ItemStack boots) { this.boots = boots; }
-
-    /**
-     * Sets the main hand of the new mob.
-     * @param hand The desired weapon of the mob.
-     */
-    public void setHand(ItemStack hand) { this.hand = hand; }
-
-    /**
-     * Sets the offhand of the new mob.
-     * @param offHand The desired offhand of the mob.
-     */
-    public void setOffHand(ItemStack offHand) { this.offHand = offHand; }
-
-    /**
-     * Sets the type of mob that will be spawned.
-     * @param mobType The desired type of mob.
-     */
-    public void setMobType(EntityType mobType) { this.mobType = mobType; }
-
-    /**
-     * Sets the rarity of the mob that will be spawned.
-     * @param rarity The desired rarity of the mob.
-     */
-    public void setRarity(LegacyRarity rarity) { this.rarity = rarity; }
-
-    /**
-     * Sets the max health of the mob.
-     * @param maxHealth The desired max health of the mob.
-     */
-    public void setMaxHealth(int maxHealth) { this.maxHealth = maxHealth; }
-
-    /**
      * Returns the custom name of the mob being created.
+     *
+     * @return The custom name of this mob in it's formatted form.
      */
-    public String getCustomName() { return ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + rarity + name; }
+    public String getCustomName () {
+        return ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + rarity + name;
+    }
 
     /**
-     * Handles drops of the custom mob. By default no items are dropped.
+     * Handles drops of the custom mob. By default, no items are dropped. Use
+     * {@link #handleDrops(EntityDeathEvent, BossDrop[], Rarity)} to manage drops with pre-declared BossDrops.
+     *
+     * @param event The EntityDeathEvent to manage.
      */
-    public static void handleDrops(EntityDeathEvent event) {
+    @Deprecated(forRemoval = true)
+    public static void handleDrops (EntityDeathEvent event) {
         event.getDrops().clear();
         event.setDroppedExp(0);
     }
@@ -221,51 +239,105 @@ public abstract class CustomMob {
     /**
      * Handles the drops of the custom mob. Uses the table of BossDrops combined with the boss's rarity to determine
      * what loot should drop at what rate.
+     * // todo: Rarity should instead be replaced with a value like VANILLA_EXPERIENCE. It's strange that it's used for drop rolls.
+     * // todo: Add a field to CustomMob to determine how much RPG experience it drops. We will also need an actual equation to determine xp awarded.
+     * // todo: Make non-static.
      *
      * @param event The event where the entity died.
      * @param bossDrops The table of drops.
      */
-    public static void handleDrops(EntityDeathEvent event, Object[] bossDrops, LegacyRarity rarity) {
-//        handleDrops(event);
-//        event.setDroppedExp(25 * rarity.toInt(rarity));
-//        double roll = new Random().nextDouble();
-//        double check = 0.0;
-//        for (BossDrop i: bossDrops) {
-//            if (roll < check + getRate(i.getRarity(), rarity)) { MobManager.drop(i.getItem(), event.getEntity().getLocation()); break; }
-//            else check += getRate(i.getRarity(), rarity);
-//        }
-    }
-
-    private static double getRate(LegacyRarity item, LegacyRarity boss) {
-        switch (boss) {
-            case UNCOMMON: switch (item) {
-                case COMMON: return 0.16;
-                case UNCOMMON: return 0.08;
-                case RARE: return 0.04;
-                case LEGENDARY: return 0.02;
-                case HEROIC: return 0.01;
-                case MYTHIC: return 0.005;
-            }
+    public static void handleDrops (EntityDeathEvent event, BossDrop[] bossDrops, Rarity rarity) {
+        event.getDrops().clear();
+        event.setDroppedExp(0);
+        event.setDroppedExp(25 * rarity.toInt(rarity));
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            RpgPlayer player = PlayerManager.getPlayer(p.getUniqueId());
+            if (player == null) continue;
+            if (player.getActiveBossUnsafe() == null) continue;
+            System.out.println(player.getActiveBossUnsafe());
+            if (player.getActiveBossUnsafe().getEntity() == null) continue;
+            System.out.println(player.getActiveBossUnsafe().getEntity());
+            if (player.getActiveBossUnsafe().getEntity().getEntityId() == event.getEntity().getEntityId())
+                player.giveExperience(Math.max(100 - player.getLevel(), 1));
         }
-        return 0.0;
+        Random rand = new Random();
+        double roll = rand.nextDouble();
+        double check = 0.0;
+        while (true) {
+            for (BossDrop i : bossDrops) {
+                if (roll < check + getRate(i.getRarity(), rarity)) {
+                    MobManager.drop(i.getItem(), event.getEntity().getLocation());
+                    return;
+                } else check += getRate(i.getRarity(), rarity);
+            }
+            roll = rand.nextDouble();
+        }
     }
 
-    public LivingEntity getEntity() { return entity; }
+    /**
+     * A helpful method to determining the drop rate of items depending on the challenge of the boss. This seems like an
+     * odd way to go about boss drops and should probably be removed.
+     *
+     * @param item The rarity of the item being dropped.
+     * @param boss The rarity of the boss being fought.
+     * @return The rate at which an item of the given rarity should drop for a boss of the given rarity.
+     */
+    @Deprecated(forRemoval = true)
+    private static double getRate (Rarity item, Rarity boss) {
+//        switch (boss) {
+//            case UNCOMMON:
+//            default:
+                return switch (item) {
+                    case COMMON -> 0.16;
+                    case UNCOMMON -> 0.08;
+                    case RARE -> 0.04;
+                    case LEGENDARY -> 0.02;
+                    case HEROIC -> 0.01;
+                    case MYTHIC -> 0.005;
+                };
+//            case RARE:
+//                return switch (item) {
+//                    case COMMON -> 0.16;
+//                    case UNCOMMON -> 0.08;
+//                    case RARE -> 0.04;
+//                    case LEGENDARY -> 0.02;
+//                    case HEROIC -> 0.01;
+//                    case MYTHIC -> 0.005;
+//                };
+//        }
+//        return 0.0;
+    }
 
-    public void damaged(Player attacker) {
-        if (getEntity().isInWater()) {
-            Objects.requireNonNull(attacker.getLocation().getWorld()).strikeLightning(attacker.getLocation());
+    /**
+     * Called whenever a player damages a CustomMob.
+     *
+     * @param attacker The player who attacked this mob.
+     */
+    public void damaged (Player attacker) {
+        if (entity.isInWater()) {
+            World world = attacker.getWorld();
+            world.strikeLightning(attacker.getLocation());
             send(attacker, "The gods smite you for your attempted cheese.");
         }
     }
 
-    public int getMaxHealth() {return maxHealth; }
+    /**
+     * Called when a boss's health drops bellow the first threshold.
+     *
+     * @param attacker The player who caused this drop to occur.
+     */
+    @Deprecated(forRemoval = true)
+    public void firstMechanic (Player attacker) {
+        activeMechanics = 0;
+    }
 
-    public int getActiveMechanics() { return activeMechanics; }
-
-    public void setActiveMechanics(int m) { activeMechanics = m; }
-
-    public void firstMechanic(Player attacker) { activeMechanics = 0; }
-
-    public void secondMechanic(Player attacker) { activeMechanics = 1; }
+    /**
+     * Called when a boss's health drops bellow the second threshold.
+     *
+     * @param attacker The player who caused this drop to occur.
+     */
+    @Deprecated(forRemoval = true)
+    public void secondMechanic (Player attacker) {
+        activeMechanics = 1;
+    }
 }

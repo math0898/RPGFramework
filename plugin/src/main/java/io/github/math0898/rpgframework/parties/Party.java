@@ -2,7 +2,7 @@ package io.github.math0898.rpgframework.parties;
 
 import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RpgPlayer;
-import sugaku.rpg.mobs.CustomMob;
+import io.github.math0898.rpgframework.enemies.CustomMob;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
