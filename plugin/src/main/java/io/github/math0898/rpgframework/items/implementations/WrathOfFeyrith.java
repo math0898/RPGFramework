@@ -2,6 +2,7 @@ package io.github.math0898.rpgframework.items.implementations;
 
 import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RpgPlayer;
+import io.github.math0898.rpgframework.items.ItemManager;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,8 +12,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-
-import static io.github.math0898.rpgframework.RPGFramework.itemManager;
 
 /**
  * When right-clicked the WrathOfFeyrith strikes all nearby enemies with lightning.
@@ -38,7 +37,7 @@ public class WrathOfFeyrith implements Listener {
         ItemStack item = event.getItem();
         if (item == null) return;
         if (!item.getType().equals(Material.PRISMARINE_SHARD)) return; // todo: Make Copper Ingot
-        if (item.equals(itemManager.getItem("feyrith:WrathOfFeyrith")))
+        if (item.equals(ItemManager.getInstance().getItem("feyrith:WrathOfFeyrith")))
             itemUse(event.getPlayer());
     }
 

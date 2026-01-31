@@ -14,7 +14,6 @@ import sugaku.rpg.mobs.teir1.eiryeras.EiryerasBoss;
 
 import java.util.*;
 
-import static io.github.math0898.rpgframework.RPGFramework.itemManager;
 import static org.bukkit.attribute.AttributeModifier.Operation.*;
 
 public final class ItemsManager {
@@ -22,7 +21,7 @@ public final class ItemsManager {
     /**
      * The rare Dark Helmet custom item.
      */
-    public static ItemStack DarkHelm = itemManager.getItem("other:HelmetOfDarkness");
+    public static ItemStack DarkHelm = ItemManager.getInstance().getItem("other:HelmetOfDarkness");
 
     /**
      * The rare spawn item for Eiryeras.
@@ -32,22 +31,22 @@ public final class ItemsManager {
     /**
      * The uncommon axe of Krusk custom item.
      */
-    public static ItemStack KruskAxe = itemManager.getItem("krusk:KruskAxe");
+    public static ItemStack KruskAxe = ItemManager.getInstance().getItem("krusk:KruskAxe");
 
     /**
      * The uncommon boots of Krusk custom item.
      */
-    public static ItemStack KruskBoots = itemManager.getItem("krusk:KruskBoots");
+    public static ItemStack KruskBoots = ItemManager.getInstance().getItem("krusk:KruskBoots");
 
     /**
      * The rare Krusk helmet.
      */
-    public static ItemStack KruskHelmet =itemManager.getItem("krusk:KruskHelmet");
+    public static ItemStack KruskHelmet = ItemManager.getInstance().getItem("krusk:KruskHelmet");
 
     /**
      * The uncommon leggings of Krusk custom item.
      */
-    public static ItemStack KruskLeggings = itemManager.getItem("krusk:KruskLeggings");
+    public static ItemStack KruskLeggings = ItemManager.getInstance().getItem("krusk:KruskLeggings");
 
     /**
      * The rare spawn item for Krusk.
@@ -72,12 +71,12 @@ public final class ItemsManager {
     /**
      * The uncommon undead chestplate custom item.
      */
-    public static ItemStack UndeadChestplate = itemManager.getItem("krusk:UndeadChestplate");
+    public static ItemStack UndeadChestplate = ItemManager.getInstance().getItem("krusk:UndeadChestplate");
 
     /**
      * The rare lore of Krusk.
      */
-    public static ItemStack KruskLore = itemManager.getItem("krusk:Lore");
+    public static ItemStack KruskLore = ItemManager.getInstance().getItem("krusk:Lore");
 
     /**
      * An arraylist of all the custom items in the game.

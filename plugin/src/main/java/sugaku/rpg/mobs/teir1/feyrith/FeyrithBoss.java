@@ -1,6 +1,6 @@
 package sugaku.rpg.mobs.teir1.feyrith;
 
-import io.github.math0898.rpgframework.RPGFramework;
+import io.github.math0898.rpgframework.items.ItemManager;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
@@ -103,13 +103,13 @@ public class FeyrithBoss extends CustomMob implements Listener {
      * An array of Feyrith item drops.
      */
     private static final BossDrop[] bossDrops = new BossDrop[]{
-            new BossDrop(RPGFramework.itemManager.getItem("feyrith:SylvathianThornWeaver"), Rarity.RARE),
-            new BossDrop(RPGFramework.itemManager.getItem("feyrith:FireGemstone"), Rarity.UNCOMMON),
-            new BossDrop(RPGFramework.itemManager.getItem("feyrith:WrathOfFeyrith"), Rarity.RARE),
-            new BossDrop(RPGFramework.itemManager.getItem("feyrith:MageKaftan"), Rarity.RARE),
-            new BossDrop(RPGFramework.itemManager.getItem("feyrith:RoyalClogs"), Rarity.HEROIC),
-            new BossDrop(RPGFramework.itemManager.getItem("feyrith:VisionaryCoif"), Rarity.UNCOMMON),
-            new BossDrop(RPGFramework.itemManager.getItem("feyrith:ComfortableBreeches"), Rarity.RARE)
+            new BossDrop(ItemManager.getInstance().getItem("feyrith:SylvathianThornWeaver"), Rarity.RARE),
+            new BossDrop(ItemManager.getInstance().getItem("feyrith:FireGemstone"), Rarity.UNCOMMON),
+            new BossDrop(ItemManager.getInstance().getItem("feyrith:WrathOfFeyrith"), Rarity.RARE),
+            new BossDrop(ItemManager.getInstance().getItem("feyrith:MageKaftan"), Rarity.RARE),
+            new BossDrop(ItemManager.getInstance().getItem("feyrith:RoyalClogs"), Rarity.HEROIC),
+            new BossDrop(ItemManager.getInstance().getItem("feyrith:VisionaryCoif"), Rarity.UNCOMMON),
+            new BossDrop(ItemManager.getInstance().getItem("feyrith:ComfortableBreeches"), Rarity.RARE)
 
     };
 

@@ -2,6 +2,7 @@ package io.github.math0898.rpgframework.items.implementations;
 
 import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RpgPlayer;
+import io.github.math0898.rpgframework.items.ItemManager;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,7 +15,6 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.*;
 
 import static io.github.math0898.rpgframework.RPGFramework.getInstance;
-import static io.github.math0898.rpgframework.RPGFramework.itemManager;
 
 /**
  * When right-clicked the SylvathianThornWeaver summons an aura of thorns which damages nearby players.
@@ -40,7 +40,7 @@ public class SylvathianThornWeaver implements Listener {
         ItemStack item = event.getItem();
         if (item == null) return;
         if (!item.getType().equals(Material.EMERALD)) return;
-        if (item.equals(itemManager.getItem("feyrith:SylvathianThornWeaver")))
+        if (item.equals(ItemManager.getInstance().getItem("feyrith:SylvathianThornWeaver")))
             itemUse(event.getPlayer());
     }
 

@@ -1,6 +1,6 @@
 package sugaku.rpg.mobs.teir1.eiryeras;
 
-import io.github.math0898.rpgframework.RPGFramework;
+import io.github.math0898.rpgframework.items.ItemManager;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -118,25 +118,25 @@ public class EiryerasBoss extends CustomMob implements Listener {
      */
     private static final BossDrop[] bossDrops = new BossDrop[]{
             //Rare Eiryeras' Bow
-            new BossDrop(RPGFramework.itemManager.getItem("eiryeras:HandCraftedBow"), Rarity.RARE),
+            new BossDrop(ItemManager.getInstance().getItem("eiryeras:HandCraftedBow"), Rarity.RARE),
 
             //Uncommon Eiryeras' Boots
-            new BossDrop(RPGFramework.itemManager.getItem("eiryeras:WornGaloshes"), Rarity.UNCOMMON),
+            new BossDrop(ItemManager.getInstance().getItem("eiryeras:WornGaloshes"), Rarity.UNCOMMON),
 
             //Uncommon Eiryeras' Leggings
-            new BossDrop(RPGFramework.itemManager.getItem("eiryeras:HideLeggings"), Rarity.UNCOMMON),
+            new BossDrop(ItemManager.getInstance().getItem("eiryeras:HideLeggings"), Rarity.UNCOMMON),
 
             //Uncommon Eiryeras' Chestplate
-            new BossDrop(RPGFramework.itemManager.getItem("eiryeras:HuntersCloak"), Rarity.UNCOMMON),
+            new BossDrop(ItemManager.getInstance().getItem("eiryeras:HuntersCloak"), Rarity.UNCOMMON),
 
             //Uncommon Eiryeras' Helmet
-            new BossDrop(RPGFramework.itemManager.getItem("eiryeras:HuntersHood"), Rarity.UNCOMMON),
+            new BossDrop(ItemManager.getInstance().getItem("eiryeras:HuntersHood"), Rarity.UNCOMMON),
 
             //Rare Eiryeras' Knife
-            new BossDrop(RPGFramework.itemManager.getItem("eiryeras:CeremonialKnife"), Rarity.RARE),
+            new BossDrop(ItemManager.getInstance().getItem("eiryeras:CeremonialKnife"), Rarity.RARE),
 
             //Legendary Eiryeras' Lore
-            new BossDrop(RPGFramework.itemManager.getItem("eiryeras:Lore"), Rarity.LEGENDARY)
+            new BossDrop(ItemManager.getInstance().getItem("eiryeras:Lore"), Rarity.LEGENDARY)
     };
 
     /**

@@ -1,6 +1,6 @@
 package sugaku.rpg.framework.mobs;
 
-import io.github.math0898.rpgframework.RPGFramework;
+import io.github.math0898.rpgframework.items.ItemManager;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Item;
@@ -46,16 +46,16 @@ public class BossRituals {
         String message = "";
         Bosses boss = null;
         if (stack.equals(ItemsManager.KruskSpawn)
-                || stack.equals(RPGFramework.itemManager.getItem("krusk:Spawn"))
-                || stack.equals(RPGFramework.itemManager.getItem("krusk:LegacySpawn"))) {
+                || stack.equals(ItemManager.getInstance().getItem("krusk:Spawn"))
+                || stack.equals(ItemManager.getInstance().getItem("krusk:LegacySpawn"))) {
             message = "You are summoning " + ChatColor.GREEN + "Krusk" + ChatColor.GRAY + ", one of the Undead Generals.";
             boss = Bosses.KRUSK;
         } else if (stack.equals(ItemsManager.EiryerasSpawn)
-                || stack.equals(RPGFramework.itemManager.getItem("eiryeras:Spawn"))) {
+                || stack.equals(ItemManager.getInstance().getItem("eiryeras:Spawn"))) {
             message = "You are summoning " + ChatColor.GREEN + "Eiryeras" + ChatColor.GRAY + ", honored hunter of the Agloytan area.";
             boss = Bosses.EIRYERAS;
         } else if (drop.getItemStack().equals(ItemsManager.FeyrithSpawn)
-                || stack.equals(RPGFramework.itemManager.getItem("feyrith:Spawn"))) {
+                || stack.equals(ItemManager.getInstance().getItem("feyrith:Spawn"))) {
             message = "You are summoning " + ChatColor.BLUE + "Feyrith" + ChatColor.GRAY + ", an apprentice mage of the castle.";
             boss = Bosses.FEYRITH;
         }

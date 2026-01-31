@@ -1,5 +1,6 @@
 package io.github.math0898.rpgframework.commands;
 
+import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.utils.commands.BetterCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -10,8 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static io.github.math0898.rpgframework.RPGFramework.itemManager;
 
 /**
  * The give command is used to give items registered in the ItemManager. Requires admin permissions.
@@ -56,13 +55,13 @@ public class GiveCommand extends BetterCommand {
             send(sender, ChatColor.RED + "We could not the player " + args[0] + ".");
             return true;
         }
-        if (!itemManager.hasItem(args[1])) {
+        if (!ItemManager.getInstance().hasItem(args[1])) {
             send(sender, ChatColor.RED + "We could not find " + args[1] + ".");
             return true;
         }
         int count = getIntegerParam(2, args, sender);
         for (int i = 0; i < count; i++) {
-            Map<Integer, ItemStack> leftOvers = target.getInventory().addItem(itemManager.getItem(args[1]));
+            Map<Integer, ItemStack> leftOvers = target.getInventory().addItem(ItemManager.getInstance().getItem(args[1]));
             if (!leftOvers.isEmpty())
                 leftOvers.forEach((n, item) -> target.getWorld().dropItem(target.getLocation(), item));
         }
@@ -84,7 +83,7 @@ public class GiveCommand extends BetterCommand {
             for (Player p : Bukkit.getOnlinePlayers())
                 list.add(p.getName());
         } else if (args.length == 2) {
-            list = itemManager.getItemNames();
+            list = ItemManager.getInstance().getItemNames();
             list.sort(String::compareToIgnoreCase);
         } else if (args.length == 3)
             return List.of("(amnt)");

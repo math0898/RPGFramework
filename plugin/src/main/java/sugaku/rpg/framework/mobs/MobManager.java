@@ -1,7 +1,7 @@
 package sugaku.rpg.framework.mobs;
 
-import io.github.math0898.rpgframework.RPGFramework;
 import io.github.math0898.rpgframework.Rarity;
+import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -72,7 +72,7 @@ public class MobManager {
         int bonus = tmp == null ? 0 : tmp;
         if (drops < 0.02 + (bonus / 100.0))
 //        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
-            event.getDrops().add(RPGFramework.itemManager.getItem("krusk:Spawn"));
+            event.getDrops().add(ItemManager.getInstance().getItem("krusk:Spawn"));
     }
 
     public static void skeletonDrops (EntityDeathEvent event) {
@@ -84,7 +84,7 @@ public class MobManager {
         int bonus = tmp == null ? 0 : tmp;
         if (drops < 0.02 + (bonus / 100.0))
 //        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
-            event.getDrops().add(RPGFramework.itemManager.getItem("eiryeras:Spawn"));
+            event.getDrops().add(ItemManager.getInstance().getItem("eiryeras:Spawn"));
     }
 
     public static void witherSkeletonDrops (EntityDeathEvent event) {
@@ -97,7 +97,7 @@ public class MobManager {
         int bonus = tmp == null ? 0 : tmp;
         if (drops < 0.02 + (bonus / 100.0))
 //        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
-            event.getDrops().add(RPGFramework.itemManager.getItem("feyrith:Spawn"));}
+            event.getDrops().add(ItemManager.getInstance().getItem("feyrith:Spawn"));}
 
     public static void chickenDrops (EntityDeathEvent event) {
         if (event.getEntity().getKiller() == null) return;

@@ -1,12 +1,12 @@
 package sugaku.rpg.mobs.gods;
 
+import io.github.math0898.rpgframework.items.ItemManager;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDeathEvent;
 import sugaku.rpg.framework.items.Rarity;
 import sugaku.rpg.mobs.CustomMob;
 
-import static io.github.math0898.rpgframework.RPGFramework.itemManager;
 import static sugaku.rpg.framework.mobs.MobManager.drop;
 
 /**
@@ -41,7 +41,7 @@ public class Inos extends CustomMob {
     public static void handleDrops (EntityDeathEvent event) {
         System.out.println("Inos Died");
         CustomMob.handleDrops(event);
-        drop(itemManager.getItem("gods:InosAspectI"), event.getEntity().getLocation());
+        drop(ItemManager.getInstance().getItem("gods:InosAspectI"), event.getEntity().getLocation());
         event.setDroppedExp(500);
     }
 }

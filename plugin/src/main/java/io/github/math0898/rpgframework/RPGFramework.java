@@ -4,7 +4,6 @@ import io.github.math0898.rpgframework.commands.*;
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
 import io.github.math0898.rpgframework.hooks.HookManager;
 import io.github.math0898.rpgframework.items.ItemManager;
-import io.github.math0898.rpgframework.items.editor.EditorGUI;
 import io.github.math0898.rpgframework.parties.PartyManager;
 import io.github.math0898.rpgframework.systems.GodEventListener;
 import org.bukkit.Bukkit;
@@ -31,12 +30,6 @@ public final class RPGFramework extends JavaPlugin implements Listener {
      * Is holographic displays enabled on the server?
      */
     public static boolean useHolographicDisplays = false;
-
-    /**
-     * The ItemManager being used with this RPGFramework instance.
-     */
-    @Deprecated
-    public static ItemManager itemManager;
 
     /**
      * This method sends a message to the console and infers the level it should be sent at.
@@ -96,7 +89,7 @@ public final class RPGFramework extends JavaPlugin implements Listener {
             console("This is non fatal error however you will not see damage numbers when you hit mobs.", ChatColor.YELLOW);
         }
 
-        itemManager = new ItemManager();
+        ItemManager.getInstance();
 
         sugaku.rpg.main.onEnable();
 

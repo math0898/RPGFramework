@@ -1,5 +1,6 @@
 package sugaku.rpg.framework;
 
+import io.github.math0898.rpgframework.items.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -33,7 +34,6 @@ import java.util.logging.Level;
 
 //import static sugaku.rpg.framework.menus.ForgeManager.forgeClose;
 import static io.github.math0898.rpgframework.RPGFramework.console;
-import static io.github.math0898.rpgframework.RPGFramework.itemManager;
 import static org.bukkit.event.entity.EntityDamageEvent.DamageCause.*;
 import static sugaku.rpg.framework.items.ItemsManager.updateArmor;
 import static sugaku.rpg.framework.items.ItemsManager.updateArmor2;
@@ -43,7 +43,7 @@ public class RPGEventListener implements Listener {
     /**
      * A list of items that are not allowed to be picked up by hoppers.
      */
-    private static final List<ItemStack> hopperBannedItems = Arrays.asList(ItemsManager.KruskSpawn, ItemsManager.EiryerasSpawn, ItemsManager.FeyrithSpawn, itemManager.getItem("krusk:Spawn"), itemManager.getItem("eiryeras:Spawn"), itemManager.getItem("feyrith:Spawn"));
+    private static final List<ItemStack> hopperBannedItems = Arrays.asList(ItemsManager.KruskSpawn, ItemsManager.EiryerasSpawn, ItemsManager.FeyrithSpawn, ItemManager.getInstance().getItem("krusk:Spawn"), ItemManager.getInstance().getItem("eiryeras:Spawn"), ItemManager.getInstance().getItem("feyrith:Spawn"));
 
     /**
      * When inventory slots are clicked.
