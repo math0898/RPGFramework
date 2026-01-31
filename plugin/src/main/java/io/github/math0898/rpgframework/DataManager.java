@@ -3,14 +3,12 @@ package io.github.math0898.rpgframework;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import io.github.math0898.rpgframework.classes.Classes;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.UUID;
 
 /**
  * The DataManager wrangles, loads, saves, and manages player data on the disk. This includes but is not limited to exp,
@@ -84,16 +82,6 @@ public class DataManager {
      *
      * @param player The player's file which should be read.
      */
-    @Deprecated
-    public void load (Player player) {
-        PlayerManager.getPlayer(player.getUniqueId());
-    }
-
-    /**
-     * Reads the associated file for the given player, if present.
-     *
-     * @param player The player's file which should be read.
-     */
     public void load (RpgPlayer player) {
         console("Loading player data for " + player.getName() + ".");
         File file = new File("./plugins/RPG/PlayerData/" + player.getUuid());
@@ -116,26 +104,6 @@ public class DataManager {
                 console("Failed to load data for " + player.getName() + ": " + exception.getMessage());
             }
         } else console("Data not found.", ChatColor.YELLOW);
-    }
-
-    /**
-     * Saves the player's data into their file.
-     *
-     * @param p The player who's data we're saving.
-     */
-    @Deprecated
-    public void save (Player p) {
-        save(PlayerManager.getPlayer(p.getUniqueId()));
-    }
-
-    /**
-     * Saves the player's data with the associated UUID.
-     *
-     * @param u The uuid of the player's data we're saving.
-     */
-    @Deprecated
-    public void save (UUID u) {
-        save(PlayerManager.getPlayer(u));
     }
 
     /**

@@ -24,6 +24,7 @@ import static io.github.math0898.rpgframework.RPGFramework.plugin;
 /**
  * The PlayerManager does some listening to events and managing interactions with players. It's main purpose is to track
  * and provide the RpgPlayer equivalents to Bukkit's Player.
+ * // todo: Update to utilize singleton design pattern.
  *
  * @author Sugaku
  */
@@ -44,6 +45,8 @@ public class PlayerManager implements Listener {
      */
     public static void init () {
         Bukkit.getPluginManager().registerEvents(new PlayerManager(), plugin);
+        // Runs once every 5 minutes. 20 Ticks -> 1 Second, 60 Seconds -> 1 Minute, 5 Minutes.
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, PlayerManager::saveAllPlayers, 60 * 5 * 20, 60 * 5 * 20);
     }
 
     /**
@@ -283,5 +286,16 @@ public class PlayerManager implements Listener {
             rpgPlayer.setParty(null);
         }
         removePlayer(rpgPlayer);
+    }
+
+    /**
+     * Called periodically while the server runs to update and save player's files. This helps to reduce the rollback
+     * time in the event of a hard crash.
+     */
+    public static void saveAllPlayers () {
+        if (players.isEmpty()) return;
+        DataManager dataManager = DataManager.getInstance();
+        for (RpgPlayer player : players.values())
+            dataManager.save(player);
     }
 }
