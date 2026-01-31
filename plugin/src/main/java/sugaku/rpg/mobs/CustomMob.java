@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import sugaku.rpg.framework.items.BossDrop;
 import sugaku.rpg.framework.items.Rarity;
 import sugaku.rpg.framework.mobs.MobManager;
-import sugaku.rpg.framework.players.PlayerManager;
+import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RpgPlayer;
 
 import java.util.Objects;

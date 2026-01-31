@@ -23,7 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import io.github.math0898.rpgframework.classes.Classes;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import sugaku.rpg.framework.players.PlayerManager;
+import io.github.math0898.rpgframework.PlayerManager;
 import sugaku.rpg.main;
 import io.github.math0898.rpgframework.parties.Party;
 import sugaku.rpg.mobs.CustomMob;

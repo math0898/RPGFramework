@@ -141,7 +141,7 @@ public class PartyCommand extends BetterCommand {
         }
         send(sender, ChatColor.GRAY + "---- Party Status ----");
         for (Player p : party.getPlayers()) {
-            RpgPlayer rpg = sugaku.rpg.framework.players.PlayerManager.getPlayer(p.getUniqueId());
+            RpgPlayer rpg = PlayerManager.getPlayer(p.getUniqueId());
             if (rpg == null) continue;
             send(sender, ChatColor.GRAY + p.getName() + " -> " + rpg.getFormattedHealth());
         }

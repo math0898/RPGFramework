@@ -108,7 +108,7 @@ public class DataManager {
                 console("Class: " + classString);
                 console("Experience: " + experiencePoints);
                 // todo: This should use the new RpgPlayer objects.
-                RpgPlayer rpgPlayer = sugaku.rpg.framework.players.PlayerManager.getPlayer(player.getUuid());
+                RpgPlayer rpgPlayer = PlayerManager.getPlayer(player.getUuid());
                 rpgPlayer.joinClass(Classes.fromString(classString));
                 rpgPlayer.setExperience(experiencePoints);
                 console("Loaded.", ChatColor.GREEN);
@@ -150,10 +150,10 @@ public class DataManager {
         console("Version: 2.0");
         toSave.set("version", "2.0");
         // todo: Use new RpgPlayer object.
-        String classString = sugaku.rpg.framework.players.PlayerManager.getPlayer(player.getUuid()).getCombatClass().toString();
+        String classString = PlayerManager.getPlayer(player.getUuid()).getCombatClass().toString();
         console("Class: " + classString);
         toSave.set("class", classString);
-        long xp = sugaku.rpg.framework.players.PlayerManager.getPlayer(player.getUuid()).getExperience();
+        long xp = PlayerManager.getPlayer(player.getUuid()).getExperience();
         console("Experience: " + xp);
         toSave.set("experience", xp);
         try {

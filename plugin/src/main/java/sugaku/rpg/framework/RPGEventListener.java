@@ -19,7 +19,7 @@ import sugaku.rpg.framework.menus.ClassesManager;
 import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.mobs.BossRituals;
 import sugaku.rpg.framework.mobs.MobManager;
-import sugaku.rpg.framework.players.PlayerManager;
+import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RpgPlayer;
 import sugaku.rpg.main;
 import sugaku.rpg.mobs.gods.Inos;

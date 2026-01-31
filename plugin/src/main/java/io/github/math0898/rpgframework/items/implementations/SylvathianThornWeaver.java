@@ -1,5 +1,6 @@
 package io.github.math0898.rpgframework.items.implementations;
 
+import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RpgPlayer;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -73,7 +74,7 @@ public class SylvathianThornWeaver implements Listener {
                 p.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, p.getLocation().add((rand.nextDouble() * 8.0) - 4.0, (rand.nextDouble() * 2.0) - 1.0, (rand.nextDouble() * 8.0) - 4.0), 2);
         }, 0, 9);
         BukkitTask task3 = Bukkit.getScheduler().runTaskTimer(getInstance(), () -> {
-            RpgPlayer rpg = sugaku.rpg.framework.players.PlayerManager.getPlayer(uuid);
+            RpgPlayer rpg = PlayerManager.getPlayer(uuid);
             if (rpg == null) return;
             rpg.nearbyEnemyCasterTargets(4.0).forEach((e) -> { // todo: Will need to do something like this for advanced damage.
                 e.damage(10.0 / 5.0, rpg.getBukkitPlayer());
