@@ -238,7 +238,7 @@ public class PlayerManager implements Listener { // todo needs cleaning. Copied 
         if (rpgPlayer != null) {
             Party party = rpgPlayer.getParty();
             if (party != null) party.removePlayer(rpgPlayer.getBukkitPlayer());
-            rpgPlayer.leaveParty();
+            rpgPlayer.setParty(null);
         }
         removePlayer(rpgPlayer);
     }

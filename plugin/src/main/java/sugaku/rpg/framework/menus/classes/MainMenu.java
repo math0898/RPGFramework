@@ -1,5 +1,6 @@
 package sugaku.rpg.framework.menus.classes;
 
+import io.github.math0898.rpgframework.classes.Classes;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -8,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.menus.Menu;
 import sugaku.rpg.framework.players.PlayerManager;
+import sugaku.rpg.framework.players.RpgPlayer;
 
 import java.util.Objects;
 
@@ -79,8 +81,10 @@ public class MainMenu implements Menu {
 
     @Override
     public void onClick(int clicked, Player player) {
+        RpgPlayer rpg = PlayerManager.getPlayer(player.getUniqueId());
+        Classes currentClass = rpg.getCombatClass();
         switch(clicked) {
-            case 11: classMenu(player, Objects.requireNonNull(PlayerManager.getPlayer(player.getUniqueId())).getCombatClassString()); break;
+            case 11: classMenu(player, currentClass.getName()); break;
 //            case 13: classMenu(player, Objects.requireNonNull(PlayerManager.getPlayer(player.getUniqueId())).getArchetype()); break;
 //            case 15: classMenu(player, "Adventurer"); break;
 //            case 28: classMenu(player, "Fighter"); break;

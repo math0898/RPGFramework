@@ -12,8 +12,6 @@ import sugaku.rpg.main;
 
 import java.util.*;
 
-import static sugaku.rpg.framework.players.RpgPlayer.getPlayerRarity;
-
 public class PlayerManager {
 
     /**
@@ -158,14 +156,16 @@ public class PlayerManager {
         Entity killer = rpg.getLastHitBy();
         Player player = rpg.getBukkitPlayer();
         String deathMessage;
-        if (killer instanceof Player)
-            deathMessage = getPlayerRarity(player) + player.getName() + ChatColor.GRAY + deathFlavor[Math.abs(new Random().nextInt() % deathFlavor.length)] + getPlayerRarity((Player) killer) + killer.getName();
-        else if (killer.isCustomNameVisible()) {
-            deathMessage = getPlayerRarity(player) + player.getName() + ChatColor.GRAY + deathFlavor[Math.abs(new Random().nextInt() % deathFlavor.length)] + killer.getCustomName();
+        if (killer instanceof Player) {
+            RpgPlayer rpgKiller = PlayerManager.getPlayer(killer.getUniqueId());
+            if (rpgKiller != null) deathMessage = rpg.getPlayerRarity() + player.getName() + ChatColor.GRAY + deathFlavor[Math.abs(new Random().nextInt() % deathFlavor.length)] + rpgKiller.getPlayerRarity() + killer.getName();
+            else deathMessage = rpg.getPlayerRarity() + player.getName() + ChatColor.GRAY + deathFlavor[Math.abs(new Random().nextInt() % deathFlavor.length)] + ChatColor.BLACK + killer.getName();
+        } else if (killer.isCustomNameVisible()) {
+            deathMessage = rpg.getPlayerRarity() + player.getName() + ChatColor.GRAY + deathFlavor[Math.abs(new Random().nextInt() % deathFlavor.length)] + killer.getCustomName();
             player.sendMessage(killer.getCustomName() + ChatColor.GRAY + " has left the fight upon your death");
             killer.remove();
         } else
-            deathMessage = getPlayerRarity(player) + player.getName() + ChatColor.GRAY + deathFlavor[Math.abs(new Random().nextInt() % deathFlavor.length)] + killer.getName();
+            deathMessage = rpg.getPlayerRarity() + player.getName() + ChatColor.GRAY + deathFlavor[Math.abs(new Random().nextInt() % deathFlavor.length)] + killer.getName();
         allDeaths(rpg, deathMessage);
     }
 
@@ -176,8 +176,8 @@ public class PlayerManager {
      */
     public static void dishonorableDeath (RpgPlayer rpg, EntityDamageEvent.DamageCause cause) {
         Player player = rpg.getBukkitPlayer();
-        String deathMessage = getPlayerRarity(player) + player.getName() + ChatColor.GRAY + " died to " + cause.toString().toLowerCase();
-        RpgPlayer.dropAll(player);
+        String deathMessage = rpg.getPlayerRarity() + player.getName() + ChatColor.GRAY + " died to " + cause.toString().toLowerCase();
+        rpg.dropAll();
         player.setExp(player.getExp()/2);
         player.setLevel(player.getLevel()/2);
         allDeaths(rpg, deathMessage);

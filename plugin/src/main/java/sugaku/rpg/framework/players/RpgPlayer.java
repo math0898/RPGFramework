@@ -6,6 +6,8 @@ import io.github.math0898.rpgframework.classes.AbstractClass;
 import io.github.math0898.rpgframework.classes.implementations.*;
 import io.github.math0898.rpgframework.classes.Class;
 import io.github.math0898.utils.StringUtils;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -29,6 +31,13 @@ import sugaku.rpg.mobs.CustomMob;
 
 import java.util.*;
 
+/**
+ * The RpgPlayer is the RPG-Framework plugin's wrapper for the Bukkit player. It contains a lot of information about
+ * specific players including their experience, current class, and party affiliations. There are also significant helper
+ * methods for getting friendly/enemy caster targets, healing and damaging the player, and managing class abilities.
+ *
+ * @author Sugaku
+ */
 public class RpgPlayer {
 
     /**
@@ -37,14 +46,14 @@ public class RpgPlayer {
     private static final String MESSAGE_PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY;
 
     /**
-     * The time in millis that this player was last fighting.
-     */
-    private long fighting = 0L;
-
-    /**
      * The amount of time in millis it takes to be considered out of combat.
      */
     private static final long TIME_UNTIL_OUT_OF_COMBAT = 10000;
+
+    /**
+     * The time in millis that this player was last fighting.
+     */
+    private long fighting = 0L;
 
     /**
      * Whether we have applied effects for leaving combat yet or not.
@@ -53,42 +62,72 @@ public class RpgPlayer {
 
     /**
      * The Entity that last successfully hit this player.
+     * -- GETTER --
+     *  An accessor method to get the last Entity that attacked this Player.
+     *
+     * @return The entity that last attacked the Player.
+
      */
+    @Getter
     private Entity lastHitBy = null;
 
     /**
      * The amount of XP that this player has accumulated.
+     * -- GETTER --
+     * Returns the experience that this player has accumulated.
      */
+    @Getter
     private long experience = 0;
 
     /**
      * The player's level, cached, so we don't have to recalculate it.
+     * -- GETTER --
+     * Accessor method for the player's level.
      */
+    @Getter
     private long level = 1;
 
     /**
-     * Default constructor for an RpgPlayer construct just requiring a uuid.
-     * @param p The player this construct points to.
-     */
-    public RpgPlayer (Player p) {
-        this.uuid = p.getUniqueId();
-        this.name = p.getName();
-        refresh(p);
-    }
-
-    /**
      * Uuid of the player this construct points to.
+     * -- GETTER --
+     * Returns the uuid of the player this construct points to.
      */
+    @Getter
     private final UUID uuid;
 
-    private final String name;
-
-    private Party party = null;
-
+    /**
+     * A pending party invite for this player.
+     * -- GETTER --
+     * Returns this player's pending party.
+     * -- SETTER --
+     * Sets a party as pending with this player.
+     */
+    @Setter
+    @Getter
     private Party pendingParty = null;
 
+    /**
+     * The party, if any that this player belongs to.
+     * -- GETTER --
+     * Accessor method for this player's party.
+     * -- SETTER --
+     * Sets this player's party to the given party.
+     */
+    @Setter
+    @Getter
+    private Party party = null;
+
+    /**
+     * This player's combat class as a cached enum.
+     * -- GETTER --
+     * Accesses this player's combat class as an enum value.
+     */
+    @Getter
     private Classes combatClass = Classes.NONE;
 
+    /**
+     * The player's combat class as an object. Used to handle attacks/abilities/defense etc.
+     */
     private Class classObject = new NoneClass(this);
 
     /**
@@ -97,21 +136,31 @@ public class RpgPlayer {
     private CustomMob activeBoss = null;
 
     /**
-     * Returns the uuid of the player this construct points to.
-     *
-     * @return The uuid of the player.
+     * This RpgPlayer object's Bukkit player object. Cached since it's requested quite often.
+     * -- GETTER --
+     * Gets the Bukkit version of this RpgPlayer.
      */
-    public UUID getUuid () {
-        return uuid;
-    }
+    @Getter
+    private final Player bukkitPlayer;
 
     /**
-     * Returns the experience that this player has accumulated.
-     *
-     * @return The amount of experience owned by this player.
+     * This RpgPlayer object's name. Cached since it's requested quite often.
+     * -- GETTER --
+     * Gets this player's name.
      */
-    public long getExperience () {
-        return experience;
+    @Getter
+    private final String name;
+
+    /**
+     * Default constructor for an RpgPlayer object. Caches the given Player object and grabs the name and UUID.
+     *
+     * @param p The player this construct points to.
+     */
+    public RpgPlayer (Player p) {
+        this.uuid = p.getUniqueId();
+        this.bukkitPlayer = p;
+        this.name = p.getName();
+        refresh();
     }
 
     /**
@@ -142,7 +191,7 @@ public class RpgPlayer {
     public void setExperience (long xp) {
         experience = xp;
         calculateLevel();
-        refresh(getBukkitPlayer());
+        refresh();
     }
 
     /**
@@ -161,15 +210,6 @@ public class RpgPlayer {
     }
 
     /**
-     * Does a small calculation to determine what level this player is currently at.
-     *
-     * @return This player's current level.
-     */
-    public long getLevel () {
-        return level;
-    }
-
-    /**
      * Adds the given experience to this player.
      *
      * @param awarded The amount of awarded experience.
@@ -185,40 +225,36 @@ public class RpgPlayer {
     /**
      * Called whenever the player levels up.
      */
-    public void levelUp () {
-        sugaku.rpg.framework.players.RpgPlayer p = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
-        if (p == null) {
-            RPGFramework.console("Encountered a strange error where sugaku.rpg has an RpgPlayer object but no io.github.math0898 RpgPlayer was found.", ChatColor.RED);
-            return;
-        }
-        refresh(getBukkitPlayer());
+    private void levelUp () {
+        refresh();
         getBukkitPlayer().playSound(getBukkitPlayer(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.5f, 1.0f);
-        p.sendMessage(ChatColor.GREEN + "You've leveled up! Level: " + getLevel());
+        sendMessage(ChatColor.GREEN + "You've leveled up! Level: " + getLevel());
         if (level % 5 != 0)
-            p.sendMessage(StringUtils.convertHexCodes("#F454DA") + " +5 Health");
+            sendMessage(StringUtils.convertHexCodes("#F454DA") + " +5 Health");
         else
-            p.sendMessage(StringUtils.convertHexCodes("#D93747") + " +1 Damage");
+            sendMessage(StringUtils.convertHexCodes("#D93747") + " +1 Damage");
     }
 
     /**
-     * Refreshes the player's stats.
-     */
-    public void refresh (Player p) {
+     * Refreshes the player's stats including stats gained from levels.
+     */ // todo: This method is too long.
+    private void refresh () {
+        Player player = getBukkitPlayer();
         // Every level except lvl 1, and lvls ending in 5/10.
         AttributeModifier healthMod = new AttributeModifier(new UUID(100, 234), "", ((getLevel() - 1) - (getLevel() / 5.0)) * 5, AttributeModifier.Operation.ADD_NUMBER);
         // Every level that ends in 5/10.
         AttributeModifier damageMod = new AttributeModifier(new UUID(100, 235), "", (getLevel() / 5.0), AttributeModifier.Operation.ADD_NUMBER);
-        AttributeInstance healthInstance = p.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-        AttributeInstance damageInstance = p.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+        AttributeInstance healthInstance = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        AttributeInstance damageInstance = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
         if (healthInstance != null) {
             Collection<AttributeModifier> modifiers = healthInstance.getModifiers();
             if (!modifiers.isEmpty())
                 healthInstance.removeModifier(healthMod);
             healthInstance.addModifier(healthMod);
-            p.setHealth(healthInstance.getValue());
-            p.setHealthScale(20);
+            player.setHealth(healthInstance.getValue());
+            player.setHealthScale(20);
         } else {
-            RPGFramework.console("Attempted to update " + p.getName() + "'s health but GENERIC_MAX_HEALTH instance is null.", ChatColor.RED);
+            RPGFramework.console("Attempted to update " + player.getName() + "'s health but GENERIC_MAX_HEALTH instance is null.", ChatColor.RED);
         }
         if (damageInstance != null) {
             Collection<AttributeModifier> modifiers = damageInstance.getModifiers();
@@ -226,24 +262,22 @@ public class RpgPlayer {
                 damageInstance.removeModifier(damageMod);
             damageInstance.addModifier(damageMod);
         } else {
-            RPGFramework.console("Attempted to update " + p.getName() + "'s damage but GENERIC_ATTACK_DAMAGE instance is null.", ChatColor.RED);
+            RPGFramework.console("Attempted to update " + player.getName() + "'s damage but GENERIC_ATTACK_DAMAGE instance is null.", ChatColor.RED);
         }
     }
 
     /**
-     * Gets a gear score for the given player.
-     * @param player The player we're calculating gear score for.
+     * Gets a gear score for this player.
+     *
+     * @return The player's current gear score.
      */
-    public static int getGearScore(Player player) {
-
+    public int getGearScore () {
         int runningScore = 0;
-
-        ItemStack[] collection = player.getInventory().getArmorContents();
+        ItemStack[] collection = getBukkitPlayer().getInventory().getArmorContents();
 
         for (ItemStack item: collection) {
             if (item != null) {
                 if (item.getEnchantments().size() > 1) runningScore += 15;
-
                 try {
                     if (Objects.requireNonNull(Objects.requireNonNull(item.getItemMeta()).getLore()).contains("Modified Vanilla")) {
                         switch (item.getType()) {
@@ -258,35 +292,16 @@ public class RpgPlayer {
                 } catch (NullPointerException ignored) { }
             }
         }
-
         return runningScore;
     }
 
     /**
-     * Drops the entire player's inventory at their current location.
-     * @param player The player who's inventory is being dropped.
+     * Returns the ChatColor rarity of this player, based on gear score.
+     *
+     * @return ChatColor the color rarity of this player.
      */
-    public static void dropAll(Player player) {
-
-        World world = player.getWorld();
-
-        for (ItemStack e: player.getInventory()) {
-            try {
-                world.dropItem(player.getLocation(), e);
-            } catch (IllegalArgumentException ignored) { }
-        }
-
-        player.getInventory().clear();
-    }
-
-    /**
-     * Returns the ChatColor rarity of the player given, based on gear score.
-     * @param player The player who's rarity is being determined.
-     * @return ChatColor the color rarity of the player.
-     */
-    public static ChatColor getPlayerRarity(Player player) {
-
-        int gearScore = getGearScore(player);
+    public ChatColor getPlayerRarity () {
+        int gearScore = getGearScore();
 
         if (gearScore <= 100) return ChatColor.WHITE;
         else if (gearScore <= 200) return ChatColor.GREEN;
@@ -296,22 +311,18 @@ public class RpgPlayer {
         else return ChatColor.RED;
     }
 
-    public ChatColor getPlayerRarity() {
-        return getPlayerRarity(this.getBukkitPlayer());
-    }
-
-    public void joinParty (Party p) {
-        party = p;
-    }
-
-    public void leaveParty() { party = null; }
-
-    public Party getPendingParty() { return pendingParty; }
-
-    public void setPendingParty(Party p) { pendingParty = p; }
-
-    public String getFormattedClass () {
-        return combatClass.getFormattedName();
+    /**
+     * Drops the entire player's inventory at their current location.
+     */
+    public void dropAll () {
+        Player player = getBukkitPlayer();
+        World world = player.getWorld();
+        for (ItemStack e: player.getInventory()) {
+            try {
+                world.dropItem(player.getLocation(), e);
+            } catch (IllegalArgumentException ignored) { }
+        }
+        player.getInventory().clear();
     }
 
     /**
@@ -330,21 +341,12 @@ public class RpgPlayer {
         return prefix + "" + current;
     }
 
-    public Party getParty() { return null; }
-
-    public Player getBukkitPlayer() { return Bukkit.getPlayer(uuid); }
-
-    public String getName() { return getBukkitPlayer().getName(); }
-
-    public Classes getCombatClass() { return combatClass; }
-
-    public String getCombatClassString() { // todo: This might need to be changed.
-        char[] str = combatClass.toString().toLowerCase().toCharArray();
-        str[0] = Character.toUpperCase(str[0]);
-        return new String(str);
-    }
-
-    public void joinClass(Classes c) {
+    /**
+     * Assigns a new class object to this RpgPlayer based upon the given enum value.
+     *
+     * @param c The class that this player will join.
+     */
+    public void joinClass (Classes c) {
         this.combatClass = c;
         switch (c) {
             case BARD -> classObject = new BardClass(this);
@@ -356,7 +358,12 @@ public class RpgPlayer {
         }
     }
 
-    public String getArchetype() {
+    /**
+     * A niche system to classify classes between fighters and casters.
+     *
+     * @return Which parent class archetype this player's current class fits in.
+     */
+    public String getArchetype () {
         return switch (combatClass) {
             case ASSASSIN, /*GLADIATOR, MARKSMEN,*/ BERSERKER -> "Fighter";
             case NONE -> "None";
@@ -364,9 +371,23 @@ public class RpgPlayer {
         };
     }
 
-    public void onInteract(PlayerInteractEvent event) { classObject.onInteract(event); }
+    /**
+     * Passes an interact event done by this player onto the contained combat class object.
+     *
+     * @param event The player interact event we're considering.
+     */ // todo: Should we do this?
+    public void onInteract (PlayerInteractEvent event) {
+        classObject.onInteract(event);
+    }
 
-    public boolean revive() { return !classObject.onDeath(); }
+    /**
+     * Checks whether this player has a cheat death available from their class.
+     *
+     * @return True if the player has a revive mechanic available, otherwise false.
+     */
+    public boolean revive () {
+        return !classObject.onDeath();
+    }
 
     /**
      * Used to verify whether a player is in combat.
@@ -381,7 +402,7 @@ public class RpgPlayer {
      * Called whenever this player gets attacked by another entity.
      *
      * @param event The EntityDamageByEntityEvent to consider.
-     */
+     */ // todo: Should we do this?
     public void damaged (EntityDamageEvent event) {
         classObject.damaged(event);
         if (event instanceof EntityDamageByEntityEvent damageByEntityEvent) {
@@ -395,7 +416,7 @@ public class RpgPlayer {
      * Called whenever this player attacks another entity.
      *
      * @param event The EntityDamageByEntityEvent to consider.
-     */
+     */ // todo: Should we do this?
     public void attacker (EntityDamageByEntityEvent event) {
         fighting = System.currentTimeMillis();
         enteringCombat();
@@ -403,13 +424,17 @@ public class RpgPlayer {
         lastHitBy = event.getEntity();
     }
 
-    public void passive() {
+    /**
+     * Called once every 20 seconds. Handles ongoing potion effects for classes like assassin, as well as does combat
+     * checking.
+     */
+    public void passive () {
         try {
             classObject.passive();
             Bukkit.getScheduler().runTaskLater(main.plugin, this::passive, 20*20);
             if (!inCombat() && !appliedOutCombat)
                 leaveCombat();
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) { } // This can sometimes occur if a passive disconnects from a Player object. TODO: Handle this error better.
     }
 
     /**
@@ -432,15 +457,6 @@ public class RpgPlayer {
         }
         appliedOutCombat = true;
         PlayerManager.scaleRegen(getBukkitPlayer(), 0.25);
-    }
-
-    /**
-     * An accessor method to get the last Entity that attacked this Player.
-     *
-     * @return The entity that last attacked the Player.
-     */
-    public Entity getLastHitBy () {
-        return lastHitBy;
     }
 
     /**
@@ -486,10 +502,7 @@ public class RpgPlayer {
      * @param boss The boss to assign to this player.
      */
     public void setBoss (CustomMob boss) {
-        sugaku.rpg.framework.players.RpgPlayer player = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
-        if (player == null) return;
-        Party party = player.getParty();
-        if (player.getParty() != null) party.setBoss(boss);
+        if (party != null) party.setBoss(boss);
         activeBoss = boss;
     }
 
@@ -499,10 +512,7 @@ public class RpgPlayer {
      * @return The boss actively fighting this Party.
      */
     public CustomMob getActiveBossUnsafe () {
-        sugaku.rpg.framework.players.RpgPlayer player = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
-        if (player == null) return null;
-        Party party = player.getParty();
-        if (player.getParty() != null) {
+        if (party != null) {
             CustomMob candidate = party.getActiveBossUnsafe();
             if (candidate != null)
                 return candidate;
@@ -516,10 +526,7 @@ public class RpgPlayer {
      * @return The boss actively fighting this Party.
      */
     public CustomMob getActiveBoss () {
-        sugaku.rpg.framework.players.RpgPlayer player = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
-        if (player == null) return null;
-        Party party = player.getParty();
-        if (player.getParty() != null) {
+        if (party != null) {
             CustomMob candidate = party.getActiveBoss();
             if (candidate != null)
                 return candidate;

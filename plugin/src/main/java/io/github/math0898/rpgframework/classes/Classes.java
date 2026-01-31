@@ -68,6 +68,17 @@ public enum Classes { // TODO: Plan GLADIATOR,
     }
 
     /**
+     * An accessor method for a text version of this class.
+     *
+     * @return The name of this class without any color formatting.
+     */
+    public String getName () {
+        char[] str = this.toString().toLowerCase().toCharArray();
+        str[0] = Character.toUpperCase(str[0]);
+        return new String(str);
+    }
+
+    /**
      * Checks for the correct Classes enum value based on the given string.
      *
      * @param string The string to convert to a Classes enum value.

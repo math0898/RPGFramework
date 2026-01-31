@@ -1,6 +1,7 @@
 package io.github.math0898.rpgframework.commands;
 
 import io.github.math0898.rpgframework.PlayerManager;
+import io.github.math0898.rpgframework.classes.Classes;
 import sugaku.rpg.framework.players.RpgPlayer;
 import io.github.math0898.rpgframework.parties.Party;
 import io.github.math0898.rpgframework.parties.PartyManager;
@@ -116,10 +117,11 @@ public class PartyCommand extends BetterCommand {
         if (party != null) send(sender, "You are already in a party!");
         else if (pending != null) {
             if (pending.addPlayer((Player) sender)) {
-                pending.sendAll(prefix + "[" + rpgPlayer.getFormattedClass() + ChatColor.DARK_GRAY + "] "
+                Classes playerClass = rpgPlayer.getCombatClass();
+                pending.sendAll(prefix + "[" + playerClass.getFormattedName() + ChatColor.DARK_GRAY + "] "
                         + ChatColor.GRAY + rpgPlayer.getBukkitPlayer().getName() + " has joined the party!");
                 send(sender, "You have joined the party!");
-                rpgPlayer.joinParty(pending);
+                rpgPlayer.setParty(pending);
             } else send(sender, "Sorry, but that party is full.");
         } else send(sender,"You do not have any party invites.");
     }
@@ -160,7 +162,7 @@ public class PartyCommand extends BetterCommand {
             return;
         } else if (party == null) {
             party = new Party((Player) sender);
-            rpgPlayer.joinParty(party);
+            rpgPlayer.setParty(party);
             PartyManager.addParty(party);
         }
         ArrayList<RpgPlayer> invitedPlayers = new ArrayList<>();
@@ -200,7 +202,7 @@ public class PartyCommand extends BetterCommand {
         for (int i = 1; i < args.length; i++) kickedPlayers.add(PlayerManager.getPlayer(args[i]));
         for (RpgPlayer p : kickedPlayers) {
             party.sendAll(prefix + p.getName() + " has been kicked from the party.");
-            p.leaveParty();
+            p.setParty(null);
             party.removePlayer(p.getBukkitPlayer());
         }
     }
@@ -218,11 +220,12 @@ public class PartyCommand extends BetterCommand {
             send(sender, "You are not in a party and thus cannot leave the party.");
             return;
         }
-        rpgPlayer.leaveParty();
+        rpgPlayer.setParty(null);
         party.removePlayer((Player) sender);
         send(sender, "You have left the party.");
+        Classes playerClass = rpgPlayer.getCombatClass();
         party.sendAll(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] ["
-                + rpgPlayer.getFormattedClass() + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY
+                + playerClass.getFormattedName() + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY
                 + rpgPlayer.getBukkitPlayer().getName() + " has left the party.");
     }
 
@@ -242,7 +245,8 @@ public class PartyCommand extends BetterCommand {
             Collection<RpgPlayer> players = party.getRpgPlayers();
             int i = 1;
             for (RpgPlayer p: players) {
-                send(sender, ChatColor.GRAY + "" + i + ". " + ChatColor.DARK_GRAY + "[" + p.getFormattedClass() + ChatColor.DARK_GRAY + "] "
+                Classes playerClass = rpgPlayer.getCombatClass();
+                send(sender, ChatColor.GRAY + "" + i + ". " + ChatColor.DARK_GRAY + "[" + playerClass.getFormattedName() + ChatColor.DARK_GRAY + "] "
                         + p.getPlayerRarity() + p.getName(), false);
                 i++;
             }
