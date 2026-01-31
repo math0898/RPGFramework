@@ -1,8 +1,7 @@
 package io.github.math0898.rpgframework.classes.implementations;
 
 import io.github.math0898.rpgframework.Cooldown;
-import io.github.math0898.rpgframework.PlayerManager;
-import io.github.math0898.rpgframework.RpgPlayer;
+import sugaku.rpg.framework.players.RpgPlayer;
 import io.github.math0898.rpgframework.classes.AbstractClass;
 import io.github.math0898.rpgframework.damage.AdvancedDamageEvent;
 import io.github.math0898.rpgframework.damage.DamageType;
@@ -61,16 +60,6 @@ public class AssassinClass extends AbstractClass {
         cds[Abilities.INVISIBILITY.ordinal()] = new Cooldown(30);
         setCooldowns(cds);
         setClassItems(Material.GHAST_TEAR);
-    }
-
-    /**
-     * Creates a new AbstractClass object which is specific to the given player.
-     *
-     * @param p The player this class is specific to.
-     */
-    @Deprecated
-    public AssassinClass (sugaku.rpg.framework.players.RpgPlayer p) {
-        this(PlayerManager.getPlayer(p.getUuid()));
     }
 
     /**

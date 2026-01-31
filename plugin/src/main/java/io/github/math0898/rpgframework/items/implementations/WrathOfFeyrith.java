@@ -1,7 +1,7 @@
 package io.github.math0898.rpgframework.items.implementations;
 
 import io.github.math0898.rpgframework.PlayerManager;
-import io.github.math0898.rpgframework.RpgPlayer;
+import sugaku.rpg.framework.players.RpgPlayer;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -56,7 +56,7 @@ public class WrathOfFeyrith implements Listener {
             }
         lastUsed.put(player.getUniqueId(), System.currentTimeMillis());
         final UUID uuid = player.getUniqueId();
-        RpgPlayer rpg = PlayerManager.getPlayer(uuid);
+        sugaku.rpg.framework.players.RpgPlayer rpg = sugaku.rpg.framework.players.PlayerManager.getPlayer(uuid);
         if (rpg == null) return;
         rpg.nearbyEnemyCasterTargets(8.0).forEach((e) -> {
             e.getWorld().strikeLightningEffect(e.getLocation());

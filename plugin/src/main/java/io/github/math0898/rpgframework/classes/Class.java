@@ -2,7 +2,7 @@ package io.github.math0898.rpgframework.classes;
 
 import io.github.math0898.rpgframework.damage.DamageModifier;
 import org.bukkit.event.player.PlayerInteractEvent;
-import io.github.math0898.rpgframework.RpgPlayer;
+import sugaku.rpg.framework.players.RpgPlayer;
 import org.bukkit.inventory.EquipmentSlot;
 
 /**

@@ -2,7 +2,7 @@ package io.github.math0898.rpgframework.classes.implementations;
 
 import io.github.math0898.rpgframework.Cooldown;
 import io.github.math0898.rpgframework.PlayerManager;
-import io.github.math0898.rpgframework.RpgPlayer;
+import sugaku.rpg.framework.players.RpgPlayer;
 import io.github.math0898.rpgframework.classes.AbstractClass;
 import io.github.math0898.rpgframework.damage.AdvancedDamageEvent;
 import io.github.math0898.rpgframework.damage.DamageType;
@@ -60,16 +60,6 @@ public class BerserkerClass extends AbstractClass { // todo: Re-add regeneration
         cds[Abilities.INDOMITABLE_SPIRIT.ordinal()] = new Cooldown(180);
         setCooldowns(cds);
         setClassItems(Material.ROTTEN_FLESH);
-    }
-
-    /**
-     * Creates a new AbstractClass object which is specific to the given player.
-     *
-     * @param p The player this class is specific to.
-     */
-    @Deprecated
-    public BerserkerClass (sugaku.rpg.framework.players.RpgPlayer p) {
-        this(PlayerManager.getPlayer(p.getUuid()));
     }
 
     /**

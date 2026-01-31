@@ -7,7 +7,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import io.github.math0898.rpgframework.Cooldown;
-import io.github.math0898.rpgframework.RpgPlayer;
+import sugaku.rpg.framework.players.RpgPlayer;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 

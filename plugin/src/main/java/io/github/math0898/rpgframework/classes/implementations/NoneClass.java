@@ -1,7 +1,6 @@
 package io.github.math0898.rpgframework.classes.implementations;
 
-import io.github.math0898.rpgframework.PlayerManager;
-import io.github.math0898.rpgframework.RpgPlayer;
+import sugaku.rpg.framework.players.RpgPlayer;
 import io.github.math0898.rpgframework.classes.AbstractClass;
 
 /**
@@ -18,15 +17,5 @@ public class NoneClass extends AbstractClass {
      */
     public NoneClass (RpgPlayer p) {
         super(p);
-    }
-
-    /**
-     * Creates a new AbstractClass object which is specific to the given player.
-     *
-     * @param p The player this class is specific to.
-     */
-    @Deprecated
-    public NoneClass (sugaku.rpg.framework.players.RpgPlayer p) {
-        this(PlayerManager.getPlayer(p.getUuid()));
     }
 }

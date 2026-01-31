@@ -3,7 +3,7 @@ package io.github.math0898.rpgframework.classes.implementations;
 import io.github.math0898.rpgframework.Cooldown;
 import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RPGFramework;
-import io.github.math0898.rpgframework.RpgPlayer;
+import sugaku.rpg.framework.players.RpgPlayer;
 import io.github.math0898.rpgframework.classes.AbstractClass;
 import io.github.math0898.rpgframework.damage.AdvancedDamageEvent;
 import io.github.math0898.rpgframework.damage.DamageResistance;
@@ -74,16 +74,6 @@ public class PyromancerClass extends AbstractClass { // todo: Add metadata to fi
         cds[Abilities.PHOENIX_RENEWAL.ordinal()] = new Cooldown(180);
         setCooldowns(cds);
         setClassItems(Material.BLAZE_POWDER, Material.BLAZE_ROD);
-    }
-
-    /**
-     * Creates a new AbstractClass object which is specific to the given player.
-     *
-     * @param p The player this class is specific to.
-     */
-    @Deprecated
-    public PyromancerClass (sugaku.rpg.framework.players.RpgPlayer p) {
-        this(PlayerManager.getPlayer(p.getUuid()));
     }
 
     /**

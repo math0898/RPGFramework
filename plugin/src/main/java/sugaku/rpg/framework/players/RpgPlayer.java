@@ -14,21 +14,27 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import io.github.math0898.rpgframework.classes.Classes;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import sugaku.rpg.main;
 import io.github.math0898.rpgframework.parties.Party;
 import sugaku.rpg.mobs.CustomMob;
 
-import java.util.Collection;
-import java.util.UUID;
-import java.util.Objects;
+import java.util.*;
 
 public class RpgPlayer {
+
+    /**
+     * A static prefix to send to all players.
+     */
+    private static final String MESSAGE_PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY;
 
     /**
      * The time in millis that this player was last fighting.
@@ -66,6 +72,7 @@ public class RpgPlayer {
      */
     public RpgPlayer (Player p) {
         this.uuid = p.getUniqueId();
+        this.name = p.getName();
         refresh(p);
     }
 
@@ -73,6 +80,12 @@ public class RpgPlayer {
      * Uuid of the player this construct points to.
      */
     private final UUID uuid;
+
+    private final String name;
+
+    private Party party = null;
+
+    private Party pendingParty = null;
 
     private Classes combatClass = Classes.NONE;
 
@@ -99,6 +112,26 @@ public class RpgPlayer {
      */
     public long getExperience () {
         return experience;
+    }
+
+    /**
+     * Sends the given message to this player.
+     *
+     * @param message The message to send to this player.
+     */
+    public void sendMessage (String message) {
+        sendMessage(message, true);
+    }
+
+    /**
+     * Sends the given message to this player.
+     *
+     * @param message The message to send to this player.
+     * @param prefix  Whether to include the RPG prefix or not.
+     */
+    public void sendMessage (String message, boolean prefix) {
+        if (prefix) getBukkitPlayer().sendMessage(MESSAGE_PREFIX + message);
+        else getBukkitPlayer().sendMessage(message);
     }
 
     /**
@@ -153,7 +186,7 @@ public class RpgPlayer {
      * Called whenever the player levels up.
      */
     public void levelUp () {
-        io.github.math0898.rpgframework.RpgPlayer p = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
+        sugaku.rpg.framework.players.RpgPlayer p = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
         if (p == null) {
             RPGFramework.console("Encountered a strange error where sugaku.rpg has an RpgPlayer object but no io.github.math0898 RpgPlayer was found.", ChatColor.RED);
             return;
@@ -265,6 +298,36 @@ public class RpgPlayer {
 
     public ChatColor getPlayerRarity() {
         return getPlayerRarity(this.getBukkitPlayer());
+    }
+
+    public void joinParty (Party p) {
+        party = p;
+    }
+
+    public void leaveParty() { party = null; }
+
+    public Party getPendingParty() { return pendingParty; }
+
+    public void setPendingParty(Party p) { pendingParty = p; }
+
+    public String getFormattedClass () {
+        return combatClass.getFormattedName();
+    }
+
+    /**
+     * Accessor method for a formatted version of this player's current health.
+     *
+     * @return A nicely colored string for this player's health.
+     */
+    public String getFormattedHealth () {
+        double max = getMaxHealth();
+        double current = getBukkitPlayer().getHealth();
+
+        ChatColor prefix = ChatColor.GREEN;
+        if (current / max < 0.75) prefix = ChatColor.YELLOW;
+        else if (current / max < 0.50) prefix = ChatColor.RED;
+
+        return prefix + "" + current;
     }
 
     public Party getParty() { return null; }
@@ -423,7 +486,7 @@ public class RpgPlayer {
      * @param boss The boss to assign to this player.
      */
     public void setBoss (CustomMob boss) {
-        io.github.math0898.rpgframework.RpgPlayer player = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
+        sugaku.rpg.framework.players.RpgPlayer player = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
         if (player == null) return;
         Party party = player.getParty();
         if (player.getParty() != null) party.setBoss(boss);
@@ -436,7 +499,7 @@ public class RpgPlayer {
      * @return The boss actively fighting this Party.
      */
     public CustomMob getActiveBossUnsafe () {
-        io.github.math0898.rpgframework.RpgPlayer player = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
+        sugaku.rpg.framework.players.RpgPlayer player = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
         if (player == null) return null;
         Party party = player.getParty();
         if (player.getParty() != null) {
@@ -453,7 +516,7 @@ public class RpgPlayer {
      * @return The boss actively fighting this Party.
      */
     public CustomMob getActiveBoss () {
-        io.github.math0898.rpgframework.RpgPlayer player = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
+        sugaku.rpg.framework.players.RpgPlayer player = io.github.math0898.rpgframework.PlayerManager.getPlayer(uuid);
         if (player == null) return null;
         Party party = player.getParty();
         if (player.getParty() != null) {
@@ -466,6 +529,87 @@ public class RpgPlayer {
                 if (!activeBoss.getEntity().isValid() || activeBoss.getEntity().isDead())
                     activeBoss = null;
         return activeBoss;
+    }
+
+    /**
+     * A helpful utility method to wrangle all the friendly caster targets. i.e. {@link this} and if present, all party
+     * members.
+     *
+     * @return A list of friendly casting targets.
+     */
+    public List<RpgPlayer> friendlyCasterTargets () {
+        List<RpgPlayer> toReturn = new ArrayList<>();
+        if (party != null) toReturn.addAll(party.getRpgPlayers());
+        else toReturn.add(this);
+        return toReturn;
+    }
+
+    /**
+     * A helpful utility method to wrangle all nearby enemy caster targets.
+     *
+     * @param distance The distance from this RpgPlayer to look for targets.
+     * @return A list of nearby enemy casting targets.
+     */
+    public List<LivingEntity> nearbyEnemyCasterTargets (double distance) {
+        return nearbyEnemyCasterTargets(distance, distance, distance);
+    }
+
+    /**
+     * A helpful utility method to wrangle all nearby enemy caster targets.
+     *
+     * @param dx The distance in the x direction to look for nearby targets.
+     * @param dy The distance in the y direction to look for nearby targets.
+     * @param dz The distance in the z direction to look for nearby targets.
+     * @return A list of nearby enemy casting targets.
+     */
+    public List<LivingEntity> nearbyEnemyCasterTargets (double dx, double dy, double dz) {
+        List<LivingEntity> toReturn = new ArrayList<>();
+        List<RpgPlayer> friendlies = friendlyCasterTargets();
+        List<LivingEntity> friendlyEntities = new ArrayList<>();
+        for (RpgPlayer rpg : friendlies)
+            friendlyEntities.add(rpg.getBukkitPlayer());
+        List<Entity> entities = getBukkitPlayer().getNearbyEntities(dx, dy, dz);
+        for (Entity e : entities)
+            if (e instanceof LivingEntity le)
+                if (!friendlyEntities.contains(le))
+                    toReturn.add(le);
+        return toReturn;
+    }
+
+    /**
+     * Adds the given potion effect to this player.
+     *
+     * @param type The type of effect to add.
+     * @param dur  The duration to add this effect.
+     * @param lvl  The level to apply this effect at. (Not amplifier!)
+     */
+    public void addPotionEffect (PotionEffectType type, int dur, int lvl) {
+        addPotionEffect(type, dur, lvl, false, false);
+    }
+
+    /**
+     * Adds the given potion effect to this player.
+     *
+     * @param type    The type of effect to add.
+     * @param dur     The duration to add this effect.
+     * @param lvl     The level to apply this effect at. (Not amplifier!)
+     * @param ambient Whether the particles are ambient or not.
+     * @param hide    Should the particles be hidden.
+     */
+    public void addPotionEffect (PotionEffectType type, int dur, int lvl, boolean ambient, boolean hide) {
+        getBukkitPlayer().addPotionEffect(new PotionEffect(type, dur, lvl - 1, ambient, hide));
+    }
+
+    /**
+     * Removes the given potion effects from this RpgPlayer.
+     *
+     * @param effects The effects to remove from this RpgPlayer.
+     */
+    public void cleanseEffects (PotionEffectType... effects) {
+        if (effects == null) return;
+        Player player = getBukkitPlayer();
+        for (PotionEffectType type : effects)
+            player.removePotionEffect(type);
     }
 
     //TODO: Implement the damage bonus of the bow

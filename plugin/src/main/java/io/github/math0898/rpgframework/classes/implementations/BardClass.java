@@ -2,7 +2,7 @@ package io.github.math0898.rpgframework.classes.implementations;
 
 import io.github.math0898.rpgframework.Cooldown;
 import io.github.math0898.rpgframework.PlayerManager;
-import io.github.math0898.rpgframework.RpgPlayer;
+import sugaku.rpg.framework.players.RpgPlayer;
 import io.github.math0898.rpgframework.classes.AbstractClass;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -118,16 +118,6 @@ public class BardClass extends AbstractClass {
         cds[Abilities.LIFE_OF_MUSIC.ordinal()] = new Cooldown(300);
         setCooldowns(cds);
         setClassItems(Material.NOTE_BLOCK);
-    }
-
-    /**
-     * Creates a new AbstractClass object which is specific to the given player.
-     *
-     * @param p The player this class is specific to.
-     */
-    @Deprecated
-    public BardClass (sugaku.rpg.framework.players.RpgPlayer p) {
-        this(PlayerManager.getPlayer(p.getUuid()));
     }
 
     /**

@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityExhaustionEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.Nullable;
+import sugaku.rpg.framework.players.RpgPlayer;
 import sugaku.rpg.main;
 
 import java.util.*;

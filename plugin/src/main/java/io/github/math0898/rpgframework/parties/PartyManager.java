@@ -1,7 +1,5 @@
 package io.github.math0898.rpgframework.parties;
 
-import io.github.math0898.rpgframework.PlayerManager;
-import io.github.math0898.rpgframework.RpgPlayer;
 import io.github.math0898.rpgframework.classes.Classes;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
