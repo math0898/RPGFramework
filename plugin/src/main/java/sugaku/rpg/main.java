@@ -53,9 +53,6 @@ public final class main {
         Bukkit.getPluginManager().registerEvents(new EiryerasBoss(), plugin);
         Bukkit.getPluginManager().registerEvents(new FeyrithBoss(), plugin);
 
-        //Other TODO: Add console to Item Manager
-        ItemsManager.init();
-
         //Loaded
         console("RPG loaded successfully!", ChatColor.GREEN);
     }

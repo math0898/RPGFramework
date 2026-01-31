@@ -1,41 +1,26 @@
 spawn:
-  type: WHEAT
-  amount: 1
-  meta:
-    meta-type: UNSPECIFIC
-    display-name: §9Krusk Boss Spawn
-    lore:
-      - §7Drop this item anywhere to spawn
-      - §aKrusk, Undead General§7 on the spot.
-      - §7Attacking bosses whilst they are in
-      - §7water will cause you to get struck
-      - §7by lighting.
-
-legacy-spawn:
-  type: WHEAT
-  amount: 1
-  meta:
-    meta-type: UNSPECIFIC
-    display-name: §9Krusk Boss Spawn
-    lore:
-      - §r§7 Drop this item anywhere to spawn
-      - §aKrusk, Undead General§7 on the spot.
-      - §7Attacking bosses whilst they are in
-      - §7water will cause you to get struck
-      - §7by lighting.
+  name: "Krusk Boss Spawn"
+  material: "WHEAT"
+  slot: "MATERIAL"
+  rarity: "RARE"
+  description:
+    - "Drop this item anywhere to spawn"
+    - "#53C975Krusk#CCCCCC, #53C975Undead General#CCCCCC on the spot."
+    - "Attacking bosses whilst they are in"
+    - "water will cause you to get struck"
+    - "by lighting."
 
 lore:
-  type: WHEAT
-  amount: 1
-  meta:
-    meta-type: UNSPECIFIC
-    display-name: §6Krusk's Lore
-    lore:
-      - §aKrusk §7was a general for a small
-      - §7time noble named §dKairon§7. For
-      - §7this noble, §aKrusk §7was given the
-      - §7fairly easy task of defending
-      - §7farmers from stray beasts.
+  name: "Krusk's Lore"
+  material: "WHEAT"
+  slot: "MATERIAL"
+  rarity: "RARE"
+  description:
+    - "#53C975Krusk#CCCCCC was a general for a small"
+    - "time noble named #F454DAKairon#CCCCCC. For"
+    - "this noble, #53C975Krusk#CCCCCC was given the"
+    - "fairly easy task of defending"
+    - "farmers from stray beasts."
 
 krusk-axe:
   material: "IRON_AXE"

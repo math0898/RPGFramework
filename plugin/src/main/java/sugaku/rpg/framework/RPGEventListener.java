@@ -17,7 +17,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import sugaku.rpg.framework.menus.ClassesManager;
-import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.mobs.BossRituals;
 import sugaku.rpg.framework.mobs.MobManager;
 import io.github.math0898.rpgframework.PlayerManager;
@@ -36,14 +35,13 @@ import java.util.logging.Level;
 import static io.github.math0898.rpgframework.RPGFramework.console;
 import static org.bukkit.event.entity.EntityDamageEvent.DamageCause.*;
 import static sugaku.rpg.framework.items.ItemsManager.updateArmor;
-import static sugaku.rpg.framework.items.ItemsManager.updateArmor2;
 
 public class RPGEventListener implements Listener {
 
     /**
      * A list of items that are not allowed to be picked up by hoppers.
      */
-    private static final List<ItemStack> hopperBannedItems = Arrays.asList(ItemsManager.KruskSpawn, ItemsManager.EiryerasSpawn, ItemsManager.FeyrithSpawn, ItemManager.getInstance().getItem("krusk:Spawn"), ItemManager.getInstance().getItem("eiryeras:Spawn"), ItemManager.getInstance().getItem("feyrith:Spawn"));
+    private static final List<ItemStack> hopperBannedItems = Arrays.asList(ItemManager.getInstance().getItem("krusk:Spawn"), ItemManager.getInstance().getItem("eiryeras:Spawn"), ItemManager.getInstance().getItem("feyrith:Spawn"));
 
     /**
      * When inventory slots are clicked.
@@ -131,7 +129,7 @@ public class RPGEventListener implements Listener {
 
         if (!itemCrafted.getItemMeta().hasLore())
             if (isArmor(itemCrafted.getType()))
-                e.setCurrentItem(updateArmor2(itemCrafted.getType()));
+                e.setCurrentItem(updateArmor(itemCrafted.getType()));
     }
 
     /**
@@ -170,7 +168,7 @@ public class RPGEventListener implements Listener {
         if (!itemDropped.getItemMeta().isUnbreakable()) {
             if (!itemDropped.getItemMeta().hasLore() || !Objects.requireNonNull(itemDropped.getItemMeta().getLore()).contains(ChatColor.GRAY + "Item modified by RPG - 1.2")) {
                 if (isArmor(itemDropped.getType()))
-                    Bukkit.getServer().getScheduler().runTask(main.plugin, () -> updateArmor(itemDropped));
+                    Bukkit.getServer().getScheduler().runTask(main.plugin, () -> e.getItemDrop().setItemStack(updateArmor(itemDropped.getType())));
             }
         }
         BossRituals.general(e);

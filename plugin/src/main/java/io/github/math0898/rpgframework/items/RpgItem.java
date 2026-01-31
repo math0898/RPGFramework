@@ -21,8 +21,8 @@ import java.util.logging.Logger;
  *
  * @author Sugaku
  */
-public class RpgItem {
-
+public class RpgItem { // todo: Custom Model Data support., magic power
+ // todo: Expand to include a spell details for on-use items. Cooldown, Damage, DPS, Duration, Range.
     /**
      * A generated ItemStack representation of this RpgItem.
      */
@@ -191,18 +191,22 @@ public class RpgItem {
         List<String> clone = new ArrayList<>(description);
         for (int i = 0; i < clone.size(); i++) // todo: Placeholder support.
             clone.set(i, StringUtils.convertHexCodes("#CCCCCC" + description.get(i)));
-        clone.add(StringUtils.convertHexCodes("#606060") + " ----- ----- ----- ");
-        if (damage != 0) clone.add(StringUtils.convertHexCodes("#D93747") + "Damage: " + damage);
-        if (attackSpeed != 0) clone.add(StringUtils.convertHexCodes("#23A5DB") + "Attack Speed: " + attackSpeed);
-        if (health != 0) clone.add(StringUtils.convertHexCodes("#F454DA") + "Health: " + health);
-        if (armor != 0) clone.add(StringUtils.convertHexCodes("#3FB74A") + "Armor: " + armor);
-        if (toughness != 0) clone.add(StringUtils.convertHexCodes("#F2D951") + "Toughness: " + toughness);
-        clone.add(StringUtils.convertHexCodes("#606060") + " ----- ----- ----- ");
-        String details = "#CCCCCC" + StringUtils.capitalize(slot.toString());
-        if (armorType != null) details = details + "#606060 | " + armorType.getFormattedName();
-        if (weaponType != null) details = details + "#606060 | " + weaponType.getFormattedName();
-        details = details + "#606060 | #F2D951" + getGearScore();
-        clone.add(StringUtils.convertHexCodes(details));
+        if (damage != 0 || attackSpeed != 0 || health != 0 || armor != 0 || toughness != 0) {
+            clone.add(StringUtils.convertHexCodes("#606060") + " ----- ----- ----- ");
+            if (damage != 0) clone.add(StringUtils.convertHexCodes("#D93747") + "Damage: " + damage);
+            if (attackSpeed != 0) clone.add(StringUtils.convertHexCodes("#23A5DB") + "Attack Speed: " + attackSpeed);
+            if (health != 0) clone.add(StringUtils.convertHexCodes("#F454DA") + "Health: " + health);
+            if (armor != 0) clone.add(StringUtils.convertHexCodes("#3FB74A") + "Armor: " + armor);
+            if (toughness != 0) clone.add(StringUtils.convertHexCodes("#F2D951") + "Toughness: " + toughness);
+        }
+        if (!slot.equals(EquipmentSlots.MATERIAL)) {
+            clone.add(StringUtils.convertHexCodes("#606060") + " ----- ----- ----- ");
+            String details = "#CCCCCC" + StringUtils.capitalize(slot.toString());
+            if (armorType != null) details = details + "#606060 | " + armorType.getFormattedName();
+            if (weaponType != null) details = details + "#606060 | " + weaponType.getFormattedName();
+            details = details + "#606060 | #F2D951" + getGearScore();
+            clone.add(StringUtils.convertHexCodes(details));
+        }
         builder.setLore(clone.toArray(new String[0]));
         builder.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, health / 5.0, slot);
         builder.addAttributeModifier(Attribute.GENERIC_ARMOR, armor, slot);

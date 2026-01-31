@@ -45,17 +45,14 @@ public class BossRituals {
         ItemStack stack = drop.getItemStack();
         String message = "";
         Bosses boss = null;
-        if (stack.equals(ItemsManager.KruskSpawn)
-                || stack.equals(ItemManager.getInstance().getItem("krusk:Spawn"))
-                || stack.equals(ItemManager.getInstance().getItem("krusk:LegacySpawn"))) {
+        if (stack.equals(ItemManager.getInstance().getItem("krusk:Spawn"))) {
             message = "You are summoning " + ChatColor.GREEN + "Krusk" + ChatColor.GRAY + ", one of the Undead Generals.";
             boss = Bosses.KRUSK;
         } else if (stack.equals(ItemsManager.EiryerasSpawn)
                 || stack.equals(ItemManager.getInstance().getItem("eiryeras:Spawn"))) {
             message = "You are summoning " + ChatColor.GREEN + "Eiryeras" + ChatColor.GRAY + ", honored hunter of the Agloytan area.";
             boss = Bosses.EIRYERAS;
-        } else if (drop.getItemStack().equals(ItemsManager.FeyrithSpawn)
-                || stack.equals(ItemManager.getInstance().getItem("feyrith:Spawn"))) {
+        } else if (stack.equals(ItemManager.getInstance().getItem("feyrith:Spawn"))) {
             message = "You are summoning " + ChatColor.BLUE + "Feyrith" + ChatColor.GRAY + ", an apprentice mage of the castle.";
             boss = Bosses.FEYRITH;
         }
