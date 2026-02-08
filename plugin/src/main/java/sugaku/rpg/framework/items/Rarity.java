@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 /**
  * An enum of rarities available for items and bosses.
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public enum Rarity {
 
     /**
