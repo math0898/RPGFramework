@@ -260,13 +260,14 @@ public abstract class CustomMob {
             if (player.getActiveBossUnsafe().getEntity().getEntityId() == event.getEntity().getEntityId())
                 player.giveExperience(Math.max(100 - player.getLevel(), 1));
         }
+        World world = event.getEntity().getWorld();
         Random rand = new Random();
         double roll = rand.nextDouble();
         double check = 0.0;
         while (true) {
             for (BossDrop i : bossDrops) {
                 if (roll < check + getRate(i.getRarity(), rarity)) {
-                    MobManager.drop(i.getItem(), event.getEntity().getLocation());
+                    world.dropItemNaturally(event.getEntity().getLocation(), i.getItem());
                     return;
                 } else check += getRate(i.getRarity(), rarity);
             }

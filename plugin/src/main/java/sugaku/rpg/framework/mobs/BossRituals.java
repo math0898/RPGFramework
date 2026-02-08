@@ -84,7 +84,7 @@ public class BossRituals {
         send(Bukkit.getServer().getConsoleSender(), boss.getCustomName() + ChatColor.GRAY + " is being spawned at: " + ChatColor.GRAY + location + ChatColor.GRAY + " - " + player);
         Bukkit.getScheduler().runTaskLater(main.plugin, () -> boss.setSpawnPoint(location), 158);
         Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> boss.spawn(boss.getSpawnPoint()), 160);
-        Bukkit.getScheduler().runTaskLater(main.plugin, () -> MobManager.addMob(boss), 157);
+        Bukkit.getScheduler().runTaskLater(main.plugin, () -> MobManager.getInstance().addMob(boss), 157);
         drop.remove();
         Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> location.getWorld().playSound(location, "entity.wither.spawn", 0.8f, 1), 160);
         new BukkitRunnable() { @Override public void run() { if(location.getWorld().getBlockAt(location).getType() == Material.FIRE) location.getWorld().getBlockAt(location).setType(Material.AIR); } }.runTaskLater(main.plugin, 150);

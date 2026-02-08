@@ -43,23 +43,24 @@ public class SummonRPG extends BetterCommand {
         }
 
         int loop = getIntegerParam(1, args, player);
+        MobManager mobManager = MobManager.getInstance();
 
         // todo: This pattern is very trouble some as the number of enemies increases.
         if (args[0].equalsIgnoreCase("Eiryeras")) {
             send(player, ChatColor.GREEN + "Eiryeras," + ChatColor.GRAY + " honored hunter of the Agloytan area has been summoned.");
-            for (int i = 0; i < loop; i++) MobManager.addMob(new EiryerasBoss(player.getLocation()));
+            for (int i = 0; i < loop; i++) mobManager.addMob(new EiryerasBoss(player.getLocation()));
         } else if (args[0].equalsIgnoreCase("Krusk")) {
             send(player, ChatColor.GREEN + "Krusk,"  + ChatColor.GRAY +  " one of the generals of the undead has been summoned.");
-            for (int i = 0; i < loop; i++) MobManager.addMob(new KruskBoss(player.getLocation()));
+            for (int i = 0; i < loop; i++) mobManager.addMob(new KruskBoss(player.getLocation()));
         } else if (args[0].equalsIgnoreCase("KruskMinion")) {
             send(player, "One of " + ChatColor.GREEN +  "Krusk's" + ChatColor.GRAY + " minions has been summoned.");
-            for (int i = 0; i < loop; i++) MobManager.addMob(new KruskMinion(player.getLocation(), (int) (new Random().nextDouble() * 8)));
+            for (int i = 0; i < loop; i++) mobManager.addMob(new KruskMinion(player.getLocation(), (int) (new Random().nextDouble() * 8)));
         } else if (args[0].equalsIgnoreCase("Feyrith")) {
             send(player, "One of " + ChatColor.BLUE +  "Feyrith" + ChatColor.GRAY + " has been summoned.");
-            MobManager.addMob(new FeyrithBoss(player.getLocation()));
+            mobManager.addMob(new FeyrithBoss(player.getLocation()));
         } else if (args[0].equalsIgnoreCase("Inos")) {
             send(player, "One of " + ChatColor.RED +  "Inos" + ChatColor.GRAY + " has been summoned.");
-            for (int i = 0; i < loop; i++) MobManager.addMob(new Inos(player.getLocation()));
+            for (int i = 0; i < loop; i++) mobManager.addMob(new Inos(player.getLocation()));
         } else send(player, ChatColor.RED + "Sorry but we could not find that mob.");
         return true;
     }

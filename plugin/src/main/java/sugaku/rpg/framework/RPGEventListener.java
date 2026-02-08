@@ -91,7 +91,7 @@ public class RPGEventListener implements Listener {
         if (e.getDamager() instanceof Player && !e.isCancelled()) Objects.requireNonNull(PlayerManager.getPlayer(e.getDamager().getUniqueId())).attacker(e);
 
         if (e.getEntity() instanceof Player && !e.isCancelled()) PlayerManager.onDamage(e);
-        else if (MobManager.needsChecks()) MobManager.run(e);
+        else MobManager.getInstance().run(e);
     }
 
     /**
@@ -101,10 +101,10 @@ public class RPGEventListener implements Listener {
     public void mobDeath(EntityDeathEvent e) {
         LivingEntity m = e.getEntity();
 
-        if (m.getType() == EntityType.ZOMBIE) MobManager.zombieDrops(e);
-        else if (m.getType() == EntityType.SKELETON) MobManager.skeletonDrops(e);
-        else if (m.getType() == EntityType.WITHER_SKELETON) MobManager.witherSkeletonDrops(e);
-        else if (m.getType() == EntityType.CHICKEN) MobManager.chickenDrops(e);
+        if (m.getType() == EntityType.ZOMBIE) MobManager.getInstance().zombieDrops(e);
+        else if (m.getType() == EntityType.SKELETON) MobManager.getInstance().skeletonDrops(e);
+        else if (m.getType() == EntityType.WITHER_SKELETON) MobManager.getInstance().witherSkeletonDrops(e);
+        else if (m.getType() == EntityType.CHICKEN) MobManager.getInstance().chickenDrops(e);
 
         assert m.getCustomName() != null;
 

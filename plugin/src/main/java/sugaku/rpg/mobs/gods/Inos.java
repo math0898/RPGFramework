@@ -2,12 +2,11 @@ package sugaku.rpg.mobs.gods;
 
 import io.github.math0898.rpgframework.items.ItemManager;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDeathEvent;
 import sugaku.rpg.framework.items.Rarity;
 import io.github.math0898.rpgframework.enemies.CustomMob;
-
-import static sugaku.rpg.framework.mobs.MobManager.drop;
 
 /**
  * Inos is the god of spring. This is a minor aspect of him in the form of a chicken.
@@ -41,7 +40,8 @@ public class Inos extends CustomMob {
     public static void handleDrops (EntityDeathEvent event) {
         System.out.println("Inos Died");
         CustomMob.handleDrops(event);
-        drop(ItemManager.getInstance().getItem("gods:InosAspectI"), event.getEntity().getLocation());
+        World w = event.getEntity().getWorld();
+        w.dropItemNaturally(event.getEntity().getLocation(), ItemManager.getInstance().getItem("gods:InosAspectI"));
         event.setDroppedExp(500);
     }
 }

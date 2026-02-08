@@ -21,7 +21,6 @@ import static org.bukkit.attribute.AttributeModifier.Operation.ADD_NUMBER;
 import static org.bukkit.Material.*;
 import static sugaku.rpg.framework.items.ItemsManager.*;
 import static org.bukkit.entity.EntityType.ZOMBIE;
-import static sugaku.rpg.framework.mobs.MobManager.drop;
 
 public class KruskBoss extends CustomMob {
 
@@ -134,16 +133,17 @@ public class KruskBoss extends CustomMob {
         event.setDroppedExp(50);
         Random r = new Random();
         LivingEntity e = event.getEntity();
+        World world = e.getWorld();
 
         Objects.requireNonNull(e.getLocation().getWorld()).dropItem(e.getLocation(), new ItemStack(ROTTEN_FLESH, (int) (r.nextDouble() * 5) + 1));
         double roll = r.nextDouble();
         while (roll >= 0.37) roll = r.nextDouble(); // TODO: Actually implement.
-        if (roll < 0.08) drop(KruskAxe, e.getLocation());
-        else if (roll < 0.16) drop(KruskBoots, e.getLocation());
-        else if (roll < 0.24) drop(KruskLeggings, e.getLocation());
-        else if (roll < 0.32) drop(UndeadChestplate, e.getLocation());
-        else if (roll < 0.36) drop(KruskHelmet, e.getLocation());
-        else if (roll < 0.37) drop(KruskLore, e.getLocation());
+        if (roll < 0.08) world.dropItemNaturally(e.getLocation(), KruskAxe);
+        else if (roll < 0.16) world.dropItemNaturally(e.getLocation(), KruskBoots);
+        else if (roll < 0.24) world.dropItemNaturally(e.getLocation(), KruskLeggings);
+        else if (roll < 0.32) world.dropItemNaturally(e.getLocation(), UndeadChestplate);
+        else if (roll < 0.36) world.dropItemNaturally(e.getLocation(), KruskHelmet);
+        else if (roll < 0.37) world.dropItemNaturally(e.getLocation(), KruskLore);
     }
 
     /**

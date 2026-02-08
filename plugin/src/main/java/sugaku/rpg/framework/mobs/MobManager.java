@@ -4,7 +4,7 @@ import io.github.math0898.rpgframework.RPGFramework;
 import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.utils.StringUtils;
-import org.bukkit.Bukkit;
+import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -20,15 +20,50 @@ import sugaku.rpg.mobs.gods.Inos;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static sugaku.rpg.framework.mobs.BossRituals.send;
-
+/**
+ * The MobManager is used to manage custom mobs while they are out in the world, as well as augmenting normal mob drops.
+ *
+ * @author Sugaku
+ */
 public class MobManager {
 
-    private static final ArrayList<CustomMob> mobs = new ArrayList<>();
+    /**
+     * The active MobManager instance.
+     * -- GETTER --
+     * Returns the active MobManager.
+     */
+    @Getter
+    private static final MobManager instance = new MobManager();
 
-    public static boolean needsChecks() { return !mobs.isEmpty(); }
+    /**
+     * Current alive mobs that the MobManager is watching.
+     */
+    private final ArrayList<CustomMob> mobs = new ArrayList<>();
 
-    public static void run(EntityDamageByEntityEvent event) {
+    /**
+     * Prevents instantiation.
+     */
+    private MobManager () {
+
+    }
+
+    /**
+     * Checks whether the MobManager needs to be delegated to or not.
+     *
+     * @return True if mobs are active, otherwise false.
+     */
+    @Deprecated(forRemoval = true)
+    public boolean needsChecks () {
+        return !mobs.isEmpty();
+    }
+
+    /**
+     * Runs the MobManager on the given EntityDamageByEntity event that it may need to consider.
+     *
+     * @param event The event to be considered.
+     */
+    public void run (EntityDamageByEntityEvent event) {
+        if (mobs.isEmpty()) return;
         Entity damaged = event.getEntity();
         Entity attacker = event.getDamager();
         if (!(attacker instanceof Player)) return;
@@ -46,7 +81,12 @@ public class MobManager {
         }
     }
 
-    public static void addMob (CustomMob m) {
+    /**
+     * Adds a mob to the MobManager.
+     *
+     * @param m The custom mob to add.
+     */
+    public void addMob (CustomMob m) {
         mobs.add(m);
     }
 
@@ -55,7 +95,7 @@ public class MobManager {
      * @param item The item to be dropped.
      * @param l The location for the item to be dropped at.
      */
-    public static void drop (ItemStack item, Location l) {
+    public void drop (ItemStack item, Location l) {
         World world = l.getWorld();
         if (world == null) {
             RPGFramework.console("Attempted to drop: " + item + " at: " + l + " but world is null.", ChatColor.RED);
@@ -64,7 +104,12 @@ public class MobManager {
         world.dropItem(l, item);
     }
 
-    public static void zombieDrops (EntityDeathEvent event) {
+    /**
+     * Adds Krusk drops to vanilla zombie deaths.
+     *
+     * @param event The mob death to consider.
+     */
+    public void zombieDrops (EntityDeathEvent event) {
         if (event.getEntity().getKiller() == null) return;
         Random r = new Random();
         double drops = r.nextDouble();
@@ -77,7 +122,12 @@ public class MobManager {
             event.getDrops().add(ItemManager.getInstance().getItem("krusk:Spawn"));
     }
 
-    public static void skeletonDrops (EntityDeathEvent event) {
+    /**
+     * Adds Eiryeras drops to vanilla skeleton deaths.
+     *
+     * @param event The mob death to consider.
+     */
+    public void skeletonDrops (EntityDeathEvent event) {
         if (event.getEntity().getKiller() == null) return;
         Random r = new Random();
         double drops = r.nextDouble();
@@ -89,7 +139,12 @@ public class MobManager {
             event.getDrops().add(ItemManager.getInstance().getItem("eiryeras:Spawn"));
     }
 
-    public static void witherSkeletonDrops (EntityDeathEvent event) {
+    /**
+     * Adds Feyrith drops to vanilla wither skeleton deaths.
+     *
+     * @param event The mob death to consider.
+     */
+    public void witherSkeletonDrops (EntityDeathEvent event) {
         if (event.getEntity().getKiller() == null) return;
         Random r = new Random();
         double drops = r.nextDouble();
@@ -101,7 +156,12 @@ public class MobManager {
 //        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
             event.getDrops().add(ItemManager.getInstance().getItem("feyrith:Spawn"));}
 
-    public static void chickenDrops (EntityDeathEvent event) {
+    /**
+     * Implements the chance for chickens to spawn Inos.
+     *
+     * @param event The mob death to consider.
+     */
+    public void chickenDrops (EntityDeathEvent event) {
         if (event.getEntity().getKiller() == null) return;
         Random r = new Random();
         double drops = r.nextDouble();
@@ -109,7 +169,7 @@ public class MobManager {
             event.getEntity().getWorld().strikeLightningEffect(event.getEntity().getLocation());
             event.getEntity().getKiller().sendTitle( "", StringUtils.convertHexCodes("#CCCCCCYou feel the presence of a " + Rarity.MYTHIC.getHexColor() + "god#CCCCCC."), 20, 80, 20);
             CustomMob boss = new Inos(event.getEntity().getLocation());
-            send(Bukkit.getServer().getConsoleSender(), boss.getCustomName() + ChatColor.GRAY + " is being spawned at: " + ChatColor.GRAY + event.getEntity().getLocation() + ChatColor.GRAY + " - " + event.getEntity().getKiller());
+            RPGFramework.console(boss.getCustomName() + ChatColor.GRAY + " is being spawned at: " + ChatColor.GRAY + event.getEntity().getLocation() + ChatColor.GRAY + " - " + event.getEntity().getKiller(), ChatColor.GRAY);
         }
     }
 }
