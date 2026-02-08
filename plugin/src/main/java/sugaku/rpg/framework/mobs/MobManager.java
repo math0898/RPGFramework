@@ -1,11 +1,13 @@
 package sugaku.rpg.framework.mobs;
 
+import io.github.math0898.rpgframework.RPGFramework;
 import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -16,13 +18,11 @@ import io.github.math0898.rpgframework.enemies.CustomMob;
 import sugaku.rpg.mobs.gods.Inos;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 
 import static sugaku.rpg.framework.mobs.BossRituals.send;
 
 public class MobManager {
-
 
     private static final ArrayList<CustomMob> mobs = new ArrayList<>();
 
@@ -46,13 +46,8 @@ public class MobManager {
         }
     }
 
-    public static void clean() { mobs.removeIf(m -> m.getEntity().isDead()); }
-
-    public static void addMob(CustomMob m) { mobs.add(m); }
-
-    public static boolean isSummoned(CustomMob m) {
-        for (CustomMob c: mobs) if (m.getCustomName().equals(c.getCustomName())) return true;
-        return false;
+    public static void addMob (CustomMob m) {
+        mobs.add(m);
     }
 
     /**
@@ -60,7 +55,14 @@ public class MobManager {
      * @param item The item to be dropped.
      * @param l The location for the item to be dropped at.
      */
-    public static void drop(ItemStack item, Location l) { Objects.requireNonNull(l.getWorld()).dropItem(l, item); }
+    public static void drop (ItemStack item, Location l) {
+        World world = l.getWorld();
+        if (world == null) {
+            RPGFramework.console("Attempted to drop: " + item + " at: " + l + " but world is null.", ChatColor.RED);
+            return;
+        }
+        world.dropItem(l, item);
+    }
 
     public static void zombieDrops (EntityDeathEvent event) {
         if (event.getEntity().getKiller() == null) return;
