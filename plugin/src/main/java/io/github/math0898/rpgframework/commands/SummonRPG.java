@@ -88,7 +88,7 @@ public class SummonRPG extends BetterCommand {
         ArrayList<String> list = new ArrayList<>();
         if (args.length == 1) {
             list.addAll(List.of("Eiryeras", "Krusk", "KruskMinion", "Feyrith", "Inos")); // todo: I do not like the idea of manually typing these in.
-            return everythingStartsWith(list, args[0]);
+            return everythingStartsWith(list, args[0], false);
         } else if (args.length == 2)
             list.add("(amnt)");
         return list;
