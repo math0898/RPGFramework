@@ -24,8 +24,20 @@ feyrith:
     - "- &7Major &6Paladin &7buffs."
     - "- &cFixed bugs&7."
 
+experience1:
+  title: "Experience - Iteration 1"
+  date: "Jan 30th, 2026"
+  message:
+    - "- &7Updated server and plugins to &91.21.11&7."
+    - "- &7Bosses now drop &bexperience&7!"
+    - "   &8> &7The formula is 100 - 'your level'"
+    - "- &7Players now &alevel up&7 gaining increased &dhealth&7 and &cdamage&7."
+    - "   &8> &7It takes 30 + ('your level' * 30) xp to &alevel up&7."
+    - "- &7Rebalanced vanilla armor and updated item descriptions."
+
 ongoing:
   title: "Ongoing"
   date: "Current"
   message:
     - "- Optimized, cleaned up, and made &2RPG &7more sustainable."
+    - "- Updated old item descriptions to utilize new design patterns."
