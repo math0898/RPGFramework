@@ -1,7 +1,7 @@
 package sugaku.rpg.mobs.teir1.eiryeras;
 
-import io.github.math0898.rpgframework.RPGFramework;
 import io.github.math0898.rpgframework.items.EquipmentSlots;
+import io.github.math0898.utils.Utils;
 import io.github.math0898.utils.items.ItemBuilder;
 import io.github.math0898.rpgframework.items.ItemManager;
 import org.bukkit.*;
@@ -17,11 +17,11 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValueAdapter;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import sugaku.rpg.framework.items.BossDrop;
 import sugaku.rpg.framework.items.Rarity;
-import sugaku.rpg.main;
 import io.github.math0898.rpgframework.enemies.CustomMob;
 
 import java.util.ArrayList;
@@ -204,16 +204,17 @@ public class EiryerasBoss extends CustomMob implements Listener {
     @EventHandler
     public void onShot(EntityShootBowEvent event) {
         if (event.getEntity().getCustomName() != null) if (event.getEntity().getCustomName().contains(name)) {
+            JavaPlugin plugin = Utils.getPlugin();
             switch(determineShot(event.getEntity())) {
-                case SLOWNESS: event.getProjectile().setMetadata("eiryeras", new arrowType(main.plugin, Arrows.SLOWNESS)); break;
-                case POISON: event.getProjectile().setMetadata("eiryeras", new arrowType(main.plugin, Arrows.POISON)); break;
-                case KNOCKBACK: event.getProjectile().setMetadata("eiryeras", new arrowType(main.plugin, Arrows.KNOCKBACK)); break;
+                case SLOWNESS: event.getProjectile().setMetadata("eiryeras", new arrowType(plugin, Arrows.SLOWNESS)); break;
+                case POISON: event.getProjectile().setMetadata("eiryeras", new arrowType(plugin, Arrows.POISON)); break;
+                case KNOCKBACK: event.getProjectile().setMetadata("eiryeras", new arrowType(plugin, Arrows.KNOCKBACK)); break;
             }
             for (Entity e: event.getEntity().getNearbyEntities(25, 25, 25)) {
                 if (e instanceof Player) if (((Player) e).getPotionEffect(PotionEffectType.POISON) != null
                         && ((Player) e).getPotionEffect(PotionEffectType.SLOWNESS) != null ) {
                     switchToSword(event.getEntity());
-                    Bukkit.getScheduler().runTaskLater(main.plugin, () -> switchToBow(event.getEntity()), 60);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> switchToBow(event.getEntity()), 60);
                     break;
                 }
             }

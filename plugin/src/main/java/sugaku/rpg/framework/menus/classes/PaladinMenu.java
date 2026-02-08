@@ -1,5 +1,6 @@
 package sugaku.rpg.framework.menus.classes;
 
+import io.github.math0898.utils.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,7 +14,6 @@ import java.util.Objects;
 
 import static sugaku.rpg.framework.menus.ClassesManager.*;
 import static sugaku.rpg.framework.menus.ClassesManager.classMenu;
-import static sugaku.rpg.main.brackets;
 
 public class PaladinMenu extends ClassSubmenu implements Menu {
 
@@ -66,7 +66,7 @@ public class PaladinMenu extends ClassSubmenu implements Menu {
                 ChatColor.GRAY + "and therefore your maximum health.",
                 ChatColor.GRAY + "Current Stats: ",
                 ChatColor.GRAY + "- Health Bonus: " + ChatColor.GREEN + 10 + "hp"/*TODO: add player upgrades*/,
-                brackets(ChatColor.RED + "Disabled") + " -" + ChatColor.RED + " Odd functionality"}));
+                StringUtils.brackets(ChatColor.RED + "Disabled") + " -" + ChatColor.RED + " Odd functionality"}));
 
         if (Objects.requireNonNull(PlayerManager.getPlayer(p.getUniqueId())).getCombatClass() == Classes.PALADIN) {
             inv.setItem(28, ItemsManager.createItem(Material.LAPIS_BLOCK, 1, ChatColor.BLUE + "Lvl: " + level, new String[]{

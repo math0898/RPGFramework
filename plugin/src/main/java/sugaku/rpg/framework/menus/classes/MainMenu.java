@@ -1,6 +1,7 @@
 package sugaku.rpg.framework.menus.classes;
 
 import io.github.math0898.rpgframework.classes.Classes;
+import io.github.math0898.utils.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,7 +14,6 @@ import io.github.math0898.rpgframework.RpgPlayer;
 
 import java.util.Objects;
 
-import static sugaku.rpg.main.brackets;
 import static sugaku.rpg.framework.menus.ClassesManager.title;
 import static sugaku.rpg.framework.menus.ClassesManager.fill;
 import static sugaku.rpg.framework.menus.ClassesManager.classMenu;
@@ -28,43 +28,43 @@ public class MainMenu implements Menu {
             ChatColor.GRAY + "will show details such as your",
             ChatColor.GRAY + "current lvl and class abilities."});
 
-    private static final ItemStack assassinIndicator = ItemsManager.createItem(Material.GHAST_TEAR, 1, brackets(ChatColor.GOLD + "Assassin"), new String[]{
+    private static final ItemStack assassinIndicator = ItemsManager.createItem(Material.GHAST_TEAR, 1, StringUtils.brackets(ChatColor.GOLD + "Assassin"), new String[]{
             ChatColor.GRAY + "Strike your foes with a " + ChatColor.DARK_AQUA + "poisoned blade",
             ChatColor.GRAY + "before fading into the shadows with your",
             ChatColor.GRAY + "master of " + ChatColor.DARK_AQUA + "stealth" + ChatColor.GRAY + ". Even cowering behind",
             ChatColor.GRAY + "a shield cannot save your enemies."});
 
-    private static final ItemStack bardIndicator = ItemsManager.createItem(Material.NOTE_BLOCK, 1, brackets(ChatColor.GOLD + "Bard"), new String[]{
+    private static final ItemStack bardIndicator = ItemsManager.createItem(Material.NOTE_BLOCK, 1, StringUtils.brackets(ChatColor.GOLD + "Bard"), new String[]{
             ChatColor.GRAY + "The flexibility of bards as fighters",
             ChatColor.GRAY + "cannot be understated as they can use",
             ChatColor.GRAY + "any equipment effectively whilst buffing",
             ChatColor.GRAY + "themselves and their allies with " + ChatColor.DARK_AQUA + "hym" + ChatColor.GRAY + "."});
 
-    private static final ItemStack berserkerIndicator = ItemsManager.createItem(Material.ROTTEN_FLESH, 1, brackets(ChatColor.GOLD + "Berserker"), new String[]{
+    private static final ItemStack berserkerIndicator = ItemsManager.createItem(Material.ROTTEN_FLESH, 1, StringUtils.brackets(ChatColor.GOLD + "Berserker"), new String[]{
             ChatColor.GRAY + "Berserkers are fearsome foes that deal",
             ChatColor.GRAY + "staggering damage with axes. Lost in the",
             ChatColor.GRAY + "battle berserkers also take less damage",
             ChatColor.GRAY + "than other classes would."});
 
-    private static final ItemStack paladinIndicator = ItemsManager.createItem(Material.GOLDEN_SHOVEL, 1, brackets(ChatColor.GOLD + "Paladin"), new String[]{
+    private static final ItemStack paladinIndicator = ItemsManager.createItem(Material.GOLDEN_SHOVEL, 1, StringUtils.brackets(ChatColor.GOLD + "Paladin"), new String[]{
             ChatColor.GRAY + "Paladins are pure warriors who can " + ChatColor.DARK_AQUA + "purify",
             ChatColor.GRAY + "themselves and their allies. Healing magic",
             ChatColor.GRAY + "also comes naturally to paladins resulting",
             ChatColor.GRAY + "in higher max health and " + ChatColor.DARK_AQUA + "regeneration" + "."});
 
-    private static final ItemStack pyromancerIndicator = ItemsManager.createItem(Material.BLAZE_POWDER, 1, brackets(ChatColor.GOLD + "Pyromancer"), new String[]{
+    private static final ItemStack pyromancerIndicator = ItemsManager.createItem(Material.BLAZE_POWDER, 1, StringUtils.brackets(ChatColor.GOLD + "Pyromancer"), new String[]{
             ChatColor.GRAY + "Burn your enemies with the power of the",
             ChatColor.GRAY + "phoenix and call upon the " +ChatColor.DARK_AQUA + "renewal" + ChatColor.GRAY + " powers",
             ChatColor.GRAY + "to heal yourself and resurrect from the grave."});
 
-    private static final ItemStack marksmanIndicator = ItemsManager.createItem(Material.BOW, 1, brackets(ChatColor.GOLD + "Marksman"), new String[]{ChatColor.DARK_RED + "Coming soon."});
+    private static final ItemStack marksmanIndicator = ItemsManager.createItem(Material.BOW, 1, StringUtils.brackets(ChatColor.GOLD + "Marksman"), new String[]{ChatColor.DARK_RED + "Coming soon."});
 
-    private static final ItemStack fighterIndicator = ItemsManager.createItem(Material.IRON_SWORD, 1, brackets(ChatColor.BLUE + "Fighter"), new String[]{
+    private static final ItemStack fighterIndicator = ItemsManager.createItem(Material.IRON_SWORD, 1, StringUtils.brackets(ChatColor.BLUE + "Fighter"), new String[]{
             ChatColor.GRAY + "Through your years of training in combat",
             ChatColor.GRAY + "you've suffered many injuries and can apply",
-            ChatColor.GRAY + "basic " + ChatColor.DARK_AQUA + "first aid " + brackets(ChatColor.GOLD + "" + ChatColor.BOLD + "Dev") + ChatColor.GRAY + " using paper."});
+            ChatColor.GRAY + "basic " + ChatColor.DARK_AQUA + "first aid " + StringUtils.brackets(ChatColor.GOLD + "" + ChatColor.BOLD + "Dev") + ChatColor.GRAY + " using paper."});
 
-    private static final ItemStack casterIndicator = ItemsManager.createItem(Material.ENCHANTING_TABLE, 1, brackets(ChatColor.BLUE + "Caster"), new String[]{
+    private static final ItemStack casterIndicator = ItemsManager.createItem(Material.ENCHANTING_TABLE, 1, StringUtils.brackets(ChatColor.BLUE + "Caster"), new String[]{
             ChatColor.GRAY + "Casters have powerful abilities which depend",
             ChatColor.GRAY + "on  the class selected. Through your years",
             ChatColor.GRAY + "of study in getting these skills your muscles",
@@ -72,12 +72,12 @@ public class MainMenu implements Menu {
             ChatColor.GRAY + "damage from " + ChatColor.LIGHT_PURPLE + "players" + ChatColor.GRAY + " who are " + ChatColor.BLUE + "fighters" + ChatColor.GRAY + "."
     });
 
-    private static final ItemStack adventurerIndicator = ItemsManager.createItem(Material.LEATHER_BOOTS, 1, brackets(ChatColor.DARK_GREEN + "Adventurer"), new String[]{
+    private static final ItemStack adventurerIndicator = ItemsManager.createItem(Material.LEATHER_BOOTS, 1, StringUtils.brackets(ChatColor.DARK_GREEN + "Adventurer"), new String[]{
             ChatColor.GRAY + "By being an adventurer you",
             ChatColor.GRAY + "gain some general bonuses",
             ChatColor.GRAY + "to various drop rates."});
 
-    private static final ItemStack noneIndicator = ItemsManager.createItem(Material.BARRIER, 1, brackets(ChatColor.RED + "" + ChatColor.BOLD + "None"));
+    private static final ItemStack noneIndicator = ItemsManager.createItem(Material.BARRIER, 1, StringUtils.brackets(ChatColor.RED + "" + ChatColor.BOLD + "None"));
 
     @Override
     public void onClick(int clicked, Player player) {

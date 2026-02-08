@@ -1,6 +1,7 @@
 package sugaku.rpg.framework;
 
 import io.github.math0898.rpgframework.items.ItemManager;
+import io.github.math0898.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,12 +16,12 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import sugaku.rpg.framework.menus.ClassesManager;
 import sugaku.rpg.framework.mobs.BossRituals;
 import sugaku.rpg.framework.mobs.MobManager;
 import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RpgPlayer;
-import sugaku.rpg.main;
 import sugaku.rpg.mobs.gods.Inos;
 import sugaku.rpg.mobs.teir1.krusk.KruskBoss;
 import sugaku.rpg.mobs.teir1.krusk.KruskMinion;
@@ -160,11 +161,11 @@ public class RPGEventListener implements Listener {
         ItemStack itemDropped = e.getItemDrop().getItemStack();
 
         if (itemDropped.getItemMeta() == null) return;
-
+        JavaPlugin plugin = Utils.getPlugin();
         if (!itemDropped.getItemMeta().isUnbreakable()) {
             if (!itemDropped.getItemMeta().hasLore() || !Objects.requireNonNull(itemDropped.getItemMeta().getLore()).contains(ChatColor.GRAY + "Item modified by RPG - 1.2")) {
                 if (isArmor(itemDropped.getType()))
-                    Bukkit.getServer().getScheduler().runTask(main.plugin, () -> e.getItemDrop().setItemStack(updateArmor(itemDropped.getType())));
+                    Bukkit.getServer().getScheduler().runTask(plugin, () -> e.getItemDrop().setItemStack(updateArmor(itemDropped.getType())));
             }
         }
         BossRituals.general(e);

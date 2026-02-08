@@ -8,6 +8,7 @@ import io.github.math0898.rpgframework.items.EquipmentSlots;
 import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.rpgframework.items.RpgItem;
 import io.github.math0898.rpgframework.parties.Party;
+import io.github.math0898.utils.Utils;
 import io.github.math0898.utils.items.AttributeBuilder;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,10 +27,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import io.github.math0898.rpgframework.classes.Classes;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import sugaku.rpg.main;
-import io.github.math0898.rpgframework.parties.Party;
 import io.github.math0898.rpgframework.enemies.CustomMob;
 
 import java.util.*;
@@ -496,7 +496,8 @@ public class RpgPlayer {
     public void passive () {
         try {
             classObject.passive();
-            Bukkit.getScheduler().runTaskLater(main.plugin, this::passive, 20*20);
+            JavaPlugin plugin = Utils.getPlugin();
+            Bukkit.getScheduler().runTaskLater(plugin, this::passive, 20*20);
             if (!inCombat() && !appliedOutCombat)
                 leaveCombat();
         } catch (Exception ignored) { } // This can sometimes occur if a passive disconnects from a Player object. TODO: Handle this error better.

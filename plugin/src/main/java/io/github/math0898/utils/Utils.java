@@ -3,6 +3,7 @@ package io.github.math0898.utils;
 import io.github.math0898.rpgframework.RPGFramework;
 import lombok.Getter;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
@@ -68,5 +69,16 @@ public class Utils { // todo: Add loggers and logging styles system. (I want to 
      */
     public static void console (String message, ChatColor color, Level lvl) {
         plugin.getLogger().log(lvl, color + message);
+    }
+
+    /**
+     * This is the standard disclaimer for players who are using beta features. Includes a message to console to log
+     * that beta actions are being taken place.
+     *
+     * @param p The player who is being sent the warning.
+     */
+    public static void beta (Player p) {
+        p.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "RPG" + ChatColor.DARK_GRAY + "] " + ChatColor.RED + "This system is currently in development. We are not responsible for lost items or future buffs/nerfs.");
+        console("Player: " + p.getName() + ". Is using beta things.", ChatColor.YELLOW);
     }
 }

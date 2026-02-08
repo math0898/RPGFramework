@@ -1,5 +1,7 @@
 package io.github.math0898.utils;
 
+import org.bukkit.ChatColor;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,5 +39,15 @@ public class StringUtils { // todo: Builder Pattern and Allows Placeholders.
                 if (i < tmp.length - 1)
                     tmp[i + 1] = Character.toUpperCase(tmp[i + 1]);
         return new String(tmp);
+    }
+
+    /**
+     * Returns the given string in dark gray brackets. Lots of formatting use this.
+     *
+     * @param s The string to be enclosed.
+     * @return The given string enclosed in brackets.
+     */
+    public static String brackets (String s) {
+        return ChatColor.DARK_GRAY + "[" + s + ChatColor.DARK_GRAY + "]";
     }
 }

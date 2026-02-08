@@ -1,6 +1,7 @@
 package sugaku.rpg.mobs.teir1.feyrith;
 
 import io.github.math0898.rpgframework.items.ItemManager;
+import io.github.math0898.utils.Utils;
 import io.github.math0898.utils.items.ItemBuilder;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
@@ -15,13 +16,13 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 import sugaku.rpg.framework.items.BossDrop;
 import sugaku.rpg.framework.items.Rarity;
-import sugaku.rpg.main;
 import io.github.math0898.rpgframework.enemies.CustomMob;
 
 import java.util.List;
@@ -71,7 +72,9 @@ public class FeyrithBoss extends CustomMob implements Listener {
         public String asString() { return value + ""; }
 
         @Override
-        public Plugin getOwningPlugin() { return main.plugin; }
+        public Plugin getOwningPlugin() {
+            return Utils.getPlugin();
+        }
 
         @Override
         public void invalidate() {}
@@ -155,8 +158,9 @@ public class FeyrithBoss extends CustomMob implements Listener {
     public void runAI() {
         LivingEntity entity = getEntity();
         Location location = entity.getLocation();
+        JavaPlugin plugin = Utils.getPlugin();
         if(entity.isDead()) return; //If we're dead there's nothing else to do.
-        else Bukkit.getServer().getScheduler().runTaskLater(main.plugin, this::runAI, 4*20);
+        else Bukkit.getServer().getScheduler().runTaskLater(plugin, this::runAI, 4*20);
         List<Entity> nearby = (List<Entity>) entity.getWorld().getNearbyEntities(new BoundingBox(location.getX() - 10, location.getY() - 5, location.getZ() - 10, location.getX() + 10, location.getY() + 5, location.getZ() + 10), new Predicate<Entity>() {
             @Override
             public boolean test(Entity entity) {
@@ -192,7 +196,8 @@ public class FeyrithBoss extends CustomMob implements Listener {
             double y = e.getLocation().getY();
             double z = e.getLocation().getZ();
             // TODO: Make Lightning Effect
-            Bukkit.getScheduler().runTaskLater(main.plugin, () -> e.getWorld().strikeLightning(new Location(e.getWorld(), x, y, z)), 2*20);
+            JavaPlugin plugin = Utils.getPlugin();
+            Bukkit.getScheduler().runTaskLater(plugin, () -> e.getWorld().strikeLightning(new Location(e.getWorld(), x, y, z)), 2*20);
         }
     }
 

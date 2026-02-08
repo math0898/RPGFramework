@@ -1,15 +1,15 @@
 package sugaku.rpg.framework.menus;
 
+import io.github.math0898.utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import sugaku.rpg.framework.items.ItemsManager;
 import sugaku.rpg.framework.menus.classes.*;
-
-import static sugaku.rpg.main.plugin;
 
 /**
  * The classes manager describes the menus used in the /classes or /rpg classes command. Submenus are described under
@@ -45,6 +45,7 @@ public class ClassesManager {
 
         Inventory i;
 
+        JavaPlugin plugin = Utils.getPlugin();
         if (!menu.equals("main") && !menu.equals("None")) i = plugin.getServer().createInventory(p.getPlayer(), 54, title + ChatColor.DARK_GRAY + ": " + menu);
         else i = plugin.getServer().createInventory(p.getPlayer(), 54, title);
 

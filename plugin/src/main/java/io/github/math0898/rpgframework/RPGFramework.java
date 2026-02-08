@@ -11,6 +11,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import sugaku.rpg.framework.RPGEventListener;
+import sugaku.rpg.mobs.teir1.eiryeras.EiryerasBoss;
+import sugaku.rpg.mobs.teir1.feyrith.FeyrithBoss;
 
 import java.util.logging.Level;
 
@@ -106,7 +109,11 @@ public final class RPGFramework extends JavaPlugin implements Listener {
 
         ItemManager.getInstance();
 
-        sugaku.rpg.main.onEnable();
+        /* Begin block copied from sugaku.rpg.main */
+        //Registering events TODO: Move this somewhere?
+        Bukkit.getPluginManager().registerEvents(new RPGEventListener(), plugin);
+        Bukkit.getPluginManager().registerEvents(new EiryerasBoss(), plugin);
+        Bukkit.getPluginManager().registerEvents(new FeyrithBoss(), plugin);
 
         console("Plugin enabled! " + ChatColor.DARK_GRAY + "Took: " + (System.currentTimeMillis() - startTime) + "ms", ChatColor.GREEN);
     }

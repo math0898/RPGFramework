@@ -15,7 +15,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.Nullable;
-import sugaku.rpg.main;
 
 import java.util.*;
 
@@ -98,7 +97,7 @@ public class PlayerManager implements Listener {
         console("Adding player to player list.");
         players.put(p.getUuid(), p);
         console("Player added to player list.", ChatColor.GREEN);
-        Bukkit.getScheduler().runTaskLater(main.plugin, p::passive, 20*20);
+        Bukkit.getScheduler().runTaskLater(plugin, p::passive, 20*20);
     }
 
     /**
@@ -266,7 +265,7 @@ public class PlayerManager implements Listener {
         console("Adding player to player list.");
         RpgPlayer player = new RpgPlayer(event.getPlayer());
         players.put(player.getUuid(), player);
-        Bukkit.getServer().getScheduler().runTaskLater(main.plugin, () -> player.heal(), 5);
+        Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> player.heal(), 5);
         DataManager.getInstance().load(player);
         console("Player added to player list.", ChatColor.GREEN);
     }
