@@ -8,6 +8,7 @@ import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -89,71 +90,44 @@ public class MobManager {
     }
 
     /**
-     * Adds Krusk drops to vanilla zombie deaths.
+     * Augments vanilla mob deaths, most frequently by adding in boss drops, but also by occasionally spawning a boss.
      *
-     * @param event The mob death to consider.
+     * @param event The EntityDeathEvent to consider.
      */
-    public void zombieDrops (EntityDeathEvent event) {
-        if (event.getEntity().getKiller() == null) return;
+    public void augmentVanillaMobDeath (EntityDeathEvent event) {
+        if (event.getEntity().getKiller() == null) return; // We only do stuff for player kills.
         Random r = new Random();
-        double drops = r.nextDouble();
-//        int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
-        ItemStack item = event.getEntity().getKiller().getEquipment().getItemInHand();
-        Integer tmp = item.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS);
-        int bonus = tmp == null ? 0 : tmp;
-        if (drops < 0.02 + (bonus / 100.0))
-//        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
-            event.getDrops().add(ItemManager.getInstance().getItem("krusk:Spawn"));
-    }
+        double roll = r.nextDouble();
 
-    /**
-     * Adds Eiryeras drops to vanilla skeleton deaths.
-     *
-     * @param event The mob death to consider.
-     */
-    public void skeletonDrops (EntityDeathEvent event) {
-        if (event.getEntity().getKiller() == null) return;
-        Random r = new Random();
-        double drops = r.nextDouble();
-        ItemStack item = event.getEntity().getKiller().getEquipment().getItemInHand();
-        Integer tmp = item.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS);
-        int bonus = tmp == null ? 0 : tmp;
-        if (drops < 0.02 + (bonus / 100.0))
-//        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
-            event.getDrops().add(ItemManager.getInstance().getItem("eiryeras:Spawn"));
-    }
-
-    /**
-     * Adds Feyrith drops to vanilla wither skeleton deaths.
-     *
-     * @param event The mob death to consider.
-     */
-    public void witherSkeletonDrops (EntityDeathEvent event) {
-        if (event.getEntity().getKiller() == null) return;
-        Random r = new Random();
-        double drops = r.nextDouble();
-        // int gearScore = RpgPlayer.getGearScore(event.getEntity().getKiller());
-        ItemStack item = event.getEntity().getKiller().getEquipment().getItemInHand();
-        Integer tmp = item.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS);
-        int bonus = tmp == null ? 0 : tmp;
-        if (drops < 0.02 + (bonus / 100.0))
-//        if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
-            event.getDrops().add(ItemManager.getInstance().getItem("feyrith:Spawn"));}
-
-    /**
-     * Implements the chance for chickens to spawn Inos.
-     *
-     * @param event The mob death to consider.
-     */
-    public void chickenDrops (EntityDeathEvent event) {
-        if (event.getEntity().getKiller() == null) return;
-        Random r = new Random();
-        double drops = r.nextDouble();
-        if (drops < 0.004) {
+        // Effects that don't care about looting
+        if (event.getEntity().getType().equals(EntityType.CHICKEN)) {
             event.getEntity().getWorld().strikeLightningEffect(event.getEntity().getLocation());
             event.getEntity().getKiller().sendTitle( "", StringUtils.convertHexCodes("#CCCCCCYou feel the presence of a " + Rarity.MYTHIC.getHexColor() + "god#CCCCCC."), 20, 80, 20);
             CustomMob boss = new Inos(event.getEntity().getLocation());
             RPGFramework.console(boss.getCustomName() + ChatColor.GRAY + " is being spawned at: " + ChatColor.GRAY + event.getEntity().getLocation() + ChatColor.GRAY + " - " + event.getEntity().getKiller(), ChatColor.GRAY);
         }
+
+        ItemStack item = event.getEntity().getKiller().getEquipment().getItemInHand();
+        Integer tmp = item.getEnchantments().get(Enchantment.LOOT_BONUS_MOBS);
+        int bonus = tmp == null ? 0 : tmp;
+
+        // Looting augmented effects.
+        switch (event.getEntity().getType()) { // todo: This might work better being defined in an external file, and then constructed on load.
+            case ZOMBIE -> {
+                if (roll < 0.02 + (bonus / 100.0))
+                    event.getDrops().add(ItemManager.getInstance().getItem("krusk:Spawn"));
+            }
+            case SKELETON -> {
+                if (roll < 0.02 + (bonus / 100.0))
+                    event.getDrops().add(ItemManager.getInstance().getItem("eiryeras:Spawn"));
+            }
+            case WITHER_SKELETON -> {
+                if (roll < 0.02 + (bonus / 100.0))
+                    event.getDrops().add(ItemManager.getInstance().getItem("feyrith:Spawn"));
+            }
+        }
+
+        // Snippet to re-add gear score dependent loot drops
+        //  -> if (drops < 2.0/((Math.abs(gearScore - 100)) + 2))
     }
 }

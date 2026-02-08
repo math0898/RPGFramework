@@ -4,7 +4,6 @@ import io.github.math0898.rpgframework.items.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -101,10 +100,7 @@ public class RPGEventListener implements Listener {
     public void mobDeath(EntityDeathEvent e) {
         LivingEntity m = e.getEntity();
 
-        if (m.getType() == EntityType.ZOMBIE) MobManager.getInstance().zombieDrops(e);
-        else if (m.getType() == EntityType.SKELETON) MobManager.getInstance().skeletonDrops(e);
-        else if (m.getType() == EntityType.WITHER_SKELETON) MobManager.getInstance().witherSkeletonDrops(e);
-        else if (m.getType() == EntityType.CHICKEN) MobManager.getInstance().chickenDrops(e);
+        MobManager.getInstance().augmentVanillaMobDeath(e);
 
         assert m.getCustomName() != null;
 
