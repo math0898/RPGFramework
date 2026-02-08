@@ -6,8 +6,6 @@ import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.utils.StringUtils;
 import lombok.Getter;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -88,20 +86,6 @@ public class MobManager {
      */
     public void addMob (CustomMob m) {
         mobs.add(m);
-    }
-
-    /**
-     * Drops an item at the given location.
-     * @param item The item to be dropped.
-     * @param l The location for the item to be dropped at.
-     */
-    public void drop (ItemStack item, Location l) {
-        World world = l.getWorld();
-        if (world == null) {
-            RPGFramework.console("Attempted to drop: " + item + " at: " + l + " but world is null.", ChatColor.RED);
-            return;
-        }
-        world.dropItem(l, item);
     }
 
     /**
