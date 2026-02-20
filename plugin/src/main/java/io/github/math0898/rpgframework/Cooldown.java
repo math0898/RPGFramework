@@ -15,7 +15,14 @@ public class Cooldown { // todo: Javadoc.
 
     public float getRemaining() { return duration - Math.floorDiv(System.currentTimeMillis() - startTime, 1000); }
 
-    public boolean isComplete() { return ((getRemaining() < 0) || complete); }
+    /**
+     * Has the cooldown finished its duration and is the ability tied to this cooldown ready for use again.
+     *
+     * @return True if the cooldown duration has elapsed.
+     */
+    public boolean isComplete () {
+        return ((getRemaining() < 0) || complete);
+    }
 
     public void restart() {
         startTime = System.currentTimeMillis();
