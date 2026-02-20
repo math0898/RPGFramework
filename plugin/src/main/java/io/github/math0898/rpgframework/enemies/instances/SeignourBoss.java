@@ -5,9 +5,7 @@ import io.github.math0898.rpgframework.damage.events.AdvancedDamageEvent;
 import io.github.math0898.rpgframework.damage.events.LethalDamageEvent;
 import io.github.math0898.rpgframework.enemies.ActiveCustomMob;
 import io.github.math0898.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -17,7 +15,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static io.github.math0898.rpgframework.enemies.instances.SeignourBoss.Abilities.*;
 
@@ -90,16 +90,31 @@ public class SeignourBoss extends ActiveCustomMob { // todo: Charge Counter atta
             cds[POWER_LIGHT.ordinal()].restart();
             Bukkit.getPlayer("math0898").sendMessage("Power of light");
         } else if (cds[COUNTER_SLAM.ordinal()].isComplete()) {
-            // do counter_Slam things
+            // do COUNTER_SLAM things
             cds[COUNTER_SLAM.ordinal()].restart();
             Bukkit.getPlayer("math0898").sendMessage("Counter Slam");
+            abilityCounterSlam();
         } else if (cds[GET_OVER_HERE.ordinal()].isComplete()) {
             // do GET_OVER_HERE things
             cds[GET_OVER_HERE.ordinal()].restart();
             abilityGetOverHere();
-            Bukkit.getPlayer("math0898").sendMessage("Get Over Here");
         }
+    }
 
+    /**
+     * Adds velocity to the given Entity's velocity relative to Seignour and scaled by the given scalar.
+     *
+     * @param target The victim.
+     * @param scalar The magnitude of the effect.
+     */
+    private void launchRelativeToSeignour (Entity target, double scalar) {
+        Vector current = target.getVelocity();
+        Vector seigLocation = entity.getLocation().toVector();
+        Vector targetLocation = target.getLocation().toVector();
+
+        Vector seigToPlayer = seigLocation.subtract(targetLocation).normalize();
+
+        target.setVelocity(current.add(seigToPlayer.multiply(scalar)));
     }
 
     /**
@@ -114,15 +129,78 @@ public class SeignourBoss extends ActiveCustomMob { // todo: Charge Counter atta
             target = findPlayerInRange(10, 10, 10);
         if (target == null) return;
 
-        Vector current = target.getVelocity();
-        Vector seigLocation = entity.getLocation().toVector();
-        Vector targetLocation = target.getLocation().toVector();
-
-        Vector seigToPlayer = seigLocation.subtract(targetLocation).normalize();
-
-        target.setVelocity(current.add(seigToPlayer.multiply(GET_OVER_HERE_STRENGTH)));
+        launchRelativeToSeignour(target, GET_OVER_HERE_STRENGTH);
         target.playSound(target.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 2.0f, 0.5f);
         speak(target, "GET OVER HERE!");
+    }
+
+    /**
+     * The ability "COUNTER_SLAM" causes Seignour to reflect a portion of the damage he takes in the form of a large slam.
+     */
+    private void abilityCounterSlam () {
+        final int CHARGE_DURATION = 3 * 20;
+        entity.setAI(false);
+        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), () -> entity.setAI(true), CHARGE_DURATION);
+
+        final World world = entity.getWorld();
+        Random rand = new Random();
+        for (int i = 0; i < CHARGE_DURATION; i++) {
+            Bukkit.getScheduler().runTaskLater(Utils.getPlugin(),
+                    () -> world.spawnParticle(Particle.ANGRY_VILLAGER, entity.getLocation().add(rand.nextDouble() * 0.5, 2.0 + rand.nextDouble() * 0.5, rand.nextDouble() * 0.5), 1), i);
+            for (int j = 0; j < 20; j++) {
+                double dx = rand.nextDouble() * ((0.1 * CHARGE_DURATION) / (i + 1));
+                double dz = rand.nextDouble() * ((0.1 * CHARGE_DURATION) / (i + 1));
+                Bukkit.getScheduler().runTaskLater(Utils.getPlugin(),
+                        () -> world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, entity.getLocation().add(dx, rand.nextDouble() * 0.1, dz), 1), i);
+            }
+        }
+        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), () -> world.spawnParticle(Particle.EXPLOSION_EMITTER, entity.getLocation().add(2.3, rand.nextDouble() * 0.1, 3.7), 1), CHARGE_DURATION);
+        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), () -> world.spawnParticle(Particle.EXPLOSION_EMITTER, entity.getLocation().add(-1.2, rand.nextDouble() * 0.1, 4.0), 1), CHARGE_DURATION);
+        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), () -> world.spawnParticle(Particle.EXPLOSION_EMITTER, entity.getLocation().add(0.3, rand.nextDouble() * 0.1, -2.1), 1), CHARGE_DURATION);
+        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), () -> world.spawnParticle(Particle.EXPLOSION_EMITTER, entity.getLocation().add(-3.3, rand.nextDouble() * 0.1, -1.7), 1), CHARGE_DURATION);
+        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), () -> {
+            world.playSound(entity.getLocation(), Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 0.7f, 0.8f);
+            world.playSound(entity.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.8f, 0.6f);
+            world.playSound(entity.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.9f, 1.3f);
+            }, CHARGE_DURATION);
+        // todo: Block breaking and replacing once he's gone.
+        // todo: Ramping damage based on damage taken.
+        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), this::abilityCounterSlamInstant, CHARGE_DURATION);
+    }
+
+    /**
+     * Called when the counter slam has finished and is dealing damage.
+     */
+    private void abilityCounterSlamInstant () {
+        List<Entity> nearby = entity.getNearbyEntities(12, 12, 12);
+        Location location = entity.getLocation();
+        List<Entity> nearestRange = new ArrayList<>();
+        List<Entity> moderateRange = new ArrayList<>();
+        List<Entity> farthestRange = new ArrayList<>();
+        for (Entity e: nearby) {
+            double distance = location.distance(e.getLocation());
+            if (distance < 2.0) nearestRange.add(e);
+            else if (distance < 5.0) moderateRange.add(e);
+            else if (distance < 7.0) farthestRange.add(e);
+        }
+        for (Entity e : nearestRange) {
+            if (e instanceof LivingEntity le) {
+                launchRelativeToSeignour(e, -7.0);
+                le.damage(30.0, entity);
+            }
+        }
+        for (Entity e : moderateRange) {
+            if (e instanceof LivingEntity le) {
+                launchRelativeToSeignour(e, -3.0);
+                le.damage(15.0, entity);
+            }
+        }
+        for (Entity e : farthestRange) {
+            if (e instanceof LivingEntity le) {
+                launchRelativeToSeignour(e, -0.5);
+                le.damage(2.0, entity);
+            }
+        }
     }
 
     /**
