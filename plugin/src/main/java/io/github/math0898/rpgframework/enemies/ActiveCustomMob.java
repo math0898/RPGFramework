@@ -5,7 +5,9 @@ import io.github.math0898.rpgframework.damage.events.AdvancedDamageEvent;
 import io.github.math0898.rpgframework.damage.DamageModifier;
 import io.github.math0898.rpgframework.damage.events.VerifiedDeathEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -30,6 +32,11 @@ public class ActiveCustomMob implements DamageModifier, Listener {
     protected final String namespaceKey;
 
     /**
+     * This is the CustomMobEntry for this active mob.
+     */
+    protected final CustomMobEntry customMobEntry;
+
+    /**
      * Creates a new ActiveCustomMob with the given entity instance.
      *
      * @param entity       The entity to attach to this specific ActiveCustomMob instance.
@@ -39,6 +46,7 @@ public class ActiveCustomMob implements DamageModifier, Listener {
         this.entity = entity;
         Bukkit.getPluginManager().registerEvents(this, RPGFramework.getInstance());
         this.namespaceKey = namespaceKey;
+        customMobEntry = MobManager.getInstance().getCustomMob(namespaceKey);
     }
 
     /**
@@ -106,5 +114,15 @@ public class ActiveCustomMob implements DamageModifier, Listener {
     @Override
     public void attack (EntityDamageByEntityEvent event) {
 
+    }
+
+    /**
+     * Causes this Mob to "speak" to the given player with the given message.
+     *
+     * @param player The player to send this message to.
+     * @param message The message to send.
+     */
+    public void speak (Player player, String message) {
+        player.sendMessage(customMobEntry.getName() + ChatColor.DARK_GRAY + " > " + ChatColor.GRAY + message);
     }
 }

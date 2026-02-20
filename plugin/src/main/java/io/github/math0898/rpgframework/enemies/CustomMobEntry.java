@@ -3,6 +3,7 @@ import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.rpgframework.enemies.instances.SeignourBoss;
 import io.github.math0898.utils.StringUtils;
 import io.github.math0898.utils.items.ItemBuilder;
+import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -60,7 +61,10 @@ public class CustomMobEntry {
 
     /**
      * The name string of the mob.
+     * -- GETTER --
+     *  The formatted name of this CustomMobEntry.
      */
+    @Getter
     private final String name;
 
     /**
