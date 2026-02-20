@@ -22,7 +22,7 @@ import java.util.Random;
  *
  * @author Sugaku
  */
-public class CustomMobEntry {
+public class CustomMobEntry { // TODO: USE /particle minecraft:copper_fire_flame ~ ~ ~3
 
     /**
      * The helmet of the custom mob.

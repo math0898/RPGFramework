@@ -1,17 +1,17 @@
 package io.github.math0898.rpgframework.enemies.instances;
 
 import io.github.math0898.rpgframework.Cooldown;
+import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
 import io.github.math0898.rpgframework.damage.events.AdvancedDamageEvent;
-import io.github.math0898.rpgframework.damage.events.LethalDamageEvent;
 import io.github.math0898.rpgframework.enemies.ActiveCustomMob;
 import io.github.math0898.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
@@ -51,6 +51,16 @@ public class SeignourBoss extends ActiveCustomMob { // todo: Charge Counter atta
      */
     private final Cooldown[] cds;
 
+    /**
+     * The amount of damage received during POWER_OF_LIGHT.
+     */
+    private double damagePowerOfLight = 0;
+
+    /**
+     * The amount of damage received during COUNTER_SLAM.
+     */
+    private double damageCounterSlam = 0;
+
     enum Abilities {
 
         COUNTER_SLAM,
@@ -89,10 +99,10 @@ public class SeignourBoss extends ActiveCustomMob { // todo: Charge Counter atta
             // do power_light things
             cds[POWER_LIGHT.ordinal()].restart();
             Bukkit.getPlayer("math0898").sendMessage("Power of light");
+            abilityPowerOfLight();
         } else if (cds[COUNTER_SLAM.ordinal()].isComplete()) {
             // do COUNTER_SLAM things
             cds[COUNTER_SLAM.ordinal()].restart();
-            Bukkit.getPlayer("math0898").sendMessage("Counter Slam");
             abilityCounterSlam();
         } else if (cds[GET_OVER_HERE.ordinal()].isComplete()) {
             // do GET_OVER_HERE things
@@ -141,30 +151,26 @@ public class SeignourBoss extends ActiveCustomMob { // todo: Charge Counter atta
         final int CHARGE_DURATION = 3 * 20;
         entity.setAI(false);
         Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), () -> entity.setAI(true), CHARGE_DURATION);
+        damageCounterSlam = 0;
 
         final World world = entity.getWorld();
         Random rand = new Random();
         for (int i = 0; i < CHARGE_DURATION; i++) {
             Bukkit.getScheduler().runTaskLater(Utils.getPlugin(),
                     () -> world.spawnParticle(Particle.ANGRY_VILLAGER, entity.getLocation().add(rand.nextDouble() * 0.5, 2.0 + rand.nextDouble() * 0.5, rand.nextDouble() * 0.5), 1), i);
-            for (int j = 0; j < 20; j++) {
+            for (int j = 0; j < 20; j++) { // todo: Make an actual circle.
                 double dx = rand.nextDouble() * ((0.1 * CHARGE_DURATION) / (i + 1));
                 double dz = rand.nextDouble() * ((0.1 * CHARGE_DURATION) / (i + 1));
                 Bukkit.getScheduler().runTaskLater(Utils.getPlugin(),
                         () -> world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, entity.getLocation().add(dx, rand.nextDouble() * 0.1, dz), 1), i);
             }
         }
-        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), () -> world.spawnParticle(Particle.EXPLOSION_EMITTER, entity.getLocation().add(2.3, rand.nextDouble() * 0.1, 3.7), 1), CHARGE_DURATION);
-        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), () -> world.spawnParticle(Particle.EXPLOSION_EMITTER, entity.getLocation().add(-1.2, rand.nextDouble() * 0.1, 4.0), 1), CHARGE_DURATION);
-        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), () -> world.spawnParticle(Particle.EXPLOSION_EMITTER, entity.getLocation().add(0.3, rand.nextDouble() * 0.1, -2.1), 1), CHARGE_DURATION);
-        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), () -> world.spawnParticle(Particle.EXPLOSION_EMITTER, entity.getLocation().add(-3.3, rand.nextDouble() * 0.1, -1.7), 1), CHARGE_DURATION);
         Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), () -> {
             world.playSound(entity.getLocation(), Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 0.7f, 0.8f);
             world.playSound(entity.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.8f, 0.6f);
             world.playSound(entity.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.9f, 1.3f);
             }, CHARGE_DURATION);
         // todo: Block breaking and replacing once he's gone.
-        // todo: Ramping damage based on damage taken.
         Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), this::abilityCounterSlamInstant, CHARGE_DURATION);
     }
 
@@ -186,21 +192,54 @@ public class SeignourBoss extends ActiveCustomMob { // todo: Charge Counter atta
         for (Entity e : nearestRange) {
             if (e instanceof LivingEntity le) {
                 launchRelativeToSeignour(e, -7.0);
-                le.damage(30.0, entity);
+                le.damage(30.0 + (damageCounterSlam * 5.0), entity);
             }
         }
         for (Entity e : moderateRange) {
             if (e instanceof LivingEntity le) {
                 launchRelativeToSeignour(e, -3.0);
-                le.damage(15.0, entity);
+                le.damage(15.0 + (damageCounterSlam * 3.0), entity);
             }
         }
         for (Entity e : farthestRange) {
             if (e instanceof LivingEntity le) {
                 launchRelativeToSeignour(e, -0.5);
-                le.damage(2.0, entity);
+                le.damage(2.0 + damageCounterSlam, entity);
             }
         }
+    }
+
+    /**
+     * The ability "POWER_OF_LIGHT" causes Seignour to charge himself a heal, which is reduced depending on player damage.
+     */
+    private void abilityPowerOfLight () {
+        final int CHARGE_DURATION = 3 * 20;
+        entity.setAI(false);
+        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), () -> entity.setAI(true), CHARGE_DURATION);
+        damagePowerOfLight = 0;
+
+        final World world = entity.getWorld();
+        Random rand = new Random();
+        for (int i = 0; i < CHARGE_DURATION; i++) {
+            Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), // todo: Perhaps different from flame.
+                    () -> world.spawnParticle(Particle.FLAME, entity.getLocation().add(rand.nextDouble() * 0.5, 2.0 + rand.nextDouble() * 0.5, rand.nextDouble() * 0.5), 1), i);
+            Particle[] particles = new Particle[]{ Particle.HAPPY_VILLAGER, Particle.ELECTRIC_SPARK };
+            for (int j = 0; j < 20; j++) {
+                int particle = rand.nextInt(2); // todo: Make an actual circle.
+                double dx = rand.nextDouble() * ((0.1 * CHARGE_DURATION) / (i + 1));
+                double dz = rand.nextDouble() * ((0.1 * CHARGE_DURATION) / (i + 1));
+                Bukkit.getScheduler().runTaskLater(Utils.getPlugin(),
+                        () -> world.spawnParticle(particles[particle], entity.getLocation().add(dx, rand.nextDouble() * 2, dz), 1), i);
+            }
+        }
+        // Todo: Perhaps slightly different.
+        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), () -> {
+            world.playSound(entity.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.7f, 0.8f);
+            world.playSound(entity.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.8f, 0.6f);
+            world.playSound(entity.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.9f, 1.3f);
+            entity.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 6 * 20, -1, false, true));
+            entity.setHealth(entity.getHealth() + Math.abs(20.0 - damagePowerOfLight));
+        }, CHARGE_DURATION);
     }
 
     /**
@@ -228,33 +267,7 @@ public class SeignourBoss extends ActiveCustomMob { // todo: Charge Counter atta
             if (evp.getDamager() instanceof Player player)
                 lastAttacker = player;
         }
-        Bukkit.getPlayer("math0898").sendMessage(ChatColor.GRAY + " > " + event.getPrimaryDamage() + " : " + event.getDamages().get(event.getPrimaryDamage()));
-    }
-
-    /**
-     * Called whenever this DamageModifier is relevant on an offensive front.
-     *
-     * @param event The AdvancedDamageEvent to consider.
-     */
-    @Override
-    public void attack (AdvancedDamageEvent event) {
-        super.attack(event);
-        Bukkit.getPlayer("math0898").sendMessage(ChatColor.GRAY + " > " + event.getPrimaryDamage() + " : " + event.getDamages().get(event.getPrimaryDamage()));
-    }
-
-    /**
-     * Called whenever an AdvancedDamageEvent would lead to lethal damage on a target.
-     *
-     * @param event The LethalDamageEvent to consider.
-     */
-    @EventHandler
-    public void onLethalDamage (LethalDamageEvent event) {
-        if (entity == null) {
-            HandlerList.unregisterAll(this);
-            return;
-        }
-        int id = event.getEntity().getEntityId();
-        if (id == entity.getEntityId())
-            Bukkit.getPlayer("math0898").sendMessage(ChatColor.GRAY + "Seignour took lethal damage! Option to cancel.");
+        if (cds[COUNTER_SLAM.ordinal()].getRemaining() >= 17 - 3) damageCounterSlam += AdvancedDamageHandler.damageCalculation(event);
+        if (cds[POWER_LIGHT.ordinal()].getRemaining() >= 17 - 3) damagePowerOfLight += AdvancedDamageHandler.damageCalculation(event);
     }
 }
