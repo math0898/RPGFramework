@@ -158,12 +158,12 @@ public class CustomMobEntry {
             for (int i = 0; i < builders.length; i++)
                 equipment.setItem(slots[i], builders[i].build());
 
-            equipment.setHelmetDropChance(-1);
-            equipment.setChestplateDropChance(-1);
-            equipment.setLeggingsDropChance(-1);
-            equipment.setBootsDropChance(-1);
-            equipment.setItemInMainHandDropChance(-1);
-            equipment.setItemInOffHandDropChance(-1);
+            equipment.setHelmetDropChance(0);
+            equipment.setChestplateDropChance(0);
+            equipment.setLeggingsDropChance(0);
+            equipment.setBootsDropChance(0);
+            equipment.setItemInMainHandDropChance(0);
+            equipment.setItemInOffHandDropChance(0);
         }
         e.setMaxHealth(this.maxHealth); //Deprecated
         e.setHealth(this.maxHealth);

@@ -3,6 +3,8 @@ package io.github.math0898.rpgframework.enemies.instances;
 import io.github.math0898.rpgframework.damage.events.AdvancedDamageEvent;
 import io.github.math0898.rpgframework.damage.events.LethalDamageEvent;
 import io.github.math0898.rpgframework.enemies.ActiveCustomMob;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -32,7 +34,7 @@ public class SeignourBoss extends ActiveCustomMob { // todo: Charge Counter atta
     @Override
     public void damaged (AdvancedDamageEvent event) {
         super.damaged(event);
-        System.out.println("Seignour Attacked!");
+        Bukkit.getPlayer("math0898").sendMessage(ChatColor.GRAY + " > " + event.getPrimaryDamage() + " : " + event.getDamages().get(event.getPrimaryDamage()));
     }
 
     /**
@@ -43,7 +45,7 @@ public class SeignourBoss extends ActiveCustomMob { // todo: Charge Counter atta
     @Override
     public void attack (AdvancedDamageEvent event) {
         super.attack(event);
-        System.out.println("Seignour Attacking!");
+        Bukkit.getPlayer("math0898").sendMessage(ChatColor.GRAY + " > " + event.getPrimaryDamage() + " : " + event.getDamages().get(event.getPrimaryDamage()));
     }
 
     /**
@@ -59,6 +61,6 @@ public class SeignourBoss extends ActiveCustomMob { // todo: Charge Counter atta
         }
         int id = event.getEntity().getEntityId();
         if (id == entity.getEntityId())
-            System.out.println("Seignour took lethal damage! Option to cancel.");
+            Bukkit.getPlayer("math0898").sendMessage(ChatColor.GRAY + "Seignour took lethal damage! Option to cancel.");
     }
 }

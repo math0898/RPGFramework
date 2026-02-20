@@ -1,5 +1,7 @@
 package io.github.math0898.rpgframework.commands;
 
+import io.github.math0898.rpgframework.enemies.CustomMobEntry;
+import io.github.math0898.rpgframework.enemies.instances.SeignourBoss;
 import io.github.math0898.utils.commands.BetterCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -64,7 +66,9 @@ public class SummonRPG extends BetterCommand {
             for (int i = 0; i < loop; i++) mobManager.addMob(new Inos(player.getLocation()));
         } else if (args[0].equalsIgnoreCase("seignour")) {
             send(player, "One of " + ChatColor.BLUE +  "Seignour" + ChatColor.GRAY + " has been summoned.");
-            for (int i = 0; i < loop; i++) mobManager.addMob(new Seignour(player.getLocation()));
+            io.github.math0898.rpgframework.enemies.MobManager ioMobManager = io.github.math0898.rpgframework.enemies.MobManager.getInstance();
+            CustomMobEntry entry = ioMobManager.getCustomMob("boss:Seignour");
+            for (int i = 0; i < loop; i++) entry.spawn(player.getLocation());
         } else send(player, ChatColor.RED + "Sorry but we could not find that mob.");
         return true;
     }
