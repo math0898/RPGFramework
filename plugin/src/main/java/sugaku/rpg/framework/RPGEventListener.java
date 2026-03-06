@@ -41,7 +41,7 @@ public class RPGEventListener implements Listener {
     /**
      * A list of items that are not allowed to be picked up by hoppers.
      */
-    private static final List<ItemStack> hopperBannedItems = Arrays.asList(ItemManager.getInstance().getItem("krusk:Spawn"), ItemManager.getInstance().getItem("eiryeras:Spawn"), ItemManager.getInstance().getItem("feyrith:Spawn"));
+    private static final List<ItemStack> hopperBannedItems = Arrays.asList(ItemManager.getInstance().getItem("krusk:Spawn"), ItemManager.getInstance().getItem("eiryeras:Spawn"), ItemManager.getInstance().getItem("feyrith:Spawn"), ItemManager.getInstance().getItem("seignour:Spawn"));
 
     /**
      * When inventory slots are clicked.

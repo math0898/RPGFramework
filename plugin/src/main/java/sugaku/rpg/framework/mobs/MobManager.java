@@ -125,6 +125,10 @@ public class MobManager {
                 if (roll < 0.02 + (bonus / 100.0))
                     event.getDrops().add(ItemManager.getInstance().getItem("feyrith:Spawn"));
             }
+            case SPIDER-> {
+                if (roll < 0.02 + (bonus / 100.0))
+                    event.getDrops().add(ItemManager.getInstance().getItem("seignour:Spawn"));
+            }
         }
 
         // Snippet to re-add gear score dependent loot drops

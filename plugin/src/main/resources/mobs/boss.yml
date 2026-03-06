@@ -3,7 +3,7 @@ seignour:
   rarity: "RARE"
   mob-type: "ZOMBIE"
   stats:
-    health: 5000
+    health: 1000
   equipment:
     off-hand:
       material: "GOLDEN_SHOVEL"
@@ -39,4 +39,19 @@ seignour:
     limited:
       sword:
         namespace-key: "seignour:Sword"
+        chance: 1.0
+      helmet:
+        namespace-key: "seignour:Helmet"
+        chance: 1.0
+      chest:
+        namespace-key: "seignour:Chestplate"
+        chance: 1.0
+      legs:
+        namespace-key: "seignour:Leggings"
+        chance: 1.0
+      boots:
+        namespace-key: "seignour:Boots"
+        chance: 1.0
+      shield:
+        namespace-key: "seignour:Shield"
         chance: 1.0

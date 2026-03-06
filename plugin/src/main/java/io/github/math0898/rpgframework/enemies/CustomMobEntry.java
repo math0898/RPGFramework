@@ -198,14 +198,15 @@ public class CustomMobEntry { // TODO: USE /particle minecraft:copper_fire_flame
         if (world == null) return;
         for (MobDrop drop : normalDrops)
             world.dropItemNaturally(location, drop.getItemStack());
-        double roll = new Random().nextDouble();
-        double cumulative = 0;
-        for (MobDrop drop : limitedDrops) {
-            if (cumulative + roll >= drop.getChance()) {
-                world.dropItemNaturally(location, drop.getItemStack());
-                break;
-            }
-            cumulative += roll;
-        }
+//        double roll = new Random().nextDouble();
+//        double cumulative = 0; // todo: Implement weighted drop chances.
+        world.dropItemNaturally(location, limitedDrops.get(new Random().nextInt(0, limitedDrops.size())).getItemStack());
+//        for (MobDrop drop : limitedDrops) {
+//            if (cumulative + roll >= drop.getChance()) {
+//                world.dropItemNaturally(location, drop.getItemStack());
+//                break;
+//            }
+//            cumulative += roll;
+//        }
     }
 }

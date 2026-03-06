@@ -90,7 +90,6 @@ public class SeignourBoss extends ActiveCustomMob { // todo: Charge Counter atta
      */
     public void runAi () { // todo: Make this managed by ActiveCustomMob, then overriden here.
         if (entity.isDead()) {
-            Bukkit.getPlayer("math0898").sendMessage("Mob Died, unregistering.");
             aiTask.cancel();
             return;
         }
@@ -98,7 +97,6 @@ public class SeignourBoss extends ActiveCustomMob { // todo: Charge Counter atta
         if (cds[POWER_LIGHT.ordinal()].isComplete()) {
             // do power_light things
             cds[POWER_LIGHT.ordinal()].restart();
-            Bukkit.getPlayer("math0898").sendMessage("Power of light");
             abilityPowerOfLight();
         } else if (cds[COUNTER_SLAM.ordinal()].isComplete()) {
             // do COUNTER_SLAM things

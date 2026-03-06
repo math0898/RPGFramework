@@ -1,5 +1,6 @@
 package sugaku.rpg.framework.mobs;
 
+import io.github.math0898.rpgframework.enemies.CustomMobEntry;
 import io.github.math0898.rpgframework.items.ItemManager;
 import io.github.math0898.utils.Utils;
 import org.bukkit.*;
@@ -57,6 +58,9 @@ public class BossRituals {
         } else if (stack.equals(ItemManager.getInstance().getItem("feyrith:Spawn"))) {
             message = "You are summoning " + ChatColor.BLUE + "Feyrith" + ChatColor.GRAY + ", an apprentice mage of the castle.";
             boss = Bosses.FEYRITH;
+        } else if (stack.equals(ItemManager.getInstance().getItem("seignour:Spawn"))) {
+            message = "You are summoning " + ChatColor.BLUE + "Seignour" + ChatColor.GRAY + ", Arbiter of Truth.";
+            boss = Bosses.SEIGNOUR;
         }
         if (boss == null) return;
         RpgPlayer rpg = PlayerManager.getPlayer(player.getUniqueId());
@@ -87,9 +91,16 @@ public class BossRituals {
         SummoningParticles(Particle.LAVA, new Location(location.getWorld(), location.getX(), location.getY() + 0.5, location.getZ()), 159);
         SummoningParticles(Particle.ENCHANT, new Location(location.getWorld(), location.getX(), location.getY() + 0.5, location.getZ()), 159);
         send(Bukkit.getServer().getConsoleSender(), boss.getCustomName() + ChatColor.GRAY + " is being spawned at: " + ChatColor.GRAY + location + ChatColor.GRAY + " - " + player);
-        Bukkit.getScheduler().runTaskLater(plugin, () -> boss.setSpawnPoint(location), 158);
-        Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> boss.spawn(boss.getSpawnPoint()), 160);
-        Bukkit.getScheduler().runTaskLater(plugin, () -> MobManager.getInstance().addMob(boss), 157);
+        // Seignour
+        if (boss instanceof Seignour) { // TODO: This is not scalable.
+            io.github.math0898.rpgframework.enemies.MobManager ioMobManager = io.github.math0898.rpgframework.enemies.MobManager.getInstance();
+            final CustomMobEntry entry = ioMobManager.getCustomMob("boss:Seignour");
+            Bukkit.getScheduler().runTaskLater(plugin, () -> entry.spawn(location), 157);
+        } else {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> boss.setSpawnPoint(location), 158);
+            Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> boss.spawn(boss.getSpawnPoint()), 160);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> MobManager.getInstance().addMob(boss), 157);
+        }
         drop.remove();
         Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> location.getWorld().playSound(location, "entity.wither.spawn", 0.8f, 1), 160);
         new BukkitRunnable() { @Override public void run() { if(location.getWorld().getBlockAt(location).getType() == Material.FIRE) location.getWorld().getBlockAt(location).setType(Material.AIR); } }.runTaskLater(plugin, 150);

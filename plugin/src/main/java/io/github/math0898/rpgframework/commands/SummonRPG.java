@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import sugaku.rpg.framework.mobs.MobManager;
 import sugaku.rpg.mobs.gods.Inos;
-import sugaku.rpg.mobs.teir1.Seignour;
 import sugaku.rpg.mobs.teir1.eiryeras.EiryerasBoss;
 import sugaku.rpg.mobs.teir1.feyrith.FeyrithBoss;
 import sugaku.rpg.mobs.teir1.krusk.KruskBoss;
