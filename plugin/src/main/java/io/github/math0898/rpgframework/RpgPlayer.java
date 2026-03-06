@@ -257,6 +257,28 @@ public class RpgPlayer {
     }
 
     /**
+     * Determines how much of a health bonus a player of the given level should have. These are RPG numbers that are
+     * then scaled down.
+     *
+     * @param level The player's current level.
+     * @return The bonus health that should be added onto the player's health.
+     */
+    private static double healthBonus (long level) {
+        return ((level - 1) - (level / 5.0)) * 5;
+    }
+
+    /**
+     * Determines how much of a damage bonus a player of the given level should have. These are RPG numbers that are
+     * then scaled down.
+     *
+     * @param level The player's current level.
+     * @return The bonus damage that should be added onto the player's attacks.
+     */
+    private static double damageBonus (long level) {
+        return level / 5;
+    }
+
+    /**
      * Refreshes the player's stats including stats gained from levels.
      */ // todo: This method is too long.
     private void refresh () {
@@ -304,11 +326,12 @@ public class RpgPlayer {
             bukkitPlayer.setHealthScale(20);
             PlayerManager.scaleRegen(bukkitPlayer, 1);
         }
+        final double RPG_TO_MC_SCALAR = 5.0; // Scales RPG health/damage values to Mc attribute ones.
         Player player = getBukkitPlayer();
         // Every level except lvl 1, and lvls ending in 5/10.
-        AttributeModifier healthMod = new AttributeModifier(new UUID(100, 234), "", ((getLevel() - 1) - (getLevel() / 5.0)) * 5, AttributeModifier.Operation.ADD_NUMBER);
+        AttributeModifier healthMod = new AttributeModifier(new UUID(100, 234), "", healthBonus(getLevel()) / RPG_TO_MC_SCALAR, AttributeModifier.Operation.ADD_NUMBER);
         // Every level that ends in 5/10.
-        AttributeModifier damageMod = new AttributeModifier(new UUID(100, 235), "", (getLevel() / 5.0), AttributeModifier.Operation.ADD_NUMBER);
+        AttributeModifier damageMod = new AttributeModifier(new UUID(100, 235), "", damageBonus(getLevel()) / RPG_TO_MC_SCALAR, AttributeModifier.Operation.ADD_NUMBER);
         AttributeInstance healthInstance = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         AttributeInstance damageInstance = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
         if (healthInstance != null) {
