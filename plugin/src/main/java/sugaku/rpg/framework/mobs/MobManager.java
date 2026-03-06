@@ -100,7 +100,7 @@ public class MobManager {
         double roll = r.nextDouble();
 
         // Effects that don't care about looting
-        if (event.getEntity().getType().equals(EntityType.CHICKEN)) {
+        if (roll < 0.001 && event.getEntity().getType().equals(EntityType.CHICKEN)) {
             event.getEntity().getWorld().strikeLightningEffect(event.getEntity().getLocation());
             event.getEntity().getKiller().sendTitle( "", StringUtils.convertHexCodes("#CCCCCCYou feel the presence of a " + Rarity.MYTHIC.getHexColor() + "god#CCCCCC."), 20, 80, 20);
             CustomMob boss = new Inos(event.getEntity().getLocation());

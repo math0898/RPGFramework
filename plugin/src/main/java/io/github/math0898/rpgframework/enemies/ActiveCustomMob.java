@@ -82,7 +82,7 @@ public class ActiveCustomMob implements DamageModifier, Listener {
         int id = event.getEntity().getEntityId();
         if (id == entity.getEntityId()) {
             MobManager.getInstance().reportCustomMobDeath(event.getEntity().getLocation(), namespaceKey);
-            HandlerList.unregisterAll();
+            HandlerList.unregisterAll(this);
         }
     }
 

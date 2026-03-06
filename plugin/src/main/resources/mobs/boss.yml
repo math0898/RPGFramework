@@ -3,7 +3,7 @@ seignour:
   rarity: "RARE"
   mob-type: "ZOMBIE"
   stats:
-    health: 2000
+    health: 5000
   equipment:
     off-hand:
       material: "GOLDEN_SHOVEL"
