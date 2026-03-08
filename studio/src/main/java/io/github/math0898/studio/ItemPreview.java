@@ -2,8 +2,8 @@ package io.github.math0898.studio;
 
 import io.github.math0898.utils.Utils;
 import lombok.Getter;
-import suga.engine.game.objects.BasicGameObject;
-import suga.engine.graphics.GraphicsPanel;
+//import suga.engine.game.objects.BasicGameObject;
+//import suga.engine.graphics.GraphicsPanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,7 +15,7 @@ import java.util.Arrays;
  * @author Sugaku
  */
 @Getter
-public class ItemPreview extends BasicGameObject {
+public class ItemPreview /*extends BasicGameObject*/ {
 
     /**
      * Base color of the background box.
@@ -82,13 +82,13 @@ public class ItemPreview extends BasicGameObject {
      * @param text The text to draw.
      * @param color The main text color to use.
      */
-    private void dropShadowText (GraphicsPanel panel, int posX, int posY, String text, Font font, Color color) {
-        FontMetrics metrics = panel.getFontMetrics(font);
-        BufferedImage dropShadow = Utils.imageFromText(font, color.darker().darker().darker().darker(), text, metrics.stringWidth(text), font.getSize() * 2);
-        panel.addImage(posX + 2, posY + 2, dropShadow.getWidth(), dropShadow.getHeight(), dropShadow);
-        BufferedImage mainText = Utils.imageFromText(font, color, text, metrics.stringWidth(text), font.getSize() * 2);
-        panel.addImage(posX, posY, mainText.getWidth(), mainText.getHeight(), mainText);
-    }
+//    private void dropShadowText (GraphicsPanel panel, int posX, int posY, String text, Font font, Color color) {
+//        FontMetrics metrics = panel.getFontMetrics(font);
+//        BufferedImage dropShadow = Utils.imageFromText(font, color.darker().darker().darker().darker(), text, metrics.stringWidth(text), font.getSize() * 2);
+//        panel.addImage(posX + 2, posY + 2, dropShadow.getWidth(), dropShadow.getHeight(), dropShadow);
+//        BufferedImage mainText = Utils.imageFromText(font, color, text, metrics.stringWidth(text), font.getSize() * 2);
+//        panel.addImage(posX, posY, mainText.getWidth(), mainText.getHeight(), mainText);
+//    }
 
     /**
      * Called every drawing frame so programs have a chance to make their voices heard on what gets drawn.
@@ -97,51 +97,51 @@ public class ItemPreview extends BasicGameObject {
      * @param height The height of the pixel map.
      * @param panel  The panel to apply changes to.
      */
-    @Override
-    public void applyChanges (int width, int height, GraphicsPanel panel) {
-        final int posX = 100;
-        final int posY = 100;
-
-        rpgItem.setLore(Arrays.asList("During life Krusk was a human general.", "He was not particularly good at what", "he did but now he gives adventurers", "a hard time anyways."));
-
-        // todo: Minecraft's font is not monospaced. Using visuals here to determine line break points may work and will hopefully still make a consistent edge within an item, but maybe not a namespace.
-        final Font font = new Font("Monospaced", Font.BOLD, TEXT_FONT_SIZE);
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET, rpgItem.getName(), font, Color.decode(rpgItem.getRarities().getHexColor()));
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + TEXT_FONT_SIZE + TITLE_VERTICAL_BUFFER, "Sharpness V", font, new Color(167, 167, 167));
-
-        final int loreLines = rpgItem.getLore().size();
-        for (int i = 0; i < rpgItem.getLore().size(); i++)
-            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (i + 2)) + TITLE_VERTICAL_BUFFER, rpgItem.getLore().get(i), font, new Color(204, 204, 204));
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 2)) + TITLE_VERTICAL_BUFFER, " ---- ---- ---- ", font, new Color(96, 96, 96));
-
-        int statCount = 0;
-        if (rpgItem.getDamage() != 0) {
-            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3)) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Damage: " + rpgItem.getDamage(), font, new Color(217, 55, 71));
-            statCount++;
-        }
-        if (rpgItem.getAttackSpeed() != 0) {
-            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3 + statCount)) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Attack Speed: " + rpgItem.getAttackSpeed(), font, new Color(35, 165, 219));
-            statCount++;
-        }
-        if (rpgItem.getHealth() != 0) {
-            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3 + statCount)) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Health: " + rpgItem.getHealth(), font, new Color(244, 84, 218));
-            statCount++;
-        }
-        if (rpgItem.getArmor() != 0) {
-            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3 + statCount)) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Armor: " + rpgItem.getArmor(), font, new Color(63, 183, 74));
-            statCount++;
-        }
-        if (rpgItem.getToughness() != 0) {
-            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3 + statCount)) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Toughness: " + rpgItem.getToughness(), font, new Color(242, 217, 81));
-            statCount++;
-        }
-
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3 + statCount)) + TITLE_VERTICAL_BUFFER, " ---- ---- ---- ", font, new Color(96, 96, 96));
-        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 4 + statCount)) + TITLE_VERTICAL_BUFFER, "Hand | Axe | 310", font, new Color(242, 217, 81)); // todo: Multiple colors in a line.
-        // todo: Calculate gear score
-
-        panel.setRectangle(posX, posY, BACKGROUND_BOX_WIDTH, TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 6 + statCount)), BACKGROUND_COLOR);
-        panel.setRectangle(posX + INNER_BORDER, posY + INNER_BORDER, BACKGROUND_BOX_WIDTH - (2 * INNER_BORDER), TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 6 + statCount)) - (2 * INNER_BORDER), HIGHLIGHT_COLOR);
-        panel.setRectangle(posX + INNER_BORDER + INNER_BORDER_WIDTH, posY + INNER_BORDER + INNER_BORDER_WIDTH, BACKGROUND_BOX_WIDTH - (2 * (INNER_BORDER_WIDTH + INNER_BORDER)), TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 6 + statCount)) - (2 * (INNER_BORDER_WIDTH + INNER_BORDER)), BACKGROUND_COLOR);
-    }
+//    @Override
+//    public void applyChanges (int width, int height, GraphicsPanel panel) {
+//        final int posX = 100;
+//        final int posY = 100;
+//
+//        rpgItem.setLore(Arrays.asList("During life Krusk was a human general.", "He was not particularly good at what", "he did but now he gives adventurers", "a hard time anyways."));
+//
+//        // todo: Minecraft's font is not monospaced. Using visuals here to determine line break points may work and will hopefully still make a consistent edge within an item, but maybe not a namespace.
+//        final Font font = new Font("Monospaced", Font.BOLD, TEXT_FONT_SIZE);
+//        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET, rpgItem.getName(), font, Color.decode(rpgItem.getRarities().getHexColor()));
+//        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + TEXT_FONT_SIZE + TITLE_VERTICAL_BUFFER, "Sharpness V", font, new Color(167, 167, 167));
+//
+//        final int loreLines = rpgItem.getLore().size();
+//        for (int i = 0; i < rpgItem.getLore().size(); i++)
+//            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (i + 2)) + TITLE_VERTICAL_BUFFER, rpgItem.getLore().get(i), font, new Color(204, 204, 204));
+//        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 2)) + TITLE_VERTICAL_BUFFER, " ---- ---- ---- ", font, new Color(96, 96, 96));
+//
+//        int statCount = 0;
+//        if (rpgItem.getDamage() != 0) {
+//            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3)) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Damage: " + rpgItem.getDamage(), font, new Color(217, 55, 71));
+//            statCount++;
+//        }
+//        if (rpgItem.getAttackSpeed() != 0) {
+//            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3 + statCount)) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Attack Speed: " + rpgItem.getAttackSpeed(), font, new Color(35, 165, 219));
+//            statCount++;
+//        }
+//        if (rpgItem.getHealth() != 0) {
+//            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3 + statCount)) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Health: " + rpgItem.getHealth(), font, new Color(244, 84, 218));
+//            statCount++;
+//        }
+//        if (rpgItem.getArmor() != 0) {
+//            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3 + statCount)) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Armor: " + rpgItem.getArmor(), font, new Color(63, 183, 74));
+//            statCount++;
+//        }
+//        if (rpgItem.getToughness() != 0) {
+//            dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3 + statCount)) + TITLE_VERTICAL_BUFFER + TEXT_VERTICAL_BUFFER, "Toughness: " + rpgItem.getToughness(), font, new Color(242, 217, 81));
+//            statCount++;
+//        }
+//
+//        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 3 + statCount)) + TITLE_VERTICAL_BUFFER, " ---- ---- ---- ", font, new Color(96, 96, 96));
+//        dropShadowText(panel, posX + TEXT_HORIZONTAL_OFFSET, posY + TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 4 + statCount)) + TITLE_VERTICAL_BUFFER, "Hand | Axe | 310", font, new Color(242, 217, 81)); // todo: Multiple colors in a line.
+//        // todo: Calculate gear score
+//
+//        panel.setRectangle(posX, posY, BACKGROUND_BOX_WIDTH, TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 6 + statCount)), BACKGROUND_COLOR);
+//        panel.setRectangle(posX + INNER_BORDER, posY + INNER_BORDER, BACKGROUND_BOX_WIDTH - (2 * INNER_BORDER), TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 6 + statCount)) - (2 * INNER_BORDER), HIGHLIGHT_COLOR);
+//        panel.setRectangle(posX + INNER_BORDER + INNER_BORDER_WIDTH, posY + INNER_BORDER + INNER_BORDER_WIDTH, BACKGROUND_BOX_WIDTH - (2 * (INNER_BORDER_WIDTH + INNER_BORDER)), TITLE_VERTICAL_OFFSET + (TEXT_FONT_SIZE * (loreLines + 6 + statCount)) - (2 * (INNER_BORDER_WIDTH + INNER_BORDER)), BACKGROUND_COLOR);
+//    }
 }

@@ -1,9 +1,9 @@
 package io.github.math0898.studio.views;
 
 import io.github.math0898.studio.ItemPreview;
-import suga.engine.game.BasicScene;
-import suga.engine.game.Game;
-import suga.engine.input.keyboard.KeyValue;
+//import suga.engine.game.BasicScene;
+//import suga.engine.game.Game;
+//import suga.engine.input.keyboard.KeyValue;
 
 import java.awt.*;
 
@@ -12,7 +12,7 @@ import java.awt.*;
  *
  * @author Sugaku
  */
-public class ItemCreationView extends BasicScene {
+public class ItemCreationView /*extends BasicScene*/ {
 
     /**
      * The fields that can be actively edited.
@@ -66,11 +66,11 @@ public class ItemCreationView extends BasicScene {
     /**
      * Loads this scene into the given game.
      */
-    public boolean load (Game game) {
-        game.clear();
-        game.addGameObject("Item Preview", preview);
-        return true;
-    }
+//    public boolean load (Game game) {
+//        game.clear();
+//        game.addGameObject("Item Preview", preview);
+//        return true;
+//    }
 
 
     /**
@@ -79,14 +79,14 @@ public class ItemCreationView extends BasicScene {
      * @param key     The value of the key pressed.
      * @param pressed True if the key was pressed, false if it was released.
      */
-    @Override
-    public void keyboardInput (KeyValue key, boolean pressed) {
-        if (!pressed) return;
-        switch (key) {
-            case ARROW_UP -> activeSelection = activeSelection.previousSelection();
-            case ARROW_DOWN -> activeSelection = activeSelection.nextSelection();
-        }
-    }
+//    @Override
+//    public void keyboardInput (KeyValue key, boolean pressed) {
+//        if (!pressed) return;
+//        switch (key) {
+//            case ARROW_UP -> activeSelection = activeSelection.previousSelection();
+//            case ARROW_DOWN -> activeSelection = activeSelection.nextSelection();
+//        }
+//    }
 
     /**
      * Passes a mouse input into the scene.
@@ -94,7 +94,7 @@ public class ItemCreationView extends BasicScene {
      * @param pos     The position of the mouse when it was clicked.
      * @param pressed True if the button was pressed, false if it was released.
      */
-    @Override
+//    @Override
     public void mouseInput (Point pos, boolean pressed) {
 
     }
