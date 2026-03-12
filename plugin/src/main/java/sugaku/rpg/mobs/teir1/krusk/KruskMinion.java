@@ -9,7 +9,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDeathEvent;
-import sugaku.rpg.framework.items.Rarity;
+import io.github.math0898.rpgframework.Rarity;
 
 /**
  * KruskMinion describes what makes Krusk minions Krusk minions. There is not much extra to Krusk minions outside of
@@ -36,7 +36,7 @@ public class KruskMinion extends CustomMob {
      * @param i The index of the Krusk minion we should spawn at the given location.
      */
     public KruskMinion(Location l, int i) {
-        super(names[i] + ", Underling of Krusk", EntityType.ZOMBIE, Rarity.UNIQUE, 40);
+        super(names[i] + ", Underling of Krusk", EntityType.ZOMBIE, Rarity.UNCOMMON, 40);
         ItemBuilder main = new ItemBuilder(weapons[i]).setUnbreakable(true);
         ItemBuilder boots = new ItemBuilder(Material.LEATHER_BOOTS).setUnbreakable(true);
         ItemBuilder leggings = new ItemBuilder(Material.NETHERITE_LEGGINGS).setUnbreakable(true);

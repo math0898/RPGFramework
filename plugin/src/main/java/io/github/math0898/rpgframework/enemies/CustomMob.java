@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import sugaku.rpg.framework.items.BossDrop;
-import sugaku.rpg.framework.items.Rarity;
+import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RpgPlayer;
 
@@ -289,9 +289,10 @@ public abstract class CustomMob {
 //            default:
                 return switch (item) {
                     case COMMON -> 0.16;
-                    case UNIQUE -> 0.08;
+                    case UNCOMMON -> 0.08;
                     case RARE -> 0.04;
                     case LEGENDARY -> 0.02;
+                    case HEROIC -> 0.015;
                     case MYTHIC -> 0.01;
                     case RELIC -> 0.005;
                 };

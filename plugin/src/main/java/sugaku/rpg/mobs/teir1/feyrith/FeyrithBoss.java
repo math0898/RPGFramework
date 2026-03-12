@@ -30,7 +30,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import sugaku.rpg.framework.items.BossDrop;
-import sugaku.rpg.framework.items.Rarity;
+import io.github.math0898.rpgframework.Rarity;
 
 import java.util.Collection;
 import java.util.List;
@@ -64,11 +64,11 @@ public class FeyrithBoss extends CustomMob implements Listener {
 
     private static final BossDrop[] bossDrops = new BossDrop[]{
             new BossDrop(ItemManager.getInstance().getItem("feyrith:SylvathianThornWeaver"), Rarity.RARE),
-            new BossDrop(ItemManager.getInstance().getItem("feyrith:FireGemstone"), Rarity.UNIQUE),
+            new BossDrop(ItemManager.getInstance().getItem("feyrith:FireGemstone"), Rarity.UNCOMMON),
             new BossDrop(ItemManager.getInstance().getItem("feyrith:WrathOfFeyrith"), Rarity.RARE),
             new BossDrop(ItemManager.getInstance().getItem("feyrith:MageKaftan"), Rarity.RARE),
             new BossDrop(ItemManager.getInstance().getItem("feyrith:RoyalClogs"), Rarity.MYTHIC),
-            new BossDrop(ItemManager.getInstance().getItem("feyrith:VisionaryCoif"), Rarity.UNIQUE),
+            new BossDrop(ItemManager.getInstance().getItem("feyrith:VisionaryCoif"), Rarity.UNCOMMON),
             new BossDrop(ItemManager.getInstance().getItem("feyrith:ComfortableBreeches"), Rarity.RARE)
     };
 

@@ -21,7 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import sugaku.rpg.framework.items.BossDrop;
-import sugaku.rpg.framework.items.Rarity;
+import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.rpgframework.enemies.CustomMob;
 
 import java.util.ArrayList;
@@ -121,16 +121,16 @@ public class EiryerasBoss extends CustomMob implements Listener {
             new BossDrop(ItemManager.getInstance().getItem("eiryeras:HandCraftedBow"), Rarity.RARE),
 
             //Uncommon Eiryeras' Boots
-            new BossDrop(ItemManager.getInstance().getItem("eiryeras:WornGaloshes"), Rarity.UNIQUE),
+            new BossDrop(ItemManager.getInstance().getItem("eiryeras:WornGaloshes"), Rarity.UNCOMMON),
 
             //Uncommon Eiryeras' Leggings
-            new BossDrop(ItemManager.getInstance().getItem("eiryeras:HideLeggings"), Rarity.UNIQUE),
+            new BossDrop(ItemManager.getInstance().getItem("eiryeras:HideLeggings"), Rarity.UNCOMMON),
 
             //Uncommon Eiryeras' Chestplate
-            new BossDrop(ItemManager.getInstance().getItem("eiryeras:HuntersCloak"), Rarity.UNIQUE),
+            new BossDrop(ItemManager.getInstance().getItem("eiryeras:HuntersCloak"), Rarity.UNCOMMON),
 
             //Uncommon Eiryeras' Helmet
-            new BossDrop(ItemManager.getInstance().getItem("eiryeras:HuntersHood"), Rarity.UNIQUE),
+            new BossDrop(ItemManager.getInstance().getItem("eiryeras:HuntersHood"), Rarity.UNCOMMON),
 
             //Rare Eiryeras' Knife
             new BossDrop(ItemManager.getInstance().getItem("eiryeras:CeremonialKnife"), Rarity.RARE),
@@ -150,7 +150,7 @@ public class EiryerasBoss extends CustomMob implements Listener {
      * Makes sure that items and other things required for the boss fight are set up.
      */
     public EiryerasBoss() {
-        super(name, EntityType.SKELETON, Rarity.UNIQUE, 150);
+        super(name, EntityType.SKELETON, Rarity.UNCOMMON, 150);
         setArmor(new ItemBuilder(LEATHER_HELMET).setColor(255, 60, 115, 31).build(),
                 new ItemBuilder(Material.LEATHER_CHESTPLATE).setColor(255,  113, 172, 11).build(),
                 new ItemBuilder(Material.LEATHER_LEGGINGS).setColor(255,  93, 161, 124).build(),
@@ -260,7 +260,7 @@ public class EiryerasBoss extends CustomMob implements Listener {
     public static void onDeath(EntityDeathEvent event) {
         if (event.getEntity().getCustomName() != null) {
             if (event.getEntity().getCustomName().contains(name)) {
-                CustomMob.handleDrops(event, bossDrops, Rarity.UNIQUE);
+                CustomMob.handleDrops(event, bossDrops, Rarity.UNCOMMON);
                 Random r = new Random();
                 LivingEntity e = event.getEntity();
                 Objects.requireNonNull(e.getLocation().getWorld()).dropItem(e.getLocation(), new ItemStack(BONE, (int) (r.nextDouble() * 5) + 1));

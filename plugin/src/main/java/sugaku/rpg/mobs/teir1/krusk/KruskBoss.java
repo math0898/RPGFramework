@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import sugaku.rpg.framework.items.Rarity;
+import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RpgPlayer;
 import io.github.math0898.rpgframework.enemies.CustomMob;
@@ -34,7 +34,7 @@ public class KruskBoss extends CustomMob {
      * A constructor for Krusk the Boss.
      */
     public KruskBoss() {
-        super(name, ZOMBIE, Rarity.UNIQUE, 250);
+        super(name, ZOMBIE, Rarity.UNCOMMON, 250);
         init();
         setArmor(this.helm, this.chestplate, this.leggings, this.boots);
         setHand(getWeapon());
