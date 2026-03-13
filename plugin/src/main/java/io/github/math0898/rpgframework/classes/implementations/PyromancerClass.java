@@ -19,46 +19,79 @@ import org.bukkit.util.Vector;
 
 import java.util.List;
 
+import static io.github.math0898.rpgframework.classes.implementations.PyromancerClass.Abilities.*;
+
 /**
  * The Pyromancer overwhelms nearby enemies with fire magic and enters short empowered burn phases.
  *
- * @author Sugaku
- */
+ * @author Cybellereaper, Sugaku
+ */ // todo: Still a lot of magic numbers that could get cleaned up and improved. We should probably also start setting up a lang system.
 public class PyromancerClass extends AbstractClass {
 
     /**
-     * Enum names for the Pyromancer's cooldowns.
+     * Base flame damage added to Pyromancer attacks.
      */
-    private enum Abilities {
+    private static final double MELEE_FIRE_BONUS_DAMAGE = 2.5;
+
+    /**
+     * Bonus damage to already ignited enemies.
+     */
+    private static final double IGNITED_BONUS_DAMAGE = 2.5;
+
+    /**
+     * Enum names for the Pyromancer's cooldowns. Provides constants for common ability values.
+     */
+    protected enum Abilities {
 
         /**
          * A point-blank burst of flame that ignites nearby enemies.
          */
-        SCORCH,
+        SCORCH(12, 2.0, 0),
 
         /**
          * A short empowerment window that improves the pyromancer's attacks.
          */
-        KINDLE,
+        KINDLE(20, 5.0, 8),
 
         /**
          * A spread of quick moving firebolts.
          */
-        FLARE_VOLLEY,
+        FLARE_VOLLEY(18, 0, 0),
 
         /**
          * A burst of restorative fire.
          */
-        CAUTERIZE,
+        CAUTERIZE(35, 4.0, 0),
 
         /**
          * Phoenix themed cheat death and empowerment.
          */
-        PHOENIX_RENEWAL
-    }
+        PHOENIX_RENEWAL(180, 8.0, 12); // Strength is the heal component
 
-    private static final int KINDLE_WINDOW_SECONDS = 8;
-    private static final int PHOENIX_WINDOW_SECONDS = 12;
+        /**
+         * The amount of time before this ability recovers and is usable again.
+         */
+        private final int cooldown;
+
+        /**
+         * The power value of this ability. Effect varies.
+         */
+        private final double strength;
+
+        /**
+         * The amount of time that this ability lasts for.
+         */
+        private final int duration;
+
+        /**
+         * Creates a new ability with the given constant values.
+         */
+         Abilities (int cooldown, double strength, int duration) {
+            this.cooldown = cooldown;
+            this.strength = strength;
+            this.duration = duration;
+        }
+    }
 
     /**
      * Creates a new AbstractClass object which is specific to the given player.
@@ -68,11 +101,11 @@ public class PyromancerClass extends AbstractClass {
     public PyromancerClass (RpgPlayer p) {
         super(p);
         Cooldown[] cds = new Cooldown[5];
-        cds[Abilities.SCORCH.ordinal()] = new Cooldown(12);
-        cds[Abilities.KINDLE.ordinal()] = new Cooldown(20);
-        cds[Abilities.FLARE_VOLLEY.ordinal()] = new Cooldown(18);
-        cds[Abilities.CAUTERIZE.ordinal()] = new Cooldown(35);
-        cds[Abilities.PHOENIX_RENEWAL.ordinal()] = new Cooldown(180);
+        cds[SCORCH.ordinal()] = new Cooldown(SCORCH.cooldown);
+        cds[KINDLE.ordinal()] = new Cooldown(KINDLE.cooldown);
+        cds[FLARE_VOLLEY.ordinal()] = new Cooldown(FLARE_VOLLEY.cooldown);
+        cds[CAUTERIZE.ordinal()] = new Cooldown(CAUTERIZE.cooldown);
+        cds[PHOENIX_RENEWAL.ordinal()] = new Cooldown(PHOENIX_RENEWAL.cooldown);
         setCooldowns(cds);
         setClassItems(Material.BLAZE_POWDER, Material.BLAZE_ROD);
     }
@@ -105,8 +138,11 @@ public class PyromancerClass extends AbstractClass {
         }
     }
 
+    /**
+     * Makes the player attached to this class object cast the scorch ability.
+     */
     private void castScorch () {
-        if (!offCooldown(Abilities.SCORCH.ordinal())) return;
+        if (!offCooldown(SCORCH.ordinal())) return;
         RpgPlayer rpg = getPlayer();
         Player player = rpg.getBukkitPlayer();
         List<LivingEntity> targets = rpg.nearbyEnemyCasterTargets(4.5, 3.0, 4.5);
@@ -116,26 +152,32 @@ public class PyromancerClass extends AbstractClass {
         int hitCount = 0;
         for (LivingEntity entity : targets) {
             entity.setFireTicks(Math.max(entity.getFireTicks(), 5 * 20));
-            entity.damage(2.0, player);
+            entity.damage(SCORCH.strength, player);
             entity.getWorld().spawnParticle(Particle.LAVA, entity.getLocation().add(0, 1.0, 0), 6, 0.3, 0.4, 0.3, 0.01);
             hitCount++;
         }
         if (hitCount > 0)
             rpg.heal(Math.min(hitCount, 2));
-        getCooldowns()[Abilities.SCORCH.ordinal()].restart();
+        getCooldowns()[SCORCH.ordinal()].restart();
     }
 
+    /**
+     * Makes the player attached to this class object cast the Kindle ability.
+     */
     private void castKindle () {
         if (!offCooldown(Abilities.KINDLE.ordinal())) return;
         Player player = getPlayer().getBukkitPlayer();
         send(ChatColor.GOLD + "Kindle" + ChatColor.GREEN + " empowers your flames!");
-        getPlayer().addPotionEffect(PotionEffectType.SPEED, KINDLE_WINDOW_SECONDS * 20, 1);
-        getPlayer().addPotionEffect(PotionEffectType.FIRE_RESISTANCE, KINDLE_WINDOW_SECONDS * 20, 1);
+        getPlayer().addPotionEffect(PotionEffectType.SPEED, KINDLE.duration * 20, 0);
+        getPlayer().addPotionEffect(PotionEffectType.FIRE_RESISTANCE, KINDLE.duration * 20, 0);
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BLAZE_AMBIENT, 0.8f, 1.3f);
         player.getWorld().spawnParticle(Particle.FLAME, player.getLocation().add(0, 1.0, 0), 30, 0.4, 0.6, 0.4, 0.01);
         getCooldowns()[Abilities.KINDLE.ordinal()].restart();
     }
 
+    /**
+     * Makes the player attached to this class object cast the flare volley ability.
+     */
     private void castFlareVolley () {
         if (!offCooldown(Abilities.FLARE_VOLLEY.ordinal())) return;
         Player player = getPlayer().getBukkitPlayer();
@@ -147,22 +189,23 @@ public class PyromancerClass extends AbstractClass {
         sideways.normalize();
         for (double offset : new double[]{-0.18, 0.0, 0.18}) {
             Vector velocity = forward.clone().add(sideways.clone().multiply(offset)).normalize().multiply(0.9);
-            SmallFireball projectile = player.launchProjectile(SmallFireball.class, velocity);
+            SmallFireball projectile = player.launchProjectile(SmallFireball.class, velocity); // todo: Add a metadatavalue to this so we can scale the damage it does.
             projectile.setIsIncendiary(true);
         }
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT, 1.0f, 1.1f);
         getCooldowns()[Abilities.FLARE_VOLLEY.ordinal()].restart();
     }
 
+    /**
+     * Makes the player attached to this class object cast the Cauterize ability.
+     */
     private void castCauterize () {
         if (!offCooldown(Abilities.CAUTERIZE.ordinal())) return;
         RpgPlayer rpg = getPlayer();
         Player player = rpg.getBukkitPlayer();
         send(ChatColor.GOLD + "Cauterize" + ChatColor.GREEN + " seals your wounds.");
-        player.setFireTicks(0);
-        rpg.heal(4.0);
-        rpg.addPotionEffect(PotionEffectType.REGENERATION, 8 * 20, 2);
-        rpg.addPotionEffect(PotionEffectType.FIRE_RESISTANCE, 8 * 20, 1);
+        rpg.heal(CAUTERIZE.strength);
+        rpg.addPotionEffect(PotionEffectType.REGENERATION, 8 * 20, 1);
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 0.8f, 1.4f);
         player.getWorld().spawnParticle(Particle.ASH, player.getLocation().add(0, 1.0, 0), 25, 0.5, 0.8, 0.5, 0.02);
         getCooldowns()[Abilities.CAUTERIZE.ordinal()].restart();
@@ -181,11 +224,10 @@ public class PyromancerClass extends AbstractClass {
             send(ChatColor.GREEN + "You've used " + ChatColor.GOLD + "Phoenix Renewal" + ChatColor.GREEN + "!");
             player.getWorld().playSound(player.getLocation(), Sound.ITEM_TOTEM_USE, 0.8f, 1.0f);
             player.getWorld().spawnParticle(Particle.FLAME, player.getLocation().add(0, 1.0, 0), 80, 0.6, 0.9, 0.6, 0.03);
-            player.setFireTicks(0);
-            rpg.heal(8.0);
-            rpg.addPotionEffect(PotionEffectType.REGENERATION, PHOENIX_WINDOW_SECONDS * 20, 3);
-            rpg.addPotionEffect(PotionEffectType.STRENGTH, PHOENIX_WINDOW_SECONDS * 20, 1);
-            rpg.addPotionEffect(PotionEffectType.SPEED, PHOENIX_WINDOW_SECONDS * 20, 1);
+            rpg.heal(PHOENIX_RENEWAL.strength);
+            rpg.addPotionEffect(PotionEffectType.REGENERATION, PHOENIX_RENEWAL.duration * 20, 2);
+            rpg.addPotionEffect(PotionEffectType.STRENGTH, PHOENIX_RENEWAL.duration * 20, 0);
+            rpg.addPotionEffect(PotionEffectType.SPEED, PHOENIX_RENEWAL.duration * 20, 0);
             getCooldowns()[Abilities.PHOENIX_RENEWAL.ordinal()].restart();
             return false;
         }
@@ -200,9 +242,10 @@ public class PyromancerClass extends AbstractClass {
     @Override
     public void damaged (AdvancedDamageEvent event) {
         event.getEntity().setFireTicks(0);
-        event.setResistance(DamageType.FIRE, DamageResistance.IMMUNITY);
-        if (phoenixEmpowered())
-            event.addDamage(-5.0, event.getPrimaryDamage());
+        event.setResistance(DamageType.FIRE, DamageResistance.RESISTANCE);
+        if (isPhoenixEmpowered())
+            event.addDamage(-2.5, event.getPrimaryDamage());
+            // This felt a bit much at -5.0. We need data analytics and testing.
     }
 
     /**
@@ -212,24 +255,35 @@ public class PyromancerClass extends AbstractClass {
      */
     @Override
     public void attack (AdvancedDamageEvent event) {
-        double fireDamage = 2.5;
+        double fireDamage = MELEE_FIRE_BONUS_DAMAGE;
         if (event.getEntity().getFireTicks() > 0)
-            fireDamage += 2.5;
-        if (kindled())
-            fireDamage += 5.0;
-        if (phoenixEmpowered()) {
+            fireDamage += IGNITED_BONUS_DAMAGE;
+        if (isKindled())
+            fireDamage += KINDLE.strength;
+        if (isPhoenixEmpowered()) {
             fireDamage += 5.0;
             getPlayer().heal(1.0);
         }
         event.addDamage(fireDamage, DamageType.FIRE);
-        event.getEntity().setFireTicks(Math.max(event.getEntity().getFireTicks(), phoenixEmpowered() ? 8 * 20 : 5 * 20));
+        // Always igniting enemies could be kinda fun.
+        event.getEntity().setFireTicks(Math.max(event.getEntity().getFireTicks(), isPhoenixEmpowered() ? 8 * 20 : 5 * 20));
     }
 
-    private boolean kindled () {
-        return getCooldowns()[Abilities.KINDLE.ordinal()].getRemaining() >= (20 - KINDLE_WINDOW_SECONDS);
+    /**
+     * Checks whether this player is empowered by kindled or not.
+     *
+     * @return True if within kindled's duration after a cooldown, otherwise false.
+     */ // todo: We should probably create an implementation depending on last used. This means the player "used" the button as soon as they login. Low priority.
+    private boolean isKindled () {
+        return getCooldowns()[Abilities.KINDLE.ordinal()].getRemaining() >= (KINDLE.cooldown - KINDLE.duration);
     }
 
-    private boolean phoenixEmpowered () {
-        return getCooldowns()[Abilities.PHOENIX_RENEWAL.ordinal()].getRemaining() >= (180 - PHOENIX_WINDOW_SECONDS);
+    /**
+     * Checks whether this player is empowered by phoenix empowerment or not.
+     *
+     * @return True if within phoenix empowerment's duration after a cooldown, otherwise false.
+     */ // todo: We should probably create an implementation depending on last used. This means the player "used" the button as soon as they login. Low priority.
+    private boolean isPhoenixEmpowered () {
+        return getCooldowns()[Abilities.PHOENIX_RENEWAL.ordinal()].getRemaining() >= (PHOENIX_RENEWAL.cooldown - PHOENIX_RENEWAL.duration);
     }
 }
