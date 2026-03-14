@@ -3,7 +3,7 @@ package io.github.math0898.rpgframework.items.editor;
 import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.rpgframework.items.EquipmentSlots;
 import io.github.math0898.utils.Utils;
-import io.github.math0898.utils.gui.GUI;
+import io.github.math0898.utils.gui.AbstractGUI;
 import io.github.math0898.utils.gui.GUIManager;
 import io.github.math0898.utils.items.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -32,7 +32,7 @@ import java.util.stream.Stream;
  *
  * @author Sugaku
  */
-public class EditorGUI implements GUI, Listener { // todo: Tag player submission, non-admin stats on rarity.
+public class EditorGUI extends AbstractGUI implements Listener { // todo: Tag player submission, non-admin stats on rarity.
 // todo: Prevent spamming abuse.
     /**
      * A map of ItemConstructs organized by the opening player.
@@ -75,6 +75,17 @@ public class EditorGUI implements GUI, Listener { // todo: Tag player submission
         Inventory inv = Bukkit.createInventory(player, 54, getTitle());
         buildInventory(player, inv);
         player.openInventory(inv);
+    }
+
+    /**
+     * Opens this GUI to the given player.
+     *
+     * @param player The player to open the GUI to.
+     * @param params Any parameters to add to the inventory when to open.
+     */
+    @Override
+    public void openInventory (Player player, String... params) {
+        openInventory(player);
     }
 
     /**

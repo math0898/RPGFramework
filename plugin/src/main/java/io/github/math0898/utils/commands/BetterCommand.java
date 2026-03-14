@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -163,7 +164,7 @@ public abstract class BetterCommand implements CommandExecutor, TabCompleter { /
      * @param message    The message to send.
      * @param sendPrefix Whether a prefix should be sent with this message or not.
      */
-    protected void send(CommandSender user, String message, boolean sendPrefix) {
+    protected void send (CommandSender user, String message, boolean sendPrefix) {
         if (sendPrefix) user.sendMessage(prefix + message);
         else user.sendMessage(ChatColor.GRAY + message);
     }
@@ -185,6 +186,17 @@ public abstract class BetterCommand implements CommandExecutor, TabCompleter { /
                 send(sender, ChatColor.RED + "Is " + args[index] + " a number? Defaulting to 1.");
             }
         }
+        return toReturn;
+    }
+
+    /**
+     * A utility method to get the currently online player's as a list of strings.
+     *
+     * @return The current online players as a List<String>.
+     */
+    protected List<String> getPlayerList () {
+        List<String> toReturn = new ArrayList<>();
+        Bukkit.getOnlinePlayers().forEach((p) -> toReturn.add(p.getName()));
         return toReturn;
     }
 }
