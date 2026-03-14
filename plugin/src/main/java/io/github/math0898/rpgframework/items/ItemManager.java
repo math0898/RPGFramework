@@ -247,4 +247,48 @@ public class ItemManager {
         recipe.setIngredient('A', Material.DIAMOND);
         Bukkit.addRecipe(recipe);
     }
+
+    /**
+     * Takes the given string and increases the rarity of the name. Checks to see if it should be increased too.
+     *
+     * @param s The name to be upgraded.
+     * @return The upgraded name.
+     */
+    public static String increaseRarity (String s) {
+
+        if (s.contains("§k")) return s;
+
+        String r = s;
+
+        r = s.replace("§d", "§c§k-§r§c ");
+        r = s.replace("§6", "§d§k-§r§d ");
+        r = s.replace("§9", "§6§k-§r§6 ");
+        r = s.replace("§a", "§9§k-§r§9 ");
+
+        if (r.equals(s)) r = "§a§k-§r§a " + s;
+
+        r += " §" + r.toCharArray()[1] +"§k-";
+
+        return r;
+    }
+
+    /**
+     * Returns the String name that should be used for the given item. This is a helper method.
+     *
+     * @param name Generates an item name based off the given char array.
+     * @return The string version of the generated name.
+     */
+    public static String genName (char[] name) {
+
+        StringBuilder r = new StringBuilder();
+
+        for (int i = 0; i < name.length; i++) {
+            if (name[i] == '_') r.append(' ');
+            else if (i == 0) r.append(Character.toUpperCase(name[i]));
+            else if (name[i - 1] == '_') r.append(Character.toUpperCase(name[i]));
+            else r.append(name[i]);
+        }
+
+        return r.toString();
+    }
 }

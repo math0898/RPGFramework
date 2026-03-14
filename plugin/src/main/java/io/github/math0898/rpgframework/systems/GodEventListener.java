@@ -27,7 +27,7 @@ public class GodEventListener implements Listener {
         InventoryView open = e.getWhoClicked().getOpenInventory();
 
         if (clicked == null) return;
-        if (open.getTitle().equals(title)) forgeClicked(e);
+        if (isForgeGUI(open)) forgeClicked(e);
     }
 
     /**
@@ -54,6 +54,6 @@ public class GodEventListener implements Listener {
      */
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        if (event.getPlayer().getOpenInventory().getTitle().equals(Forge.title)) forgeClose(event);
+        if (isForgeGUI(event.getPlayer().getOpenInventory())) forgeClose(event);
     }
 }
