@@ -358,7 +358,7 @@ public class RpgPlayer {
      * Gets a gear score for this player.
      *
      * @return The player's current gear score.
-     */
+     */ // todo: Consider RPGItem stats.
     public int getGearScore () {
         int runningScore = 0;
         ItemStack[] collection = getBukkitPlayer().getInventory().getArmorContents();
@@ -391,7 +391,7 @@ public class RpgPlayer {
     public ChatColor getPlayerRarity () {
         int gearScore = getGearScore();
 
-        if (gearScore <= 100) return ChatColor.WHITE;
+        if (gearScore <= 100) return ChatColor.WHITE; // todo: Utilize Rarity hex colors.
         else if (gearScore <= 200) return ChatColor.GREEN;
         else if (gearScore <= 300) return ChatColor.BLUE;
         else if (gearScore <= 400) return ChatColor.GOLD;
@@ -411,6 +411,15 @@ public class RpgPlayer {
             } catch (IllegalArgumentException ignored) { }
         }
         player.getInventory().clear();
+    }
+
+    /**
+     * Accessor method for this player's current health.
+     *
+     * @return This player's health.
+     */
+    public double getCurrentHealth () {
+        return getBukkitPlayer().getHealth();
     }
 
     /**

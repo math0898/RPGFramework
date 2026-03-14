@@ -3,9 +3,15 @@ package io.github.math0898.rpgframework.commands.stats;
 import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RpgPlayer;
 import io.github.math0898.utils.gui.AbstractGUI;
+import io.github.math0898.utils.items.ItemBuilder;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * The StatsGUI shows information about a player.
@@ -44,7 +50,21 @@ public class StatsGUI extends AbstractGUI {
      */
     public void openInventory (Player player, RpgPlayer rpgPlayer) {
         if (rpgPlayer == null) return;
-        // todo: implement.
+        Inventory inv = Bukkit.createInventory(player, 45, getTitle());
+        ItemStack fill = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(" ").build();
+        for (int i = 0; i < 45; i++)
+            inv.setItem(i, fill);
+        inv.setItem(13, new ItemBuilder(Material.PLAYER_HEAD)
+                .setOwningPlayer(rpgPlayer.getUuid())
+                .setDisplayName(rpgPlayer.getPlayerRarity() + rpgPlayer.getName())
+                .setLore(new String[] { // todo: Make these colors match item colors.
+                        ChatColor.RED + "Health: " + (rpgPlayer.getCurrentHealth() * 5.0) + " / " + (rpgPlayer.getMaxHealth() * 5.0),
+                        ChatColor.DARK_GREEN + "Class: " + rpgPlayer.getCombatClass().getFormattedName(),
+                        ChatColor.AQUA + "Current Level: " + rpgPlayer.getLevel() + " (" + rpgPlayer.getExperience() + ")",
+                        ChatColor.YELLOW + "Gear Score: " + rpgPlayer.getGearScore()
+                }).build());
+        // todo: Boss kill statistics.
+        player.openInventory(inv);
     }
 
     /**

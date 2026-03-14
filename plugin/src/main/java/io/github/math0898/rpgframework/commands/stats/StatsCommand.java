@@ -57,7 +57,7 @@ public class StatsCommand extends BetterCommand {
      */
     @Override
     public List<String> simplifiedTab (CommandSender sender, String[] args) {
-        if (args.length >= 1) // todo: Requires validation.
+        if (args.length == 1) // todo: Requires validation.
             return everythingStartsWith(getPlayerList(), args[args.length - 1]);
         return List.of();
     }
