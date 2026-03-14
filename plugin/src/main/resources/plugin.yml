@@ -49,3 +49,6 @@ commands:
   artifact:
     description: "Command for accessing a player's artifact collection."
     permission: "rpg.artifact"
+  stats:
+    description: "Displays stats for the player running the command as well as other players."
+    permission: "rpg.stats"
