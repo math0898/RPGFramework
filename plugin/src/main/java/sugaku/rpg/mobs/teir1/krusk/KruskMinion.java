@@ -9,7 +9,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDeathEvent;
-import sugaku.rpg.framework.items.Rarity;
+import io.github.math0898.rpgframework.Rarity;
 
 /**
  * KruskMinion describes what makes Krusk minions Krusk minions. There is not much extra to Krusk minions outside of

@@ -36,9 +36,14 @@ public enum Rarity {
     HEROIC("#F454DA"),
 
     /**
-     * Mythic items come from gods. They are either entirely cosmetic or their power is unmatched.
+     * Mythic items are powerful unique items. They are often entirely cosmetic or their power is unmatched in their tier.
      */
-    MYTHIC("#D93747");
+    MYTHIC("#D93747"),
+
+    /**
+     * Relics are unique, often collectables, to give the player alternative power.
+     */
+    RELIC("#FFFDD0");
 
     /**
      * The hex color contained with in this Rarity.
@@ -69,6 +74,7 @@ public enum Rarity {
             case LEGENDARY -> ChatColor.GOLD;
             case HEROIC -> ChatColor.LIGHT_PURPLE;
             case MYTHIC -> ChatColor.RED;
+            case RELIC -> ChatColor.YELLOW;
         };
     }
 

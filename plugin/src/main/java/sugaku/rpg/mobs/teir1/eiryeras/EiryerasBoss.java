@@ -21,7 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import sugaku.rpg.framework.items.BossDrop;
-import sugaku.rpg.framework.items.Rarity;
+import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.rpgframework.enemies.CustomMob;
 
 import java.util.ArrayList;

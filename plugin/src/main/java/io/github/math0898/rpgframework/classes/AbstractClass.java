@@ -4,6 +4,8 @@ import io.github.math0898.rpgframework.RPGFramework;
 import io.github.math0898.rpgframework.damage.events.AdvancedDamageEvent;
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
 import io.github.math0898.rpgframework.damage.events.LethalDamageEvent;
+import io.github.math0898.utils.Utils;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -19,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * The AbstractClass implements the basics of what makes up a class, and some protected utility methods, to make
@@ -30,12 +33,18 @@ public abstract class AbstractClass implements Class, Listener {
 
     /**
      * The RpgPlayer that this AbstractClass is referencing.
+     * -- GETTER --
+     *  An accessor method to get the RpgPlayer that this class references.
      */
+    @Getter
     private final RpgPlayer player;
 
     /**
      * An array of cooldowns.
+     * -- GETTER --
+     *  An accessor method for the entire cooldown array.
      */
+    @Getter
     private Cooldown[] cooldowns; // todo: Each implementing class could use a self-defined enum with ability names to index.
 
     /**
@@ -54,30 +63,12 @@ public abstract class AbstractClass implements Class, Listener {
     }
 
     /**
-     * An accessor method to get the RpgPlayer that this class references.
-     *
-     * @return The RpgPlayer that this class references.
-     */
-    public RpgPlayer getPlayer() {
-        return player;
-    }
-
-    /**
      * Sets all the cooldowns that will be part of this AbstractClass.
      *
      * @param cooldowns The array of cooldowns that are part of this class.
      */
     protected void setCooldowns (Cooldown[] cooldowns) {
         this.cooldowns = cooldowns;
-    }
-
-    /**
-     * An accessor method for the entire cooldown array.
-     *
-     * @return The cooldown array that is a member of this class.
-     */
-    public Cooldown[] getCooldowns () {
-        return cooldowns;
     }
 
     /**
@@ -165,6 +156,8 @@ public abstract class AbstractClass implements Class, Listener {
             switch (event.getAction()) {
                 case RIGHT_CLICK_BLOCK, RIGHT_CLICK_AIR -> onRightClickCast(event, type);
                 case LEFT_CLICK_AIR, LEFT_CLICK_BLOCK -> onLeftClickCast(event, type);
+                // This is mostly here to debugging. There are perhaps better ways to do this debug message.
+                default -> Utils.console("AbstractClass#onInteract() -> Unknown interact event: " + event, Level.FINER);
             }
     }
 

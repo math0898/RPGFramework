@@ -1,0 +1,14 @@
+.gradle/
+.gradle-user/
+.gradle-local/
+build/
+out/
+.idea/
+.vscode/
+*.iml
+Thumbs.db
+.DS_Store
+plugin/publish_server.sh
+plugin/test_local.sh
+secrets.properties
+old-builds/

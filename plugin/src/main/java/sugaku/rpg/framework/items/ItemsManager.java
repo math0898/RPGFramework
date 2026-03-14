@@ -12,6 +12,10 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.*;
 
+/**
+ * Use {@link io.github.math0898.rpgframework.items.ItemManager}
+ */
+@Deprecated(forRemoval = true)
 public final class ItemsManager {
 
     /**

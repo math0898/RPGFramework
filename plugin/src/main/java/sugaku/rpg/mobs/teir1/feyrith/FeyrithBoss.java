@@ -22,7 +22,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 import sugaku.rpg.framework.items.BossDrop;
-import sugaku.rpg.framework.items.Rarity;
+import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.rpgframework.enemies.CustomMob;
 
 import java.util.List;
@@ -171,7 +171,7 @@ public class FeyrithBoss extends CustomMob implements Listener {
         //Determine boss phase
         if (entity.getHealth() < (maxHealth * 0.30) && phase == 1) phase = 2;
         //Run specific phase AI
-       move(entity, nearby);
+        move(entity, nearby);
         switch(phase) {
             case 2:
                 double attack1 = Math.abs(new Random().nextDouble());
@@ -266,8 +266,8 @@ public class FeyrithBoss extends CustomMob implements Listener {
         if (rand.nextBoolean()) z += -(rand.nextInt() % 10);
         else z += (rand.nextInt() % 10);
         for (int i = -3; i < 10; i++) if (closest.getWorld().getBlockAt(x, y+i, z).getType() == Material.AIR &&
-                                          closest.getWorld().getBlockAt(x, y+i+1, z).getType() == Material.AIR &&
-                                          closest.getWorld().getBlockAt(x, y+i+2, z).getType() == Material.AIR) { y += i; break; }
+                closest.getWorld().getBlockAt(x, y+i+1, z).getType() == Material.AIR &&
+                closest.getWorld().getBlockAt(x, y+i+2, z).getType() == Material.AIR) { y += i; break; }
         return new Location(closest.getWorld(), x, y, z);
     }
 

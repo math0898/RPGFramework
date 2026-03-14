@@ -16,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Map;
@@ -75,6 +76,23 @@ public class AdvancedDamageHandler implements Listener {
     }
 
     /**
+     * A helper method to apply resistance levels to the given damage.
+     *
+     * @param damage The damage value.
+     * @param resistance The resistance level.
+     * @return The damage value after considering resistance.
+     */
+    private static double applyResistance (double damage, @NotNull DamageResistance resistance) {
+        return switch (resistance) {
+            case IMMUNITY -> 0.00;
+            case RESISTANCE -> damage * 0.50;
+            case NORMAL -> damage;
+            case SUSCEPTIBILITY -> damage * 1.50;
+            case VULNERABILITY -> damage * 2.00;
+        };
+    }
+
+    /**
      * Determines the amount of damage that needs to be applied to the player based on resistances and types of armor.
      *
      * @param advancedDamageEvent The advancedDamageEvent we're calculating the result of.
@@ -88,12 +106,7 @@ public class AdvancedDamageHandler implements Listener {
             double dmg = damages.get(type);
             if (DamageType.archetype(type).equalsIgnoreCase("MAGIC")) dmg = dmg * (1.00 - advancedDamageEvent.getMagicResistance());
             else if (DamageType.archetype(type).equalsIgnoreCase("PHYSICAL")) dmg = dmg * (1.00 - advancedDamageEvent.getPhysicalResistance());
-            switch (resistance.get(type)) {
-                case IMMUNITY -> dmg = 0.00;
-                case RESISTANCE -> dmg = dmg * 0.50;
-                case SUSCEPTIBILITY -> dmg = dmg * 1.50;
-                case VULNERABILITY -> dmg = dmg * 2.00;
-            }
+            dmg = applyResistance(dmg, resistance.get(type));
             damage += dmg;
         }
         return damage;

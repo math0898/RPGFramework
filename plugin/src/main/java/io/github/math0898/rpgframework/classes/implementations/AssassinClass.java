@@ -44,7 +44,7 @@ public class AssassinClass extends AbstractClass {
         /**
          * Masterfully dodges lethal damage and grants a quick burst of speed.
          */
-        HEROIC_DODGE;
+        HEROIC_DODGE
     }
 
     /**
