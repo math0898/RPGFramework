@@ -8,7 +8,7 @@ out/
 *.iml
 Thumbs.db
 .DS_Store
-publish_server.sh
-test_local.sh
+plugin/publish_server.sh
+plugin/test_local.sh
 secrets.properties
 old-builds/
