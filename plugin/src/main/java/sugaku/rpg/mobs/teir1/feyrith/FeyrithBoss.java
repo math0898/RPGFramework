@@ -148,7 +148,7 @@ public class FeyrithBoss extends CustomMob implements Listener {
         super.spawn(l);
         getEntity().setGravity(false);
         getEntity().setVelocity(new Vector(0, 0, 0));
-        Objects.requireNonNull(getEntity().getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)).setBaseValue(1000);
+        Objects.requireNonNull(getEntity().getAttribute(Attribute.KNOCKBACK_RESISTANCE)).setBaseValue(1000);
         runAI();
     }
 
