@@ -1,8 +1,5 @@
 package io.github.math0898.rpgframework.damage;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import eu.decentsoftware.holograms.api.DHAPI;
 import io.github.math0898.rpgframework.RPGFramework;
 import io.github.math0898.rpgframework.damage.events.AdvancedDamageEvent;
 import io.github.math0898.rpgframework.damage.events.LethalDamageEvent;
@@ -10,16 +7,12 @@ import io.github.math0898.rpgframework.damage.events.VerifiedDeathEvent;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
@@ -31,6 +24,7 @@ import java.util.logging.Level;
  * @author Sugaku
  */
 public class AdvancedDamageHandler implements Listener {
+    private static final DamageCalculator DAMAGE_CALCULATOR = new DamageCalculator();
 
     /**
      * This is an internal counter to prevent hologram name collisions.
@@ -48,48 +42,35 @@ public class AdvancedDamageHandler implements Listener {
         AdvancedDamageEvent advancedDamageEvent = new AdvancedDamageEvent(event);
         Bukkit.getPluginManager().callEvent(advancedDamageEvent); //Call the event
 
-        double damage = damageCalculation(advancedDamageEvent);
-        event.setDamage(damage/5.00);
-
-        if (RPGFramework.useHolographicDisplays || RPGFramework.useDecentHolograms)
-            displayDamage(damage, event.getEntity().getLocation());
-
         if (advancedDamageEvent.isCancelled()) {
             event.setCancelled(true);
             return;
         }
 
-        Entity entity = event.getEntity(); // todo: Clean up.
-        event.getFinalDamage();
-        if (entity instanceof LivingEntity living)
-            if (living.getHealth() <= event.getFinalDamage()) {
-                LethalDamageEvent lethalDamageEvent = new LethalDamageEvent(advancedDamageEvent);
-                Bukkit.getPluginManager().callEvent(lethalDamageEvent);
-                if (lethalDamageEvent.isCancelled()) {
-                    event.setCancelled(true);
-                    return;
-                }
+        double damage = damageCalculation(advancedDamageEvent);
+        event.setDamage(damage / 5.00);
 
-                VerifiedDeathEvent verifiedDeathEvent = new VerifiedDeathEvent(advancedDamageEvent);
-                Bukkit.getPluginManager().callEvent(verifiedDeathEvent);
-            }
-    }
+        if (RPGFramework.useHolographicDisplays || RPGFramework.useDecentHolograms) {
+            displayDamage(damage, event.getEntity().getLocation());
+        }
 
-    /**
-     * A helper method to apply resistance levels to the given damage.
-     *
-     * @param damage The damage value.
-     * @param resistance The resistance level.
-     * @return The damage value after considering resistance.
-     */
-    private static double applyResistance (double damage, @NotNull DamageResistance resistance) {
-        return switch (resistance) {
-            case IMMUNITY -> 0.00;
-            case RESISTANCE -> damage * 0.50;
-            case NORMAL -> damage;
-            case SUSCEPTIBILITY -> damage * 1.50;
-            case VULNERABILITY -> damage * 2.00;
-        };
+        if (!(event.getEntity() instanceof LivingEntity living)) {
+            return;
+        }
+
+        if (living.getHealth() > event.getFinalDamage()) {
+            return;
+        }
+
+        LethalDamageEvent lethalDamageEvent = new LethalDamageEvent(advancedDamageEvent);
+        Bukkit.getPluginManager().callEvent(lethalDamageEvent);
+        if (lethalDamageEvent.isCancelled()) {
+            event.setCancelled(true);
+            return;
+        }
+
+        VerifiedDeathEvent verifiedDeathEvent = new VerifiedDeathEvent(advancedDamageEvent);
+        Bukkit.getPluginManager().callEvent(verifiedDeathEvent);
     }
 
     /**
@@ -99,17 +80,7 @@ public class AdvancedDamageHandler implements Listener {
      * @return The damage that should be dealt to the victim.
      */
     public static double damageCalculation (AdvancedDamageEvent advancedDamageEvent) {
-        double damage = 0.00;
-        Map<DamageType, Double> damages = advancedDamageEvent.getDamages();
-        Map<DamageType, DamageResistance> resistance = advancedDamageEvent.getResistances();
-        for (DamageType type: damages.keySet()) {
-            double dmg = damages.get(type);
-            if (DamageType.archetype(type).equalsIgnoreCase("MAGIC")) dmg = dmg * (1.00 - advancedDamageEvent.getMagicResistance());
-            else if (DamageType.archetype(type).equalsIgnoreCase("PHYSICAL")) dmg = dmg * (1.00 - advancedDamageEvent.getPhysicalResistance());
-            dmg = applyResistance(dmg, resistance.get(type));
-            damage += dmg;
-        }
-        return damage;
+        return DAMAGE_CALCULATOR.calculate(advancedDamageEvent);
     }
 
     /**
@@ -126,17 +97,41 @@ public class AdvancedDamageHandler implements Listener {
         String text = ChatColor.RED + "☆" + ChatColor.YELLOW + String.format("%.1f", damage) + ChatColor.RED + "☆";
         try {
             if (RPGFramework.useHolographicDisplays) {
-                Hologram hologram = HologramsAPI.createHologram(RPGFramework.plugin, locale);
-                hologram.appendTextLine(text);
-                Bukkit.getScheduler().runTaskLater(RPGFramework.plugin, hologram::delete, 5*10);
+                spawnHolographicDisplaysHologram(locale, text);
             }
             if (RPGFramework.useDecentHolograms) {
                 String name = "rpgframeworkdamage" + hologramCount.getAndAdd(1L);
-                DHAPI.createHologram(name, locale, Collections.singletonList(text));
-                Bukkit.getScheduler().runTaskLater(RPGFramework.plugin, () -> DHAPI.removeHologram(name), 5*10);
+                spawnDecentHologramsHologram(name, locale, text);
             }
-        } catch (NoClassDefFoundError error) {
+        } catch (ReflectiveOperationException | NoClassDefFoundError error) {
             RPGFramework.getInstance().getLogger().log(Level.WARNING, error.getMessage());
         }
+    }
+
+    private void spawnHolographicDisplaysHologram(Location location, String text) throws ReflectiveOperationException {
+        Class<?> apiClass = Class.forName("com.gmail.filoghost.holographicdisplays.api.HologramsAPI");
+        Object hologram = apiClass
+                .getMethod("createHologram", org.bukkit.plugin.Plugin.class, Location.class)
+                .invoke(null, RPGFramework.plugin, location);
+        hologram.getClass().getMethod("appendTextLine", String.class).invoke(hologram, text);
+        Bukkit.getScheduler().runTaskLater(RPGFramework.plugin, () -> {
+            try {
+                hologram.getClass().getMethod("delete").invoke(hologram);
+            } catch (ReflectiveOperationException ignored) {
+            }
+        }, 5 * 10L);
+    }
+
+    private void spawnDecentHologramsHologram(String name, Location location, String text) throws ReflectiveOperationException {
+        Class<?> dhApiClass = Class.forName("eu.decentsoftware.holograms.api.DHAPI");
+        dhApiClass
+                .getMethod("createHologram", String.class, Location.class, java.util.List.class)
+                .invoke(null, name, location, java.util.List.of(text));
+        Bukkit.getScheduler().runTaskLater(RPGFramework.plugin, () -> {
+            try {
+                dhApiClass.getMethod("removeHologram", String.class).invoke(null, name);
+            } catch (ReflectiveOperationException ignored) {
+            }
+        }, 5 * 10L);
     }
 }

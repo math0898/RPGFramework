@@ -143,8 +143,8 @@ public class EiryerasBoss extends CustomMob implements Listener {
      * The hunter's knife Eiryeras uses to charge down enemies and deal the finishing blow.
      */
     private static final ItemStack huntersKnife = new ItemBuilder(IRON_SWORD).setDisplayName(" ")
-            .addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, meleeDamage, EquipmentSlots.HAND)
-            .addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, bonusMoveSpeed, EquipmentSlots.HAND).build();
+            .addAttributeModifier(Attribute.ATTACK_DAMAGE, meleeDamage, EquipmentSlots.HAND)
+            .addAttributeModifier(Attribute.MOVEMENT_SPEED, bonusMoveSpeed, EquipmentSlots.HAND).build();
 
     /**
      * Makes sure that items and other things required for the boss fight are set up.
@@ -189,7 +189,7 @@ public class EiryerasBoss extends CustomMob implements Listener {
      */
     public static Collection<? extends ItemStack> getBossItems() {
         ArrayList<ItemStack> items = new ArrayList<>();
-        for (BossDrop b: getBossDrops()) items.add(b.getItem());
+        for (BossDrop b: getBossDrops()) items.add(b.item());
         return items;
     }
 

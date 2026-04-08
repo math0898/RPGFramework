@@ -16,7 +16,7 @@ public class HookManager {
      * Creates a new HookManager.
      */
     private HookManager () {
-        StackMobsHook.getInstance();
+        // Optional hooks are initialized lazily by their own feature entry points.
     }
 
     /**

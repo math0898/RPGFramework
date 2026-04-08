@@ -125,7 +125,7 @@ public class PlayerManager implements Listener {
      * @param p The player who needs to have their health scaled.
      */
     public static void scaleHealth (Player p) {
-        double max = Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue();
+        double max = Objects.requireNonNull(p.getAttribute(Attribute.MAX_HEALTH)).getValue();
         p.setHealthScale(max);
         p.setSaturatedRegenRate(20 * 4); // Number of ticks to gain 1 hp
         p.setUnsaturatedRegenRate(20 * 4);

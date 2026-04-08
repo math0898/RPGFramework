@@ -253,11 +253,11 @@ public class RpgItem { // todo: Custom Model Data support., magic power
         }
         builder.setLore(clone.toArray(new String[0]));
         if (skinUrl != null) builder.setSkullSkinUrl(skinUrl);
-        builder.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, health / 5.0, slot);
-        builder.addAttributeModifier(Attribute.GENERIC_ARMOR, armor, slot);
-        builder.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughness, slot);
-        builder.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, attackSpeed, slot);
-        builder.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, damage / 5.0, slot);
+        builder.addAttributeModifier(Attribute.MAX_HEALTH, health / 5.0, slot);
+        builder.addAttributeModifier(Attribute.ARMOR, armor, slot);
+        builder.addAttributeModifier(Attribute.ARMOR_TOUGHNESS, toughness, slot);
+        builder.addAttributeModifier(Attribute.ATTACK_SPEED, attackSpeed, slot);
+        builder.addAttributeModifier(Attribute.ATTACK_DAMAGE, damage / 5.0, slot);
         if (color != null) builder.setColor(color);
         builder.setUnbreakable(true);
         builder.addItemFlag(ItemFlag.HIDE_ATTRIBUTES);

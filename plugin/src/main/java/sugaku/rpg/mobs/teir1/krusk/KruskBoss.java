@@ -58,30 +58,30 @@ public class KruskBoss extends CustomMob {
     private void init(){
         ItemMeta meta = helm.getItemMeta();
         assert meta != null;
-        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(new UUID(1, 1), "generic.health", 75, ADD_NUMBER, EquipmentSlot.HEAD));
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(new UUID(1, 2), "generic.armor", -0.5, ADD_NUMBER, EquipmentSlot.HEAD));
+        meta.addAttributeModifier(Attribute.MAX_HEALTH, new AttributeModifier(new UUID(1, 1), "generic.health", 75, ADD_NUMBER, EquipmentSlot.HEAD));
+        meta.addAttributeModifier(Attribute.ARMOR, new AttributeModifier(new UUID(1, 2), "generic.armor", -0.5, ADD_NUMBER, EquipmentSlot.HEAD));
         meta.setUnbreakable(true);
         helm.setItemMeta(meta);
 
         meta = chestplate.getItemMeta();
         assert meta != null;
-        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(new UUID(2, 1), "generic.health", 75, ADD_NUMBER, EquipmentSlot.CHEST));
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(new UUID(2, 2), "generic.armor", -0.5, ADD_NUMBER, EquipmentSlot.CHEST));
+        meta.addAttributeModifier(Attribute.MAX_HEALTH, new AttributeModifier(new UUID(2, 1), "generic.health", 75, ADD_NUMBER, EquipmentSlot.CHEST));
+        meta.addAttributeModifier(Attribute.ARMOR, new AttributeModifier(new UUID(2, 2), "generic.armor", -0.5, ADD_NUMBER, EquipmentSlot.CHEST));
         meta.setUnbreakable(true);
         chestplate.setItemMeta(meta);
 
         meta = leggings.getItemMeta();
         assert meta != null;
-        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(new UUID(3, 1), "generic.health", 75, ADD_NUMBER, EquipmentSlot.LEGS));
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(new UUID(3, 2), "generic.armor", -0.5, ADD_NUMBER, EquipmentSlot.LEGS));
+        meta.addAttributeModifier(Attribute.MAX_HEALTH, new AttributeModifier(new UUID(3, 1), "generic.health", 75, ADD_NUMBER, EquipmentSlot.LEGS));
+        meta.addAttributeModifier(Attribute.ARMOR, new AttributeModifier(new UUID(3, 2), "generic.armor", -0.5, ADD_NUMBER, EquipmentSlot.LEGS));
         meta.setUnbreakable(true);
         leggings.setItemMeta(meta);
 
         meta = boots.getItemMeta();
         assert meta != null;
-        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(new UUID(4, 1), "generic.health", 75, ADD_NUMBER, EquipmentSlot.FEET));
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(new UUID(4, 2), "generic.armor", -0.5, ADD_NUMBER, EquipmentSlot.FEET));
-        meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(new UUID(4, 3), "generic.speed", 0.1, ADD_NUMBER, EquipmentSlot.FEET));
+        meta.addAttributeModifier(Attribute.MAX_HEALTH, new AttributeModifier(new UUID(4, 1), "generic.health", 75, ADD_NUMBER, EquipmentSlot.FEET));
+        meta.addAttributeModifier(Attribute.ARMOR, new AttributeModifier(new UUID(4, 2), "generic.armor", -0.5, ADD_NUMBER, EquipmentSlot.FEET));
+        meta.addAttributeModifier(Attribute.MOVEMENT_SPEED, new AttributeModifier(new UUID(4, 3), "generic.speed", 0.1, ADD_NUMBER, EquipmentSlot.FEET));
         meta.setUnbreakable(true);
         boots.setItemMeta(meta);
     }
@@ -95,7 +95,7 @@ public class KruskBoss extends CustomMob {
 
         assert meta != null;
 
-        meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(new UUID(5, 4), "generic.damage", 3.0, ADD_NUMBER, EquipmentSlot.HAND));
+        meta.addAttributeModifier(Attribute.ATTACK_DAMAGE, new AttributeModifier(new UUID(5, 4), "generic.damage", 3.0, ADD_NUMBER, EquipmentSlot.HAND));
         item.setItemMeta(meta);
 
         return item;

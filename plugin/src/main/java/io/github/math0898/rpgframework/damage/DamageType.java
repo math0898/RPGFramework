@@ -10,83 +10,89 @@ public enum DamageType {
     /**
      * Damage from an unspecified source. For the purposes of calculations its considered physical.
      */
-    UNSPECIFIED,
+    UNSPECIFIED(DamageArchetype.PHYSICAL),
 
     // ---- Physical Damages ----
 
     /**
      * Slashing damage like from a sword. Physical.
      */
-    SLASH,
+    SLASH(DamageArchetype.PHYSICAL),
 
     /**
      * Puncture damage like from an arrow or trident. Physical.
      */
-    PUNCTURE,
+    PUNCTURE(DamageArchetype.PHYSICAL),
 
     /**
      * Impact damage like from any kind of strong blunt force. Physical.
      */
-    IMPACT,
+    IMPACT(DamageArchetype.PHYSICAL),
 
     // ---- Elemental Magic ----
 
     /**
      * Fire damage, like from lava, fire, burns, ya know... fire. Magic.
      */
-    FIRE,
+    FIRE(DamageArchetype.MAGIC),
 
     /**
      * Air walks the line of impact to some extent however with an emphasis on it being from a magic source. Magic.
      */
-    AIR,
+    AIR(DamageArchetype.MAGIC),
 
     /**
      * Damage from water magic. Magic.
      */
-    WATER,
+    WATER(DamageArchetype.MAGIC),
 
     /**
      * Earth magic related damage... from well earth magic. Magic.
      */
-    EARTH,
+    EARTH(DamageArchetype.MAGIC),
 
     /**
      * Lighting electricity you know it. Magic.
      */
-    ELECTRIC,
+    ELECTRIC(DamageArchetype.MAGIC),
 
     /**
      * Likely caused by Dryads and thorns. Magic.
      */
-    NATURE,
+    NATURE(DamageArchetype.MAGIC),
 
     /**
      * Ice magic, also related to freezing. Magic.
      */
-    ICE,
+    ICE(DamageArchetype.MAGIC),
 
     // ---- Advanced and Primal Magic ----
 
     /**
      * Abyss... pure primal abyssal magic. Magic.
      */
-    ABYSS,
+    ABYSS(DamageArchetype.MAGIC),
 
     /**
      * Ender magic related to the endermen and end. Magic.
      */
-    ENDER,
+    ENDER(DamageArchetype.MAGIC),
 
     /**
      * In the absence of everything the only thing that remains... pure void magic.
      */
-    VOID,
+    VOID(DamageArchetype.MAGIC),
 
     /**
      * Holy magic is well... holy in nature. Magic.
      */
-    HOLY;
+    HOLY(DamageArchetype.MAGIC);
+
+    private final DamageArchetype archetype;
+
+    DamageType(DamageArchetype archetype) {
+        this.archetype = archetype;
+    }
 
     /**
      * Checks if the damage type is magic or physical.
@@ -95,10 +101,16 @@ public enum DamageType {
      * @return Returns the archetype of damage.
      */
     public static String archetype (DamageType type) {
-        return switch (type) {
-            case VOID, ENDER, ABYSS, ICE, NATURE, ELECTRIC, EARTH, WATER, AIR, FIRE, HOLY -> "MAGIC";
-            case IMPACT, PUNCTURE, SLASH, UNSPECIFIED -> "PHYSICAL";
-        };
+        return type.archetype.name();
+    }
+
+    /**
+     * Strongly typed archetype accessor.
+     *
+     * @return The damage archetype for this type.
+     */
+    public DamageArchetype getArchetype() {
+        return archetype;
     }
 
     /**
@@ -107,9 +119,6 @@ public enum DamageType {
      * @return True if this is a physical attack.
      */
     public boolean isPhysical () {
-        return switch (this) {
-            case IMPACT, PUNCTURE, SLASH, UNSPECIFIED -> true;
-            default -> false;
-        };
+        return archetype == DamageArchetype.PHYSICAL;
     }
 }

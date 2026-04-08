@@ -23,6 +23,7 @@ import java.util.Random;
  * @author Sugaku
  */
 public class CustomMobEntry { // TODO: USE /particle minecraft:copper_fire_flame ~ ~ ~3
+    private static final Random RANDOM = new Random();
 
     /**
      * The helmet of the custom mob.
@@ -185,7 +186,7 @@ public class CustomMobEntry { // TODO: USE /particle minecraft:copper_fire_flame
         switch (instanceClass) {
             case "SeignourBoss" -> new SeignourBoss(entity, namespaceKey);
             default -> new ActiveCustomMob(entity, namespaceKey);
-        }
+        };
     }
 
     /**
@@ -198,9 +199,10 @@ public class CustomMobEntry { // TODO: USE /particle minecraft:copper_fire_flame
         if (world == null) return;
         for (MobDrop drop : normalDrops)
             world.dropItemNaturally(location, drop.getItemStack());
-//        double roll = new Random().nextDouble();
+        if (limitedDrops.isEmpty()) return;
+//        double roll = RANDOM.nextDouble();
 //        double cumulative = 0; // todo: Implement weighted drop chances.
-        world.dropItemNaturally(location, limitedDrops.get(new Random().nextInt(0, limitedDrops.size())).getItemStack());
+        world.dropItemNaturally(location, limitedDrops.get(RANDOM.nextInt(0, limitedDrops.size())).getItemStack());
 //        for (MobDrop drop : limitedDrops) {
 //            if (cumulative + roll >= drop.getChance()) {
 //                world.dropItemNaturally(location, drop.getItemStack());
