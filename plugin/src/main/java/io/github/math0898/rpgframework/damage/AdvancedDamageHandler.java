@@ -1,8 +1,5 @@
 package io.github.math0898.rpgframework.damage;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import eu.decentsoftware.holograms.api.DHAPI;
 import io.github.math0898.rpgframework.RPGFramework;
 import io.github.math0898.rpgframework.damage.events.AdvancedDamageEvent;
 import io.github.math0898.rpgframework.damage.events.LethalDamageEvent;
