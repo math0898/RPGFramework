@@ -123,22 +123,7 @@ public final class ItemsManager {
      * @return The AttributeModifier with a unique UUID.
      */
     public static AttributeModifier attributeModifier(Attribute a, double value, EquipmentSlot slot) {
-        int mod = switch (a) {
-            case GENERIC_MAX_HEALTH -> 1;
-            case GENERIC_ARMOR -> 2;
-            case GENERIC_ARMOR_TOUGHNESS -> 3;
-            case GENERIC_ATTACK_DAMAGE -> 4;
-            case GENERIC_KNOCKBACK_RESISTANCE -> 5;
-            case GENERIC_MOVEMENT_SPEED -> 6;
-            case GENERIC_LUCK -> 7;
-//            case HORSE_JUMP_STRENGTH -> 8;
-            case GENERIC_ATTACK_SPEED -> 9;
-            case GENERIC_ATTACK_KNOCKBACK -> 10;
-            case GENERIC_FLYING_SPEED -> 11;
-            case GENERIC_FOLLOW_RANGE -> 12;
-            case ZOMBIE_SPAWN_REINFORCEMENTS -> 13;
-            default -> 0;
-        };
+        int mod = attributeId(a);
         int slotN = switch (slot) {
             case FEET -> 1;
             case LEGS -> 2;
@@ -147,8 +132,25 @@ public final class ItemsManager {
             case HAND -> 5;
             case OFF_HAND -> 6;
             case BODY -> 7;
+            default -> 0;
         };
         return new AttributeModifier(new UUID(slotN, mod), a.toString(), value, AttributeModifier.Operation.ADD_NUMBER, slot);
+    }
+
+    private static int attributeId(Attribute attribute) {
+        if (attribute == Attribute.MAX_HEALTH) return 1;
+        if (attribute == Attribute.ARMOR) return 2;
+        if (attribute == Attribute.ARMOR_TOUGHNESS) return 3;
+        if (attribute == Attribute.ATTACK_DAMAGE) return 4;
+        if (attribute == Attribute.KNOCKBACK_RESISTANCE) return 5;
+        if (attribute == Attribute.MOVEMENT_SPEED) return 6;
+        if (attribute == Attribute.LUCK) return 7;
+        if (attribute == Attribute.ATTACK_SPEED) return 9;
+        if (attribute == Attribute.ATTACK_KNOCKBACK) return 10;
+        if (attribute == Attribute.FLYING_SPEED) return 11;
+        if (attribute == Attribute.FOLLOW_RANGE) return 12;
+        if (attribute == Attribute.SPAWN_REINFORCEMENTS) return 13;
+        return 0;
     }
 
     /**
@@ -208,7 +210,7 @@ public final class ItemsManager {
         assert meta != null;
         // TODO: This is very specific to make RPG compile and run successfully.
         for (int j = 0; j < attributes.length; j++) {
-            meta.addAttributeModifier(j == 0 ? Attribute.GENERIC_ATTACK_DAMAGE : Attribute.GENERIC_MOVEMENT_SPEED, attributes[j]);
+            meta.addAttributeModifier(j == 0 ? Attribute.ATTACK_DAMAGE : Attribute.MOVEMENT_SPEED, attributes[j]);
         }
         item.setItemMeta(meta);
         return item;

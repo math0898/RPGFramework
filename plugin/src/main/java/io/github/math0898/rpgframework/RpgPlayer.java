@@ -298,30 +298,30 @@ public class RpgPlayer {
                 toughnessMod += item.getToughness();
                 attackSpeedMod += item.getAttackSpeed();
             }
-            AttributeInstance healthInstance = bukkitPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-            AttributeInstance damageInstance = bukkitPlayer.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
-            AttributeInstance armorInstance = bukkitPlayer.getAttribute(Attribute.GENERIC_ARMOR);
-            AttributeInstance attackSpeed = bukkitPlayer.getAttribute(Attribute.GENERIC_ATTACK_SPEED);
-            AttributeInstance toughnessInstance = bukkitPlayer.getAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS);
+            AttributeInstance healthInstance = bukkitPlayer.getAttribute(Attribute.MAX_HEALTH);
+            AttributeInstance damageInstance = bukkitPlayer.getAttribute(Attribute.ATTACK_DAMAGE);
+            AttributeInstance armorInstance = bukkitPlayer.getAttribute(Attribute.ARMOR);
+            AttributeInstance attackSpeed = bukkitPlayer.getAttribute(Attribute.ATTACK_SPEED);
+            AttributeInstance toughnessInstance = bukkitPlayer.getAttribute(Attribute.ARMOR_TOUGHNESS);
             if (healthMod != 0 && healthInstance != null) {
-                healthInstance.removeModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_MAX_HEALTH, healthMod / 5.0, null));
-                healthInstance.addModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_MAX_HEALTH, healthMod / 5.0, null));
+                healthInstance.removeModifier(AttributeBuilder.attributeModifier(Attribute.MAX_HEALTH, healthMod / 5.0, null));
+                healthInstance.addModifier(AttributeBuilder.attributeModifier(Attribute.MAX_HEALTH, healthMod / 5.0, null));
             }
             if (damageMod != 0 && damageInstance != null) { // todo: Requires more testing damage might be bugged or interacting funny.
-                damageInstance.removeModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, damageMod / 5.0, null));
-                damageInstance.addModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, damageMod / 5.0, null));
+                damageInstance.removeModifier(AttributeBuilder.attributeModifier(Attribute.ATTACK_DAMAGE, damageMod / 5.0, null));
+                damageInstance.addModifier(AttributeBuilder.attributeModifier(Attribute.ATTACK_DAMAGE, damageMod / 5.0, null));
             }
             if (armorMod != 0 && armorInstance != null) {
-                armorInstance.removeModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_ARMOR, armorMod, null));
-                armorInstance.addModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_ARMOR, armorMod, null));
+                armorInstance.removeModifier(AttributeBuilder.attributeModifier(Attribute.ARMOR, armorMod, null));
+                armorInstance.addModifier(AttributeBuilder.attributeModifier(Attribute.ARMOR, armorMod, null));
             }
             if (attackSpeedMod != 0 && attackSpeed != null) {
-                attackSpeed.removeModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_ATTACK_SPEED, attackSpeedMod, null));
-                attackSpeed.addModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_ATTACK_SPEED, attackSpeedMod, null));
+                attackSpeed.removeModifier(AttributeBuilder.attributeModifier(Attribute.ATTACK_SPEED, attackSpeedMod, null));
+                attackSpeed.addModifier(AttributeBuilder.attributeModifier(Attribute.ATTACK_SPEED, attackSpeedMod, null));
             }
             if (toughnessMod != 0 && toughnessInstance != null) {
-                toughnessInstance.removeModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessMod, null));
-                toughnessInstance.addModifier(AttributeBuilder.attributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessMod, null));
+                toughnessInstance.removeModifier(AttributeBuilder.attributeModifier(Attribute.ARMOR_TOUGHNESS, toughnessMod, null));
+                toughnessInstance.addModifier(AttributeBuilder.attributeModifier(Attribute.ARMOR_TOUGHNESS, toughnessMod, null));
             }
             bukkitPlayer.setHealthScale(20);
             PlayerManager.scaleRegen(bukkitPlayer, 1);
@@ -332,8 +332,8 @@ public class RpgPlayer {
         AttributeModifier healthMod = new AttributeModifier(new UUID(100, 234), "", healthBonus(getLevel()) / RPG_TO_MC_SCALAR, AttributeModifier.Operation.ADD_NUMBER);
         // Every level that ends in 5/10.
         AttributeModifier damageMod = new AttributeModifier(new UUID(100, 235), "", damageBonus(getLevel()) / RPG_TO_MC_SCALAR, AttributeModifier.Operation.ADD_NUMBER);
-        AttributeInstance healthInstance = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-        AttributeInstance damageInstance = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+        AttributeInstance healthInstance = player.getAttribute(Attribute.MAX_HEALTH);
+        AttributeInstance damageInstance = player.getAttribute(Attribute.ATTACK_DAMAGE);
         if (healthInstance != null) {
             Collection<AttributeModifier> modifiers = healthInstance.getModifiers();
             if (!modifiers.isEmpty())
@@ -554,7 +554,7 @@ public class RpgPlayer {
      * @return The maximum health of this player.
      */
     public double getMaxHealth () {
-        AttributeInstance instance = getBukkitPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        AttributeInstance instance = getBukkitPlayer().getAttribute(Attribute.MAX_HEALTH);
         if (instance == null) return 20.0;
         return instance.getValue();
     }

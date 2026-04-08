@@ -15,7 +15,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -123,17 +122,41 @@ public class AdvancedDamageHandler implements Listener {
         String text = ChatColor.RED + "☆" + ChatColor.YELLOW + String.format("%.1f", damage) + ChatColor.RED + "☆";
         try {
             if (RPGFramework.useHolographicDisplays) {
-                Hologram hologram = HologramsAPI.createHologram(RPGFramework.plugin, locale);
-                hologram.appendTextLine(text);
-                Bukkit.getScheduler().runTaskLater(RPGFramework.plugin, hologram::delete, 5*10);
+                spawnHolographicDisplaysHologram(locale, text);
             }
             if (RPGFramework.useDecentHolograms) {
                 String name = "rpgframeworkdamage" + hologramCount.getAndAdd(1L);
-                DHAPI.createHologram(name, locale, Collections.singletonList(text));
-                Bukkit.getScheduler().runTaskLater(RPGFramework.plugin, () -> DHAPI.removeHologram(name), 5*10);
+                spawnDecentHologramsHologram(name, locale, text);
             }
-        } catch (NoClassDefFoundError error) {
+        } catch (ReflectiveOperationException | NoClassDefFoundError error) {
             RPGFramework.getInstance().getLogger().log(Level.WARNING, error.getMessage());
         }
+    }
+
+    private void spawnHolographicDisplaysHologram(Location location, String text) throws ReflectiveOperationException {
+        Class<?> apiClass = Class.forName("com.gmail.filoghost.holographicdisplays.api.HologramsAPI");
+        Object hologram = apiClass
+                .getMethod("createHologram", org.bukkit.plugin.Plugin.class, Location.class)
+                .invoke(null, RPGFramework.plugin, location);
+        hologram.getClass().getMethod("appendTextLine", String.class).invoke(hologram, text);
+        Bukkit.getScheduler().runTaskLater(RPGFramework.plugin, () -> {
+            try {
+                hologram.getClass().getMethod("delete").invoke(hologram);
+            } catch (ReflectiveOperationException ignored) {
+            }
+        }, 5 * 10L);
+    }
+
+    private void spawnDecentHologramsHologram(String name, Location location, String text) throws ReflectiveOperationException {
+        Class<?> dhApiClass = Class.forName("eu.decentsoftware.holograms.api.DHAPI");
+        dhApiClass
+                .getMethod("createHologram", String.class, Location.class, java.util.List.class)
+                .invoke(null, name, location, java.util.List.of(text));
+        Bukkit.getScheduler().runTaskLater(RPGFramework.plugin, () -> {
+            try {
+                dhApiClass.getMethod("removeHologram", String.class).invoke(null, name);
+            } catch (ReflectiveOperationException ignored) {
+            }
+        }, 5 * 10L);
     }
 }

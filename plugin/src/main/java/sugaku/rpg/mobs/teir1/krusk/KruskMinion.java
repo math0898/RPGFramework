@@ -44,16 +44,16 @@ public class KruskMinion extends CustomMob {
         ItemBuilder helmet = new ItemBuilder(Material.LEATHER_HELMET).setUnbreakable(true);
         if (i > 5) {
             setBaseHealth(60);
-            boots.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, 0.12, EquipmentSlots.FEET);
-            boots.addAttributeModifier(Attribute.GENERIC_ARMOR, -17, EquipmentSlots.FEET);
-            main.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 1.0, EquipmentSlots.HAND);
+            boots.addAttributeModifier(Attribute.MOVEMENT_SPEED, 0.12, EquipmentSlots.FEET);
+            boots.addAttributeModifier(Attribute.ARMOR, -17, EquipmentSlots.FEET);
+            main.addAttributeModifier(Attribute.ATTACK_DAMAGE, 1.0, EquipmentSlots.HAND);
             setBaseHealth(60);
          } else {
-            boots.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, 0.18, EquipmentSlots.FEET);
-            boots.addAttributeModifier(Attribute.GENERIC_ARMOR, -11, EquipmentSlots.FEET);
+            boots.addAttributeModifier(Attribute.MOVEMENT_SPEED, 0.18, EquipmentSlots.FEET);
+            boots.addAttributeModifier(Attribute.ARMOR, -11, EquipmentSlots.FEET);
             leggings.setMaterial(Material.LEATHER_LEGGINGS);
             chestplate.setMaterial(Material.IRON_CHESTPLATE);
-            main.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, 2.5, EquipmentSlots.HAND);
+            main.addAttributeModifier(Attribute.ATTACK_DAMAGE, 2.5, EquipmentSlots.HAND);
         }
         setBoots(boots.build());
         setLeggings(leggings.build());
