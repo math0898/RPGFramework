@@ -88,19 +88,32 @@ public class PartyCommand extends BetterCommand {
     @Override
     public List<String> simplifiedTab (CommandSender sender, String[] args) {
         ArrayList<String> list = new ArrayList<>();
+        if (args.length == 0) return list;
+
         if (args.length == 1) {
-            String[] Options = { "accept", "chat", "info", "invite", "kick", "leave", "list", "promote", "summon" };
-            if (!args[0].isEmpty()) { for (String o: Options) if (o.toLowerCase().startsWith(args[0].toLowerCase())) list.add(o); }
-            else list.addAll(Arrays.asList(Options));
-        } else if (args[1].equalsIgnoreCase("invite")) Bukkit.getOnlinePlayers().forEach((p) -> list.add(p.getName()));
-        else if (args[1].equalsIgnoreCase("kick") || args[1].equalsIgnoreCase("promote")) {
-            if (sender instanceof Player player) {
+            String[] options = { "accept", "chat", "info", "invite", "kick", "leave", "list", "promote", "summon" };
+            if (!args[0].isEmpty()) {
+                for (String option : options)
+                    if (option.toLowerCase().startsWith(args[0].toLowerCase()))
+                        list.add(option);
+            }
+            else list.addAll(Arrays.asList(options));
+            return list;
+        }
+
+        switch (args[0].toLowerCase()) {
+            case "invite" -> Bukkit.getOnlinePlayers().forEach((p) -> list.add(p.getName()));
+            case "kick", "promote" -> {
+                if (!(sender instanceof Player player)) return list;
                 RpgPlayer rpgPlayer = PlayerManager.getPlayer(player.getUniqueId());
-                assert rpgPlayer != null;
+                if (rpgPlayer == null) return list;
                 Party party = rpgPlayer.getParty();
                 if (party != null) party.getPlayers().forEach((p) -> list.add(p.getName()));
             }
+            default -> {
+            }
         }
+
         return list;
     }
 

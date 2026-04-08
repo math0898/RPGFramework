@@ -136,6 +136,6 @@ public class PartyManager implements Listener {
         else return;
         Party a = findParty(attacker);
         Party v = findParty(victim);
-        if (a != null && v != null) if (a.equals(v)) event.setCancelled(true);
+        if (Objects.equals(a, v)) event.setCancelled(true);
     }
 }
