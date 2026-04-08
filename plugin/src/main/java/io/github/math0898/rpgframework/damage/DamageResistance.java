@@ -10,27 +10,33 @@ public enum DamageResistance {
     /**
      * Nullifies all damage.
      */
-    IMMUNITY,
+    IMMUNITY(-2),
 
     /**
      * Halves the damage taken.
      */
-    RESISTANCE,
+    RESISTANCE(-1),
 
     /**
      * Applies no modifier to damage taken.
      */
-    NORMAL,
+    NORMAL(0),
 
     /**
      * Increases the damage taken by 50% for a total of 150%.
      */
-    SUSCEPTIBILITY,
+    SUSCEPTIBILITY(1),
 
     /**
      * Doubles the damage taken.
      */
-    VULNERABILITY;
+    VULNERABILITY(2);
+
+    private final int severity;
+
+    DamageResistance (int severity) {
+        this.severity = severity;
+    }
 
     /**
      * Merges two damage resistance levels into one damage resistance level.
@@ -40,9 +46,7 @@ public enum DamageResistance {
      * @return The merged resistance.
      */
     public static DamageResistance mergeResistances (DamageResistance resistance1, DamageResistance resistance2) {
-        int i = getInt(resistance1);
-        int j = getInt(resistance2);
-        return getResistance(i + j);
+        return fromSeverity(resistance1.severity + resistance2.severity);
     }
 
     /**
@@ -52,13 +56,7 @@ public enum DamageResistance {
      * @return The int value of the resistance.
      */
     public static int getInt (DamageResistance resistance) {
-        return switch (resistance) {
-            case IMMUNITY -> -2;
-            case RESISTANCE -> -1;
-            case NORMAL -> 0;
-            case SUSCEPTIBILITY -> 1;
-            case VULNERABILITY -> 2;
-        };
+        return resistance.severity;
     }
 
     /**
@@ -68,15 +66,18 @@ public enum DamageResistance {
      * @return The enum value of the integer.
      */
     public static DamageResistance getResistance (int integer) {
-        if (integer <= -2) return DamageResistance.IMMUNITY;
-        else if (integer >= 2) return DamageResistance.VULNERABILITY;
-        return switch (integer) {
-            case -1 -> DamageResistance.RESISTANCE;
-            case 0 -> DamageResistance.NORMAL;
-            case 1 -> DamageResistance.SUSCEPTIBILITY;
-            default ->
-                    //There's nothing to do. We've handled (-\infinity, \infinity)
-                    null;
+        return fromSeverity(integer);
+    }
+
+    private static DamageResistance fromSeverity (int severity) {
+        if (severity <= IMMUNITY.severity) return IMMUNITY;
+        if (severity >= VULNERABILITY.severity) return VULNERABILITY;
+
+        return switch (severity) {
+            case -1 -> RESISTANCE;
+            case 0 -> NORMAL;
+            case 1 -> SUSCEPTIBILITY;
+            default -> throw new IllegalStateException("Unhandled resistance severity: " + severity);
         };
     }
 }

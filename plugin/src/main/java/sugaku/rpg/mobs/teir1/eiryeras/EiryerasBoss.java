@@ -189,7 +189,7 @@ public class EiryerasBoss extends CustomMob implements Listener {
      */
     public static Collection<? extends ItemStack> getBossItems() {
         ArrayList<ItemStack> items = new ArrayList<>();
-        for (BossDrop b: getBossDrops()) items.add(b.getItem());
+        for (BossDrop b: getBossDrops()) items.add(b.item());
         return items;
     }
 

@@ -265,10 +265,10 @@ public abstract class CustomMob {
         double check = 0.0;
         while (true) {
             for (BossDrop i : bossDrops) {
-                if (roll < check + getRate(i.getRarity(), rarity)) {
-                    world.dropItemNaturally(event.getEntity().getLocation(), i.getItem());
+                if (roll < check + getRate(i.rarity(), rarity)) {
+                    world.dropItemNaturally(event.getEntity().getLocation(), i.item());
                     return;
-                } else check += getRate(i.getRarity(), rarity);
+                } else check += getRate(i.rarity(), rarity);
             }
             roll = rand.nextDouble();
         }
