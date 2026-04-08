@@ -14,6 +14,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static io.github.math0898.rpgframework.RPGFramework.plugin;
 
@@ -126,6 +127,6 @@ public class PartyManager implements Listener {
         else return;
         Party a = findParty(attacker);
         Party v = findParty(victim);
-        if (a != null && v != null) if (a.equals(v)) event.setCancelled(true);
+        if (Objects.equals(a, v)) event.setCancelled(true);
     }
 }
