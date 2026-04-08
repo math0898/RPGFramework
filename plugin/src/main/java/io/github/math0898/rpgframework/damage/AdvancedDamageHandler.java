@@ -7,15 +7,12 @@ import io.github.math0898.rpgframework.damage.events.VerifiedDeathEvent;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
@@ -27,6 +24,7 @@ import java.util.logging.Level;
  * @author Sugaku
  */
 public class AdvancedDamageHandler implements Listener {
+    private static final DamageCalculator DAMAGE_CALCULATOR = new DamageCalculator();
 
     /**
      * This is an internal counter to prevent hologram name collisions.
@@ -44,48 +42,35 @@ public class AdvancedDamageHandler implements Listener {
         AdvancedDamageEvent advancedDamageEvent = new AdvancedDamageEvent(event);
         Bukkit.getPluginManager().callEvent(advancedDamageEvent); //Call the event
 
-        double damage = damageCalculation(advancedDamageEvent);
-        event.setDamage(damage/5.00);
-
-        if (RPGFramework.useHolographicDisplays || RPGFramework.useDecentHolograms)
-            displayDamage(damage, event.getEntity().getLocation());
-
         if (advancedDamageEvent.isCancelled()) {
             event.setCancelled(true);
             return;
         }
 
-        Entity entity = event.getEntity(); // todo: Clean up.
-        event.getFinalDamage();
-        if (entity instanceof LivingEntity living)
-            if (living.getHealth() <= event.getFinalDamage()) {
-                LethalDamageEvent lethalDamageEvent = new LethalDamageEvent(advancedDamageEvent);
-                Bukkit.getPluginManager().callEvent(lethalDamageEvent);
-                if (lethalDamageEvent.isCancelled()) {
-                    event.setCancelled(true);
-                    return;
-                }
+        double damage = damageCalculation(advancedDamageEvent);
+        event.setDamage(damage / 5.00);
 
-                VerifiedDeathEvent verifiedDeathEvent = new VerifiedDeathEvent(advancedDamageEvent);
-                Bukkit.getPluginManager().callEvent(verifiedDeathEvent);
-            }
-    }
+        if (RPGFramework.useHolographicDisplays || RPGFramework.useDecentHolograms) {
+            displayDamage(damage, event.getEntity().getLocation());
+        }
 
-    /**
-     * A helper method to apply resistance levels to the given damage.
-     *
-     * @param damage The damage value.
-     * @param resistance The resistance level.
-     * @return The damage value after considering resistance.
-     */
-    private static double applyResistance (double damage, @NotNull DamageResistance resistance) {
-        return switch (resistance) {
-            case IMMUNITY -> 0.00;
-            case RESISTANCE -> damage * 0.50;
-            case NORMAL -> damage;
-            case SUSCEPTIBILITY -> damage * 1.50;
-            case VULNERABILITY -> damage * 2.00;
-        };
+        if (!(event.getEntity() instanceof LivingEntity living)) {
+            return;
+        }
+
+        if (living.getHealth() > event.getFinalDamage()) {
+            return;
+        }
+
+        LethalDamageEvent lethalDamageEvent = new LethalDamageEvent(advancedDamageEvent);
+        Bukkit.getPluginManager().callEvent(lethalDamageEvent);
+        if (lethalDamageEvent.isCancelled()) {
+            event.setCancelled(true);
+            return;
+        }
+
+        VerifiedDeathEvent verifiedDeathEvent = new VerifiedDeathEvent(advancedDamageEvent);
+        Bukkit.getPluginManager().callEvent(verifiedDeathEvent);
     }
 
     /**
@@ -95,17 +80,7 @@ public class AdvancedDamageHandler implements Listener {
      * @return The damage that should be dealt to the victim.
      */
     public static double damageCalculation (AdvancedDamageEvent advancedDamageEvent) {
-        double damage = 0.00;
-        Map<DamageType, Double> damages = advancedDamageEvent.getDamages();
-        Map<DamageType, DamageResistance> resistance = advancedDamageEvent.getResistances();
-        for (DamageType type: damages.keySet()) {
-            double dmg = damages.get(type);
-            if (DamageType.archetype(type).equalsIgnoreCase("MAGIC")) dmg = dmg * (1.00 - advancedDamageEvent.getMagicResistance());
-            else if (DamageType.archetype(type).equalsIgnoreCase("PHYSICAL")) dmg = dmg * (1.00 - advancedDamageEvent.getPhysicalResistance());
-            dmg = applyResistance(dmg, resistance.get(type));
-            damage += dmg;
-        }
-        return damage;
+        return DAMAGE_CALCULATOR.calculate(advancedDamageEvent);
     }
 
     /**
