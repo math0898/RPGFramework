@@ -9,6 +9,8 @@ import org.bukkit.potion.PotionEffect;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Describes a singular party that may, unless the leader is an admin, contain up to 6 players. This class has some
@@ -18,6 +20,11 @@ import java.util.List;
  * @author Sugaku
  */
 public class Party {
+
+    /**
+     * Stable immutable identifier used for party identity and logical equality.
+     */
+    private final UUID partyId = UUID.randomUUID();
 
     /**
      * An ArrayList of players that are currently in this party.
@@ -42,6 +49,15 @@ public class Party {
     public Party (Player l) {
         leader = l;
         players.add(l);
+    }
+
+    /**
+     * Accessor method for this party's stable immutable identity.
+     *
+     * @return Unique identifier for this party.
+     */
+    public UUID getPartyId () {
+        return partyId;
     }
 
     /**
@@ -143,10 +159,19 @@ public class Party {
      */
     @Override
     public boolean equals (Object o) {
-        if (o == null) return false;
-        else if (o instanceof Party rhs) {
-            return this.leader.equals(rhs.leader);
-        } else return false;
+        if (this == o) return true;
+        if (!(o instanceof Party rhs)) return false;
+        return partyId.equals(rhs.partyId);
+    }
+
+    /**
+     * Hash code implementation consistent with {@link #equals(Object)}.
+     *
+     * @return Hash code for this Party identity.
+     */
+    @Override
+    public int hashCode () {
+        return Objects.hash(partyId);
     }
 
     /**
