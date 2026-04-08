@@ -13,8 +13,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static io.github.math0898.rpgframework.RPGFramework.plugin;
 
@@ -28,12 +30,12 @@ public class PartyManager implements Listener {
     /**
      * The list of players who are currently using party chat.
      */
-    private static final ArrayList<Player> partyChatPlayers = new ArrayList<>();
+    private static final Set<Player> partyChatPlayers = ConcurrentHashMap.newKeySet();
 
     /**
      * The list of currently active players. When the last player leaves a party it is removed from this list.
      */
-    private static final ArrayList<Party> parties = new ArrayList<>();
+    private static final List<Party> parties = new CopyOnWriteArrayList<>();
 
     /**
      * Initializes the party manager so that it can listen to events.
@@ -97,15 +99,22 @@ public class PartyManager implements Listener {
         Player p = event.getPlayer();
         if (partyChatPlayers.contains(p)) {
             event.setCancelled(true);
-            Party party = findParty(p);
-            if (party == null) return;
-            RpgPlayer rpg = PlayerManager.getPlayer(p.getUniqueId());
-            String prefix = ChatColor.GREEN + p.getName() + ChatColor.DARK_GRAY + " > " + ChatColor.LIGHT_PURPLE;
-            if (rpg == null) prefix = ChatColor.DARK_GRAY + "[" + Classes.NONE.getFormattedName() + ChatColor.DARK_GRAY + "] " + prefix;
-            else prefix = ChatColor.DARK_GRAY + "[" + rpg.getCombatClass().getFormattedName() + ChatColor.DARK_GRAY + "] " + prefix;
-            party.sendAll(prefix + event.getMessage());
-            Bukkit.getConsoleSender().sendMessage(prefix + event.getMessage());
+            if (event.isAsynchronous()) {
+                Bukkit.getScheduler().runTask(plugin, () -> sendPartyMessage(p, event.getMessage()));
+            } else sendPartyMessage(p, event.getMessage());
         }
+    }
+
+    private void sendPartyMessage (Player player, String message) {
+        Party party = findParty(player);
+        if (party == null) return;
+        RpgPlayer rpg = PlayerManager.getPlayer(player.getUniqueId());
+        String prefix = ChatColor.GREEN + player.getName() + ChatColor.DARK_GRAY + " > " + ChatColor.LIGHT_PURPLE;
+        if (rpg == null)
+            prefix = ChatColor.DARK_GRAY + "[" + Classes.NONE.getFormattedName() + ChatColor.DARK_GRAY + "] " + prefix;
+        else prefix = ChatColor.DARK_GRAY + "[" + rpg.getCombatClass().getFormattedName() + ChatColor.DARK_GRAY + "] " + prefix;
+        party.sendAll(prefix + message);
+        Bukkit.getConsoleSender().sendMessage(prefix + message);
     }
 
     /**
