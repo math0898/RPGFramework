@@ -58,11 +58,18 @@ public class StatsGUI extends AbstractGUI {
                 .setOwningPlayer(rpgPlayer.getUuid())
                 .setDisplayName(rpgPlayer.getPlayerRarity() + rpgPlayer.getName())
                 .setLore(new String[] { // todo: Make these colors match item colors.
-                        ChatColor.RED + "Health: " + (rpgPlayer.getCurrentHealth() * 5.0) + " / " + (rpgPlayer.getMaxHealth() * 5.0),
+                        ChatColor.RED + "Health: " + (long) (rpgPlayer.getCurrentHealth() * 5.0) + " / " + (long) (rpgPlayer.getMaxHealth() * 5.0),
                         ChatColor.DARK_GREEN + "Class: " + rpgPlayer.getCombatClass().getFormattedName(),
                         ChatColor.AQUA + "Current Level: " + rpgPlayer.getLevel() + " (" + rpgPlayer.getExperience() + ")",
                         ChatColor.YELLOW + "Gear Score: " + rpgPlayer.getGearScore()
                 }).build());
+
+        if (player.getUniqueId() == rpgPlayer.getUuid()) {
+            inv.setItem(29, new ItemBuilder(Material.IRON_CHESTPLATE).setDisplayName("Increase Health").build());
+            inv.setItem(33, new ItemBuilder(Material.IRON_SWORD).setDisplayName("Increase Damage").build());
+            inv.setItem(40, new ItemBuilder(Material.BARRIER).setDisplayName("Reset Points").build());
+        }
+
         // todo: Boss kill statistics.
         player.openInventory(inv);
     }
@@ -75,6 +82,18 @@ public class StatsGUI extends AbstractGUI {
     @Override
     public void onClick (InventoryClickEvent event) {
         event.setCancelled(true);
+        if (event.getClickedInventory() == null) return;
+        Inventory inv = event.getClickedInventory();
+        if (inv.getHolder() instanceof Player player) {
+            RpgPlayer rpgPlayer = PlayerManager.getPlayer(player.getUniqueId());
+            if (rpgPlayer == null) return;
+            switch (event.getSlot()) { // todo: These should be inactive if player is not the player who's stats are showing.
+                case 29 -> rpgPlayer.allocatePoint("health");
+                case 33 -> rpgPlayer.allocatePoint("damage");
+                case 40 -> rpgPlayer.resetPoints();
+            }
+            // todo: Refresh inventory.
+        }
     }
 
     /**

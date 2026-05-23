@@ -54,6 +54,16 @@ public class RpgPlayer {
     private static final long TIME_UNTIL_OUT_OF_COMBAT = 10000;
 
     /**
+     * The amount of health granted per talent point spent on maximum health.
+     */
+    private static final double HEALTH_PER_POINT = 5;
+
+    /**
+     * The amount of base damage granted per talent point spent on damage.
+     */
+    private static final double DAMAGE_PER_POINT = 1;
+
+    /**
      * A list of artifacts that have been collected by this player.
      * -- GETTER --
      *  Accessor method for the artifact collection of this player.
@@ -75,9 +85,6 @@ public class RpgPlayer {
      * The Entity that last successfully hit this player.
      * -- GETTER --
      *  An accessor method to get the last Entity that attacked this Player.
-     *
-     * @return The entity that last attacked the Player.
-
      */
     @Getter
     private Entity lastHitBy = null;
@@ -161,6 +168,22 @@ public class RpgPlayer {
      */
     @Getter
     private final String name;
+
+    /**
+     * The number of talent points spent on increasing max health.
+     * -- GETTER --
+     * Gets the number of points that this player has put into health.
+     */
+    @Getter
+    private long healthTalentPoints = 0;
+
+    /**
+     * The number of talent points spent on increasing base damage.
+     * -- GETTER --
+     * Gets the number of points that this player has put into damage.
+     */
+    @Getter
+    private long damageTalentPoints = 0;
 
     /**
      * Default constructor for an RpgPlayer object. Caches the given Player object and grabs the name and UUID.
@@ -250,32 +273,59 @@ public class RpgPlayer {
         refresh();
         getBukkitPlayer().playSound(getBukkitPlayer(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.5f, 1.0f);
         sendMessage(ChatColor.GREEN + "You've leveled up! Level: " + getLevel());
-        if (level % 5 != 0)
-            sendMessage(StringUtils.convertHexCodes("#F454DA") + " +5 Health");
-        else
-            sendMessage(StringUtils.convertHexCodes("#D93747") + " +1 Damage");
+        sendMessage(ChatColor.DARK_AQUA + "You have " + ((getLevel() - healthTalentPoints) - damageTalentPoints) + " unspent points!");
     }
 
     /**
-     * Determines how much of a health bonus a player of the given level should have. These are RPG numbers that are
-     * then scaled down.
+     * Attempts to allocate an additional point to health.
      *
-     * @param level The player's current level.
+     * @param field The field to allocate a talent point to.
+     */
+    public void allocatePoint (String field) {
+
+        if (getLevel() < healthTalentPoints + damageTalentPoints + 1) {
+            sendMessage(ChatColor.RED + "You do not have enough points to do that!");
+            return;
+        }
+
+        if (field.equalsIgnoreCase("health")) {
+            healthTalentPoints++;
+            sendMessage(ChatColor.GREEN + "You feel healthier now! +" + StringUtils.convertHexCodes("#F454DA") + HEALTH_PER_POINT + " Health");
+        }
+        else if (field.equalsIgnoreCase("damage")) {
+            damageTalentPoints++;
+            sendMessage(ChatColor.GREEN + "Your attacks hit harder! +" + StringUtils.convertHexCodes("#D93747") + DAMAGE_PER_POINT + " Damage");
+        }
+
+        refresh();
+    }
+
+    /**
+     * Resets any point allocations that this player has made.
+     */
+    public void resetPoints () {
+        healthTalentPoints = 0;
+        damageTalentPoints = 0;
+        sendMessage(ChatColor.GREEN + "You've reset all your base talent points.");
+        refresh();
+    }
+
+    /**
+     * Determines how much of a health bonus this player should have. These are RPG numbers that are then scaled down.
+     *
      * @return The bonus health that should be added onto the player's health.
      */
-    private static double healthBonus (long level) {
-        return ((level - 1) - (level / 5.0)) * 5;
+    private double healthBonus () {
+        return healthTalentPoints * HEALTH_PER_POINT;
     }
 
     /**
-     * Determines how much of a damage bonus a player of the given level should have. These are RPG numbers that are
-     * then scaled down.
+     * Determines how much of a damage bonus this player should have. These are RPG numbers that are then scaled down.
      *
-     * @param level The player's current level.
      * @return The bonus damage that should be added onto the player's attacks.
      */
-    private static double damageBonus (long level) {
-        return level / 5;
+    private double damageBonus () {
+        return damageTalentPoints * DAMAGE_PER_POINT;
     }
 
     /**
@@ -329,9 +379,9 @@ public class RpgPlayer {
         final double RPG_TO_MC_SCALAR = 5.0; // Scales RPG health/damage values to Mc attribute ones.
         Player player = getBukkitPlayer();
         // Every level except lvl 1, and lvls ending in 5/10.
-        AttributeModifier healthMod = new AttributeModifier(new UUID(100, 234), "", healthBonus(getLevel()) / RPG_TO_MC_SCALAR, AttributeModifier.Operation.ADD_NUMBER);
+        AttributeModifier healthMod = new AttributeModifier(new UUID(100, 234), "", healthBonus() / RPG_TO_MC_SCALAR, AttributeModifier.Operation.ADD_NUMBER);
         // Every level that ends in 5/10.
-        AttributeModifier damageMod = new AttributeModifier(new UUID(100, 235), "", damageBonus(getLevel()) / RPG_TO_MC_SCALAR, AttributeModifier.Operation.ADD_NUMBER);
+        AttributeModifier damageMod = new AttributeModifier(new UUID(100, 235), "", damageBonus() / RPG_TO_MC_SCALAR, AttributeModifier.Operation.ADD_NUMBER);
         AttributeInstance healthInstance = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         AttributeInstance damageInstance = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
         if (healthInstance != null) {
