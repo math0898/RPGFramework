@@ -54,24 +54,31 @@ public class StatsGUI extends AbstractGUI {
         ItemStack fill = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(" ").build();
         for (int i = 0; i < 45; i++)
             inv.setItem(i, fill);
+        updateActive(inv, player, rpgPlayer);
+        // todo: Boss kill statistics.
+        player.openInventory(inv);
+    }
+
+    /**
+     * Updates the active portion of this StatsGUI. This includes the player's live stat-line as well as talent point
+     * selections.
+     */
+    private void updateActive (Inventory inv, Player viewer, RpgPlayer target) {
         inv.setItem(13, new ItemBuilder(Material.PLAYER_HEAD)
-                .setOwningPlayer(rpgPlayer.getUuid())
-                .setDisplayName(rpgPlayer.getPlayerRarity() + rpgPlayer.getName())
+                .setOwningPlayer(target.getUuid())
+                .setDisplayName(target.getPlayerRarity() + target.getName())
                 .setLore(new String[] { // todo: Make these colors match item colors.
-                        ChatColor.RED + "Health: " + (long) (rpgPlayer.getCurrentHealth() * 5.0) + " / " + (long) (rpgPlayer.getMaxHealth() * 5.0),
-                        ChatColor.DARK_GREEN + "Class: " + rpgPlayer.getCombatClass().getFormattedName(),
-                        ChatColor.AQUA + "Current Level: " + rpgPlayer.getLevel() + " (" + rpgPlayer.getExperience() + ")",
-                        ChatColor.YELLOW + "Gear Score: " + rpgPlayer.getGearScore()
+                        ChatColor.RED + "Health: " + (long) (target.getCurrentHealth() * 5.0) + " / " + (long) (target.getMaxHealth() * 5.0),
+                        ChatColor.DARK_GREEN + "Class: " + target.getCombatClass().getFormattedName(),
+                        ChatColor.AQUA + "Current Level: " + target.getLevel() + " (" + target.getExperience() + ")",
+                        ChatColor.YELLOW + "Gear Score: " + target.getGearScore()
                 }).build());
 
-        if (player.getUniqueId() == rpgPlayer.getUuid()) {
+        if (viewer.getUniqueId() == target.getUuid()) {
             inv.setItem(29, new ItemBuilder(Material.IRON_CHESTPLATE).setDisplayName("Increase Health").build());
             inv.setItem(33, new ItemBuilder(Material.IRON_SWORD).setDisplayName("Increase Damage").build());
             inv.setItem(40, new ItemBuilder(Material.BARRIER).setDisplayName("Reset Points").build());
         }
-
-        // todo: Boss kill statistics.
-        player.openInventory(inv);
     }
 
     /**
@@ -92,7 +99,8 @@ public class StatsGUI extends AbstractGUI {
                 case 33 -> rpgPlayer.allocatePoint("damage");
                 case 40 -> rpgPlayer.resetPoints();
             }
-            // todo: Refresh inventory.
+            // todo: This might cause issues when viewing another player.
+            updateActive(inv, player, rpgPlayer);
         }
     }
 

@@ -175,7 +175,7 @@ public class RpgPlayer {
      * Gets the number of points that this player has put into health.
      */
     @Getter
-    private long healthTalentPoints = 0;
+    private long healthTalentPoints = 0; // todo: Persist restarts
 
     /**
      * The number of talent points spent on increasing base damage.
@@ -183,7 +183,7 @@ public class RpgPlayer {
      * Gets the number of points that this player has put into damage.
      */
     @Getter
-    private long damageTalentPoints = 0;
+    private long damageTalentPoints = 0; // todo: Persist restarts
 
     /**
      * Default constructor for an RpgPlayer object. Caches the given Player object and grabs the name and UUID.
@@ -290,11 +290,11 @@ public class RpgPlayer {
 
         if (field.equalsIgnoreCase("health")) {
             healthTalentPoints++;
-            sendMessage(ChatColor.GREEN + "You feel healthier now! +" + StringUtils.convertHexCodes("#F454DA") + HEALTH_PER_POINT + " Health");
+            sendMessage(ChatColor.GREEN + "You feel healthier now! " + StringUtils.convertHexCodes("#F454DA") + "+" + HEALTH_PER_POINT + " Health");
         }
         else if (field.equalsIgnoreCase("damage")) {
             damageTalentPoints++;
-            sendMessage(ChatColor.GREEN + "Your attacks hit harder! +" + StringUtils.convertHexCodes("#D93747") + DAMAGE_PER_POINT + " Damage");
+            sendMessage(ChatColor.GREEN + "Your attacks hit harder! " + StringUtils.convertHexCodes("#D93747") + "+" + DAMAGE_PER_POINT + " Damage");
         }
 
         refresh();
