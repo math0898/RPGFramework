@@ -56,12 +56,12 @@ public class RpgPlayer {
     /**
      * The amount of health granted per talent point spent on maximum health.
      */
-    private static final double HEALTH_PER_POINT = 5;
+    public static final double HEALTH_PER_POINT = 5; // todo: Configurable because of balance. Ideally during runtime.
 
     /**
      * The amount of base damage granted per talent point spent on damage.
      */
-    private static final double DAMAGE_PER_POINT = 1;
+    public static final double DAMAGE_PER_POINT = 1; // todo: Configurable because of balance. Ideally during runtime.
 
     /**
      * A list of artifacts that have been collected by this player.
@@ -273,7 +273,16 @@ public class RpgPlayer {
         refresh();
         getBukkitPlayer().playSound(getBukkitPlayer(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.5f, 1.0f);
         sendMessage(ChatColor.GREEN + "You've leveled up! Level: " + getLevel());
-        sendMessage(ChatColor.DARK_AQUA + "You have " + ((getLevel() - healthTalentPoints) - damageTalentPoints) + " unspent points!");
+        sendMessage(ChatColor.DARK_AQUA + "You have " + getPointsUnallocated() + " unspent points!");
+    }
+
+    /**
+     * Gets the total number of available points for this RpgPlayer.
+     *
+     * @return The number of upgrade points available.
+     */
+    public int getPointsUnallocated () {
+        return (int) ((getLevel() - healthTalentPoints) - damageTalentPoints);
     }
 
     /**
@@ -283,7 +292,7 @@ public class RpgPlayer {
      */
     public void allocatePoint (String field) {
 
-        if (getLevel() < healthTalentPoints + damageTalentPoints + 1) {
+        if (getPointsUnallocated() <= 0) {
             sendMessage(ChatColor.RED + "You do not have enough points to do that!");
             return;
         }

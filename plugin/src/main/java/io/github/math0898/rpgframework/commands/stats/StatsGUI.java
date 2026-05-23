@@ -2,6 +2,7 @@ package io.github.math0898.rpgframework.commands.stats;
 
 import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RpgPlayer;
+import io.github.math0898.utils.StringUtils;
 import io.github.math0898.utils.gui.AbstractGUI;
 import io.github.math0898.utils.items.ItemBuilder;
 import net.md_5.bungee.api.ChatColor;
@@ -12,6 +13,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import static io.github.math0898.rpgframework.RpgPlayer.DAMAGE_PER_POINT;
+import static io.github.math0898.rpgframework.RpgPlayer.HEALTH_PER_POINT;
 
 /**
  * The StatsGUI shows information about a player.
@@ -68,16 +72,29 @@ public class StatsGUI extends AbstractGUI {
                 .setOwningPlayer(target.getUuid())
                 .setDisplayName(target.getPlayerRarity() + target.getName())
                 .setLore(new String[] { // todo: Make these colors match item colors.
-                        ChatColor.RED + "Health: " + (long) (target.getCurrentHealth() * 5.0) + " / " + (long) (target.getMaxHealth() * 5.0),
-                        ChatColor.DARK_GREEN + "Class: " + target.getCombatClass().getFormattedName(),
+                        StringUtils.convertHexCodes("#F454DAHealth: " + (long) (target.getCurrentHealth() * 5.0) + " / " + (long) (target.getMaxHealth() * 5.0)),
+                        StringUtils.convertHexCodes("#CCCCCCClass: " + target.getCombatClass().getFormattedName()),
                         ChatColor.AQUA + "Current Level: " + target.getLevel() + " (" + target.getExperience() + ")",
-                        ChatColor.YELLOW + "Gear Score: " + target.getGearScore()
+                        StringUtils.convertHexCodes("#F2D951Gear Score: " + target.getGearScore())
                 }).build());
 
         if (viewer.getUniqueId() == target.getUuid()) {
-            inv.setItem(29, new ItemBuilder(Material.IRON_CHESTPLATE).setDisplayName("Increase Health").build());
-            inv.setItem(33, new ItemBuilder(Material.IRON_SWORD).setDisplayName("Increase Damage").build());
-            inv.setItem(40, new ItemBuilder(Material.BARRIER).setDisplayName("Reset Points").build());
+            inv.setItem(29, new ItemBuilder(Material.IRON_CHESTPLATE).setDisplayName(StringUtils.convertHexCodes("#F454DATenacity"))
+                    .setLore(new String[]{
+                            StringUtils.convertHexCodes("#CCCCCC" + "Gain health per point spent on tenacity."),
+                            StringUtils.convertHexCodes("#CCCCCC" + "Current Bonus:#F454DA +" + target.getHealthTalentPoints() * HEALTH_PER_POINT),
+                            StringUtils.convertHexCodes("#CCCCCC" + "Available Points: " + ChatColor.DARK_AQUA + target.getPointsUnallocated())
+                    }).build());
+            inv.setItem(33, new ItemBuilder(Material.IRON_SWORD).setDisplayName(StringUtils.convertHexCodes("#D93747Power"))
+                    .setLore(new String[]{
+                            StringUtils.convertHexCodes("#CCCCCC" + "Gain base damage per point spent on power."),
+                            StringUtils.convertHexCodes("#CCCCCC" + "Current Bonus:#D93747 +" + target.getDamageTalentPoints() * DAMAGE_PER_POINT),
+                            StringUtils.convertHexCodes("#CCCCCC" + "Available Points: " + ChatColor.DARK_AQUA + target.getPointsUnallocated())
+                    }).build());
+            inv.setItem(40, new ItemBuilder(Material.BARRIER).setDisplayName(ChatColor.RED + "Reset Points")
+                    .setLore(new String[]{
+                            StringUtils.convertHexCodes("#CCCCCC" + "You will gain " + ChatColor.DARK_AQUA + target.getPointsUnallocated() + "#CCCCCC points.")
+                    }).build());
         }
     }
 
