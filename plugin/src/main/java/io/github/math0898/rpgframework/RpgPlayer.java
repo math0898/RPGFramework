@@ -82,7 +82,8 @@ public class RpgPlayer {
      * The maximum number of points that can be spent on movement speed.
      */
     public static final long MOVEMENT_SPEED_MAX_POINTS = 10; // todo: Configurable because of balance. Ideally during runtime.
-
+    // todo: loot drop rate
+    //      critical damage
     /**
      * A list of artifacts that have been collected by this player.
      * -- GETTER --

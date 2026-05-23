@@ -134,6 +134,7 @@ public final class RPGFramework extends JavaPlugin implements Listener {
         new DebugCommand();
         new EditorCommand();
         new ArtifactCommand();
+        new DungeonCreateCommand();
         console("Commands registered.", ChatColor.GREEN);
     }
 }

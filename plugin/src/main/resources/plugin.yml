@@ -52,3 +52,6 @@ commands:
   stats:
     description: "Displays stats for the player running the command as well as other players."
     permission: "rpg.stats"
+  rpg-dungo:
+    description: "Exports a region of space into a YAML format for use in dungeons."
+    permissions: "rpg.admin"

@@ -179,7 +179,7 @@ public abstract class BetterCommand implements CommandExecutor, TabCompleter { /
      */
     protected int getIntegerParam (int index, String[] args, CommandSender sender) {
         int toReturn = 1;
-        if (args.length == index + 1) {
+        if (index < args.length) {
             try {
                 toReturn = Integer.parseInt(args[index]);
             } catch (Exception e) {
