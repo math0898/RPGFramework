@@ -64,6 +64,26 @@ public class RpgPlayer {
     public static final double DAMAGE_PER_POINT = 1; // todo: Configurable because of balance. Ideally during runtime.
 
     /**
+     * The amount of critical strike chance given to a player per talent point spent.
+     */
+    public static final double CRIT_CHANCE_PER_POINT = 0.025; // todo: Configurable because of balance. Ideally during runtime.
+
+    /**
+     * The maximum number of points that can be spent on critical strike chance.
+     */
+    public static final long CRIT_CHANCE_MAX_POINTS = 40; // todo: Configurable because of balance. Ideally during runtime.
+
+    /**
+     * The amount of movement speed given to a player per point spent.
+     */
+    public static final double MOVEMENT_SPEED_PER_POINT = 0.03; // todo: Configurable because of balance. Ideally during runtime.
+
+    /**
+     * The maximum number of points that can be spent on movement speed.
+     */
+    public static final long MOVEMENT_SPEED_MAX_POINTS = 10; // todo: Configurable because of balance. Ideally during runtime.
+
+    /**
      * A list of artifacts that have been collected by this player.
      * -- GETTER --
      *  Accessor method for the artifact collection of this player.
@@ -190,6 +210,26 @@ public class RpgPlayer {
     private long damageTalentPoints = 0;
 
     /**
+     * The chance that any strike could be a critical strike and deal double damage.
+     * -- GETTER --
+     * Gets the number of points allocated to critical strike chance.
+     * -- SETTER --
+     * Sets the number of points allocated to critical strike chance.
+     */
+    @Getter @Setter
+    private long critChanceTalentPoints = 0;
+
+    /**
+     * The amount of talent points that have been spent on increased movement speed.
+     * -- GETTER --
+     * Gets the number of points spent on moving faster.
+     * -- SETTER --
+     * Sets the number of points allocated to movement speed.
+     */
+    @Getter @Setter
+    private long movementSpeedTalentPoints = 0;
+
+    /**
      * Default constructor for an RpgPlayer object. Caches the given Player object and grabs the name and UUID.
      *
      * @param p The player this construct points to.
@@ -199,6 +239,7 @@ public class RpgPlayer {
         this.bukkitPlayer = p;
         this.name = p.getName();
         refresh();
+        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), this::refresh, 3 * 20);
     }
 
     /**
@@ -286,7 +327,12 @@ public class RpgPlayer {
      * @return The number of upgrade points available.
      */
     public int getPointsUnallocated () {
-        return (int) ((getLevel() - healthTalentPoints) - damageTalentPoints);
+        long total_points = getLevel();
+        total_points -= healthTalentPoints;
+        total_points -= damageTalentPoints;
+        total_points -= movementSpeedTalentPoints;
+        total_points -= critChanceTalentPoints;
+        return (int) total_points;
     }
 
     /**
@@ -304,10 +350,23 @@ public class RpgPlayer {
         if (field.equalsIgnoreCase("health")) {
             healthTalentPoints++;
             sendMessage(ChatColor.GREEN + "You feel healthier now! " + StringUtils.convertHexCodes("#F454DA") + "+" + HEALTH_PER_POINT + " Health");
-        }
-        else if (field.equalsIgnoreCase("damage")) {
+        } else if (field.equalsIgnoreCase("damage")) {
             damageTalentPoints++;
             sendMessage(ChatColor.GREEN + "Your attacks hit harder! " + StringUtils.convertHexCodes("#D93747") + "+" + DAMAGE_PER_POINT + " Damage");
+        } else if (field.equalsIgnoreCase("movement_speed")) {
+            if (movementSpeedTalentPoints == MOVEMENT_SPEED_MAX_POINTS) {
+                sendMessage(ChatColor.RED + "You've reached the maximum level!");
+                return;
+            }
+            movementSpeedTalentPoints++;
+            sendMessage(ChatColor.GREEN + "You move faster! " + ChatColor.AQUA + "+" + (100 * MOVEMENT_SPEED_PER_POINT) + " Speed");
+        } else if (field.equalsIgnoreCase("critical_chance")) {
+            if (critChanceTalentPoints == CRIT_CHANCE_MAX_POINTS) {
+                sendMessage(ChatColor.RED + "You've reached the maximum level!");
+                return;
+            }
+            critChanceTalentPoints++;
+            sendMessage(ChatColor.GREEN + "Your strikes find more weak-spots! " + ChatColor.YELLOW + "+" + (CRIT_CHANCE_PER_POINT * 100) + " Critical Strike Chance");
         }
 
         refresh();
@@ -319,6 +378,8 @@ public class RpgPlayer {
     public void resetPoints () {
         healthTalentPoints = 0;
         damageTalentPoints = 0;
+        movementSpeedTalentPoints = 0;
+        critChanceTalentPoints = 0;
         sendMessage(ChatColor.GREEN + "You've reset all your base talent points.");
         refresh();
     }
@@ -391,12 +452,12 @@ public class RpgPlayer {
         }
         final double RPG_TO_MC_SCALAR = 5.0; // Scales RPG health/damage values to Mc attribute ones.
         Player player = getBukkitPlayer();
-        // Every level except lvl 1, and lvls ending in 5/10.
         AttributeModifier healthMod = new AttributeModifier(new UUID(100, 234), "", healthBonus() / RPG_TO_MC_SCALAR, AttributeModifier.Operation.ADD_NUMBER);
-        // Every level that ends in 5/10.
         AttributeModifier damageMod = new AttributeModifier(new UUID(100, 235), "", damageBonus() / RPG_TO_MC_SCALAR, AttributeModifier.Operation.ADD_NUMBER);
+        AttributeModifier speedMod = new AttributeModifier(new UUID(100, 236), "", getMovementSpeedTalentPoints() * MOVEMENT_SPEED_PER_POINT, AttributeModifier.Operation.ADD_NUMBER);
         AttributeInstance healthInstance = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         AttributeInstance damageInstance = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+        AttributeInstance speedInstance = player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
         if (healthInstance != null) {
             Collection<AttributeModifier> modifiers = healthInstance.getModifiers();
             if (!modifiers.isEmpty())
@@ -407,6 +468,7 @@ public class RpgPlayer {
         } else {
             RPGFramework.console("Attempted to update " + player.getName() + "'s health but GENERIC_MAX_HEALTH instance is null.", ChatColor.RED);
         }
+        // todo: Abstract damage and speed.
         if (damageInstance != null) {
             Collection<AttributeModifier> modifiers = damageInstance.getModifiers();
             if (!modifiers.isEmpty())
@@ -414,6 +476,14 @@ public class RpgPlayer {
             damageInstance.addModifier(damageMod);
         } else {
             RPGFramework.console("Attempted to update " + player.getName() + "'s damage but GENERIC_ATTACK_DAMAGE instance is null.", ChatColor.RED);
+        }
+        if (speedInstance != null) {
+            Collection<AttributeModifier> modifiers = speedInstance.getModifiers();
+            if (!modifiers.isEmpty())
+                speedInstance.removeModifier(speedMod);
+            speedInstance.addModifier(speedMod);
+        } else {
+            RPGFramework.console("Attempted to update " + player.getName() + "'s damage but GENERIC_MOVEMENT_SPEED instance is null.", ChatColor.RED);
         }
     }
 
@@ -593,6 +663,9 @@ public class RpgPlayer {
         fighting = System.currentTimeMillis();
         enteringCombat();
         classObject.attack(event);
+        // todo: Move this elsewhere, using AdvancedDamageEvent.
+        double roll = new Random().nextDouble();
+        if (roll < critChanceTalentPoints * CRIT_CHANCE_PER_POINT) event.setDamage(event.getDamage() * 2.0);
         lastHitBy = event.getEntity();
     }
 

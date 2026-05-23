@@ -76,6 +76,8 @@ public class DataManager {
                 long experiencePoints = yaml.getLong("experience", 0);
                 long healthTalentPoints = yaml.getLong("talents.health", 0);
                 long damageTalentPoints = yaml.getLong("talents.damage", 0);
+                long movementSpeedTalentPoints = yaml.getLong("talents.speed", 0);
+                long criticalChanceTalentPoints = yaml.getLong("talents.crit_chance", 0);
                 console("File version: " + version);
                 console("Class: " + classString);
                 console("Experience: " + experiencePoints);
@@ -84,6 +86,8 @@ public class DataManager {
                 console("Talents: ");
                 console("Health: " + healthTalentPoints);
                 console("Damage: " + damageTalentPoints);
+                console("Speed: " + movementSpeedTalentPoints);
+                console("Crit Chance: " + criticalChanceTalentPoints);
                 console("Artifacts: ");
                 for (String s : collectedArtifacts)
                     console(" > " + s);
@@ -93,6 +97,8 @@ public class DataManager {
                 rpgPlayer.setExperience(experiencePoints);
                 rpgPlayer.setDamageTalentPoints(damageTalentPoints);
                 rpgPlayer.setHealthTalentPoints(healthTalentPoints);
+                rpgPlayer.setMovementSpeedTalentPoints(movementSpeedTalentPoints);
+                rpgPlayer.setCritChanceTalentPoints(criticalChanceTalentPoints);
                 console("Loaded.", ChatColor.GREEN);
             } catch (Exception exception) {
                 console("Failed to load data for " + player.getName() + ": " + exception.getMessage());
@@ -119,9 +125,13 @@ public class DataManager {
         toSave.set("experience", xp);
         console("Talents: ");
         console("Health: " + player.getHealthTalentPoints());
-        toSave.set("talents.health", player.getHealthTalentPoints());
         console("Damage: " + player.getDamageTalentPoints());
+        console("Speed: " + player.getMovementSpeedTalentPoints());
+        console("Crit Chance: " + player.getCritChanceTalentPoints());
+        toSave.set("talents.health", player.getHealthTalentPoints());
         toSave.set("talents.damage", player.getDamageTalentPoints());
+        toSave.set("talents.speed", player.getMovementSpeedTalentPoints());
+        toSave.set("talents.crit_chance", player.getCritChanceTalentPoints());
         List<String> collectedArtifacts = player.getArtifactCollection();
         console("Artifacts: ");
         for (String s : collectedArtifacts)

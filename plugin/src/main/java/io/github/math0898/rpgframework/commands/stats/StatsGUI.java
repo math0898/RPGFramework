@@ -14,8 +14,9 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import static io.github.math0898.rpgframework.RpgPlayer.DAMAGE_PER_POINT;
-import static io.github.math0898.rpgframework.RpgPlayer.HEALTH_PER_POINT;
+import java.text.NumberFormat;
+
+import static io.github.math0898.rpgframework.RpgPlayer.*;
 
 /**
  * The StatsGUI shows information about a player.
@@ -78,14 +79,29 @@ public class StatsGUI extends AbstractGUI {
                         ChatColor.AQUA + "Current Level: " + target.getLevel() + " (" + target.getExperience() + ")",
                         StringUtils.convertHexCodes("#F2D951Gear Score: " + target.getGearScore())
                 }).build());
-
+        // todo: Ascending costs?
         if (viewer.getUniqueId() == target.getUuid()) {
             inv.setItem(29, new ItemBuilder(Material.IRON_CHESTPLATE).setDisplayName(StringUtils.convertHexCodes("#F454DATenacity"))
                     .setLore(new String[]{
                             StringUtils.convertHexCodes("#CCCCCC" + "Gain health per point spent on tenacity."),
                             StringUtils.convertHexCodes("#CCCCCC" + "Current Bonus:#F454DA +" + target.getHealthTalentPoints() * HEALTH_PER_POINT),
                             StringUtils.convertHexCodes("#CCCCCC" + "Available Points: " + ChatColor.DARK_AQUA + target.getPointsUnallocated())
-                    }).build()); // todo: Ascending costs?
+                    }).build());
+            inv.setItem(30, new ItemBuilder(Material.FEATHER).setDisplayName(ChatColor.AQUA + "Swiftness")
+                    .setLore(new String[]{
+                            StringUtils.convertHexCodes("#CCCCCC" + "Gain movement speed per point spent on swiftness."),
+                            StringUtils.convertHexCodes("#CCCCCC" + "Current Bonus:" + ChatColor.AQUA + " +" + String.format("%.1f", target.getMovementSpeedTalentPoints() * MOVEMENT_SPEED_PER_POINT * 100)),
+                            StringUtils.convertHexCodes("#CCCCCC" + "Spent Points: " + ChatColor.DARK_AQUA + target.getMovementSpeedTalentPoints() + " / " + MOVEMENT_SPEED_MAX_POINTS),
+                            StringUtils.convertHexCodes("#CCCCCC" + "Available Points: " + ChatColor.DARK_AQUA + target.getPointsUnallocated())
+                    }).build());
+            inv.setItem(32, new ItemBuilder(Material.WOODEN_SWORD).setDisplayName(ChatColor.YELLOW + "Weak Point Targeting")
+                    .setLore(new String[]{
+                            StringUtils.convertHexCodes("#CCCCCC" + "Gain critical strike chance per point spent on"),
+                            StringUtils.convertHexCodes("#CCCCCC" + "weak point targeting."),
+                            StringUtils.convertHexCodes("#CCCCCC" + "Current Bonus: " + ChatColor.YELLOW + String.format("%.1f", (target.getCritChanceTalentPoints() * CRIT_CHANCE_PER_POINT) * 100) + "%"),
+                            StringUtils.convertHexCodes("#CCCCCC" + "Spent Points: " + ChatColor.DARK_AQUA + target.getCritChanceTalentPoints() + " / " + CRIT_CHANCE_MAX_POINTS),
+                            StringUtils.convertHexCodes("#CCCCCC" + "Available Points: " + ChatColor.DARK_AQUA + target.getPointsUnallocated())
+                    }).build());
             inv.setItem(33, new ItemBuilder(Material.IRON_SWORD).setDisplayName(StringUtils.convertHexCodes("#D93747Power"))
                     .setLore(new String[]{
                             StringUtils.convertHexCodes("#CCCCCC" + "Gain base damage per point spent on power."),
@@ -94,7 +110,7 @@ public class StatsGUI extends AbstractGUI {
                     }).build());
             inv.setItem(40, new ItemBuilder(Material.BARRIER).setDisplayName(ChatColor.RED + "Reset Points")
                     .setLore(new String[]{
-                            StringUtils.convertHexCodes("#CCCCCC" + "You will gain " + ChatColor.DARK_AQUA + target.getPointsUnallocated() + "#CCCCCC points.")
+                            StringUtils.convertHexCodes("#CCCCCC" + "You will gain " + ChatColor.DARK_AQUA + target.getLevel() + "#CCCCCC points.")
                     }).build());
         }
     }
@@ -114,6 +130,8 @@ public class StatsGUI extends AbstractGUI {
             if (rpgPlayer == null) return;
             switch (event.getSlot()) { // todo: These should be inactive if player is not the player who's stats are showing.
                 case 29 -> rpgPlayer.allocatePoint("health");
+                case 30 -> rpgPlayer.allocatePoint("movement_speed");
+                case 32 -> rpgPlayer.allocatePoint("critical_chance");
                 case 33 -> rpgPlayer.allocatePoint("damage");
                 case 40 -> rpgPlayer.resetPoints();
             }
