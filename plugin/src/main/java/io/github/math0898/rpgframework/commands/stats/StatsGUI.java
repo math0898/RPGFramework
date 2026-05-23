@@ -73,6 +73,7 @@ public class StatsGUI extends AbstractGUI {
                 .setDisplayName(target.getPlayerRarity() + target.getName())
                 .setLore(new String[] { // todo: Make these colors match item colors.
                         StringUtils.convertHexCodes("#F454DAHealth: " + (long) (target.getCurrentHealth() * 5.0) + " / " + (long) (target.getMaxHealth() * 5.0)),
+                        StringUtils.convertHexCodes("#D93747Damage: " + (long) (target.getCurrentDamage() * 5.0)),
                         StringUtils.convertHexCodes("#CCCCCCClass: " + target.getCombatClass().getFormattedName()),
                         ChatColor.AQUA + "Current Level: " + target.getLevel() + " (" + target.getExperience() + ")",
                         StringUtils.convertHexCodes("#F2D951Gear Score: " + target.getGearScore())
@@ -84,7 +85,7 @@ public class StatsGUI extends AbstractGUI {
                             StringUtils.convertHexCodes("#CCCCCC" + "Gain health per point spent on tenacity."),
                             StringUtils.convertHexCodes("#CCCCCC" + "Current Bonus:#F454DA +" + target.getHealthTalentPoints() * HEALTH_PER_POINT),
                             StringUtils.convertHexCodes("#CCCCCC" + "Available Points: " + ChatColor.DARK_AQUA + target.getPointsUnallocated())
-                    }).build());
+                    }).build()); // todo: Ascending costs?
             inv.setItem(33, new ItemBuilder(Material.IRON_SWORD).setDisplayName(StringUtils.convertHexCodes("#D93747Power"))
                     .setLore(new String[]{
                             StringUtils.convertHexCodes("#CCCCCC" + "Gain base damage per point spent on power."),

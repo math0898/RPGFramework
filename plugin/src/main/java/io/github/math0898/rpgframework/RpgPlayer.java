@@ -173,17 +173,21 @@ public class RpgPlayer {
      * The number of talent points spent on increasing max health.
      * -- GETTER --
      * Gets the number of points that this player has put into health.
+     * -- SETTER --
+     * Sets the number of health talent points allocated.
      */
-    @Getter
-    private long healthTalentPoints = 0; // todo: Persist restarts
+    @Getter @Setter
+    private long healthTalentPoints = 0;
 
     /**
      * The number of talent points spent on increasing base damage.
      * -- GETTER --
      * Gets the number of points that this player has put into damage.
+     * -- SETTER --
+     * Sets the number of damage talent points allocated.
      */
-    @Getter
-    private long damageTalentPoints = 0; // todo: Persist restarts
+    @Getter @Setter
+    private long damageTalentPoints = 0;
 
     /**
      * Default constructor for an RpgPlayer object. Caches the given Player object and grabs the name and UUID.
@@ -495,6 +499,18 @@ public class RpgPlayer {
         else if (current / max < 0.50) prefix = ChatColor.RED;
 
         return prefix + "" + current;
+    }
+
+    /**
+     * Accessor method for the player's current damage. This is heavily influenced by equipment. This is the scaled down
+     * damage value.
+     *
+     * @return This player's damage.
+     */
+    public double getCurrentDamage () {
+        AttributeInstance instance = bukkitPlayer.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+        if (instance == null) return 0;
+        return instance.getValue();
     }
 
     /**
