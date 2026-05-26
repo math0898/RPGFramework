@@ -1,26 +1,24 @@
 package sugaku.rpg.mobs.teir1;
 
+import io.github.math0898.rpgframework.Rarity;
 import io.github.math0898.rpgframework.enemies.CustomMob;
 import io.github.math0898.utils.items.ItemBuilder;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Ageable;
 import org.bukkit.entity.EntityType;
-import io.github.math0898.rpgframework.Rarity;
 
-public class Seignour extends CustomMob {
+public class Scaldor extends CustomMob {
 
     /**
      * A basic constructor to aid in the construction of a CustomMob. Contains everything essential to run spawn().
      */
-    public Seignour () {
-        super("Seignour", EntityType.ZOMBIE, Rarity.RARE, 400);
+    public Scaldor () {
+        super("Scaldor", EntityType.BLAZE, Rarity.LEGENDARY, 4000);
+        // todo: Actual gear.
         setHelm(new ItemBuilder(Material.PLAYER_HEAD).setSkullSkinBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzM0NTJiOThhYjlhODhkMTc1N2YwMzJjMDcyYWY4MWNmYTM1ZGRiNDc5NDU4NTkxNDc4MTFiY2RjZmQ5ODcxZSJ9fX0").build());
         setChestplate(new ItemBuilder(Material.LEATHER_CHESTPLATE).setColor(new int[]{255, 255, 194, 115}).build());
         setLeggings(new ItemBuilder(Material.GOLDEN_LEGGINGS).build());
         setBoots(new ItemBuilder(Material.LEATHER_BOOTS).setColor(new int[]{255, 255, 140, 64}).build());
-        setOffHand(new ItemBuilder(Material.GOLDEN_SHOVEL).build());
-        setHand(new ItemBuilder(Material.WOODEN_SWORD).build());
     }
 
     /**
@@ -29,7 +27,7 @@ public class Seignour extends CustomMob {
      * @return
      */
     public static String getName () {
-        return "Seignour";
+        return "Scaldor";
     }
 
     /**
@@ -40,6 +38,5 @@ public class Seignour extends CustomMob {
     @Override
     public void spawn (Location l) {
         super.spawn(l);
-        ((Ageable) getEntity()).setAdult(); //Forces adults
     }
 }

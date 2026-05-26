@@ -1,5 +1,6 @@
 package io.github.math0898.rpgframework.enemies;
 import io.github.math0898.rpgframework.Rarity;
+import io.github.math0898.rpgframework.enemies.instances.ScaldorBoss;
 import io.github.math0898.rpgframework.enemies.instances.SeignourBoss;
 import io.github.math0898.utils.StringUtils;
 import io.github.math0898.utils.items.ItemBuilder;
@@ -184,6 +185,7 @@ public class CustomMobEntry { // TODO: USE /particle minecraft:copper_fire_flame
     private void createInstanceClass (LivingEntity entity) {
         switch (instanceClass) {
             case "SeignourBoss" -> new SeignourBoss(entity, namespaceKey);
+            case "ScaldorBoss" -> new ScaldorBoss(entity, namespaceKey);
             default -> new ActiveCustomMob(entity, namespaceKey);
         }
     }

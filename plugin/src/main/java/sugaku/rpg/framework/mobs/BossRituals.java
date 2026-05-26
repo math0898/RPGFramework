@@ -16,6 +16,7 @@ import io.github.math0898.rpgframework.PlayerManager;
 import io.github.math0898.rpgframework.RpgPlayer;
 import sugaku.rpg.mobs.Bosses;
 import io.github.math0898.rpgframework.enemies.CustomMob;
+import sugaku.rpg.mobs.teir1.Scaldor;
 import sugaku.rpg.mobs.teir1.Seignour;
 import sugaku.rpg.mobs.teir1.eiryeras.EiryerasBoss;
 import sugaku.rpg.mobs.teir1.feyrith.FeyrithBoss;
@@ -61,6 +62,8 @@ public class BossRituals {
         } else if (stack.equals(ItemManager.getInstance().getItem("seignour:Spawn"))) {
             message = "You are summoning " + ChatColor.BLUE + "Seignour" + ChatColor.GRAY + ", Arbiter of Truth.";
             boss = Bosses.SEIGNOUR;
+        } else if (stack.equals(ItemManager.getInstance().getItem("scaldor:Spawn"))) {
+            message = "You are summoning " + ChatColor.GOLD + "Scaldor" + ChatColor.GRAY + ", Wrathful Infernal";
         }
         if (boss == null) return;
         RpgPlayer rpg = PlayerManager.getPlayer(player.getUniqueId());
@@ -76,6 +79,7 @@ public class BossRituals {
             case FEYRITH -> new FeyrithBoss();
             case KRUSK -> new KruskBoss();
             case SEIGNOUR -> new Seignour();
+            case SCALDOR -> new Scaldor();
         };
         if (rpg != null) rpg.setBoss(tmp);
         drop.setPickupDelay(60);
@@ -95,6 +99,10 @@ public class BossRituals {
         if (boss instanceof Seignour) { // TODO: This is not scalable.
             io.github.math0898.rpgframework.enemies.MobManager ioMobManager = io.github.math0898.rpgframework.enemies.MobManager.getInstance();
             final CustomMobEntry entry = ioMobManager.getCustomMob("boss:Seignour");
+            Bukkit.getScheduler().runTaskLater(plugin, () -> entry.spawn(location), 157);
+        } else if (boss instanceof Scaldor) {
+            io.github.math0898.rpgframework.enemies.MobManager ioMobManager = io.github.math0898.rpgframework.enemies.MobManager.getInstance();
+            final CustomMobEntry entry = ioMobManager.getCustomMob("boss:Scaldor");
             Bukkit.getScheduler().runTaskLater(plugin, () -> entry.spawn(location), 157);
         } else {
             Bukkit.getScheduler().runTaskLater(plugin, () -> boss.setSpawnPoint(location), 158);
