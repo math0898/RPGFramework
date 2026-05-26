@@ -1,14 +1,12 @@
 package sugaku.rpg.framework.items;
 
 import io.github.math0898.rpgframework.items.ItemManager;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.*;
 
@@ -73,46 +71,6 @@ public final class ItemsManager {
             case LEATHER_HELMET,  IRON_HELMET,  CHAINMAIL_HELMET,  GOLDEN_HELMET,  DIAMOND_HELMET,  NETHERITE_HELMET -> itemId += "Helmet";
         }
         return ItemManager.getInstance().getItem(itemId);
-    }
-
-    /**
-     * Returns the String name that should be used for the given item. This is a helper method.
-     */
-    public static String genName(char[] name) {
-
-        StringBuilder r = new StringBuilder();
-
-        for (int i = 0; i < name.length; i++) {
-            if (name[i] == '_') r.append(' ');
-            else if (i == 0) r.append(Character.toUpperCase(name[i]));
-            else if (name[i - 1] == '_') r.append(Character.toUpperCase(name[i]));
-            else r.append(name[i]);
-        }
-
-        return r.toString();
-    }
-
-    /**
-     * Takes the given string and increases the rarity of the name. Checks to see if it should be increased too.
-     * @param s The name to be upgraded.
-     * @return The upgraded name.
-     */
-    public static String increaseRarity(String s) {
-
-        if (s.contains("§k")) return s;
-
-        String r = s;
-
-        r = s.replace("§d", "§c§k-§r§c ");
-        r = s.replace("§6", "§d§k-§r§d ");
-        r = s.replace("§9", "§6§k-§r§6 ");
-        r = s.replace("§a", "§9§k-§r§9 ");
-
-        if (r.equals(s)) r = "§a§k-§r§a " + s;
-
-        r += " §" + r.toCharArray()[1] +"§k-";
-
-        return r;
     }
 
     /**
@@ -189,48 +147,5 @@ public final class ItemsManager {
         meta.setUnbreakable(true);
         r.setItemMeta(meta);
         return r;
-    }
-
-    /**
-     * Creates a custom item of the given material, name, lore, and array of attribute modifiers. Used to create items
-     * in line. This method can significantly reduce scope.
-     *
-     * @param m The material for the item.
-     * @param i The number of items in the stack.
-     * @param n The name of the item.
-     * @param lines The lines of lore.
-     * @param attributes The attributes to be added to the item.
-     */
-    @Deprecated
-    public static ItemStack createItem(Material m, int i, String n, String[] lines, AttributeModifier[] attributes) {
-        ItemStack item = createItem(m, i, n, lines);
-        ItemMeta meta = item.getItemMeta();
-        assert meta != null;
-        // TODO: This is very specific to make RPG compile and run successfully.
-        for (int j = 0; j < attributes.length; j++) {
-            meta.addAttributeModifier(j == 0 ? Attribute.GENERIC_ATTACK_DAMAGE : Attribute.GENERIC_MOVEMENT_SPEED, attributes[j]);
-        }
-        item.setItemMeta(meta);
-        return item;
-    }
-
-    /**
-     * Creates a leather armor item with the given dyes. It's implied that each item stack will only have one item.
-     *
-     * @param m The material for the item.
-     * @param n The name of the item.
-     * @param lines The lines of lore.
-     * @param r The red of the dye.
-     * @param g The green of the dye.
-     * @param b The blue of the dye.
-     */
-    public static ItemStack createLeatherArmor(Material m, String n, String[] lines, int r, int g, int b) {
-        if (m != Material.LEATHER_BOOTS && m != Material.LEATHER_LEGGINGS && m != Material.LEATHER_CHESTPLATE && m != Material.LEATHER_HELMET) return null;
-        ItemStack item = createItem(m, 1, n, lines);
-        LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
-        assert meta != null;
-        meta.setColor(Color.fromRGB(r, g, b));
-        item.setItemMeta(meta);
-        return item;
     }
 }

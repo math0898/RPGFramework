@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Sugaku
  */
-public abstract class PageableGUI implements GUI {
+public abstract class PageableGUI extends AbstractGUI {
 
     /**
      * An array of items that are in the pages of this PageableGUI.

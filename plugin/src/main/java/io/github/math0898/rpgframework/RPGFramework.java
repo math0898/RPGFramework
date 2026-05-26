@@ -1,6 +1,7 @@
 package io.github.math0898.rpgframework;
 
 import io.github.math0898.rpgframework.commands.*;
+import io.github.math0898.rpgframework.commands.stats.StatsCommand;
 import io.github.math0898.rpgframework.damage.AdvancedDamageHandler;
 import io.github.math0898.rpgframework.enemies.MobManager;
 import io.github.math0898.rpgframework.hooks.HookManager;
@@ -128,10 +129,12 @@ public final class RPGFramework extends JavaPlugin implements Listener {
         new Classes();
         new SummonRPG();
         new GiveCommand();
+        new StatsCommand();
         new PartyCommand();
         new DebugCommand();
         new EditorCommand();
         new ArtifactCommand();
+        new DungeonCreateCommand();
         console("Commands registered.", ChatColor.GREEN);
     }
 }

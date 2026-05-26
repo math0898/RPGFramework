@@ -74,12 +74,20 @@ public class DataManager {
                 String version = yaml.getString("version");
                 String classString = yaml.getString("class", "NONE");
                 long experiencePoints = yaml.getLong("experience", 0);
+                long healthTalentPoints = yaml.getLong("talents.health", 0);
+                long damageTalentPoints = yaml.getLong("talents.damage", 0);
+                long movementSpeedTalentPoints = yaml.getLong("talents.speed", 0);
+                long criticalChanceTalentPoints = yaml.getLong("talents.crit_chance", 0);
                 console("File version: " + version);
                 console("Class: " + classString);
                 console("Experience: " + experiencePoints);
-                // todo: This should use the new RpgPlayer objects.
                 PlayerManager.getPlayer(player.getUuid()).joinClass(Classes.fromString(classString));
                 List<String> collectedArtifacts = yaml.getStringList("artifacts");
+                console("Talents: ");
+                console("Health: " + healthTalentPoints);
+                console("Damage: " + damageTalentPoints);
+                console("Speed: " + movementSpeedTalentPoints);
+                console("Crit Chance: " + criticalChanceTalentPoints);
                 console("Artifacts: ");
                 for (String s : collectedArtifacts)
                     console(" > " + s);
@@ -87,6 +95,10 @@ public class DataManager {
                 RpgPlayer rpgPlayer = PlayerManager.getPlayer(player.getUuid());
                 rpgPlayer.joinClass(Classes.fromString(classString));
                 rpgPlayer.setExperience(experiencePoints);
+                rpgPlayer.setDamageTalentPoints(damageTalentPoints);
+                rpgPlayer.setHealthTalentPoints(healthTalentPoints);
+                rpgPlayer.setMovementSpeedTalentPoints(movementSpeedTalentPoints);
+                rpgPlayer.setCritChanceTalentPoints(criticalChanceTalentPoints);
                 console("Loaded.", ChatColor.GREEN);
             } catch (Exception exception) {
                 console("Failed to load data for " + player.getName() + ": " + exception.getMessage());
@@ -105,13 +117,21 @@ public class DataManager {
         YamlConfiguration toSave = new YamlConfiguration();
         console("Version: 2.1");
         toSave.set("version", "2.1");
-        // todo: Use new RpgPlayer object.
         String classString = PlayerManager.getPlayer(player.getUuid()).getCombatClass().toString();
         console("Class: " + classString);
         toSave.set("class", classString);
         long xp = PlayerManager.getPlayer(player.getUuid()).getExperience();
         console("Experience: " + xp);
         toSave.set("experience", xp);
+        console("Talents: ");
+        console("Health: " + player.getHealthTalentPoints());
+        console("Damage: " + player.getDamageTalentPoints());
+        console("Speed: " + player.getMovementSpeedTalentPoints());
+        console("Crit Chance: " + player.getCritChanceTalentPoints());
+        toSave.set("talents.health", player.getHealthTalentPoints());
+        toSave.set("talents.damage", player.getDamageTalentPoints());
+        toSave.set("talents.speed", player.getMovementSpeedTalentPoints());
+        toSave.set("talents.crit_chance", player.getCritChanceTalentPoints());
         List<String> collectedArtifacts = player.getArtifactCollection();
         console("Artifacts: ");
         for (String s : collectedArtifacts)

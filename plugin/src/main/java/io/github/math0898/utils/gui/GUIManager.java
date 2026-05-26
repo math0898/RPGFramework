@@ -82,6 +82,19 @@ public class GUIManager implements Listener {
     }
 
     /**
+     * Opens the GUI by the given id to the given player.
+     *
+     * @param id     The id of the GUI to open.
+     * @param player The player to open the GUI to.
+     * @param params Any parameters to pass to the GUI.
+     */
+    public void openGUI (String id, Player player, String... params) {
+        GUI gui = guisByID.get(id);
+        if (gui == null) Utils.console("Tried to open: " + id + " but GUI not found!", Level.WARNING);
+        else gui.openInventory(player, params);
+    }
+
+    /**
      * Called whenever an inventory is clicked.
      *
      * @param event The inventory click event to consider.

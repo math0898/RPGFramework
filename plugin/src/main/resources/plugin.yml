@@ -2,7 +2,7 @@ name: RPGFramework
 version: 2.1.1
 main: io.github.math0898.rpgframework.RPGFramework
 api-version: 1.21
-authors: [ Sugaku ]
+authors: [ Sugaku, Cybellereaper ]
 description: The main framework plugin used for all of Math0898/Sugaku's RPG plugins.
 prefix: RPG Framework
 load: POSTWORLD
@@ -49,3 +49,9 @@ commands:
   artifact:
     description: "Command for accessing a player's artifact collection."
     permission: "rpg.artifact"
+  stats:
+    description: "Displays stats for the player running the command as well as other players."
+    permission: "rpg.stats"
+  rpg-dungo:
+    description: "Exports a region of space into a YAML format for use in dungeons."
+    permissions: "rpg.admin"

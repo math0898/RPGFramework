@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id("io.freefair.lombok") version "8.12.1"
+    id("io.freefair.lombok") version "9.5.0"
 }
 
 group = 'io.github.math0898'
@@ -74,8 +74,8 @@ processResources {
 
 task testLocal() {
     onlyIf = { true }
-//    dependsOn ":build"
-//    mustRunAfter ":build"
+    dependsOn ":RPG-Framework:build"
+    mustRunAfter ":RPG-Framework:build"
     doLast {
         exec {
             ignoreExitValue = true
@@ -86,8 +86,8 @@ task testLocal() {
 
 task publishServer() {
     onlyIf = { true }
-//    dependsOn "RPG-Framework:plugin:build"
-//    mustRunAfter "RPG-Framework:plugin:build"
+    dependsOn ":RPG-Framework:build"
+    mustRunAfter ":RPG-Framework:build"
     doLast {
         exec {
             ignoreExitValue = true

@@ -54,6 +54,37 @@ public class RpgPlayer {
     private static final long TIME_UNTIL_OUT_OF_COMBAT = 10000;
 
     /**
+     * The amount of health granted per talent point spent on maximum health.
+     */
+    public static final double HEALTH_PER_POINT = 5; // todo: Configurable because of balance. Ideally during runtime.
+
+    /**
+     * The amount of base damage granted per talent point spent on damage.
+     */
+    public static final double DAMAGE_PER_POINT = 1; // todo: Configurable because of balance. Ideally during runtime.
+
+    /**
+     * The amount of critical strike chance given to a player per talent point spent.
+     */
+    public static final double CRIT_CHANCE_PER_POINT = 0.025; // todo: Configurable because of balance. Ideally during runtime.
+
+    /**
+     * The maximum number of points that can be spent on critical strike chance.
+     */
+    public static final long CRIT_CHANCE_MAX_POINTS = 40; // todo: Configurable because of balance. Ideally during runtime.
+
+    /**
+     * The amount of movement speed given to a player per point spent.
+     */
+    public static final double MOVEMENT_SPEED_PER_POINT = 0.03; // todo: Configurable because of balance. Ideally during runtime.
+
+    /**
+     * The maximum number of points that can be spent on movement speed.
+     */
+    public static final long MOVEMENT_SPEED_MAX_POINTS = 10; // todo: Configurable because of balance. Ideally during runtime.
+    // todo: loot drop rate
+    //      critical damage
+    /**
      * A list of artifacts that have been collected by this player.
      * -- GETTER --
      *  Accessor method for the artifact collection of this player.
@@ -75,9 +106,6 @@ public class RpgPlayer {
      * The Entity that last successfully hit this player.
      * -- GETTER --
      *  An accessor method to get the last Entity that attacked this Player.
-     *
-     * @return The entity that last attacked the Player.
-
      */
     @Getter
     private Entity lastHitBy = null;
@@ -163,6 +191,46 @@ public class RpgPlayer {
     private final String name;
 
     /**
+     * The number of talent points spent on increasing max health.
+     * -- GETTER --
+     * Gets the number of points that this player has put into health.
+     * -- SETTER --
+     * Sets the number of health talent points allocated.
+     */
+    @Getter @Setter
+    private long healthTalentPoints = 0;
+
+    /**
+     * The number of talent points spent on increasing base damage.
+     * -- GETTER --
+     * Gets the number of points that this player has put into damage.
+     * -- SETTER --
+     * Sets the number of damage talent points allocated.
+     */
+    @Getter @Setter
+    private long damageTalentPoints = 0;
+
+    /**
+     * The chance that any strike could be a critical strike and deal double damage.
+     * -- GETTER --
+     * Gets the number of points allocated to critical strike chance.
+     * -- SETTER --
+     * Sets the number of points allocated to critical strike chance.
+     */
+    @Getter @Setter
+    private long critChanceTalentPoints = 0;
+
+    /**
+     * The amount of talent points that have been spent on increased movement speed.
+     * -- GETTER --
+     * Gets the number of points spent on moving faster.
+     * -- SETTER --
+     * Sets the number of points allocated to movement speed.
+     */
+    @Getter @Setter
+    private long movementSpeedTalentPoints = 0;
+
+    /**
      * Default constructor for an RpgPlayer object. Caches the given Player object and grabs the name and UUID.
      *
      * @param p The player this construct points to.
@@ -172,6 +240,7 @@ public class RpgPlayer {
         this.bukkitPlayer = p;
         this.name = p.getName();
         refresh();
+        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), this::refresh, 3 * 20);
     }
 
     /**
@@ -250,32 +319,88 @@ public class RpgPlayer {
         refresh();
         getBukkitPlayer().playSound(getBukkitPlayer(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.5f, 1.0f);
         sendMessage(ChatColor.GREEN + "You've leveled up! Level: " + getLevel());
-        if (level % 5 != 0)
-            sendMessage(StringUtils.convertHexCodes("#F454DA") + " +5 Health");
-        else
-            sendMessage(StringUtils.convertHexCodes("#D93747") + " +1 Damage");
+        sendMessage(ChatColor.DARK_AQUA + "You have " + getPointsUnallocated() + " unspent points!");
     }
 
     /**
-     * Determines how much of a health bonus a player of the given level should have. These are RPG numbers that are
-     * then scaled down.
+     * Gets the total number of available points for this RpgPlayer.
      *
-     * @param level The player's current level.
+     * @return The number of upgrade points available.
+     */
+    public int getPointsUnallocated () {
+        long total_points = getLevel();
+        total_points -= healthTalentPoints;
+        total_points -= damageTalentPoints;
+        total_points -= movementSpeedTalentPoints;
+        total_points -= critChanceTalentPoints;
+        return (int) total_points;
+    }
+
+    /**
+     * Attempts to allocate an additional point to health.
+     *
+     * @param field The field to allocate a talent point to.
+     */
+    public void allocatePoint (String field) {
+
+        if (getPointsUnallocated() <= 0) {
+            sendMessage(ChatColor.RED + "You do not have enough points to do that!");
+            return;
+        }
+
+        if (field.equalsIgnoreCase("health")) {
+            healthTalentPoints++;
+            sendMessage(ChatColor.GREEN + "You feel healthier now! " + StringUtils.convertHexCodes("#F454DA") + "+" + HEALTH_PER_POINT + " Health");
+        } else if (field.equalsIgnoreCase("damage")) {
+            damageTalentPoints++;
+            sendMessage(ChatColor.GREEN + "Your attacks hit harder! " + StringUtils.convertHexCodes("#D93747") + "+" + DAMAGE_PER_POINT + " Damage");
+        } else if (field.equalsIgnoreCase("movement_speed")) {
+            if (movementSpeedTalentPoints == MOVEMENT_SPEED_MAX_POINTS) {
+                sendMessage(ChatColor.RED + "You've reached the maximum level!");
+                return;
+            }
+            movementSpeedTalentPoints++;
+            sendMessage(ChatColor.GREEN + "You move faster! " + ChatColor.AQUA + "+" + (100 * MOVEMENT_SPEED_PER_POINT) + " Speed");
+        } else if (field.equalsIgnoreCase("critical_chance")) {
+            if (critChanceTalentPoints == CRIT_CHANCE_MAX_POINTS) {
+                sendMessage(ChatColor.RED + "You've reached the maximum level!");
+                return;
+            }
+            critChanceTalentPoints++;
+            sendMessage(ChatColor.GREEN + "Your strikes find more weak-spots! " + ChatColor.YELLOW + "+" + (CRIT_CHANCE_PER_POINT * 100) + " Critical Strike Chance");
+        }
+
+        refresh();
+    }
+
+    /**
+     * Resets any point allocations that this player has made.
+     */
+    public void resetPoints () {
+        healthTalentPoints = 0;
+        damageTalentPoints = 0;
+        movementSpeedTalentPoints = 0;
+        critChanceTalentPoints = 0;
+        sendMessage(ChatColor.GREEN + "You've reset all your base talent points.");
+        refresh();
+    }
+
+    /**
+     * Determines how much of a health bonus this player should have. These are RPG numbers that are then scaled down.
+     *
      * @return The bonus health that should be added onto the player's health.
      */
-    private static double healthBonus (long level) {
-        return ((level - 1) - (level / 5.0)) * 5;
+    private double healthBonus () {
+        return healthTalentPoints * HEALTH_PER_POINT;
     }
 
     /**
-     * Determines how much of a damage bonus a player of the given level should have. These are RPG numbers that are
-     * then scaled down.
+     * Determines how much of a damage bonus this player should have. These are RPG numbers that are then scaled down.
      *
-     * @param level The player's current level.
      * @return The bonus damage that should be added onto the player's attacks.
      */
-    private static double damageBonus (long level) {
-        return level / 5;
+    private double damageBonus () {
+        return damageTalentPoints * DAMAGE_PER_POINT;
     }
 
     /**
@@ -328,12 +453,12 @@ public class RpgPlayer {
         }
         final double RPG_TO_MC_SCALAR = 5.0; // Scales RPG health/damage values to Mc attribute ones.
         Player player = getBukkitPlayer();
-        // Every level except lvl 1, and lvls ending in 5/10.
-        AttributeModifier healthMod = new AttributeModifier(new UUID(100, 234), "", healthBonus(getLevel()) / RPG_TO_MC_SCALAR, AttributeModifier.Operation.ADD_NUMBER);
-        // Every level that ends in 5/10.
-        AttributeModifier damageMod = new AttributeModifier(new UUID(100, 235), "", damageBonus(getLevel()) / RPG_TO_MC_SCALAR, AttributeModifier.Operation.ADD_NUMBER);
+        AttributeModifier healthMod = new AttributeModifier(new UUID(100, 234), "", healthBonus() / RPG_TO_MC_SCALAR, AttributeModifier.Operation.ADD_NUMBER);
+        AttributeModifier damageMod = new AttributeModifier(new UUID(100, 235), "", damageBonus() / RPG_TO_MC_SCALAR, AttributeModifier.Operation.ADD_NUMBER);
+        AttributeModifier speedMod = new AttributeModifier(new UUID(100, 236), "", getMovementSpeedTalentPoints() * MOVEMENT_SPEED_PER_POINT, AttributeModifier.Operation.ADD_NUMBER);
         AttributeInstance healthInstance = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         AttributeInstance damageInstance = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+        AttributeInstance speedInstance = player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
         if (healthInstance != null) {
             Collection<AttributeModifier> modifiers = healthInstance.getModifiers();
             if (!modifiers.isEmpty())
@@ -344,6 +469,7 @@ public class RpgPlayer {
         } else {
             RPGFramework.console("Attempted to update " + player.getName() + "'s health but GENERIC_MAX_HEALTH instance is null.", ChatColor.RED);
         }
+        // todo: Abstract damage and speed.
         if (damageInstance != null) {
             Collection<AttributeModifier> modifiers = damageInstance.getModifiers();
             if (!modifiers.isEmpty())
@@ -352,13 +478,21 @@ public class RpgPlayer {
         } else {
             RPGFramework.console("Attempted to update " + player.getName() + "'s damage but GENERIC_ATTACK_DAMAGE instance is null.", ChatColor.RED);
         }
+        if (speedInstance != null) {
+            Collection<AttributeModifier> modifiers = speedInstance.getModifiers();
+            if (!modifiers.isEmpty())
+                speedInstance.removeModifier(speedMod);
+            speedInstance.addModifier(speedMod);
+        } else {
+            RPGFramework.console("Attempted to update " + player.getName() + "'s damage but GENERIC_MOVEMENT_SPEED instance is null.", ChatColor.RED);
+        }
     }
 
     /**
      * Gets a gear score for this player.
      *
      * @return The player's current gear score.
-     */
+     */ // todo: Consider RPGItem stats.
     public int getGearScore () {
         int runningScore = 0;
         ItemStack[] collection = getBukkitPlayer().getInventory().getArmorContents();
@@ -391,7 +525,7 @@ public class RpgPlayer {
     public ChatColor getPlayerRarity () {
         int gearScore = getGearScore();
 
-        if (gearScore <= 100) return ChatColor.WHITE;
+        if (gearScore <= 100) return ChatColor.WHITE; // todo: Utilize Rarity hex colors.
         else if (gearScore <= 200) return ChatColor.GREEN;
         else if (gearScore <= 300) return ChatColor.BLUE;
         else if (gearScore <= 400) return ChatColor.GOLD;
@@ -414,6 +548,15 @@ public class RpgPlayer {
     }
 
     /**
+     * Accessor method for this player's current health.
+     *
+     * @return This player's health.
+     */
+    public double getCurrentHealth () {
+        return getBukkitPlayer().getHealth();
+    }
+
+    /**
      * Accessor method for a formatted version of this player's current health.
      *
      * @return A nicely colored string for this player's health.
@@ -427,6 +570,18 @@ public class RpgPlayer {
         else if (current / max < 0.50) prefix = ChatColor.RED;
 
         return prefix + "" + current;
+    }
+
+    /**
+     * Accessor method for the player's current damage. This is heavily influenced by equipment. This is the scaled down
+     * damage value.
+     *
+     * @return This player's damage.
+     */
+    public double getCurrentDamage () {
+        AttributeInstance instance = bukkitPlayer.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+        if (instance == null) return 0;
+        return instance.getValue();
     }
 
     /**
@@ -509,6 +664,9 @@ public class RpgPlayer {
         fighting = System.currentTimeMillis();
         enteringCombat();
         classObject.attack(event);
+        // todo: Move this elsewhere, using AdvancedDamageEvent.
+        double roll = new Random().nextDouble();
+        if (roll < critChanceTalentPoints * CRIT_CHANCE_PER_POINT) event.setDamage(event.getDamage() * 2.0);
         lastHitBy = event.getEntity();
     }
 

@@ -19,6 +19,14 @@ public interface GUI {
     void openInventory (Player player);
 
     /**
+     * Opens this GUI to the given player.
+     *
+     * @param player The player to open the GUI to.
+     * @param params Any parameters to add to the inventory when to open.
+     */
+    void openInventory (Player player, String... params);
+
+    /**
      * Called whenever this GUI is clicked.
      *
      * @param event The inventory click event.
